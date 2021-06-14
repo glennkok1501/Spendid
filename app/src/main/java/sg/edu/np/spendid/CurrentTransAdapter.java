@@ -29,7 +29,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
 
     public void onBindViewHolder(CurrentTransViewHolder holder, int position){
         String s = keys.get(position);
-        holder.image.setImageResource(R.drawable.ic_shopping_24);
+        setIcon(holder, s);
         holder.cat.setText(s);
         holder.amt.setText(String.valueOf(calAmt(values.get(position))));
     }
@@ -44,5 +44,23 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
             amt += r.get(i).getAmount();
         }
         return amt;
+    }
+
+    private void setIcon(CurrentTransViewHolder holder, String cat){
+        switch (cat){
+            case "Shopping":
+                holder.image.setImageResource(R.drawable.ic_shopping_24);
+                break;
+            case "Food":
+                holder.image.setImageResource(R.drawable.ic_food_24);
+                break;
+            case "Entertainment":
+                holder.image.setImageResource(R.drawable.ic_entertainment_24);
+                break;
+            case "Others":
+                holder.image.setImageResource(R.drawable.ic_others_24);
+                break;
+        }
+
     }
 }
