@@ -4,10 +4,11 @@ public class Record {
     private int id;
     private String title;
     private String description;
-    private String amount;
+    private double amount;
     private String category;
     private String dateCreated;
     private String timeCreated;
+    private int walletId;
 
     public int getId() {
         return id;
@@ -33,11 +34,11 @@ public class Record {
         this.description = description;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -65,19 +66,28 @@ public class Record {
         this.timeCreated = timeCreated;
     }
 
+    public int getWalletId() {
+        return walletId;
+    }
+
+    public void setWalletId(int walletId) {
+        this.walletId = walletId;
+    }
+
     public Record() {
     }
 
-    public Record(String title, String description, String amount, String category, String dateCreated, String timeCreated) {
+    public Record(String title, String description, double amount, String category, String dateCreated, String timeCreated, int walletId) {
         this.title = title;
         this.description = description;
         this.amount = amount;
         this.category = category;
         this.dateCreated = dateCreated;
         this.timeCreated = timeCreated;
+        this.walletId = walletId;
     }
 
-    public Record(int id, String title, String description, String amount, String category, String dateCreated, String timeCreated) {
+    public Record(int id, String title, String description, double amount, String category, String dateCreated, String timeCreated,  int walletId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -85,5 +95,6 @@ public class Record {
         this.category = category;
         this.dateCreated = dateCreated;
         this.timeCreated = timeCreated;
+        this.walletId = walletId;
     }
 }
