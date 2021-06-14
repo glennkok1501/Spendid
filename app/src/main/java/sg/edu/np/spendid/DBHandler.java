@@ -14,17 +14,17 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_WALLET_NAME = "Name";
     public static final String COLUMN_WALLET_DESCRIPTION = "Description";
     public static final String COLUMN_WALLET_CURRENCY = "Currency";
-    public static final String COLUMN_WALLET_DATACREATED = "DateCreated";
+    public static final String COLUMN_WALLET_DATECREATED = "DateCreated";
 
     //Record Table Attributes
     public static final String TABLE_RECORD = "Record";
     public static final String COLUMN_RECORD_ID = "RecordId";
     public static final String COLUMN_RECORD_TITLE = "Title";
     public static final String COLUMN_RECORD_DESCRIPTION = "Description";
-    public static final String COLUMN_RECORD_AMOUNT = "Currency";
+    public static final String COLUMN_RECORD_AMOUNT = "Amount";
     public static final String COLUMN_RECORD_CATEGORY = "Category";
-    public static final String COLUMN_RECORD_DATACREATED = "DateCreated";
-
+    public static final String COLUMN_RECORD_DATECREATED = "DateCreated";
+    public static final String COLUMN_RECORD_TIMECREATED = "TimeCreated";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -37,14 +37,15 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_WALLET_NAME+" TEXT, "+
                 COLUMN_WALLET_DESCRIPTION+" TEXT, "+
                 COLUMN_WALLET_CURRENCY+" TEXT, "+
-                COLUMN_WALLET_DATACREATED+" INTEGER DEFAULT CURRENT_TIMESTAMP)";
+                COLUMN_WALLET_DATECREATED+" TEXT)";
         String CREATE_RECORD_TABLE = "CREATE TABLE "+TABLE_RECORD+
                 " ("+COLUMN_RECORD_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
                 COLUMN_RECORD_TITLE+" TEXT, "+
                 COLUMN_RECORD_DESCRIPTION+" TEXT, "+
                 COLUMN_RECORD_AMOUNT+" REAL, "+
                 COLUMN_RECORD_CATEGORY+" TEXT, "+
-                COLUMN_RECORD_DATACREATED+" INTEGER DEFAULT CURRENT_TIMESTAMP)";
+                COLUMN_RECORD_DATECREATED+" TEXT, "+
+                COLUMN_RECORD_TIMECREATED+" TEXT)";
         db.execSQL(CREATE_WALLET_TABLE);
         db.execSQL(CREATE_RECORD_TABLE);
     }
