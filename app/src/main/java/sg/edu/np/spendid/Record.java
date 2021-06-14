@@ -1,12 +1,5 @@
 package sg.edu.np.spendid;
-//public static final String TABLE_RECORD = "Record";
-//public static final String COLUMN_RECORD_ID = "RecordId";
-//public static final String COLUMN_RECORD_TITLE = "Title";
-//public static final String COLUMN_RECORD_DESCRIPTION = "Description";
-//public static final String COLUMN_RECORD_AMOUNT = "Currency";
-//public static final String COLUMN_RECORD_CATEGORY = "Category";
-//public static final String COLUMN_RECORD_DATECREATED = "DateCreated";
-//public static final String COLUMN_RECORD_TIMECREATED = "TimeCreated";
+
 public class Record {
     private int id;
     private String title;
