@@ -23,8 +23,14 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
 
     public CurrentTransViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.current_transaction_layout, parent, false);
-        Log.v("TAG", ""+true);
-        return new CurrentTransViewHolder(item);
+        CurrentTransViewHolder holder = new CurrentTransViewHolder(item);
+        item.findViewById(R.id.currentTrans).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("TAG", "current transaction clicked - "+keys.get(holder.getAdapterPosition()));
+            }
+        });
+        return holder;
     }
 
     public void onBindViewHolder(CurrentTransViewHolder holder, int position){

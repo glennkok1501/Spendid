@@ -30,12 +30,17 @@ public class MainActivity extends AppCompatActivity {
         income = findViewById(R.id.totalBalIncCost_textView);
         expense = findViewById(R.id.totalBalExpCost_textView);
 
+        //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
         }
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         //Total Balance
         HashMap<String, Double> bal = dbHandler.getBalance();
         balance.setText(df2.format(bal.get("balance")));
@@ -55,18 +60,6 @@ public class MainActivity extends AppCompatActivity {
         currentTransRV.setLayoutManager(myLayoutManager);
         currentTransRV.setItemAnimator(new DefaultItemAnimator());
         currentTransRV.setAdapter(myCurrentTransAdapter);
-
-    }
-
-    private String currentDate(){
-        Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(currentTime.getTime());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -87,5 +80,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private String currentDate(){
+        Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(currentTime.getTime());
     }
 }
