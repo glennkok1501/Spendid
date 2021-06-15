@@ -5,10 +5,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class WalletViewHolder extends RecyclerView.ViewHolder {
+public class WalletSliderViewHolder extends RecyclerView.ViewHolder {
     TextView name;
     TextView amount;
-    public WalletViewHolder(View itemView){
+    public WalletSliderViewHolder(View itemView){
         super(itemView);
         name = itemView.findViewById(R.id.viewpager_wallet_name);
         amount = itemView.findViewById(R.id.viewpager_wallet_amount);

@@ -10,6 +10,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="60dp"
         tools:layout_editor_absoluteX="58dp">
 
         <LinearLayout
@@ -21,7 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                app:cardCornerRadius="30dp">
+                android:padding="10dp"
+                app:cardCornerRadius="50dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -191,7 +193,8 @@
                 android:id="@+id/main_transHist_RV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="15dp" />
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"/>
         </LinearLayout>
     </ScrollView>
 

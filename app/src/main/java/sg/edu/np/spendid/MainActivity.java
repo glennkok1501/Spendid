@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
         }
-
     }
 
     @Override
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NewRecordActivity.class);
+                Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
                 startActivity(intent);
             }
         });

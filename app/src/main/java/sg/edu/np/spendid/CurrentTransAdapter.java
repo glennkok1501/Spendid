@@ -53,7 +53,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
     }
 
     private void setIcon(CurrentTransViewHolder holder, String cat){
-        switch (cat){
+        switch (cat) {
             case "Shopping":
                 holder.image.setImageResource(R.drawable.ic_shopping_24);
                 break;
@@ -63,10 +63,27 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
             case "Entertainment":
                 holder.image.setImageResource(R.drawable.ic_entertainment_24);
                 break;
+            case "Leisure":
+                holder.image.setImageResource(R.drawable.ic_leisure_24);
+                break;
+            case "Transport":
+                holder.image.setImageResource(R.drawable.ic_transport_24);
+                break;
+            case "Housing":
+                holder.image.setImageResource(R.drawable.ic_housing_24);
+                break;
+            case "Vehicle":
+                holder.image.setImageResource(R.drawable.ic_vehicle_24);
+                break;
+            case "Income":
+                holder.image.setImageResource(R.drawable.ic_income_24);
+                break;
+            case "Salary":
+                holder.image.setImageResource(R.drawable.ic_salary_24);
+                break;
             case "Others":
                 holder.image.setImageResource(R.drawable.ic_others_24);
                 break;
         }
-
     }
 }

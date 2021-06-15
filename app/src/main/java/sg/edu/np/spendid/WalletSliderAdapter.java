@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class WalletSliderAdapter extends RecyclerView.Adapter<WalletViewHolder> {
+public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderViewHolder> {
     ArrayList<Wallet> data;
     private Context context;
 
@@ -18,10 +18,10 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletViewHolder> 
         data = input;
     }
 
-    public WalletViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public WalletSliderViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.wallet_layout, parent, false);
         context = parent.getContext();
-        WalletViewHolder holder = new WalletViewHolder(item);
+        WalletSliderViewHolder holder = new WalletSliderViewHolder(item);
         item.findViewById(R.id.viewpager_wallet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,7 +31,7 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletViewHolder> 
         return holder;
     }
 
-    public void onBindViewHolder(WalletViewHolder holder, int position){
+    public void onBindViewHolder(WalletSliderViewHolder holder, int position){
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Wallet s = data.get(position);
         holder.name.setText(s.getName());
