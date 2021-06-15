@@ -8,12 +8,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.service.controls.actions.FloatAction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +34,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -44,6 +49,7 @@ public class NewRecordActivity extends AppCompatActivity {
     private String baseCurrency, walletCurrency;
     private RequestQueue mQueue;
     private double exchangeRate = 0;
+    private String lastUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +136,65 @@ public class NewRecordActivity extends AppCompatActivity {
     }
 
     private void promptConversion(){
-        if (!baseCurrency.equals(walletCurrency)){
+        if (!baseCurrency.equals(walletCurrency.toLowerCase())){
             getExchangeRate(walletCurrency.toLowerCase(), baseCurrency);
         }
+    }
+
+    private void currencyDialog(){
+        Dialog dialog = new Dialog(NewRecordActivity.this);
+        dialog.setContentView(R.layout.currency_exchange_layout);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setCancelable(false);
+
+        TextView forCur = dialog.findViewById(R.id.foreignAmt_textView);
+        TextView baseCur = dialog.findViewById(R.id.baseCurrency_textView);
+        TextView baseAmt = dialog.findViewById(R.id.baseCurrencyAmt_textView);
+        TextView updateDate = dialog.findViewById(R.id.rateLastUpdate);
+        EditText forAmt = dialog.findViewById(R.id.foreignAmt_editText);
+        FloatingActionButton convertBtn = dialog.findViewById(R.id.convertCurrrency_fab);
+        TextView cancelDialog = dialog.findViewById(R.id.currencyExchangeCancel_textView);
+
+        baseCur.setText(baseCurrency.toUpperCase());
+        forCur.setText(walletCurrency.toUpperCase());
+        updateDate.setText("Last Updated: "+lastUpdate);
+
+        forAmt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {}
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0) {
+                    baseAmt.setText(new DecimalFormat("0.00").format(Math.round((Double.parseDouble(forAmt.getText().toString()) * exchangeRate) * 100.0) / 100.0));
+                }
+                else{
+                    baseAmt.setText("0.00");
+                }
+            }
+        });
+
+        convertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                amt.setText(baseAmt.getText());
+                dialog.dismiss();
+            }
+        });
+
+        cancelDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     private void getExchangeRate(String from, String to){
@@ -143,6 +205,8 @@ public class NewRecordActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             exchangeRate = response.getDouble(to);
+                            lastUpdate = response.getString("date");
+                            currencyDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), "Data Unavailable", Toast.LENGTH_SHORT).show();
