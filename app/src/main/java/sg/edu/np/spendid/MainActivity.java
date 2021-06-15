@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private TextView balance, income, expense;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         balance = findViewById(R.id.totalBalCost_textView);
         income = findViewById(R.id.totalBalIncCost_textView);
         expense = findViewById(R.id.totalBalExpCost_textView);
+        fab = findViewById(R.id.dashboard_fab);
 
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
@@ -65,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NewRecordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

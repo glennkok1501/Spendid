@@ -182,6 +182,22 @@ public class DBHandler extends SQLiteOpenHelper {
         return walletList;
     }
 
+    public ArrayList<Category> getCategories(){
+        ArrayList<Category> catList = new ArrayList<Category>();
+        String query = "SELECT * FROM "+TABLE_CATEGORY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+            String title = cursor.getString(0);
+            Boolean exp = cursor.getInt(1)==1;
+            Category cat = new Category(title, exp);
+            catList.add(cat);
+        }
+        cursor.close();
+        db.close();
+        return catList;
+    }
+
     //return an array of records grouped by its category for a specific date - Glenn
     public HashMap<String, ArrayList<Record>> getGroupedTransaction(String date) {
         HashMap<String, ArrayList<Record>> group = new HashMap<String, ArrayList<Record>>();
