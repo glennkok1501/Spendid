@@ -40,6 +40,7 @@ public class SeedData {
         dbHandler.addRecord(new Record("Good Dinner", "Best pasta ever", 9.00, "Food", "2021-01-02", "20:43:23", 1));
         dbHandler.addRecord(new Record("Bought gifts", "New toy for baby cousin", 30.50, "Others", "2021-02-20", "10:00:55", 1));
         dbHandler.addRecord(new Record("New TV", "", 1999.00, "Entertainment", "2021-03-19", "18:54:12", 1));
+        dbHandler.addRecord(new Record("Won lottery", "", 5000.00, "Income", currentDate(), currentTime(), 1));
 
         dbHandler.addRecord(new Record("Airport meal", "Omurice Oishi", 20.00, "Food", "2021-02-14", "8:02:11", 2));
         dbHandler.addRecord(new Record("Shopping", "Bought some new clothes", 274.93, "Shopping", "2021-02-15", "12:02:53", 2));

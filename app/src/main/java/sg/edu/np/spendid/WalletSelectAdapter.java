@@ -1,3 +1,5 @@
+//Created by Glenn
+
 package sg.edu.np.spendid;
 
 import android.content.Context;
@@ -6,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +16,7 @@ import java.util.ArrayList;
 
 import maes.tech.intentanim.CustomIntent;
 
-public class WalletSelectAdapter extends RecyclerView.Adapter<SelectWalletViewHolder> {
+public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapter.WalletSelectViewHolder> {
     ArrayList<Wallet> data;
     private Context context;
 
@@ -22,9 +25,9 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<SelectWalletViewHo
         context = getContext;
     }
 
-    public SelectWalletViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public WalletSelectViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_wallet_layout, parent, false);
-        SelectWalletViewHolder holder = new SelectWalletViewHolder(item);
+        WalletSelectViewHolder holder = new WalletSelectViewHolder(item);
         item.findViewById(R.id.sel_wallet_cardView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,7 +45,7 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<SelectWalletViewHo
         return holder;
     }
 
-    public void onBindViewHolder(SelectWalletViewHolder holder, int position){
+    public void onBindViewHolder(WalletSelectViewHolder holder, int position){
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Wallet s = data.get(position);
         holder.name.setText(s.getName());
@@ -52,5 +55,18 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<SelectWalletViewHo
 
     public int getItemCount(){
         return data.size();
+    }
+
+    public class WalletSelectViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView amount;
+        TextView date;
+        public WalletSelectViewHolder(View itemView){
+            super(itemView);
+            name = itemView.findViewById(R.id.sel_walletName_textView);
+            amount = itemView.findViewById(R.id.sel_walletAmt_textView);
+            date = itemView.findViewById(R.id.sel_walletDate_textView);
+
+        }
     }
 }

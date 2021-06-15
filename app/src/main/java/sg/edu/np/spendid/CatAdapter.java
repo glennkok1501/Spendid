@@ -1,3 +1,5 @@
+//Created by Glenn
+
 package sg.edu.np.spendid;
 
 import android.content.Context;
@@ -14,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CatAdapter extends RecyclerView.Adapter<CatViewHolder> {
+public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
     ArrayList<Category> data;
     TextView cat;
     ArrayList<View> itemViewList;
@@ -89,4 +91,12 @@ public class CatAdapter extends RecyclerView.Adapter<CatViewHolder> {
                 break;
         }
     }
+    public class CatViewHolder extends RecyclerView.ViewHolder {
+        ImageView image;
+        public CatViewHolder(View itemView){
+            super(itemView);
+            image = itemView.findViewById(R.id.newRecordCat_imageView);
+        }
+    }
+
 }

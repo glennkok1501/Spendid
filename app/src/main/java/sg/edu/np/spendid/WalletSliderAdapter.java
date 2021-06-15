@@ -1,3 +1,5 @@
+//Created by Glenn
+
 package sg.edu.np.spendid;
 
 import android.content.Context;
@@ -5,12 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderViewHolder> {
+public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapter.WalletSliderViewHolder> {
     ArrayList<Wallet> data;
     private Context context;
 
@@ -40,6 +43,17 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderViewHo
 
     public int getItemCount(){
         return data.size();
+    }
+
+    public class WalletSliderViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView amount;
+        public WalletSliderViewHolder(View itemView){
+            super(itemView);
+            name = itemView.findViewById(R.id.viewpager_wallet_name);
+            amount = itemView.findViewById(R.id.viewpager_wallet_amount);
+
+        }
     }
 
 }

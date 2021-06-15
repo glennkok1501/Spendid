@@ -1,16 +1,20 @@
+//Created by Glenn
+
 package sg.edu.np.spendid;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHolder> {
+public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapter.CurrentTransViewHolder> {
     HashMap<String, ArrayList<Record>> data;
     ArrayList<String> keys;
     ArrayList<ArrayList<Record>> values;
@@ -84,6 +88,16 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
             case "Others":
                 holder.image.setImageResource(R.drawable.ic_others_24);
                 break;
+        }
+    }
+    public class CurrentTransViewHolder extends RecyclerView.ViewHolder {
+        ImageView image;
+        TextView cat, amt;
+        public CurrentTransViewHolder(View itemView){
+            super(itemView);
+            image = itemView.findViewById(R.id.currentTrans_imageView);
+            cat = itemView.findViewById(R.id.currentTransCat_textView);
+            amt = itemView.findViewById(R.id.currentTransAmt_textView);
         }
     }
 }
