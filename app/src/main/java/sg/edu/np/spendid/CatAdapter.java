@@ -37,9 +37,9 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
                 for(View i : itemViewList) {
                     CardView ic = i.findViewById(R.id.newRecordCat_bubble);
                     if (itemViewList.get(holder.getAdapterPosition()) == i) {
-                        ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.purple_700));
+                        ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.pizza));
                     } else {
-                        ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.purple_200));
+                        ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.fire_bush));
                     }
                     cat.setText(data.get(holder.getAdapterPosition()).getTitle());
                 }

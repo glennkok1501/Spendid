@@ -11,4 +11,13 @@
     <color name="grey">#939393</color>
     <color name="dark_grey">#666666</color>
     <color name="light_grey">#EEEEEE</color>
+
+<!--    Ember colors palette-->
+    <color name="fire_bush">#E5A025</color>
+    <color name="pizza">#C08317</color>
+    <color name="astronaut">#2C3277</color>
+    <color name="denim">#1754C0</color>
+    <color name="royal_blue">#256AE5</color>
+    <color name="picton_blue">#25CAE5</color>
+
 </resources>

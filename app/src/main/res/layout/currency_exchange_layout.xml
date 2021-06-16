@@ -66,6 +66,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:layout_margin="10dp"
+                app:backgroundTint="?colorSecondary"
+                app:tint="@color/white"
                 app:srcCompat="@drawable/ic_loop_24" />
 
             <LinearLayout

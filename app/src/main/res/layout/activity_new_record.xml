@@ -159,6 +159,6 @@
         android:clickable="true"
         android:focusable="true"
         app:tint="@color/white"
-        app:backgroundTint="@color/purple_500"
+        app:backgroundTint="?colorAccent"
         app:srcCompat="@drawable/ic_save_24" />
 </RelativeLayout>
