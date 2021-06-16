@@ -9,10 +9,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -112,6 +114,7 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageViewHo
         TextView total = dialog.findViewById(R.id.viewWalletTrans_textView);
         TextView des = dialog.findViewById(R.id.viewWalletDes_textView);
         FloatingActionButton editBtn = dialog.findViewById(R.id.viewWalletEdit_fab);
+        RelativeLayout bg = dialog.findViewById(R.id.viewWallet_relativeLayout);
 
         name.setText(w.getName());
         amt.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId())));
@@ -126,6 +129,15 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageViewHo
                 Log.v("TAG", "Edit Activity");
             }
         });
+
+        bg.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                dialog.dismiss();
+                return false;
+            }
+        });
+
         dialog.show();
     }
 }

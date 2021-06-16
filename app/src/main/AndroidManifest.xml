@@ -10,8 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Spendid">
-        <activity android:name=".ManageWalletActivity"></activity>
+        android:theme="@style/Theme.Spendid_Light">
+        <activity
+            android:name=".ManageWalletActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
         <activity
             android:name=".SelectWalletActivity"
             android:parentActivityName=".MainActivity" />

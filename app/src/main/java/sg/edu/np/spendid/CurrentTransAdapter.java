@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
     HashMap<String, ArrayList<Record>> data;
     ArrayList<String> keys;
     ArrayList<ArrayList<Record>> values;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input){
         data = input;
@@ -41,7 +43,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
         String s = keys.get(position);
         setIcon(holder, s);
         holder.cat.setText(s);
-        holder.amt.setText(String.valueOf(calAmt(values.get(position))));
+        holder.amt.setText(df2.format(calAmt(values.get(position))));
     }
 
     public int getItemCount(){

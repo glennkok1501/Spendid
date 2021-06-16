@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import maes.tech.intentanim.CustomIntent;
@@ -19,6 +20,7 @@ import maes.tech.intentanim.CustomIntent;
 public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapter.WalletSelectViewHolder> {
     ArrayList<Wallet> data;
     private Context context;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     public WalletSelectAdapter(ArrayList<Wallet> input, Context getContext){
         data = input;
@@ -31,7 +33,7 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapte
         item.findViewById(R.id.sel_wallet_cardView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Wallet w = data.get(holder.getAdapterPosition());
+                Wallet w = data.get(viewType);
                 Intent intent = new Intent(v.getContext(), NewRecordActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("walletId", w.getWalletId());
@@ -49,12 +51,17 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapte
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Wallet s = data.get(position);
         holder.name.setText(s.getName());
-        holder.amount.setText(String.valueOf(Math.round(dbHandler.getWalletTotal(s.getWalletId()) * 100.0) / 100.0));
+        holder.amount.setText(df2.format(dbHandler.getWalletTotal(s.getWalletId())));
         holder.date.setText("Last Updated: "+dbHandler.lastMadeTransaction(s.getWalletId()));
     }
 
     public int getItemCount(){
         return data.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     public class WalletSelectViewHolder extends RecyclerView.ViewHolder {

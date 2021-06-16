@@ -34,12 +34,12 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
             public void onClick(View v) {
                 for(View i : itemViewList) {
                     CardView ic = i.findViewById(R.id.newRecordCat_bubble);
-                    if (itemViewList.get(holder.getAdapterPosition()) == i) {
+                    if (itemViewList.get(viewType) == i) {
                         ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.pizza));
                     } else {
                         ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.fire_bush));
                     }
-                    cat.setText(data.get(holder.getAdapterPosition()).getTitle());
+                    cat.setText(data.get(viewType).getTitle());
                 }
             }
         });
@@ -53,6 +53,11 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
 
     public int getItemCount(){
         return data.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     private void setIcon(CatViewHolder holder, String cat) {
@@ -96,5 +101,6 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
             image = itemView.findViewById(R.id.newRecordCat_imageView);
         }
     }
+
 
 }
