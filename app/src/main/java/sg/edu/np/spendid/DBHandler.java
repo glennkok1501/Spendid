@@ -245,6 +245,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return group;
     }
 
+    //returns the last transaction from the wallet - Glenn
     public String lastMadeTransaction(int wId){
         String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_WALLET_ID+" = "+wId+" ORDER BY "+COLUMN_RECORD_DATECREATED+" DESC LIMIT 1";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -284,5 +285,4 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return history;
     }
-
 }

@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,13 +94,22 @@ public class MainActivity extends AppCompatActivity {
 
         //Wallets view pager
         walletList = sortWallet(dbHandler.getWallets());
+        if (walletList.size() == 0){
+            TextView noWallet = findViewById(R.id.walletViewPageStatus_textView);
+            noWallet.setText("No Wallets");
+        }
         ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList);
         viewPager.setAdapter(walletSliderAdapter);
 
         //Current Transactions
+        HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
+        if (curTransMap.size() == 0){
+            TextView noCurTrans = findViewById(R.id.curTransStatus_textView);
+            noCurTrans.setText("No Transactions");
+        }
         RecyclerView currentTransRV = findViewById(R.id.main_transHist_RV);
-        CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(dbHandler.getGroupedTransaction(currentDate()));
+        CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         currentTransRV.setLayoutManager(myLayoutManager);
         currentTransRV.setItemAnimator(new DefaultItemAnimator());
