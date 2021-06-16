@@ -257,4 +257,31 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
+    public HashMap<String, ArrayList<Record>> getRecordHistory() {
+        HashMap<String, ArrayList<Record>> history = new HashMap<>();
+        String query = "SELECT * FROM "+TABLE_RECORD+" ORDER BY "+COLUMN_RECORD_DATECREATED+" DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            String key = cursor.getString(5);
+            //Log.v("TAG", key);
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String timeCreated = cursor.getString(6);
+            int walletId = cursor.getInt(7);
+            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+            if (!history.containsKey(key)) {
+                history.put(key, new ArrayList<Record>());
+            }
+            history.get(key).add(record);
+        }
+        cursor.close();
+        db.close();
+        return history;
+    }
+
 }
