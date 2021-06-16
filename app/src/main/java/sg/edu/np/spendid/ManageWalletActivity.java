@@ -21,13 +21,17 @@ import java.text.DecimalFormat;
 
 public class ManageWalletActivity extends AppCompatActivity {
     private final static String PREF_NAME = "sharedPrefs";
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
     private DBHandler dbHandler;
+    private TextView bal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_wallet);
         dbHandler = new DBHandler(this, null, null, 1);
+        bal = findViewById(R.id.totalWalletBal_textView);
+        bal.setText(df2.format(dbHandler.getTotalBalance()));
 
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         int favWallet = prefs.getInt("firstWallet", 0);

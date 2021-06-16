@@ -138,10 +138,30 @@ public class DBHandler extends SQLiteOpenHelper {
         return income-expense;
     }
 
-    //returns the income, expense and balance of all the wallets combined - Glenn
-    public HashMap<String, Double> getBalance(){
-        HashMap<String, Double> bal = new HashMap<String, Double>();
+    public double getTotalBalance(){
         String query = "SELECT * FROM "+TABLE_RECORD+" r INNER JOIN "+TABLE_CATEGORY+" c ON c."+COLUMN_CATEGORY_TITLE+" = r."+COLUMN_RECORD_CATEGORY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        double income = 0;
+        double expense = 0;
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+            if (cursor.getInt(9) == 1){
+                expense += cursor.getDouble(3);
+            }
+            else{
+                income += cursor.getDouble(3);
+            }
+        }
+        cursor.close();
+        db.close();
+        return income-expense;
+    }
+
+    //returns the income, expense and balance of all the wallets combined - Glenn
+    public HashMap<String, Double> getBalance(String MM){
+        HashMap<String, Double> bal = new HashMap<String, Double>();
+        String query = "SELECT * FROM "+TABLE_RECORD+" r INNER JOIN "+TABLE_CATEGORY+" c ON c."+COLUMN_CATEGORY_TITLE+" = r."+COLUMN_RECORD_CATEGORY+
+                " WHERE r."+COLUMN_RECORD_DATECREATED+" LIKE \"%-"+MM+"-%\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         double income = 0;

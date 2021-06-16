@@ -25,7 +25,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
-    private TextView balance, income, expense, manage, viewAll;
+    private TextView monthText, balance, income, expense, manage, viewAll;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     private final static String PREF_NAME = "sharedPrefs";
     private FloatingActionButton fab;
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHandler = new DBHandler(this, null, null, 1);
+        monthText = findViewById(R.id.totalBalMonth_textView);
         balance = findViewById(R.id.totalBalCost_textView);
         income = findViewById(R.id.totalBalIncCost_textView);
         expense = findViewById(R.id.totalBalExpCost_textView);
@@ -75,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //Total Balance
-        HashMap<String, Double> bal = dbHandler.getBalance();
+        HashMap<String, Double> bal = dbHandler.getBalance(currentMonth());
+        monthText.setText("Total Balance - "+new SimpleDateFormat("MMMM").format(Calendar.getInstance().getTime()));
         balance.setText(df2.format(bal.get("balance")));
         income.setText(df2.format(bal.get("income")));
         expense.setText(df2.format(bal.get("expense")));
@@ -125,6 +127,12 @@ public class MainActivity extends AppCompatActivity {
     private String currentDate(){
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(currentTime.getTime());
+    }
+
+    private String currentMonth(){
+        Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
         return dateFormat.format(currentTime.getTime());
     }
 }
