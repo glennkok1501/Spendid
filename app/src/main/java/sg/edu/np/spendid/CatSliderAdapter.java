@@ -2,8 +2,6 @@
 
 package sg.edu.np.spendid;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
+public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatViewHolder> {
     ArrayList<Category> data;
     TextView cat;
     ArrayList<View> itemViewList;
 
-    public CatAdapter(ArrayList<Category> input, TextView select){
+    public CatSliderAdapter(ArrayList<Category> input, TextView select){
         data = input;
         cat = select;
         itemViewList = new ArrayList<View>();

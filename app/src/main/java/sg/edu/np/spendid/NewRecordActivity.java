@@ -3,7 +3,6 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,11 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.controls.actions.FloatAction;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -76,7 +72,7 @@ public class NewRecordActivity extends AppCompatActivity {
         promptConversion();
 
         RecyclerView catRV = findViewById(R.id.newRecordCat_RV);
-        CatAdapter myCatAdapter = new CatAdapter(dbHandler.getCategories(), selectedCat);
+        CatSliderAdapter myCatAdapter = new CatSliderAdapter(dbHandler.getCategories(), selectedCat);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         catRV.setLayoutManager(myLayoutManager);
         myLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
