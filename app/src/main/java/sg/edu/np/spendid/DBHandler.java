@@ -257,14 +257,15 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
+    //return an array of all records sorted in descending order - Hong Li
     public HashMap<String, ArrayList<Record>> getRecordHistory() {
         HashMap<String, ArrayList<Record>> history = new HashMap<>();
-        String query = "SELECT * FROM "+TABLE_RECORD+" ORDER BY "+COLUMN_RECORD_DATECREATED+" DESC";
+        String query = "SELECT * FROM "+TABLE_RECORD+" ORDER BY "+COLUMN_RECORD_DATECREATED+" DESC, "
+                +COLUMN_RECORD_TIMECREATED+" DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             String key = cursor.getString(5);
-            //Log.v("TAG", key);
             int id = cursor.getInt(0);
             String title = cursor.getString(1);
             String des = cursor.getString(2);

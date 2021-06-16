@@ -1,21 +1,23 @@
 package sg.edu.np.spendid;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TransactionViewHolder extends RecyclerView.ViewHolder {
-    TextView action;
-    TextView dateTime;
-    TextView currencyType;
+    TextView title;
+    TextView time;
     TextView amt;
+    ImageView editBtn;
 
     public TransactionViewHolder(View item) {
         super(item);
-        action = item.findViewById(R.id.actionText);
-        dateTime = item.findViewById(R.id.dateTimeText);
-        currencyType = item.findViewById(R.id.currencyText);
-        amt = item.findViewById(R.id.amountText);
+        title = item.findViewById(R.id.title_Record_textView);
+        time = item.findViewById(R.id.time_Record_textView);
+        amt = item.findViewById(R.id.amount_Record_textView);
+        editBtn = item.findViewById(R.id.edit_Record_imageView);
     }
 }

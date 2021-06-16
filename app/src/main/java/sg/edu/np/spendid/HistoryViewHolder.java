@@ -11,7 +11,7 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
     public HistoryViewHolder(View item) {
         super(item);
-        date = item.findViewById(R.id.dateText);
+        date = item.findViewById(R.id.history_date_textView);
         rv = item.findViewById(R.id.historyRV);
     }
 }

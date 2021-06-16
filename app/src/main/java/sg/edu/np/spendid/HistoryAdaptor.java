@@ -28,7 +28,6 @@ public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
     public HistoryAdaptor(HashMap<String, ArrayList<Record>> recordList) {
         recordData = recordList;
         dates = sortDates(new ArrayList<>(recordList.keySet()));
-        Log.v("TAG", dates.get(0));
         records = new ArrayList<>(recordList.values());
     }
 
@@ -68,7 +67,6 @@ public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
             catch (ParseException e) {}
         }
         Arrays.sort(newDates, Collections.reverseOrder());
-        Log.v("TAG", ""+newDates[0]);
 
         for (int i = 0; i < newDates.length; i++) {
             dateList.add(new SimpleDateFormat("yyyy-MM-dd").format(newDates[i]));

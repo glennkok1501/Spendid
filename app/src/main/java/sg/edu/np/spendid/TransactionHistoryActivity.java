@@ -17,10 +17,10 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_history);
 
-        search = findViewById(R.id.search);
+        search = findViewById(R.id.search_History_editText);
         dbHandler = new DBHandler(this, null,null, 1);
 
-        RecyclerView transactionHistoryRV = findViewById(R.id.thRV);
+        RecyclerView transactionHistoryRV = findViewById(R.id.transaction_history_recyclerView);
         HistoryAdaptor ha = new HistoryAdaptor(dbHandler.getRecordHistory());
         LinearLayoutManager lm = new LinearLayoutManager(this);
         transactionHistoryRV.setLayoutManager(lm);
