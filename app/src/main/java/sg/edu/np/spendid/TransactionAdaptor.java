@@ -1,5 +1,6 @@
 package sg.edu.np.spendid;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,17 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
 
     public void onBindViewHolder(TransactionViewHolder vh, int pos) {
         Record r = transactions.get(pos);
-        vh.action.setText(r.getTitle());
-        vh.dateTime.setText(r.getDateCreated());
+        vh.title.setText(r.getTitle());
+        vh.time.setText(r.getTimeCreated());
         vh.amt.setText(df2.format(r.getAmount()));
+        /*
+        vh.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransactionHistoryActivity.this, EditRecordActivity.class);
+            }
+        });
+         */
     }
 
     public int getItemCount() { return transactions.size(); }
