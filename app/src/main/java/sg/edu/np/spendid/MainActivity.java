@@ -56,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        viewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TransactionHistoryActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private ArrayList<Wallet> sortWallet(ArrayList<Wallet> w){
