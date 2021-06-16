@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -24,8 +25,9 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
-    private TextView balance, income, expense;
+    private TextView balance, income, expense, manage, viewAll;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private final static String PREF_NAME = "sharedPrefs";
     private FloatingActionButton fab;
 
     @Override
@@ -37,12 +39,36 @@ public class MainActivity extends AppCompatActivity {
         income = findViewById(R.id.totalBalIncCost_textView);
         expense = findViewById(R.id.totalBalExpCost_textView);
         fab = findViewById(R.id.dashboard_fab);
+        manage = findViewById(R.id.manage_textView);
+        viewAll = findViewById(R.id.viewAll_textView);
 
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
         }
+
+        manage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ManageWalletActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private ArrayList<Wallet> sortWallet(ArrayList<Wallet> w){
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        int value = prefs.getInt("firstWallet",0);
+        for (int i = 0; i < w.size(); i++){
+            Wallet t = w.get(i);
+            if (t.getWalletId() == value){
+                w.remove(i);
+                w.add(0, t);
+                break;
+            }
+        }
+        return w;
     }
 
     @Override
@@ -55,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         expense.setText(df2.format(bal.get("expense")));
 
         //Wallets view pager
-        walletList = dbHandler.getWallets();
+        walletList = sortWallet(dbHandler.getWallets());
         ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList);
         viewPager.setAdapter(walletSliderAdapter);
