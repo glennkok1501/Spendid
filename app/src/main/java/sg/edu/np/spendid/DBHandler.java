@@ -225,4 +225,16 @@ public class DBHandler extends SQLiteOpenHelper {
         return group;
     }
 
+    public String lastMadeTransaction(int wId){
+        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_WALLET_ID+" = "+wId+" ORDER BY "+COLUMN_RECORD_DATECREATED+" DESC LIMIT 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()){
+            return cursor.getString(5);
+        }
+        else{
+            return null;
+        }
+    }
+
 }

@@ -50,7 +50,7 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapte
         Wallet s = data.get(position);
         holder.name.setText(s.getName());
         holder.amount.setText(String.valueOf(Math.round(dbHandler.getWalletTotal(s.getWalletId()) * 100.0) / 100.0));
-        holder.date.setText("Date Created: "+s.getDateCreated());
+        holder.date.setText("Last Updated: "+dbHandler.lastMadeTransaction(s.getWalletId()));
     }
 
     public int getItemCount(){
