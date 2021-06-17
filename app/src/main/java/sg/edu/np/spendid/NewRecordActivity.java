@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import maes.tech.intentanim.CustomIntent;
 
 public class NewRecordActivity extends AppCompatActivity {
     private DBHandler dbHandler;
@@ -64,8 +67,18 @@ public class NewRecordActivity extends AppCompatActivity {
         fab = findViewById(R.id.newRecord_fab);
         title_layout = findViewById(R.id.newRecordTitle_layout);
 
-        checkValues = initCheckValues();
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Add Transaction");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
+        checkValues = initCheckValues();
         Intent intent = getIntent();
         String walletName = intent.getStringExtra("walletName");
         walletCurrency = intent.getStringExtra("walletCurrency").toLowerCase();
