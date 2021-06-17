@@ -43,7 +43,7 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapte
                 bundle.putString("walletCurrency", w.getCurrency());
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
-                CustomIntent.customType(v.getContext(), "bottom-to-up");
+//                CustomIntent.customType(v.getContext(), "bottom-to-up");
             }
         });
         return holder;
