@@ -32,7 +32,7 @@ import maes.tech.intentanim.CustomIntent;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageViewHolder> {
+public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageAdapter.WalletManageViewHolder> {
     ArrayList<Wallet> data;
     int firstWallet;
     ArrayList<View> itemViewList;
@@ -99,6 +99,20 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageViewHo
         return position;
     }
 
+    public class WalletManageViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView currency;
+        ImageView fav;
+
+        public WalletManageViewHolder(View itemView){
+            super(itemView);
+            name = itemView.findViewById(R.id.manageWalletName_textView);
+            currency = itemView.findViewById(R.id.manageWalletCur_textView);
+            fav = itemView.findViewById(R.id.manageWalletFav_imageView);
+
+        }
+    }
+
     private void walletDialog(Context context, Wallet w){
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Dialog dialog = new Dialog(context);
@@ -111,7 +125,6 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageViewHo
         TextView amt = dialog.findViewById(R.id.viewWalletAmt_textView);
         TextView cur = dialog.findViewById(R.id.viewWalletCur_textView);
         TextView date = dialog.findViewById(R.id.viewWalletDate_textView);
-        TextView total = dialog.findViewById(R.id.viewWalletTrans_textView);
         TextView des = dialog.findViewById(R.id.viewWalletDes_textView);
         FloatingActionButton editBtn = dialog.findViewById(R.id.viewWalletEdit_fab);
         RelativeLayout bg = dialog.findViewById(R.id.viewWallet_relativeLayout);
@@ -120,8 +133,13 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageViewHo
         amt.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId())));
         cur.setText(w.getCurrency().toUpperCase());
         date.setText("Date Created: "+w.getDateCreated());
-        total.setText("Total Records: ");
-        des.setText(w.getDescription());
+        String des_text = w.getDescription();
+        if (des_text.equals("")){
+            des.setText("No Description");
+        }
+        else{
+            des.setText(des_text);
+        }
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override

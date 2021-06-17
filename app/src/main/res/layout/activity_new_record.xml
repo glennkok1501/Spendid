@@ -67,7 +67,7 @@
                 app:startIconDrawable="@drawable/ic_title_24"
                 android:hint="Title"
                 app:counterEnabled="true"
-                app:counterMaxLength="30"
+                app:counterMaxLength="15"
                 app:helperTextTextColor="@color/red">
 
                 <com.google.android.material.textfield.TextInputEditText

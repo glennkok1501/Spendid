@@ -14,7 +14,6 @@ public class TransactionHistoryActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private final static String PREF_NAME = "sharedPrefs";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

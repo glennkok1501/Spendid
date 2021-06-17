@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -42,10 +44,11 @@ public class NewRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency, walletCurrency;
+    private String baseCurrency, walletCurrency, lastUpdate;
     private RequestQueue mQueue;
     private double exchangeRate = 0;
-    private String lastUpdate;
+    private final static String PREF_NAME = "sharedPrefs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +68,10 @@ public class NewRecordActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String walletName = intent.getStringExtra("walletName");
-        walletCurrency = intent.getStringExtra("walletCurrency");
+        walletCurrency = intent.getStringExtra("walletCurrency").toLowerCase();
         selectWallet.setText(walletName);
 
-        baseCurrency = "sgd";
+        getBaseCurrency();
         promptConversion();
 
         RecyclerView catRV = findViewById(R.id.newRecordCat_RV);
@@ -131,9 +134,14 @@ public class NewRecordActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private void getBaseCurrency(){
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        baseCurrency = prefs.getString("baseCurrency", "").toLowerCase();
+    }
+
     private void promptConversion(){
-        if (!baseCurrency.equals(walletCurrency.toLowerCase())){
-            getExchangeRate(walletCurrency.toLowerCase(), baseCurrency);
+        if (!baseCurrency.equals(walletCurrency)){
+            getExchangeRate(walletCurrency, baseCurrency);
         }
     }
 
@@ -238,7 +246,7 @@ public class NewRecordActivity extends AppCompatActivity {
 
     private String checkTitle(){
         String title_txt = title.getText().toString();
-        if (title_txt.length() > 30){
+        if (title_txt.length() > 15){
             title_layout.setError("Character limit exceeded");
             return null;
         }

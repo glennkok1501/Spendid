@@ -66,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
 
-            //Seed currency
-            SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-            editor.putString("baseCurrency", "SGD");
-            editor.apply();
-        }
 
+        }
+        //Seed currency
+        SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+        editor.putString("baseCurrency", "SGD");
+        editor.apply();
 
         getBaseCurrency();
         hideHiddenFab();
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         addRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetFab();
                 Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
                 startActivity(intent);
             }
@@ -107,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
 //                Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
 //                startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Add wallet", Toast.LENGTH_SHORT).show();
-                resetFab();
             }
         });
 
@@ -173,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        resetFab();
     }
 
     @Override
@@ -200,11 +199,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetFab(){
-        addWallet.startAnimation(down);
-        addRecord.startAnimation(down);
-        fab.startAnimation(close);
-        hideHiddenFab();
-        fabClicked = !fabClicked;
+        if (fabClicked){
+            addWallet.startAnimation(down);
+            addRecord.startAnimation(down);
+            fab.startAnimation(close);
+            hideHiddenFab();
+            fabClicked = !fabClicked;
+        }
     }
 
     private void getBaseCurrency(){

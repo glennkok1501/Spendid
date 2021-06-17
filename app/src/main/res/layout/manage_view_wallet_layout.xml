@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/viewWallet_cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
@@ -18,7 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingTop="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="60dp">
 
             <TextView
                 android:id="@+id/viewWalletTitle_textView"
@@ -33,6 +37,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -53,58 +58,47 @@
 
             </LinearLayout>
 
-            <ScrollView
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:text="Description:"/>
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
                 android:scrollbars="vertical"
+                android:layout_marginBottom="10dp"
                 android:fillViewport="true">
 
                 <TextView
                     android:id="@+id/viewWalletDes_textView"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1.0"
-                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:text="description"/>
+                    android:text="description of wallet"/>
             </ScrollView>
-            <LinearLayout
-                android:layout_width="match_parent"
+
+            <TextView
+                android:id="@+id/viewWalletDate_textView"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/viewWalletTrans_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAlignment="textStart"
-                    android:textSize="12sp"
-                    android:text="Total Transactions: " />
-
-                <TextView
-                    android:id="@+id/viewWalletDate_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
-                    android:layout_weight="1"
-                    android:textSize="12sp"
-                    android:text="Date Created" />
-
-            </LinearLayout>
-
+                android:text="Date Created:"
+                android:textSize="12sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/viewWalletEdit_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
+        android:layout_margin="10dp"
         android:clickable="true"
+        android:layout_alignBottom="@id/viewWallet_cardView"
+        android:layout_alignRight="@id/viewWallet_cardView"
+        app:elevation="65dp"
         android:focusable="true"
-        app:backgroundTint="?colorAccent"
+        app:backgroundTint="?colorSecondary"
         app:srcCompat="@drawable/ic_edit_24"
         app:tint="@color/white" />
 </RelativeLayout>

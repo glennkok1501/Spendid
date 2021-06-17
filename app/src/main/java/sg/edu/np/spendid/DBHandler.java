@@ -221,7 +221,8 @@ public class DBHandler extends SQLiteOpenHelper {
     //return an array of records grouped by its category for a specific date - Glenn
     public HashMap<String, ArrayList<Record>> getGroupedTransaction(String date) {
         HashMap<String, ArrayList<Record>> group = new HashMap<String, ArrayList<Record>>();
-        String query = "SELECT * FROM "+TABLE_RECORD+" r INNER JOIN "+TABLE_CATEGORY+" c ON c."+COLUMN_CATEGORY_TITLE+" = r."+COLUMN_RECORD_CATEGORY+" WHERE r."+COLUMN_WALLET_DATECREATED+" = " + "\""+date+"\"";
+        String query = "SELECT * FROM "+TABLE_RECORD+" r INNER JOIN "+TABLE_CATEGORY+" c ON c."+COLUMN_CATEGORY_TITLE+" = r."+COLUMN_RECORD_CATEGORY+
+                " WHERE r."+COLUMN_WALLET_DATECREATED+" = " + "\""+date+"\" ORDER BY "+COLUMN_RECORD_TIMECREATED+" DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
@@ -284,5 +285,28 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return history;
+    }
+
+    public ArrayList<Record> getWalletRecords(int wId){
+        ArrayList<Record> recordList = new ArrayList<>();
+        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_WALLET_ID+" = "+wId+
+                " ORDER BY "+COLUMN_RECORD_DATECREATED+" DESC, "+COLUMN_RECORD_TIMECREATED+" DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String timeCreated = cursor.getString(6);
+            int walletId = cursor.getInt(7);
+            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+            recordList.add(record);
+        }
+        cursor.close();
+        db.close();
+        return recordList;
     }
 }

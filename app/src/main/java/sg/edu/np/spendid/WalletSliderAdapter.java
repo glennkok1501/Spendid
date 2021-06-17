@@ -2,16 +2,21 @@
 
 package sg.edu.np.spendid;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -51,7 +56,7 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
         item.findViewById(R.id.viewpager_wallet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("TAG", "Wallet clicked - "+data.get(holder.getAdapterPosition()).getName());
+                walletDialog(v.getContext(), data.get(viewType));
             }
         });
         return holder;
@@ -85,4 +90,42 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
         }
     }
 
+    private void walletDialog(Context context, Wallet w) {
+        DBHandler dbHandler = new DBHandler(context, null, null, 1);
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.manage_view_wallet_layout);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setCancelable(true);
+
+        TextView name = dialog.findViewById(R.id.viewWalletTitle_textView);
+        TextView amt = dialog.findViewById(R.id.viewWalletAmt_textView);
+        TextView cur = dialog.findViewById(R.id.viewWalletCur_textView);
+        TextView date = dialog.findViewById(R.id.viewWalletDate_textView);
+        TextView des = dialog.findViewById(R.id.viewWalletDes_textView);
+        FloatingActionButton editBtn = dialog.findViewById(R.id.viewWalletEdit_fab);
+        RelativeLayout bg = dialog.findViewById(R.id.viewWallet_relativeLayout);
+
+        name.setText(w.getName());
+        amt.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId())));
+        cur.setText(w.getCurrency().toUpperCase());
+        date.setText("Date Created: " + w.getDateCreated());
+        des.setText(w.getDescription());
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("TAG", "Edit Activity");
+            }
+        });
+        bg.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                dialog.dismiss();
+                return false;
+            }
+        });
+
+        dialog.show();
+    }
 }

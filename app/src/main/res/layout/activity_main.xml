@@ -159,6 +159,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Wallets"
+                    android:drawableStart="@drawable/ic_wallet_24"
+                    android:drawableTint="?colorPrimary"
+                    android:drawablePadding="5dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -196,6 +199,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Today's Transactions"
+                    android:drawableStart="@drawable/ic_history_24"
+                    android:drawableTint="?colorPrimary"
+                    android:drawablePadding="5dp"
                     android:textSize="16sp" />
 
                 <TextView
