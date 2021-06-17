@@ -27,13 +27,13 @@
                 android:background="@color/white"
                 app:cardBackgroundColor="@color/white"
                 app:cardElevation="25dp"
-                android:padding="10dp"
                 app:cardCornerRadius="50dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
+                    android:padding="10dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -52,6 +52,15 @@
                         android:textAlignment="center"
                         android:textSize="34sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/totalBalCur_textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Currency"
+                        android:textAlignment="textEnd"
+                        android:layout_marginRight="30dp"
+                        android:textSize="12sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -232,5 +241,33 @@
         app:tint="@color/white"
         app:backgroundTint="?colorAccent"
         app:srcCompat="@drawable/ic_add_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/dashboardAddRecord_fab"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="80dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:tint="@color/white"
+        app:backgroundTint="?colorPrimaryVariant"
+        app:srcCompat="@drawable/ic_money_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/dashboardAddWallet_fab"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="145dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:tint="@color/white"
+        app:backgroundTint="?colorPrimaryVariant"
+        app:srcCompat="@drawable/ic_wallet_24" />
 
 </RelativeLayout>

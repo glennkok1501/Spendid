@@ -18,13 +18,15 @@ import java.util.HashMap;
 public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapter.CurrentTransViewHolder> {
     HashMap<String, ArrayList<Record>> data;
     ArrayList<String> keys;
-    ArrayList<ArrayList<Record>> values;
+//    ArrayList<ArrayList<Record>> values;
+    String baseCurrency;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input){
+    public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input, String currency){
         data = input;
         keys = new ArrayList<>(data.keySet());
-        values = new ArrayList<>(data.values());
+//        values = new ArrayList<>(data.values());
+        baseCurrency = currency;
     }
 
     public CurrentTransViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -43,7 +45,8 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
         String s = keys.get(position);
         setIcon(holder, s);
         holder.cat.setText(s);
-        holder.amt.setText(df2.format(calAmt(values.get(position))));
+        holder.amt.setText(df2.format(calAmt(data.get(s))));
+        holder.currency.setText(baseCurrency);
     }
 
     public int getItemCount(){
@@ -94,12 +97,13 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
     }
     public class CurrentTransViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView cat, amt;
+        TextView cat, amt, currency;
         public CurrentTransViewHolder(View itemView){
             super(itemView);
             image = itemView.findViewById(R.id.currentTrans_imageView);
             cat = itemView.findViewById(R.id.currentTransCat_textView);
             amt = itemView.findViewById(R.id.currentTransAmt_textView);
+            currency = itemView.findViewById(R.id.currentTransCur_textView);
         }
     }
 }

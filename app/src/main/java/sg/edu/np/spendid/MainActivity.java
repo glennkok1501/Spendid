@@ -12,7 +12,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,10 +30,13 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
-    private TextView monthText, balance, income, expense, manage, viewAll;
+    private TextView monthText, balance, income, expense, currency, manage, viewAll;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     private final static String PREF_NAME = "sharedPrefs";
-    private FloatingActionButton fab;
+    private FloatingActionButton fab, addWallet, addRecord;
+    private String baseCurrency;
+    private Animation open, close, up, down;
+    private boolean fabClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +47,34 @@ public class MainActivity extends AppCompatActivity {
         balance = findViewById(R.id.totalBalCost_textView);
         income = findViewById(R.id.totalBalIncCost_textView);
         expense = findViewById(R.id.totalBalExpCost_textView);
+        currency = findViewById(R.id.totalBalCur_textView);
         fab = findViewById(R.id.dashboard_fab);
+        addRecord = findViewById(R.id.dashboardAddRecord_fab);
+        addWallet = findViewById(R.id.dashboardAddWallet_fab);
         manage = findViewById(R.id.manage_textView);
         viewAll = findViewById(R.id.viewAll_textView);
+
+        //fab animations
+        open = AnimationUtils.loadAnimation(this, R.anim.rotate_open_animation);
+        close = AnimationUtils.loadAnimation(this, R.anim.rotate_close_animation);
+        up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
+        down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
+
 
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
+
+            //Seed currency
+            SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+            editor.putString("baseCurrency", "SGD");
+            editor.apply();
         }
+
+
+        getBaseCurrency();
+        hideHiddenFab();
 
         manage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,20 +91,44 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-    private ArrayList<Wallet> sortWallet(ArrayList<Wallet> w){
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        int value = prefs.getInt("firstWallet",0);
-        for (int i = 0; i < w.size(); i++){
-            Wallet t = w.get(i);
-            if (t.getWalletId() == value){
-                w.remove(i);
-                w.add(0, t);
-                break;
+        addRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetFab();
+                Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
+                startActivity(intent);
             }
-        }
-        return w;
+        });
+
+        addWallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
+//                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Add wallet", Toast.LENGTH_SHORT).show();
+                resetFab();
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabClicked = !fabClicked;
+                if (fabClicked){
+                    addWallet.startAnimation(up);
+                    addRecord.startAnimation(up);
+                    fab.startAnimation(open);
+                    showHiddenFab();
+                }
+                else{
+                    addWallet.startAnimation(down);
+                    addRecord.startAnimation(down);
+                    fab.startAnimation(close);
+                    hideHiddenFab();
+                }
+            }
+        });
     }
 
     @Override
@@ -99,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             noWallet.setText("No Wallets");
         }
         ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
-        WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList);
+        WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, baseCurrency, this);
         viewPager.setAdapter(walletSliderAdapter);
 
         //Current Transactions
@@ -109,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             noCurTrans.setText("No Transactions");
         }
         RecyclerView currentTransRV = findViewById(R.id.main_transHist_RV);
-        CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap);
+        CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap, baseCurrency);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         currentTransRV.setLayoutManager(myLayoutManager);
         currentTransRV.setItemAnimator(new DefaultItemAnimator());
@@ -119,13 +168,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -141,6 +183,48 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void showHiddenFab(){
+        addWallet.setVisibility(View.VISIBLE);
+        addWallet.setClickable(true);
+        addRecord.setVisibility(View.VISIBLE);
+        addRecord.setClickable(true);
+    }
+
+    private void hideHiddenFab(){
+        addWallet.setVisibility(View.INVISIBLE);
+        addWallet.setClickable(false);
+        addRecord.setVisibility(View.INVISIBLE);
+        addRecord.setClickable(false);
+    }
+
+    private void resetFab(){
+        addWallet.startAnimation(down);
+        addRecord.startAnimation(down);
+        fab.startAnimation(close);
+        hideHiddenFab();
+        fabClicked = !fabClicked;
+    }
+
+    private void getBaseCurrency(){
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        baseCurrency = prefs.getString("baseCurrency", "");
+        currency.setText(baseCurrency);
+    }
+
+    private ArrayList<Wallet> sortWallet(ArrayList<Wallet> w){
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        int value = prefs.getInt("firstWallet",0);
+        for (int i = 0; i < w.size(); i++){
+            Wallet t = w.get(i);
+            if (t.getWalletId() == value){
+                w.remove(i);
+                w.add(0, t);
+                break;
+            }
+        }
+        return w;
     }
 
     private String currentDate(){

@@ -18,16 +18,18 @@ import java.util.ArrayList;
 
 public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapter.WalletSliderViewHolder> {
     ArrayList<Wallet> data;
-    private Context context;
+    String baseCurrency;
+    Context context;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public WalletSliderAdapter(ArrayList<Wallet> input){
+    public WalletSliderAdapter(ArrayList<Wallet> input, String currency, Context getContext){
         data = input;
+        baseCurrency = currency;
+        context = getContext;
     }
 
     public WalletSliderViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.wallet_layout, parent, false);
-        context = parent.getContext();
         WalletSliderViewHolder holder = new WalletSliderViewHolder(item);
 
         ImageView front = item.findViewById(R.id.walletSliderFront_imageView);
@@ -60,6 +62,7 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
         Wallet s = data.get(position);
         holder.name.setText(s.getName());
         holder.amount.setText(df2.format(dbHandler.getWalletTotal(s.getWalletId())));
+        holder.currency.setText(baseCurrency);
     }
 
     public int getItemCount(){
@@ -72,12 +75,12 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
     }
 
     public class WalletSliderViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
-        TextView amount;
+        TextView name, amount, currency;
         public WalletSliderViewHolder(View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.viewpager_wallet_name);
             amount = itemView.findViewById(R.id.viewpager_wallet_amount);
+            currency = itemView.findViewById(R.id.viewpager_wallet_currency);
 
         }
     }
