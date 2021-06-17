@@ -19,11 +19,13 @@ import maes.tech.intentanim.CustomIntent;
 
 public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapter.WalletSelectViewHolder> {
     ArrayList<Wallet> data;
-    private Context context;
+    String baseCurrency;
+    Context context;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public WalletSelectAdapter(ArrayList<Wallet> input, Context getContext){
+    public WalletSelectAdapter(ArrayList<Wallet> input, String currency, Context getContext){
         data = input;
+        baseCurrency = currency;
         context = getContext;
     }
 
@@ -51,7 +53,7 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapte
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Wallet s = data.get(position);
         holder.name.setText(s.getName());
-        holder.amount.setText(df2.format(dbHandler.getWalletTotal(s.getWalletId())));
+        holder.amount.setText(df2.format(dbHandler.getWalletTotal(s.getWalletId()))+" "+baseCurrency);
         holder.date.setText("Last Updated: "+dbHandler.lastMadeTransaction(s.getWalletId()));
     }
 

@@ -22,6 +22,15 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
+            <ImageView
+                android:id="@+id/cat_Record_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:tint="?colorSecondary"
+                android:padding="5dp"
+                app:srcCompat="@drawable/ic_category_24" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,6 +59,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/currency_Record_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

@@ -24,11 +24,13 @@ public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
     HashMap<String, ArrayList<Record>> recordData;
     ArrayList<String> dates;
     ArrayList<ArrayList<Record>> records;
+    String baseCurrency;
 
-    public HistoryAdaptor(HashMap<String, ArrayList<Record>> recordList) {
+    public HistoryAdaptor(HashMap<String, ArrayList<Record>> recordList, String currency) {
         recordData = recordList;
         dates = sortDates(new ArrayList<>(recordList.keySet()));
         records = new ArrayList<>(recordList.values());
+        baseCurrency = currency;
     }
 
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,7 +38,7 @@ public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
         HistoryViewHolder historyViewHolder = new HistoryViewHolder(item);
 
         RecyclerView rv = item.findViewById(R.id.historyRV);
-        TransactionAdaptor ta = new TransactionAdaptor(recordData.get(dates.get(viewType)));
+        TransactionAdaptor ta = new TransactionAdaptor(recordData.get(dates.get(viewType)), baseCurrency);
         LinearLayoutManager lm = new LinearLayoutManager(parent.getContext());
         rv.setLayoutManager(lm);
         rv.setItemAnimator(new DefaultItemAnimator());
