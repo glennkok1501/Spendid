@@ -3,6 +3,8 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,10 +12,13 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private Animation open, close, up, down;
     private boolean fabClicked;
 
+    //For nav bar
+    DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +67,16 @@ public class MainActivity extends AppCompatActivity {
         close = AnimationUtils.loadAnimation(this, R.anim.rotate_close_animation);
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
+
+        //Drawer and Navbar
+        drawerLayout = findViewById(R.id.dashboard_drawer_layout);
+        ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
+        menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
 
         //Seed Data
@@ -129,6 +147,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void closeDrawer(){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -172,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         resetFab();
+        closeDrawer();
     }
 
     @Override
