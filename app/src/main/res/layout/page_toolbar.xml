@@ -12,7 +12,7 @@
         android:id="@+id/activityImg_toolBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_back_arrow_32" />
+        android:src="@drawable/ic_back_arrow_32" />
 
     <TextView
         android:id="@+id/activityTitle_toolBar"

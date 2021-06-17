@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private String baseCurrency;
     private Animation open, close, up, down;
     private boolean fabClicked;
+    private LinearLayout manangeWallet, transHist, currencyRates, shoppingList, stats, settings, about;
 
     //For nav bar
     DrawerLayout drawerLayout;
@@ -69,22 +72,12 @@ public class MainActivity extends AppCompatActivity {
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
 
         //Drawer and Navbar
-        drawerLayout = findViewById(R.id.dashboard_drawer_layout);
-        ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
-        menuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-
+        initDrawer();
 
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
-
-
         }
         //Seed currency
         SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
@@ -263,5 +256,37 @@ public class MainActivity extends AppCompatActivity {
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
         return dateFormat.format(currentTime.getTime());
+    }
+
+    private void initDrawer(){
+        //Tool bar
+        drawerLayout = findViewById(R.id.dashboard_drawer_layout);
+        ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
+        menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        //drawer
+        manangeWallet = findViewById(R.id.navbar_manageWallets);
+        setButton(manangeWallet, ManageWalletActivity.class);
+
+        transHist = findViewById(R.id.navbar_transHist);
+        setButton(transHist, TransactionHistoryActivity.class);
+
+
+    }
+
+    private void setButton(LinearLayout l, Class c){
+        l.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, c);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -42,7 +42,7 @@ import maes.tech.intentanim.CustomIntent;
 
 public class NewRecordActivity extends AppCompatActivity {
     private DBHandler dbHandler;
-    private TextView selectedCat, selectWallet;
+    private TextView selectedCat, selectWallet, recordCur;
     private EditText title, description, amt;
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
@@ -51,7 +51,6 @@ public class NewRecordActivity extends AppCompatActivity {
     private RequestQueue mQueue;
     private double exchangeRate = 0;
     private final static String PREF_NAME = "sharedPrefs";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +65,7 @@ public class NewRecordActivity extends AppCompatActivity {
         description = findViewById(R.id.newRecordDes_editText);
         fab = findViewById(R.id.newRecord_fab);
         title_layout = findViewById(R.id.newRecordTitle_layout);
+        recordCur = findViewById(R.id.newRecordCur_textView);
 
         //Tool bar
         TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
@@ -81,7 +81,9 @@ public class NewRecordActivity extends AppCompatActivity {
         checkValues = initCheckValues();
         Intent intent = getIntent();
         String walletName = intent.getStringExtra("walletName");
-        walletCurrency = intent.getStringExtra("walletCurrency").toLowerCase();
+        String currency = intent.getStringExtra("walletCurrency");
+        walletCurrency = currency.toLowerCase();
+        recordCur.setText(currency);
         selectWallet.setText(walletName);
 
         getBaseCurrency();
