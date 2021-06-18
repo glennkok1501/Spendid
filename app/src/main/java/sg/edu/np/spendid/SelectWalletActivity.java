@@ -37,8 +37,11 @@ public class SelectWalletActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String baseCurrency = prefs.getString("baseCurrency", "");
 
@@ -48,11 +51,6 @@ public class SelectWalletActivity extends AppCompatActivity {
         selWalletRV.setLayoutManager(myLayoutManager);
         selWalletRV.setItemAnimator(new DefaultItemAnimator());
         selWalletRV.setAdapter(WalletSelectAdapter);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     @Override

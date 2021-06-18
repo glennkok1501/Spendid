@@ -36,14 +36,16 @@ public class ManageWalletDialog {
         TextView cur = dialog.findViewById(R.id.viewWalletCur_textView);
         TextView date = dialog.findViewById(R.id.viewWalletDate_textView);
         TextView des = dialog.findViewById(R.id.viewWalletDes_textView);
+        TextView wCur = dialog.findViewById(R.id.viewWalletCurrency_textView);
         ImageView star = dialog.findViewById(R.id.manageWalletFav_imageView);
         FloatingActionButton editBtn = dialog.findViewById(R.id.viewWalletEdit_fab);
         RelativeLayout bg = dialog.findViewById(R.id.viewWallet_relativeLayout);
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         name.setText(w.getName());
+        wCur.setText(w.getCurrency());
         amt.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId())));
-        cur.setText(w.getCurrency().toUpperCase());
+        cur.setText(prefs.getString("baseCurrency", "").toUpperCase());
         date.setText("Date Created: " + w.getDateCreated());
         String des_text = w.getDescription();
         if (des_text.length() == 0) {
