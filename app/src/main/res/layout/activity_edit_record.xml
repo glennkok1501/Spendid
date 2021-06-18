@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <include layout="@layout/page_toolbar"/>
+    <include layout="@layout/main_toolbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -173,6 +173,7 @@
 
             </LinearLayout>
         </ScrollView>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editRecord_fab"
             android:layout_alignParentBottom="true"

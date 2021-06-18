@@ -1,20 +1,25 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +34,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -47,6 +53,7 @@ public class EditRecordActivity extends AppCompatActivity {
     private String baseCurrency, lastUpdate;
     private RequestQueue mQueue;
     private double exchangeRate = 0;
+    private boolean deleted;
     private final static String PREF_NAME = "sharedPrefs";
 
     @Override
@@ -65,13 +72,22 @@ public class EditRecordActivity extends AppCompatActivity {
         recordCur = findViewById(R.id.editRecordCur_textView);
 
         //Tool bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
+        ImageView trash = findViewById(R.id.mainToolbarMore_imageView);
+        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
+        trash.setImageResource(R.drawable.ic_delete_32);
         activityTitle.setText("Edit Transaction");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        trash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog();
             }
         });
 
@@ -288,5 +304,51 @@ public class EditRecordActivity extends AppCompatActivity {
             }
         }
         return valid;
+    }
+
+    private void deleteDialog() {
+        Dialog dialog = new Dialog(EditRecordActivity.this);
+        dialog.setContentView(R.layout.pos_neg_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setCancelable(false);
+        RelativeLayout bg = dialog.findViewById(R.id.pos_neg_dialog_relativeLayout);
+        TextView title = dialog.findViewById(R.id.pos_neg_dialog_title);
+        TextView body = dialog.findViewById(R.id.pos_neg_dialog_body);
+        TextView yes = dialog.findViewById(R.id.pos_neg_dialog_yes);
+        TextView no = dialog.findViewById(R.id.pos_neg_dialog_no);
+
+        title.setText("Delete Transaction");
+        body.setText("Are you sure you want to delete it permanently?");
+
+        yes.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (dbHandler.deleteRecord(record.getId())){
+                    Toast.makeText(getApplicationContext(), "Transaction Deleted", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Unknown Transaction", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+        });
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        bg.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                dialog.dismiss();
+                return false;
+            }
+        });
+        dialog.show();
     }
 }

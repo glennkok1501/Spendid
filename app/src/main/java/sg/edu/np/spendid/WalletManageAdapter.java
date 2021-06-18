@@ -65,7 +65,13 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
         Wallet s = data.get(position);
         holder.name.setText(s.getName());
         holder.amount.setText(df2.format(dbHandler.getWalletTotal(s.getWalletId()))+" "+baseCurrency);
-        holder.date.setText("Last Updated: "+dbHandler.lastMadeTransaction(s.getWalletId()));
+        String lastUpdated = dbHandler.lastMadeTransaction(s.getWalletId());
+        if (lastUpdated == null){
+            holder.date.setText("No Transactions");
+        }
+        else{
+            holder.date.setText("Last Updated: "+lastUpdated);
+        }
     }
 
     public int getItemCount(){

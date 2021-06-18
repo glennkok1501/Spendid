@@ -362,4 +362,21 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public boolean deleteRecord(int rId){
+        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_RECORD_ID+" = \""+rId+"\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean deleted;
+        if (cursor.moveToFirst()){
+            db.delete(TABLE_RECORD, COLUMN_RECORD_ID+"= ?", new String[] {String.valueOf(rId)});
+            deleted = true;
+        }
+        else{
+            deleted = false;
+        }
+        cursor.close();
+        db.close();
+        return deleted;
+    }
+
 }
