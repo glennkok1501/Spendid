@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/main_toolbar"></include>
+        <include layout="@layout/main_toolbar"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,15 +26,15 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_marginTop="30dp"
-                        android:layout_marginRight="15dp"
                         android:layout_marginBottom="15dp"
                         android:background="@color/white"
                         app:cardCornerRadius="50dp"
@@ -68,8 +68,9 @@
                                 android:id="@+id/totalBalCur_textView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="30dp"
+                                android:layout_marginEnd="30dp"
                                 android:text="Currency"
+                                android:textColor="?colorOnPrimary"
                                 android:textAlignment="textEnd"
                                 android:textSize="12sp" />
 
@@ -88,10 +89,10 @@
                                     <ImageView
                                         android:id="@+id/income_icon"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="match_parent"
                                         android:layout_gravity="center"
                                         android:layout_weight="1"
-                                        app:srcCompat="@drawable/ic_icome_up" />
+                                        android:src="@drawable/ic_icome_up" />
 
                                     <LinearLayout
                                         android:layout_width="wrap_content"
@@ -100,14 +101,14 @@
                                         android:orientation="vertical">
 
                                         <TextView
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:text="Income"
                                             android:textSize="16sp" />
 
                                         <TextView
                                             android:id="@+id/totalBalIncCost_textView"
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:text="0.00"
                                             android:textSize="16sp"
@@ -124,10 +125,10 @@
                                     <ImageView
                                         android:id="@+id/expense_icon"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="match_parent"
                                         android:layout_gravity="center"
                                         android:layout_weight="1"
-                                        app:srcCompat="@drawable/ic_expense_down" />
+                                        android:src="@drawable/ic_expense_down" />
 
                                     <LinearLayout
                                         android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
                                         android:orientation="vertical">
 
                                         <TextView
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:paddingEnd="30dp"
                                             android:text="Expense"
@@ -144,7 +145,7 @@
 
                                         <TextView
                                             android:id="@+id/totalBalExpCost_textView"
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:text="0.00"
                                             android:textSize="16sp"
@@ -160,20 +161,21 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="15dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="20dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:drawableStart="@drawable/ic_wallet_24"
                             android:drawablePadding="5dp"
-                            android:drawableTint="?colorPrimary"
+                            app:drawableTint="?colorPrimary"
+                            android:textStyle="bold"
                             android:text="Wallets"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            app:drawableStartCompat="@drawable/ic_wallet_24" />
 
                         <TextView
                             android:id="@+id/manage_textView"
@@ -181,15 +183,18 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Manage"
+                            android:textColor="?colorOnPrimary"
+                            app:drawableTint="?colorOnPrimary"
                             android:textAlignment="textEnd"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            app:drawableEndCompat="@drawable/ic_arrow_forward_24" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/walletViewPageStatus_textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?colorOnPrimary"
                         android:text=""
                         android:textAlignment="center"
                         android:textSize="12sp" />
@@ -211,11 +216,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:drawableStart="@drawable/ic_history_24"
                             android:drawablePadding="5dp"
-                            android:drawableTint="?colorPrimary"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            app:drawableTint="?colorPrimary"
                             android:text="Today's Transactions"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            app:drawableStartCompat="@drawable/ic_history_24" />
 
                         <TextView
                             android:id="@+id/viewAll_textView"
@@ -224,14 +231,17 @@
                             android:layout_weight="1"
                             android:text="View All"
                             android:textAlignment="textEnd"
+                            android:textColor="?colorOnPrimary"
+                            app:drawableTint="?colorOnPrimary"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            app:drawableEndCompat="@drawable/ic_arrow_forward_24" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/curTransStatus_textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?colorOnPrimary"
                         android:text=""
                         android:textAlignment="center"
                         android:textSize="12sp" />
@@ -250,45 +260,44 @@
                 android:id="@+id/dashboard_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="16dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:backgroundTint="?colorAccent"
-                app:srcCompat="@drawable/ic_add_24"
+                android:src="@drawable/ic_add_24"
                 app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/dashboardAddRecord_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="80dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:backgroundTint="?colorPrimaryVariant"
-                app:srcCompat="@drawable/ic_money_24"
+                android:src="@drawable/ic_money_24"
                 app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/dashboardAddWallet_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="145dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:backgroundTint="?colorPrimaryVariant"
-                app:srcCompat="@drawable/ic_wallet_24"
+                android:src="@drawable/ic_wallet_24"
                 app:tint="@color/white" />
         </RelativeLayout>
     </LinearLayout>
-
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
@@ -296,7 +305,6 @@
 
         <include
             layout="@layout/main_nav_drawer">
-
         </include>
     </RelativeLayout>
 

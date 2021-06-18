@@ -49,10 +49,8 @@ public class ManageWalletActivity extends AppCompatActivity {
         });
 
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        int favWallet = prefs.getInt("firstWallet", 0);
-
         RecyclerView recyclerView = findViewById(R.id.manageWallet_RV);
-        WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), favWallet);
+        WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), prefs.getString("baseCurrency", ""), this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

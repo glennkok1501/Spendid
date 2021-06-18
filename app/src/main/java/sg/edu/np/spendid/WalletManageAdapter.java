@@ -32,62 +32,40 @@ import maes.tech.intentanim.CustomIntent;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageAdapter.WalletManageViewHolder> {
+public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
     ArrayList<Wallet> data;
-    int firstWallet;
     ArrayList<View> itemViewList;
-    private final static String PREF_NAME = "sharedPrefs";
+    Context context;
+    String baseCurrency;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public WalletManageAdapter(ArrayList<Wallet> input, int fav){
+    public WalletManageAdapter(ArrayList<Wallet> input, String currency, Context getContext){
         data = input;
-        firstWallet = fav;
+        baseCurrency = currency;
+        context = getContext;
         itemViewList = new ArrayList<View>();
     }
 
-    public WalletManageViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_wallet_layout, parent, false);
-        WalletManageViewHolder holder = new WalletManageViewHolder(item);
-        itemViewList.add(item);
-        int id = data.get(viewType).getWalletId();
-        ImageView star = item.findViewById(R.id.manageWalletFav_imageView);
-        if (id == firstWallet){
-            star.setColorFilter(ContextCompat.getColor(parent.getContext(), R.color.fire_bush));
-        }
-        else{
-            star.setColorFilter(ContextCompat.getColor(parent.getContext(), R.color.light_grey));
-        }
+    public WalletSelectViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_wallet_layout, parent, false);
+        WalletSelectViewHolder holder = new WalletSelectViewHolder(item);
 
-        item.setOnClickListener(new View.OnClickListener() {
+        item.findViewById(R.id.sel_wallet_cardView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                walletDialog(v.getContext(), data.get(viewType));
-            }
-        });
-
-        star.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for(View i : itemViewList) {
-                    ImageView track = i.findViewById(R.id.manageWalletFav_imageView);
-                    if (itemViewList.get(viewType) == i) {
-                        track.setColorFilter(ContextCompat.getColor(parent.getContext(), R.color.fire_bush));
-                        SharedPreferences.Editor editor = parent.getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-                        editor.putInt("firstWallet", id);
-                        editor.apply();
-                    } else {
-                        track.setColorFilter(ContextCompat.getColor(parent.getContext(), R.color.light_grey));
-                    }
-                }
+                Wallet w = data.get(viewType);
+                ManageWalletDialog.walletDialog(v.getContext(), w, true);
             }
         });
         return holder;
     }
 
-    public void onBindViewHolder(WalletManageViewHolder holder, int position){
+    public void onBindViewHolder(WalletSelectViewHolder holder, int position){
+        DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Wallet s = data.get(position);
         holder.name.setText(s.getName());
-        holder.currency.setText(s.getCurrency().toUpperCase());
+        holder.amount.setText(df2.format(dbHandler.getWalletTotal(s.getWalletId()))+" "+baseCurrency);
+        holder.date.setText("Last Updated: "+dbHandler.lastMadeTransaction(s.getWalletId()));
     }
 
     public int getItemCount(){
@@ -99,63 +77,5 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageAdapte
         return position;
     }
 
-    public class WalletManageViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
-        TextView currency;
-        ImageView fav;
 
-        public WalletManageViewHolder(View itemView){
-            super(itemView);
-            name = itemView.findViewById(R.id.manageWalletName_textView);
-            currency = itemView.findViewById(R.id.manageWalletCur_textView);
-            fav = itemView.findViewById(R.id.manageWalletFav_imageView);
-
-        }
-    }
-
-    private void walletDialog(Context context, Wallet w){
-        DBHandler dbHandler = new DBHandler(context, null, null, 1);
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.manage_view_wallet_layout);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(true);
-
-        TextView name = dialog.findViewById(R.id.viewWalletTitle_textView);
-        TextView amt = dialog.findViewById(R.id.viewWalletAmt_textView);
-        TextView cur = dialog.findViewById(R.id.viewWalletCur_textView);
-        TextView date = dialog.findViewById(R.id.viewWalletDate_textView);
-        TextView des = dialog.findViewById(R.id.viewWalletDes_textView);
-        FloatingActionButton editBtn = dialog.findViewById(R.id.viewWalletEdit_fab);
-        RelativeLayout bg = dialog.findViewById(R.id.viewWallet_relativeLayout);
-
-        name.setText(w.getName());
-        amt.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId())));
-        cur.setText(w.getCurrency().toUpperCase());
-        date.setText("Date Created: "+w.getDateCreated());
-        String des_text = w.getDescription();
-        if (des_text.equals("")){
-            des.setText("No Description");
-        }
-        else{
-            des.setText(des_text);
-        }
-
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v("TAG", "Edit Activity");
-            }
-        });
-
-        bg.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                dialog.dismiss();
-                return false;
-            }
-        });
-
-        dialog.show();
-    }
 }

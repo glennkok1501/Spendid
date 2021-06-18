@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 import maes.tech.intentanim.CustomIntent;
 
-public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapter.WalletSelectViewHolder> {
+public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
     ArrayList<Wallet> data;
     String baseCurrency;
     Context context;
@@ -64,18 +65,5 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectAdapte
     @Override
     public int getItemViewType(int position) {
         return position;
-    }
-
-    public class WalletSelectViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
-        TextView amount;
-        TextView date;
-        public WalletSelectViewHolder(View itemView){
-            super(itemView);
-            name = itemView.findViewById(R.id.sel_walletName_textView);
-            amount = itemView.findViewById(R.id.sel_walletAmt_textView);
-            date = itemView.findViewById(R.id.sel_walletDate_textView);
-
-        }
     }
 }

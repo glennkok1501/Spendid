@@ -18,26 +18,26 @@
             android:id="@+id/mainToolbarMenu_imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tint="@color/white"
+            app:tint="?colorOnSecondary"
             android:src="@drawable/ic_menu_32" />
 
         <TextView
             android:id="@+id/mainToolbarTitle_textView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:textColor="@color/white"
+            android:textColor="?colorOnSecondary"
             android:text="Dashboard" />
 
         <ImageView
-            android:id="@+id/mainToolbarShare_imageView"
+            android:id="@+id/mainToolbarMore_imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_share_24"
-            app:tint="@color/white" />
+            android:src="@drawable/ic_more_32"
+            app:tint="?colorOnSecondary" />
     </LinearLayout>
 
 
