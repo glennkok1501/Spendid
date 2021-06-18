@@ -56,7 +56,7 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
         item.findViewById(R.id.viewpager_wallet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManageWalletDialog.walletDialog(v.getContext(), data.get(viewType), false);
+                ManageWalletDialog.showDialog(v.getContext(), data.get(viewType), false);
             }
         });
         return holder;

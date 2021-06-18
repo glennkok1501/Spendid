@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
@@ -212,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         resetFab();
         closeDrawer();
+
     }
 
     @Override

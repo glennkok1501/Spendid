@@ -23,7 +23,7 @@ public class ManageWalletDialog {
     private final static String PREF_NAME = "sharedPrefs";
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public static void walletDialog(Context context, Wallet w, boolean selectFav) {
+    public static void showDialog(Context context, Wallet w, boolean selectFav) {
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.manage_view_wallet_layout);
