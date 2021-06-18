@@ -1,11 +1,20 @@
 package sg.edu.np.spendid;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -13,16 +22,25 @@ import java.util.ArrayList;
 public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHolder>{
     ArrayList<Record> transactions;
     String baseCurrency;
+    boolean editable;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public TransactionAdaptor(ArrayList<Record> transactionList, String currency) {
+    public TransactionAdaptor(ArrayList<Record> transactionList, String currency, boolean edit) {
         transactions = transactionList;
         baseCurrency = currency;
+        editable = edit;
     }
 
     public TransactionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_layout, parent, false);
         TransactionViewHolder transactionViewHolder = new TransactionViewHolder(item);
+
+        item.findViewById(R.id.viewRecord_cardView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewRecordDialog.showDialog(v.getContext(), transactions.get(viewType), editable);
+            }
+        });
 
         return transactionViewHolder;
     }
@@ -35,17 +53,14 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
         vh.amt.setText(df2.format(r.getAmount()));
         setIcon(vh, r.getCategory());
 
-        /*
-        vh.editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TransactionHistoryActivity.this, EditRecordActivity.class);
-            }
-        });
-         */
     }
 
     public int getItemCount() { return transactions.size(); }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     private void setIcon(TransactionViewHolder holder, String cat) {
         switch (cat) {

@@ -309,4 +309,57 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return recordList;
     }
+
+    public Wallet getWallet(int wId){
+        String query = "SELECT * FROM "+TABLE_WALLET+" WHERE "+COLUMN_WALLET_ID+" = "+wId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()){
+            int id = Integer.parseInt(cursor.getString(0));
+            String name = cursor.getString(1);
+            String des = cursor.getString(2);
+            String cur = cursor.getString(3);
+            String date = cursor.getString(4);
+            return new Wallet(id, name, des, cur, date);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public Record getRecord(int rId){
+        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_RECORD_ID+" = "+rId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()){
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String timeCreated = cursor.getString(6);
+            int walletId = cursor.getInt(7);
+            return new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public void updateRecord(Record r){
+        ContentValues values = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase();
+        values.put(COLUMN_RECORD_ID, r.getId());
+        values.put(COLUMN_RECORD_TITLE, r.getTitle());
+        values.put(COLUMN_RECORD_DESCRIPTION, r.getDescription());
+        values.put(COLUMN_RECORD_AMOUNT, r.getAmount());
+        values.put(COLUMN_RECORD_CATEGORY, r.getCategory());
+        values.put(COLUMN_RECORD_DATECREATED, r.getDateCreated());
+        values.put(COLUMN_RECORD_TIMECREATED, r.getTimeCreated());
+        values.put(COLUMN_WALLET_ID, r.getWalletId());
+        db.update(TABLE_RECORD, values, COLUMN_RECORD_ID+" =?", new String[] {String.valueOf(r.getId())});
+        db.close();
+    }
+
 }

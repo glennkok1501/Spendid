@@ -54,7 +54,7 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
             @Override
             public void onClick(View v) {
                 Wallet w = data.get(viewType);
-                ManageWalletDialog.walletDialog(v.getContext(), w, true);
+                ManageWalletDialog.showDialog(v.getContext(), w, true);
             }
         });
         return holder;

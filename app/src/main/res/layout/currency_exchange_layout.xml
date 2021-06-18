@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
                     android:textAlignment="center"
-                    android:inputType="number" />
+                    android:inputType="numberDecimal" />
 
                 <TextView
                     android:id="@+id/foreignAmt_textView"
