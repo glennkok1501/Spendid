@@ -117,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
         addWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, CountryCurrency.class);
+                startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Add wallet", Toast.LENGTH_SHORT).show();
             }
         });
