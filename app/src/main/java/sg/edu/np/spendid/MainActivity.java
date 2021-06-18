@@ -311,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void viewPagerIndicators(TextView[] d, LinearLayout l){
+        l.removeAllViews();
         for (int i = 0; i < d.length; i++){
             d[i] = new TextView(this);
             d[i].setText(Html.fromHtml("&#8226;"));
