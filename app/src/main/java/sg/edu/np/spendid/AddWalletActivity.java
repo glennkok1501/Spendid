@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
@@ -40,27 +41,32 @@ public class AddWalletActivity extends AppCompatActivity {
         EditText newWalletName = findViewById(R.id.addNewWalletName);
         EditText newWalletDescription = findViewById(R.id.addNewWalletDescription);
 
-        EditText newWalletAmount = findViewById(R.id.addNewWalletAmount);
-
-
-
         Intent receivedData = getIntent();
-        String currencyChosen = receivedData.getStringExtra("Currency");
+        String currencyChosen = receivedData.getStringExtra("Currency").toUpperCase();
         TextView chosenC = findViewById(R.id.chosenWalletCurrency);
         chosenC.setText(currencyChosen);
 
-        Button CreateWallet = findViewById(R.id.CreateWalletButton);
+        FloatingActionButton CreateWallet = findViewById(R.id.CreateWalletButton);
         CreateWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Wallet w = new Wallet(newWalletName.getText().toString(), newWalletDescription.getText().toString(), currencyChosen, currentDate());
                 dbhandler.addWallet(w);
+                Toast.makeText(getApplicationContext(), "New Wallet Added", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AddWalletActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
 
+        chosenC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddWalletActivity.this, WalletCurrencyActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
     private String currentDate(){
         Calendar currentTime = Calendar.getInstance();

@@ -8,14 +8,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class CountryCurrency extends AppCompatActivity {
+public class WalletCurrencyActivity extends AppCompatActivity {
     public static Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String[] countries = getResources().getStringArray(R.array.countries);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country_currency);
+
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Select a Currency");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         RecyclerView recyclerView = findViewById(R.id.listOfCountryRV);
         CurrencyAdapter cAdapter = new CurrencyAdapter(countries);

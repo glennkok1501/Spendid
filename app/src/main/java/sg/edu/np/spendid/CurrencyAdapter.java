@@ -1,17 +1,11 @@
 package sg.edu.np.spendid;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Currency;
 
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyViewHolder>{
     String[] data;
@@ -20,7 +14,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyViewHolder>{
         data = input;
     }
     public CurrencyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_currency_adapter, parent, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_currency_layout, parent, false);
         item.findViewById(R.id.countryCurrencies).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
