@@ -22,13 +22,11 @@ import java.util.ArrayList;
 public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHolder>{
     ArrayList<Record> transactions;
     String baseCurrency;
-    boolean editable;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public TransactionAdaptor(ArrayList<Record> transactionList, String currency, boolean edit) {
+    public TransactionAdaptor(ArrayList<Record> transactionList, String currency) {
         transactions = transactionList;
         baseCurrency = currency;
-        editable = edit;
     }
 
     public TransactionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,7 +36,9 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
         item.findViewById(R.id.viewRecord_cardView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewRecordDialog.showDialog(v.getContext(), transactions.get(viewType), editable);
+                Intent intent = new Intent(v.getContext(), ViewTransactionActivity.class);
+                intent.putExtra("recordId", transactions.get(viewType).getId());
+                v.getContext().startActivity(intent);
             }
         });
 

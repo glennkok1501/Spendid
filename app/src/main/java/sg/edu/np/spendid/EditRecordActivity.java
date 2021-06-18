@@ -14,6 +14,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,7 @@ public class EditRecordActivity extends AppCompatActivity {
         checkValues = initCheckValues();
         Intent intent = getIntent();
         record  = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
+        Log.v("TAG", ""+record.getId());
         wallet = dbHandler.getWallet(record.getWalletId());
         getBaseCurrency();
         promptConversion();

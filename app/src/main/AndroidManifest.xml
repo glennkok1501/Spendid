@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid_Light">
-
+        <activity android:name=".ViewTransactionActivity"></activity>
         <activity android:name=".WalletCurrencyActivity" />
         <activity android:name=".AddWalletActivity" />
         <activity android:name=".EditRecordActivity" />

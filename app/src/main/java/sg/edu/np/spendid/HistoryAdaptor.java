@@ -38,7 +38,7 @@ public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
         HistoryViewHolder historyViewHolder = new HistoryViewHolder(item);
 
         RecyclerView rv = item.findViewById(R.id.historyRV);
-        TransactionAdaptor ta = new TransactionAdaptor(recordData.get(dates.get(viewType)), baseCurrency, true);
+        TransactionAdaptor ta = new TransactionAdaptor(recordData.get(dates.get(viewType)), baseCurrency);
         LinearLayoutManager lm = new LinearLayoutManager(parent.getContext());
         rv.setLayoutManager(lm);
         rv.setItemAnimator(new DefaultItemAnimator());

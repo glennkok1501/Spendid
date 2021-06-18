@@ -132,7 +132,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
 
         title.setText(t);
         RecyclerView dialogRV = dialog.findViewById(R.id.currentTransDialog_RV);
-        TransactionAdaptor transactionAdaptor = new TransactionAdaptor(r, baseCurrency, false);
+        TransactionAdaptor transactionAdaptor = new TransactionAdaptor(r, baseCurrency);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(context);
         dialogRV.setLayoutManager(myLayoutManager);
         dialogRV.setItemAnimator(new DefaultItemAnimator());

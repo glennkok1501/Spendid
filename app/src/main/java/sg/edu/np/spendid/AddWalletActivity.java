@@ -21,12 +21,12 @@ import java.util.Calendar;
 import java.util.ListIterator;
 
 public class AddWalletActivity extends AppCompatActivity {
-    DBHandler dbhandler = new DBHandler(this, null, null, 1);
+    private DBHandler dbhandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_wallet);
-
+        dbhandler = new DBHandler(this, null, null, 1);
         //Tool Bar
         TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
         ImageView backArrow = findViewById(R.id.activityImg_toolBar);
