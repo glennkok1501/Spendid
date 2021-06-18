@@ -3,6 +3,7 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -15,6 +16,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -166,6 +169,25 @@ public class MainActivity extends AppCompatActivity {
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, baseCurrency, this);
         viewPager.setAdapter(walletSliderAdapter);
 
+        LinearLayout indicators = findViewById(R.id.walletsIndicators_linearLayout);
+        TextView[] dots = new TextView[walletList.size()];
+        viewPagerIndicators(dots, indicators);
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dots.length; i++){
+                    if (i == position){
+                        dots[i].setTextColor(getResources().getColor(R.color.fire_bush));
+                    }
+                    else{
+                        dots[i].setTextColor(getResources().getColor(R.color.light_grey));
+                    }
+                }
+                super.onPageSelected(position);
+
+            }
+        });
+
         //Current Transactions
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
         if (curTransMap.size() == 0){
@@ -275,8 +297,6 @@ public class MainActivity extends AppCompatActivity {
 
         transHist = findViewById(R.id.navbar_transHist);
         setButton(transHist, TransactionHistoryActivity.class);
-
-
     }
 
     private void setButton(LinearLayout l, Class c){
@@ -288,5 +308,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void viewPagerIndicators(TextView[] d, LinearLayout l){
+        for (int i = 0; i < d.length; i++){
+            d[i] = new TextView(this);
+            d[i].setText(Html.fromHtml("&#8226;"));
+            d[i].setTextSize(18);
+            l.addView(d[i]);
+        }
     }
 }

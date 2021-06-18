@@ -89,7 +89,7 @@
                                     <ImageView
                                         android:id="@+id/income_icon"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
+                                        android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_weight="1"
                                         android:src="@drawable/ic_icome_up" />
@@ -125,7 +125,7 @@
                                     <ImageView
                                         android:id="@+id/expense_icon"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
+                                        android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_weight="1"
                                         android:src="@drawable/ic_expense_down" />
@@ -203,6 +203,13 @@
                         android:id="@+id/wallets_viewPager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:id="@+id/walletsIndicators_linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:orientation="horizontal"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
