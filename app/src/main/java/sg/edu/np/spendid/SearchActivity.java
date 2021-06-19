@@ -93,7 +93,7 @@ public class SearchActivity extends AppCompatActivity {
         ArrayList<Record> out = new ArrayList<>();
         //Concatenating record details into a single string for all records, into a single list
         for (Record r : records) {
-            String details = r.getTitle() + r.getDescription() + r.getCategory();
+            String details = r.getTitle() + " " + r.getDescription() + " " + r.getCategory();
             if (details.toLowerCase().contains(s.toLowerCase())) {
                 out.add(r);
                 Log.v("TAG", "True");
