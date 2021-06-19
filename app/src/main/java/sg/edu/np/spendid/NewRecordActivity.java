@@ -82,11 +82,10 @@ public class NewRecordActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String walletName = intent.getStringExtra("walletName");
         String currency = intent.getStringExtra("walletCurrency");
-        walletCurrency = currency.toLowerCase();
-        recordCur.setText(currency);
-        selectWallet.setText(walletName);
-
         getBaseCurrency();
+        walletCurrency = currency;
+        recordCur.setText(baseCurrency);
+        selectWallet.setText(walletName);
         promptConversion();
 
         RecyclerView catRV = findViewById(R.id.newRecordCat_RV);
@@ -151,12 +150,12 @@ public class NewRecordActivity extends AppCompatActivity {
 
     private void getBaseCurrency(){
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        baseCurrency = prefs.getString("baseCurrency", "").toLowerCase();
+        baseCurrency = prefs.getString("baseCurrency", "");
     }
 
     private void promptConversion(){
         if (!baseCurrency.equals(walletCurrency)){
-            getExchangeRate(walletCurrency, baseCurrency);
+            getExchangeRate(walletCurrency.toLowerCase(), baseCurrency.toLowerCase());
         }
     }
 
@@ -175,8 +174,8 @@ public class NewRecordActivity extends AppCompatActivity {
         FloatingActionButton convertBtn = dialog.findViewById(R.id.convertCurrrency_fab);
         TextView cancelDialog = dialog.findViewById(R.id.currencyExchangeCancel_textView);
 
-        baseCur.setText(baseCurrency.toUpperCase());
-        forCur.setText(walletCurrency.toUpperCase());
+        baseCur.setText(baseCurrency);
+        forCur.setText(walletCurrency);
         updateDate.setText("Last Updated: "+lastUpdate);
 
         forAmt.addTextChangedListener(new TextWatcher() {
@@ -224,7 +223,7 @@ public class NewRecordActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            exchangeRate = response.getDouble(to);
+                            exchangeRate = response.getDouble(to.toLowerCase());
                             lastUpdate = response.getString("date");
                             currencyDialog();
                         } catch (JSONException e) {

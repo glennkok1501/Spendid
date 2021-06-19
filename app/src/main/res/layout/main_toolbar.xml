@@ -18,6 +18,9 @@
             android:id="@+id/mainToolbarMenu_imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             app:tint="?colorOnSecondary"
             android:src="@drawable/ic_menu_32" />
 
@@ -36,6 +39,9 @@
             android:id="@+id/mainToolbarMore_imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/ic_more_32"
             app:tint="?colorOnSecondary" />
     </LinearLayout>

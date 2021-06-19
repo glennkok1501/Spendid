@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class TransactionHistoryActivity extends AppCompatActivity {
     private TextView search;
     private DBHandler dbHandler;
@@ -25,6 +27,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
 
         search = findViewById(R.id.search_History_textView);
         dbHandler = new DBHandler(this, null,null, 1);
+        FloatingActionButton fab = findViewById(R.id.transaction_history_fab);
 
         //Tool Bar
         TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
@@ -41,6 +44,14 @@ public class TransactionHistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TransactionHistoryActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransactionHistoryActivity.this, SelectWalletActivity.class);
                 startActivity(intent);
             }
         });
