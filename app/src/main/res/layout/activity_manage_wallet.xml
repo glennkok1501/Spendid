@@ -40,6 +40,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/totalWalletTitle_textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Total Balance"

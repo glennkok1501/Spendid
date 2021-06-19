@@ -40,8 +40,8 @@ public class EditWalletActivity extends AppCompatActivity {
                 //deleteDialog();
                 CustomDialog customDialog = new CustomDialog(EditWalletActivity.this);
                 customDialog.showDecisionDialog(
-                        "Delete Transaction",
-                        "Are you sure you want to permanently delete this transaction?",
+                        "Delete Wallet",
+                        "Are you sure you want to permanently delete this wallet and all its transactions?",
                         EditWalletActivity.this::deleteWallet,
                         customDialog::blank);
             }
