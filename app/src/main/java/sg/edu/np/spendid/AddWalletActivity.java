@@ -4,21 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.ListIterator;
 
 public class AddWalletActivity extends AppCompatActivity {
     private DBHandler dbhandler;
@@ -38,7 +33,7 @@ public class AddWalletActivity extends AppCompatActivity {
             }
         });
 
-        EditText newWalletName = findViewById(R.id.addNewWalletName);
+        EditText newWalletName = findViewById(R.id.editWalletName);
         EditText newWalletDescription = findViewById(R.id.addNewWalletDescription);
 
         Intent receivedData = getIntent();

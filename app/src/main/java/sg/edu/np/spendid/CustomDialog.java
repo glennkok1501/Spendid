@@ -2,6 +2,7 @@ package sg.edu.np.spendid;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -68,7 +69,10 @@ public class CustomDialog {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("TAG", "Edit Activity");
+                Intent intent = new Intent(v.getContext(), EditWalletActivity.class);
+                intent.putExtra("walletId", wallet.getWalletId());
+                v.getContext().startActivity(intent);
+                dialog.dismiss();
             }
         });
 

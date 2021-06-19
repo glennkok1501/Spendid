@@ -47,7 +47,11 @@ public class ManageWalletActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         RecyclerView recyclerView = findViewById(R.id.manageWallet_RV);
         WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), prefs.getString("baseCurrency", ""), this);
@@ -56,5 +60,4 @@ public class ManageWalletActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myAdapter);
     }
-
 }
