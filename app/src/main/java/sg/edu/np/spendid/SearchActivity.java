@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -44,13 +46,34 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { finish(); }
         });
-
-        searchBtn.setOnClickListener(new View.OnClickListener() {
+        search.requestFocus();
+        search.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                //Search for record
-                searchString(search.getText().toString());
-                Log.v("TAG", "Searching");
+            public void afterTextChanged(Editable s) {}
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0) {
+                    searchString(search.getText().toString());
+                    searchBtn.setImageResource(R.drawable.ic_clear_24);
+                    searchBtn.setColorFilter(getResources().getColor(R.color.light_grey));
+                    searchBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            search.getText().clear();
+                        }
+                    });
+                }
+                else{
+                    searchString("");
+                    searchBtn.setImageResource(R.drawable.ic_search_24);
+                    searchBtn.setColorFilter(getResources().getColor(R.color.light_grey));
+                    searchBtn.setOnClickListener(null);
+                }
             }
         });
     }
@@ -67,6 +90,7 @@ public class SearchActivity extends AppCompatActivity {
         searchRv.setItemAnimator(new DefaultItemAnimator());
         searchRv.setAdapter(ta);
         ta.notifyDataSetChanged();
+        search.getText().clear();
     }
 
     @Override
@@ -93,10 +117,9 @@ public class SearchActivity extends AppCompatActivity {
         ArrayList<Record> out = new ArrayList<>();
         //Concatenating record details into a single string for all records, into a single list
         for (Record r : records) {
-            String details = r.getTitle() + r.getDescription() + r.getCategory();
+            String details = r.getTitle() + " "+ r.getDescription() +" "+ r.getCategory();
             if (details.toLowerCase().contains(s.toLowerCase())) {
                 out.add(r);
-                Log.v("TAG", "True");
             }
         }
         ta.filter(out);

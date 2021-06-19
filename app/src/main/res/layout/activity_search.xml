@@ -40,8 +40,9 @@
                     android:id="@+id/search_Btn_imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:padding="5dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_search_24"
+                    android:src="@drawable/ic_search_24"
                     app:tint="@color/grey" />
             </LinearLayout>
 
