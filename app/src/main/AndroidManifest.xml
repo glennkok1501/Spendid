@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sg.edu.np.spendid" >
+    package="sg.edu.np.spendid">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,22 +10,32 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Spendid_Light" >
-        <activity android:name=".SearchActivity"/>
+        android:theme="@style/Theme.Spendid_Light">
+        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".SearchActivity"></activity>
         <activity android:name=".ViewTransactionActivity" />
         <activity android:name=".WalletCurrencyActivity" />
         <activity android:name=".AddWalletActivity" />
         <activity android:name=".EditRecordActivity" />
-        <activity android:name=".TransactionHistoryActivity"/>
-        <activity android:name=".ManageWalletActivity"/>
-        <activity android:name=".SelectWalletActivity"/>
-        <activity android:name=".NewRecordActivity"/>
-        <activity android:name=".MainActivity" >
+        <activity
+            android:name=".TransactionHistoryActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ManageWalletActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SelectWalletActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".NewRecordActivity"
+            android:parentActivityName=".SelectWalletActivity" />
     </application>
 
 </manifest>
