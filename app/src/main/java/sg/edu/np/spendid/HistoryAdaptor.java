@@ -49,7 +49,15 @@ public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
 
     public void onBindViewHolder(HistoryViewHolder vh, int pos) {
         String s = dates.get(pos);
-        vh.date.setText(s);
+        String dateFormat;
+        try{
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(s);
+            dateFormat = new SimpleDateFormat("dd MMMM yyyy").format(date);
+        }
+        catch (ParseException e) {
+            dateFormat = s;
+        }
+        vh.date.setText(dateFormat);
     }
 
     public int getItemCount() { return recordData.size(); }

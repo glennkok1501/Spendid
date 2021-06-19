@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class TransactionHistoryActivity extends AppCompatActivity {
-    private EditText search;
+    private TextView search;
     private DBHandler dbHandler;
     private final static String PREF_NAME = "sharedPrefs";
 
@@ -22,7 +23,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_history);
 
-        search = findViewById(R.id.search_History_editText);
+        search = findViewById(R.id.search_History_textView);
         dbHandler = new DBHandler(this, null,null, 1);
 
         //Tool Bar
@@ -36,6 +37,13 @@ public class TransactionHistoryActivity extends AppCompatActivity {
             }
         });
 
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransactionHistoryActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

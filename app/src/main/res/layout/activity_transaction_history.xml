@@ -17,34 +17,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:layout_marginStart="15px"
-            android:layout_marginTop="15px"
-            android:layout_marginEnd="15px"
-            android:layout_marginBottom="15px"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/search_History_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/search_History_editText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="9 "
-                    android:inputType="textPersonName" />
-
-                <ImageView
-                    android:id="@+id/search_History_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_search_24"
-                    app:tint="@color/grey" />s
-
-            </LinearLayout>
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="search..."
+                app:drawableTint="@color/light_grey"
+                android:textColor="@color/light_grey"
+                app:drawableEndCompat="@drawable/ic_search_24" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/transaction_history_recyclerView"
