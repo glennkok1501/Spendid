@@ -4,6 +4,7 @@ package sg.edu.np.spendid;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,6 +28,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
     HashMap<String, ArrayList<Record>> data;
     ArrayList<String> keys;
     String baseCurrency;
+    CategoryHandler categoryHandler = new CategoryHandler();
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input, String currency){
@@ -51,7 +53,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
 
     public void onBindViewHolder(CurrentTransViewHolder holder, int position){
         String s = keys.get(position);
-        setIcon(holder, s);
+        holder.image.setImageResource(categoryHandler.setIcon(s));
         holder.cat.setText(s);
         holder.amt.setText(df2.format(calAmt(data.get(s))));
         holder.currency.setText(baseCurrency);
@@ -72,41 +74,6 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
             amt += r.get(i).getAmount();
         }
         return amt;
-    }
-
-    private void setIcon(CurrentTransViewHolder holder, String cat){
-        switch (cat) {
-            case "Shopping":
-                holder.image.setImageResource(R.drawable.ic_shopping_24);
-                break;
-            case "Food":
-                holder.image.setImageResource(R.drawable.ic_food_24);
-                break;
-            case "Entertainment":
-                holder.image.setImageResource(R.drawable.ic_entertainment_24);
-                break;
-            case "Leisure":
-                holder.image.setImageResource(R.drawable.ic_leisure_24);
-                break;
-            case "Transport":
-                holder.image.setImageResource(R.drawable.ic_transport_24);
-                break;
-            case "Housing":
-                holder.image.setImageResource(R.drawable.ic_housing_24);
-                break;
-            case "Vehicle":
-                holder.image.setImageResource(R.drawable.ic_vehicle_24);
-                break;
-            case "Income":
-                holder.image.setImageResource(R.drawable.ic_income_24);
-                break;
-            case "Salary":
-                holder.image.setImageResource(R.drawable.ic_salary_24);
-                break;
-            case "Others":
-                holder.image.setImageResource(R.drawable.ic_others_24);
-                break;
-        }
     }
     public class CurrentTransViewHolder extends RecyclerView.ViewHolder {
         ImageView image;

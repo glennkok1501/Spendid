@@ -18,6 +18,7 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
     ArrayList<Category> data;
     TextView cat;
     ArrayList<View> itemViewList;
+    CategoryHandler categoryHandler = new CategoryHandler();
 
     public CatSliderAdapter(ArrayList<Category> input, TextView select){
         data = input;
@@ -48,7 +49,7 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
 
     public void onBindViewHolder(CatViewHolder holder, int position){
         Category s = data.get(position);
-        setIcon(holder, s.getTitle());
+        holder.image.setImageResource(categoryHandler.setIcon(s.getTitle()));
     }
 
     public int getItemCount(){
@@ -60,40 +61,6 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
         return position;
     }
 
-    private void setIcon(CatViewHolder holder, String cat) {
-        switch (cat) {
-            case "Shopping":
-                holder.image.setImageResource(R.drawable.ic_shopping_24);
-                break;
-            case "Food":
-                holder.image.setImageResource(R.drawable.ic_food_24);
-                break;
-            case "Entertainment":
-                holder.image.setImageResource(R.drawable.ic_entertainment_24);
-                break;
-            case "Leisure":
-                holder.image.setImageResource(R.drawable.ic_leisure_24);
-                break;
-            case "Transport":
-                holder.image.setImageResource(R.drawable.ic_transport_24);
-                break;
-            case "Housing":
-                holder.image.setImageResource(R.drawable.ic_housing_24);
-                break;
-            case "Vehicle":
-                holder.image.setImageResource(R.drawable.ic_vehicle_24);
-                break;
-            case "Income":
-                holder.image.setImageResource(R.drawable.ic_income_24);
-                break;
-            case "Salary":
-                holder.image.setImageResource(R.drawable.ic_salary_24);
-                break;
-            case "Others":
-                holder.image.setImageResource(R.drawable.ic_others_24);
-                break;
-        }
-    }
     public class CatViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         public CatViewHolder(View itemView){

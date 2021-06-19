@@ -27,21 +27,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
             android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/walletSliderBack_imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_arrow_back_24"
-                android:layout_weight="0.5"
-                app:tint="@color/light_grey"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
 
@@ -63,7 +58,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
 
@@ -100,14 +95,6 @@
 
 
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/walletSliderFront_imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_arrow_forward_24"
-                android:layout_weight="0.5"
-                app:tint="@color/light_grey"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

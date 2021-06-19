@@ -6,27 +6,65 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DecimalFormat;
+
 public class ViewTransactionActivity extends AppCompatActivity {
     private Record record;
+    private Wallet wallet;
     private DBHandler dbHandler;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_transaction);
         dbHandler = new DBHandler(this, null, null, 1);
+
+        //Tool Bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("View Transaction");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         Intent intent = getIntent();
         record = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
-        Log.v("TAG", ""+record.getId());
+        wallet = dbHandler.getWallet(record.getWalletId());
+        FloatingActionButton editBtn = findViewById(R.id.viewTransEdit_fab);
+        ImageView catImg = findViewById(R.id.viewTransCatImg_imageView);
+        TextView catName = findViewById(R.id.viewTransCat_textView);
+        TextView title = findViewById(R.id.viewTransTitle_textView);
+        TextView amt = findViewById(R.id.viewTransAmt_textView);
+        TextView walletName = findViewById(R.id.viewTransWalletTitle_textView);
+        ImageView walletExpense = findViewById(R.id.viewTransWalletExpense_imageView);
+        TextView dateTime = findViewById(R.id.viewTransDateTime_textView);
 
-        FloatingActionButton editBtn = findViewById(R.id.viewTransactionEdit_fab);
+        String category = record.getCategory();
+        catImg.setImageResource(new CategoryHandler().setIcon(category));
+        catName.setText(category);
+        title.setText(record.getTitle());
+        amt.setText(df2.format(record.getAmount()));
+        walletName.setText(wallet.getName());
+        if (dbHandler.catIsExpense(category)){
+            walletExpense.setImageResource(R.drawable.ic_expense_down);
+        }
+        else{
+            walletExpense.setImageResource(R.drawable.ic_income_up);
+        }
+        dateTime.setText("Made transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("TAG", ""+record.getId());
                 Intent intent = new Intent(ViewTransactionActivity.this, EditRecordActivity.class);
                 intent.putExtra("recordId", record.getId());
                 startActivity(intent);

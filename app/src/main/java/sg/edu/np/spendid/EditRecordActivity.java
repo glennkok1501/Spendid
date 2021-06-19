@@ -95,7 +95,6 @@ public class EditRecordActivity extends AppCompatActivity {
         checkValues = initCheckValues();
         Intent intent = getIntent();
         record  = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
-        Log.v("TAG", ""+record.getId());
         wallet = dbHandler.getWallet(record.getWalletId());
         getBaseCurrency();
         promptConversion();
