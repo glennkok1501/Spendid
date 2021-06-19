@@ -65,7 +65,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
         else{
             walletExpense.setImageResource(R.drawable.ic_income_up);
         }
-        dateTime.setText("Made transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
+        dateTime.setText("Made Transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         cur.setText(prefs.getString("baseCurrency", ""));
         String des_text = record.getDescription();

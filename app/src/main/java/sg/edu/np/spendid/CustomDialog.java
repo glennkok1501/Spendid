@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -131,4 +132,45 @@ public class CustomDialog {
 
         dialog.show();
     }
+
+    public void showDecisionDialog(String Title, String Body, Runnable pos, Runnable neg) {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.pos_neg_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setCancelable(false);
+        RelativeLayout bg = dialog.findViewById(R.id.pos_neg_dialog_relativeLayout);
+        TextView title = dialog.findViewById(R.id.pos_neg_dialog_title);
+        TextView body = dialog.findViewById(R.id.pos_neg_dialog_body);
+        TextView yes = dialog.findViewById(R.id.pos_neg_dialog_yes);
+        TextView no = dialog.findViewById(R.id.pos_neg_dialog_no);
+        title.setText(Title);
+        body.setText(Body);
+
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pos.run();
+                dialog.dismiss();
+            }
+        });
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                neg.run();
+                dialog.dismiss();
+            }
+        });
+
+        bg.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                dialog.dismiss();
+                return false;
+            }
+        });
+        dialog.show();
+    }
+
+    public void blank(){};
 }

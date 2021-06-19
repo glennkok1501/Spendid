@@ -88,10 +88,15 @@ public class EditRecordActivity extends AppCompatActivity {
         trash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteDialog();
+                //deleteDialog();
+                CustomDialog customDialog = new CustomDialog(EditRecordActivity.this);
+                customDialog.showDecisionDialog(
+                        "Delete Transaction",
+                        "Are you sure you want to permanently delete this transaction?",
+                        EditRecordActivity.this::deleteRecord,
+                        customDialog::blank);
             }
         });
-
         checkValues = initCheckValues();
         Intent intent = getIntent();
         record  = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
@@ -307,49 +312,13 @@ public class EditRecordActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void deleteDialog() {
-        Dialog dialog = new Dialog(EditRecordActivity.this);
-        dialog.setContentView(R.layout.pos_neg_dialog);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(false);
-        RelativeLayout bg = dialog.findViewById(R.id.pos_neg_dialog_relativeLayout);
-        TextView title = dialog.findViewById(R.id.pos_neg_dialog_title);
-        TextView body = dialog.findViewById(R.id.pos_neg_dialog_body);
-        TextView yes = dialog.findViewById(R.id.pos_neg_dialog_yes);
-        TextView no = dialog.findViewById(R.id.pos_neg_dialog_no);
-
-        title.setText("Delete Transaction");
-        body.setText("Are you sure you want to permanently delete the transaction?");
-
-        yes.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (dbHandler.deleteRecord(record.getId())){
-                    Toast.makeText(getApplicationContext(), "Transaction Deleted", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Unknown Transaction", Toast.LENGTH_SHORT).show();
-                }
-                dialog.dismiss();
-            }
-        });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        bg.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                dialog.dismiss();
-                return false;
-            }
-        });
-        dialog.show();
+    private void deleteRecord(){
+        if (dbHandler.deleteRecord(record.getId())){
+            Toast.makeText(getApplicationContext(), "Transaction Deleted", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Unknown Transaction", Toast.LENGTH_SHORT).show();
+        }
     }
 }
