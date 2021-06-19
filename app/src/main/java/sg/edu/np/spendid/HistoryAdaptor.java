@@ -23,13 +23,11 @@ import java.util.HashMap;
 public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
     HashMap<String, ArrayList<Record>> recordData;
     ArrayList<String> dates;
-    ArrayList<ArrayList<Record>> records;
     String baseCurrency;
 
     public HistoryAdaptor(HashMap<String, ArrayList<Record>> recordList, String currency) {
         recordData = recordList;
         dates = sortDates(new ArrayList<>(recordList.keySet()));
-        records = new ArrayList<>(recordList.values());
         baseCurrency = currency;
     }
 

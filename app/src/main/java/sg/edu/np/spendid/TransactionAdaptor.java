@@ -53,7 +53,6 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
         vh.cur.setText(baseCurrency);
         vh.amt.setText(df2.format(r.getAmount()));
         vh.cat.setImageResource(categoryHandler.setIcon(r.getCategory()));
-
     }
 
     public int getItemCount() { return transactions.size(); }
@@ -63,4 +62,8 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
         return position;
     }
 
+    public void filter(ArrayList<Record> rList) {
+        transactions = rList;
+        notifyDataSetChanged();
+    }
 }
