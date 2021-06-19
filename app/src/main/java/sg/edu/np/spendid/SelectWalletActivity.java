@@ -46,11 +46,12 @@ public class SelectWalletActivity extends AppCompatActivity {
         String baseCurrency = prefs.getString("baseCurrency", "");
 
         RecyclerView selWalletRV = findViewById(R.id.sel_wallet_RV);
-        WalletSelectAdapter WalletSelectAdapter = new WalletSelectAdapter(dbHandler.getWallets(), baseCurrency, this);
+        WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(dbHandler.getWallets(), baseCurrency, this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         selWalletRV.setLayoutManager(myLayoutManager);
         selWalletRV.setItemAnimator(new DefaultItemAnimator());
-        selWalletRV.setAdapter(WalletSelectAdapter);
+        selWalletRV.setAdapter(walletSelectAdapter);
+
     }
 
     @Override
