@@ -1,36 +1,14 @@
 package sg.edu.np.spendid;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
-import maes.tech.intentanim.CustomIntent;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
     ArrayList<Wallet> data;
@@ -54,7 +32,8 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
             @Override
             public void onClick(View v) {
                 Wallet w = data.get(viewType);
-                ManageWalletDialog.showDialog(v.getContext(), w, true);
+                CustomDialog dialog = new CustomDialog(v.getContext());
+                dialog.showManageWallet(w, true);
             }
         });
         return holder;

@@ -2,21 +2,15 @@
 
 package sg.edu.np.spendid;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -56,7 +50,8 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
         item.findViewById(R.id.viewpager_wallet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManageWalletDialog.showDialog(v.getContext(), data.get(viewType), false);
+                CustomDialog dialog = new CustomDialog(v.getContext());
+                dialog.showManageWallet(data.get(viewType), false);
             }
         });
         return holder;

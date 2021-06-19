@@ -12,18 +12,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class ManageWalletDialog {
+public class CustomDialog {
     private final static String PREF_NAME = "sharedPrefs";
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public static void showDialog(Context context, Wallet w, boolean selectFav) {
+    private Context context;
+
+    public CustomDialog(Context context) {
+        this.context = context;
+    }
+
+    public void showManageWallet(Wallet wallet, boolean selectFav) {
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.manage_view_wallet_layout);
@@ -42,12 +52,12 @@ public class ManageWalletDialog {
         RelativeLayout bg = dialog.findViewById(R.id.viewWallet_relativeLayout);
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
-        name.setText(w.getName());
-        wCur.setText(w.getCurrency());
-        amt.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId())));
+        name.setText(wallet.getName());
+        wCur.setText(wallet.getCurrency());
+        amt.setText(df2.format(dbHandler.getWalletTotal(wallet.getWalletId())));
         cur.setText(prefs.getString("baseCurrency", "").toUpperCase());
-        date.setText("Date Created: " + w.getDateCreated());
-        String des_text = w.getDescription();
+        date.setText("Date Created: " + wallet.getDateCreated());
+        String des_text = wallet.getDescription();
         if (des_text.length() == 0) {
             des.setText("No Description");
         } else {
@@ -62,7 +72,7 @@ public class ManageWalletDialog {
         });
 
         if (selectFav){
-            if (prefs.getInt("firstWallet", 0) == w.getWalletId()){
+            if (prefs.getInt("firstWallet", 0) == wallet.getWalletId()){
                 star.setColorFilter(ContextCompat.getColor(context, R.color.fire_bush));
             }
             else{
@@ -74,7 +84,7 @@ public class ManageWalletDialog {
                 public void onClick(View v) {
                     star.setColorFilter(ContextCompat.getColor(context, R.color.fire_bush));
                     SharedPreferences.Editor editor = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-                    editor.putInt("firstWallet", w.getWalletId());
+                    editor.putInt("firstWallet", wallet.getWalletId());
                     editor.apply();
                 }
             });
@@ -83,6 +93,33 @@ public class ManageWalletDialog {
             star.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
         }
 
+        bg.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                dialog.dismiss();
+                return false;
+            }
+        });
+        dialog.show();
+    }
+
+    public void showCurrentTrans(String baseCurrency, String Title, ArrayList<Record> r) {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.current_transactions_dialog_layout);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setCancelable(true);
+
+        TextView title = dialog.findViewById(R.id.currentTransDialogTitle_textView);
+        RelativeLayout bg = dialog.findViewById(R.id.currentTransDialog_relativeLayout);
+
+        title.setText(Title);
+        RecyclerView dialogRV = dialog.findViewById(R.id.currentTransDialog_RV);
+        CurrentTransChildAdapter currentTransChildAdapter = new CurrentTransChildAdapter(r, baseCurrency, dialog);
+        LinearLayoutManager myLayoutManager = new LinearLayoutManager(context);
+        dialogRV.setLayoutManager(myLayoutManager);
+        dialogRV.setItemAnimator(new DefaultItemAnimator());
+        dialogRV.setAdapter(currentTransChildAdapter);
 
         bg.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -91,6 +128,7 @@ public class ManageWalletDialog {
                 return false;
             }
         });
+
         dialog.show();
     }
 }

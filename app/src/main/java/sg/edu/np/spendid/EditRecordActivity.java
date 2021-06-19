@@ -321,7 +321,7 @@ public class EditRecordActivity extends AppCompatActivity {
         TextView no = dialog.findViewById(R.id.pos_neg_dialog_no);
 
         title.setText("Delete Transaction");
-        body.setText("Are you sure you want to delete it permanently?");
+        body.setText("Are you sure you want to permanently delete the transaction?");
 
         yes.setOnClickListener(new View.OnClickListener() {
 

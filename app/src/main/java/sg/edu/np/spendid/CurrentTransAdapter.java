@@ -41,9 +41,9 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
         item.findViewById(R.id.currentTrans).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("TAG", "current transaction clicked - "+keys.get(viewType));
                 String cat = keys.get(viewType);
-                currentTransDialog(v.getContext(), cat, data.get(cat));
+                CustomDialog customDialog = new CustomDialog(v.getContext());
+                customDialog.showCurrentTrans(baseCurrency, cat, data.get(cat));
             }
         });
         return holder;
@@ -118,34 +118,5 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
             amt = itemView.findViewById(R.id.currentTransAmt_textView);
             currency = itemView.findViewById(R.id.currentTransCur_textView);
         }
-    }
-
-    private void currentTransDialog(Context context, String t, ArrayList<Record> r) {
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.current_transactions_dialog_layout);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(true);
-
-        TextView title = dialog.findViewById(R.id.currentTransDialogTitle_textView);
-        RelativeLayout bg = dialog.findViewById(R.id.currentTransDialog_relativeLayout);
-
-        title.setText(t);
-        RecyclerView dialogRV = dialog.findViewById(R.id.currentTransDialog_RV);
-        TransactionAdaptor transactionAdaptor = new TransactionAdaptor(r, baseCurrency);
-        LinearLayoutManager myLayoutManager = new LinearLayoutManager(context);
-        dialogRV.setLayoutManager(myLayoutManager);
-        dialogRV.setItemAnimator(new DefaultItemAnimator());
-        dialogRV.setAdapter(transactionAdaptor);
-
-        bg.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                dialog.dismiss();
-                return false;
-            }
-        });
-
-        dialog.show();
     }
 }
