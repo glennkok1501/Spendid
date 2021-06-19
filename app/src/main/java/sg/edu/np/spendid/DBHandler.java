@@ -287,10 +287,10 @@ public class DBHandler extends SQLiteOpenHelper {
         return history;
     }
 
-    public ArrayList<Record> getWalletRecords(int wId){
+    public ArrayList<Record> getAllRecords(){
         ArrayList<Record> recordList = new ArrayList<>();
-        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_WALLET_ID+" = "+wId+
-                " ORDER BY "+COLUMN_RECORD_DATECREATED+" DESC, "+COLUMN_RECORD_TIMECREATED+" DESC";
+        String query = "SELECT * FROM "+TABLE_RECORD+" ORDER BY "+COLUMN_RECORD_DATECREATED+" DESC, "
+                +COLUMN_RECORD_TIMECREATED+" DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
