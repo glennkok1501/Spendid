@@ -84,7 +84,7 @@ public class NewRecordActivity extends AppCompatActivity {
         String currency = intent.getStringExtra("walletCurrency");
         getBaseCurrency();
         walletCurrency = currency;
-        recordCur.setText(baseCurrency);
+        recordCur.setText(baseCurrency.toUpperCase());
         selectWallet.setText(walletName);
         promptConversion();
 
