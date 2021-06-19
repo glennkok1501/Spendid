@@ -8,47 +8,25 @@
     android:orientation="vertical"
     tools:context=".TransactionHistoryActivity">
 
-    <include layout="@layout/page_toolbar"/>
+    <include layout="@layout/main_toolbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/transaction_history_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp" />
 
-                <TextView
-                    android:id="@+id/search_History_textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="search..."
-                    android:textColor="@color/light_grey"
-                    android:textSize="16sp"
-                    app:drawableEndCompat="@drawable/ic_search_24"
-                    app:drawableTint="@color/light_grey" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/transaction_history_recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"/>
-
-            </LinearLayout>
-        </ScrollView>
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/transaction_history_fab"

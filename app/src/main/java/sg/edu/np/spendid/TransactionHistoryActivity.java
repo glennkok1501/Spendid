@@ -25,21 +25,22 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_history);
 
-        search = findViewById(R.id.search_History_textView);
         dbHandler = new DBHandler(this, null,null, 1);
         FloatingActionButton fab = findViewById(R.id.transaction_history_fab);
 
-        //Tool Bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Transaction History");
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
+        ImageView search = findViewById(R.id.mainToolbarMore_imageView);
+        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
+        search.setImageResource(R.drawable.ic_search_32);
+        activityTitle.setText("Trasaction History");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
