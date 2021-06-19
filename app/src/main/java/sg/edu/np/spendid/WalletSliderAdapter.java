@@ -31,22 +31,6 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.wallet_layout, parent, false);
         WalletSliderViewHolder holder = new WalletSliderViewHolder(item);
 
-        ImageView front = item.findViewById(R.id.walletSliderFront_imageView);
-        ImageView back = item.findViewById(R.id.walletSliderBack_imageView);
-
-        if (viewType == 0){
-            front.setColorFilter(ContextCompat.getColor(parent.getContext(), R.color.light_grey));
-            back.setColorFilter(ContextCompat.getColor(parent.getContext(), android.R.color.transparent));
-        }
-        else if (viewType == data.size()-1){
-            back.setColorFilter(ContextCompat.getColor(parent.getContext(), R.color.light_grey));
-            front.setColorFilter(ContextCompat.getColor(parent.getContext(), android.R.color.transparent));
-        }
-        else{
-            front.setColorFilter(ContextCompat.getColor(parent.getContext(), R.color.light_grey));
-            back.setColorFilter(ContextCompat.getColor(parent.getContext(), R.color.light_grey));
-        }
-
         item.findViewById(R.id.viewpager_wallet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -379,4 +379,20 @@ public class DBHandler extends SQLiteOpenHelper {
         return deleted;
     }
 
+    public boolean catIsExpense(String c){
+        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \""+c+"\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean isExpense;
+        if (cursor.moveToFirst()){
+            isExpense = cursor.getInt(1) == 1;
+        }
+        else{
+            isExpense = false;
+        }
+        cursor.close();
+        db.close();
+        return isExpense;
+    }
+
 }
