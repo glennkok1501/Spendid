@@ -3,6 +3,7 @@
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,8 @@ public class ViewTransactionActivity extends AppCompatActivity {
     private Wallet wallet;
     private DBHandler dbHandler;
     private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private final static String PREF_NAME = "sharedPrefs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,8 @@ public class ViewTransactionActivity extends AppCompatActivity {
         TextView walletName = findViewById(R.id.viewTransWalletTitle_textView);
         ImageView walletExpense = findViewById(R.id.viewTransWalletExpense_imageView);
         TextView dateTime = findViewById(R.id.viewTransDateTime_textView);
+        TextView cur = findViewById(R.id.viewTransCur_textView);
+        TextView des = findViewById(R.id.viewTransDes_textView);
 
         String category = record.getCategory();
         catImg.setImageResource(new CategoryHandler().setIcon(category));
@@ -61,6 +66,16 @@ public class ViewTransactionActivity extends AppCompatActivity {
             walletExpense.setImageResource(R.drawable.ic_income_up);
         }
         dateTime.setText("Made transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        cur.setText(prefs.getString("baseCurrency", ""));
+        String des_text = record.getDescription();
+        if (des_text.length() == 0){
+            des.setText("No Description");
+        }
+        else{
+            des.setText(des_text);
+        }
+
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
