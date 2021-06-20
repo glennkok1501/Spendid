@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
     private TextView monthText, balance, income, expense, currency, manage, viewAll;
-    private DecimalFormat df2 = new DecimalFormat("#.00");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
     private final static String PREF_NAME = "sharedPrefs";
     private FloatingActionButton fab, addWallet, addRecord;
     private String baseCurrency;
@@ -145,9 +145,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Wallets view pager
         walletList = sortWallet(dbHandler.getWallets());
+        TextView noWallet = findViewById(R.id.walletViewPageStatus_textView);
         if (walletList.size() == 0){
-            TextView noWallet = findViewById(R.id.walletViewPageStatus_textView);
             noWallet.setText("No Wallets");
+        }
+        else{
+            noWallet.setText("");
         }
         ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, baseCurrency, this);
@@ -174,9 +177,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Current Transactions
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
+        TextView noCurTrans = findViewById(R.id.curTransStatus_textView);
         if (curTransMap.size() == 0){
-            TextView noCurTrans = findViewById(R.id.curTransStatus_textView);
             noCurTrans.setText("No Transactions");
+        }
+        else{
+            noCurTrans.setText("");
         }
         RecyclerView currentTransRV = findViewById(R.id.main_transHist_RV);
         CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap, baseCurrency);

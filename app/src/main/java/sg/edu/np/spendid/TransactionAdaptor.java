@@ -26,7 +26,7 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
     ArrayList<Record> transactions;
     String baseCurrency;
     CategoryHandler categoryHandler = new CategoryHandler();
-    private DecimalFormat df2 = new DecimalFormat("#.00");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public TransactionAdaptor(ArrayList<Record> transactionList, String currency) {
         transactions = transactionList;

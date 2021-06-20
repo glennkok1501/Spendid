@@ -20,7 +20,7 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
     ArrayList<Record> data;
     String baseCurrency;
     Dialog dialog;
-    private DecimalFormat df2 = new DecimalFormat("#.00");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public CurrentTransChildAdapter(ArrayList<Record> input, String currency, Dialog currentDialog){
         data = input;

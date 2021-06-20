@@ -55,7 +55,7 @@ public class EditRecordActivity extends AppCompatActivity {
     private RequestQueue mQueue;
     private double exchangeRate = 0;
     private final static String PREF_NAME = "sharedPrefs";
-    private DecimalFormat df2 = new DecimalFormat("#.00");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

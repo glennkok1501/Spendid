@@ -27,7 +27,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CustomDialog {
     private final static String PREF_NAME = "sharedPrefs";
-    private DecimalFormat df2 = new DecimalFormat("#.00");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     private Context context;
 

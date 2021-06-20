@@ -18,7 +18,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
     private Record record;
     private Wallet wallet;
     private DBHandler dbHandler;
-    private DecimalFormat df2 = new DecimalFormat("#.00");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
     private final static String PREF_NAME = "sharedPrefs";
 
 

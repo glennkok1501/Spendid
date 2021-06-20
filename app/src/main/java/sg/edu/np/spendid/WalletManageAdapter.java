@@ -15,7 +15,7 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
     ArrayList<View> itemViewList;
     Context context;
     String baseCurrency;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public WalletManageAdapter(ArrayList<Wallet> input, String currency, Context getContext){
         data = input;

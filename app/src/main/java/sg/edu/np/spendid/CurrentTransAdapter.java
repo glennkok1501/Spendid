@@ -29,7 +29,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
     ArrayList<String> keys;
     String baseCurrency;
     CategoryHandler categoryHandler = new CategoryHandler();
-    private DecimalFormat df2 = new DecimalFormat("#.00");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input, String currency){
         data = input;
