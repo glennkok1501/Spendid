@@ -58,7 +58,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="48"
                         android:text="00:00:00"
-                        android:textSize="16sp" />
+                        android:textColor="@color/light_grey"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/currency_Record_textView"

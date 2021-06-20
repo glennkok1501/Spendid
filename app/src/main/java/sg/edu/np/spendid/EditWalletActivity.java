@@ -11,10 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class EditWalletActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private Wallet wallet;
+    private EditText editWalletName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,22 +54,29 @@ public class EditWalletActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null, null, 1);
         wallet = dbHandler.getWallet(chosenWalletID);
 
-        EditText editWalletName = findViewById(R.id.editWalletName);
+        editWalletName = findViewById(R.id.editWalletName);
         editWalletName.setText(wallet.getName());
 
         EditText editWalletDescription = findViewById(R.id.editWalletDescription);
         editWalletDescription.setText(wallet.getDescription());
-
+        TextInputLayout walletNameLayout = findViewById(R.id.editNewWalletName_layout);
         FloatingActionButton editWallet = findViewById(R.id.editWalletButton);
         editWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Wallet w = new Wallet(chosenWalletID, editWalletName.getText().toString(), editWalletDescription.getText().toString(), wallet.getCurrency(), wallet.getDateCreated());
-                dbHandler.updateWallet(w);
-                Toast.makeText(getApplicationContext(), "Wallet Edited", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(EditWalletActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                if (isValidWalletName()){
+                    Wallet w = new Wallet(chosenWalletID, editWalletName.getText().toString(), editWalletDescription.getText().toString(), wallet.getCurrency(), wallet.getDateCreated());
+                    dbHandler.updateWallet(w);
+                    Toast.makeText(getApplicationContext(), "Wallet Updated", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(EditWalletActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    walletNameLayout.setError("Improper Wallet Name");
+                    Toast.makeText(getApplicationContext(), "Invalid Wallet Name", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -81,5 +90,10 @@ public class EditWalletActivity extends AppCompatActivity {
         else{
             Toast.makeText(getApplicationContext(), "Unknown Wallet", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean isValidWalletName(){
+        int len = editWalletName.getText().toString().length();
+        return len != 0 && len <= 15;
     }
 }

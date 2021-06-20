@@ -27,7 +27,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CustomDialog {
     private final static String PREF_NAME = "sharedPrefs";
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private DecimalFormat df2 = new DecimalFormat("#.00");
 
     private Context context;
 
@@ -78,7 +78,7 @@ public class CustomDialog {
 
         if (selectFav){
             if (prefs.getInt("firstWallet", 0) == wallet.getWalletId()){
-                star.setColorFilter(ContextCompat.getColor(context, R.color.fire_bush));
+                star.setColorFilter(ContextCompat.getColor(context, R.color.pinkish_red));
             }
             else{
                 star.setColorFilter(ContextCompat.getColor(context, R.color.light_grey));
@@ -87,7 +87,7 @@ public class CustomDialog {
             star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    star.setColorFilter(ContextCompat.getColor(context, R.color.fire_bush));
+                    star.setColorFilter(ContextCompat.getColor(context, R.color.pinkish_red));
                     SharedPreferences.Editor editor = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
                     editor.putInt("firstWallet", wallet.getWalletId());
                     editor.apply();

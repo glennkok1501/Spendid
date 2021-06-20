@@ -38,7 +38,7 @@
             android:clickable="true"
             android:focusable="true"
             app:backgroundTint="?colorAccent"
-            android:src="@drawable/ic_add_24"
+            android:src="@drawable/ic_transaction_24"
             app:tint="@color/white" />
     </RelativeLayout>
 </LinearLayout>

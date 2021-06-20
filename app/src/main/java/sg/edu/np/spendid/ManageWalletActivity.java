@@ -25,7 +25,7 @@ import maes.tech.intentanim.CustomIntent;
 
 public class ManageWalletActivity extends AppCompatActivity {
     private final static String PREF_NAME = "sharedPrefs";
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private DecimalFormat df2 = new DecimalFormat("#.00");
     private DBHandler dbHandler;
     private String baseCurrency;
     private TextView bal;

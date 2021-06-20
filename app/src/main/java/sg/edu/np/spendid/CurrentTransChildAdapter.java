@@ -10,14 +10,17 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransChildAdapter.CurrentTransChildViewHolder> {
     ArrayList<Record> data;
     String baseCurrency;
     Dialog dialog;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private DecimalFormat df2 = new DecimalFormat("#.00");
 
     public CurrentTransChildAdapter(ArrayList<Record> input, String currency, Dialog currentDialog){
         data = input;
@@ -43,7 +46,7 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
     public void onBindViewHolder(CurrentTransChildViewHolder holder, int position){
         Record r = data.get(position);
         holder.name.setText(r.getTitle());
-        holder.time.setText(r.getTimeCreated());
+        holder.time.setText(formatTime(r.getTimeCreated()));
         holder.amt.setText(df2.format(r.getAmount()));
         holder.currency.setText(baseCurrency);
     }
@@ -55,6 +58,18 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    private String formatTime(String t){
+        String formatted;
+        try{
+            Date time = new SimpleDateFormat("HH:mm:ss").parse(t);
+            formatted = new SimpleDateFormat("h:mm a").format(time);
+        }
+        catch (ParseException e){
+            formatted = t;
+        }
+        return formatted;
     }
 
     public class CurrentTransChildViewHolder extends RecyclerView.ViewHolder {

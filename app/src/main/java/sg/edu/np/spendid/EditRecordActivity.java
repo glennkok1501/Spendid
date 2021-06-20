@@ -54,8 +54,8 @@ public class EditRecordActivity extends AppCompatActivity {
     private String baseCurrency, lastUpdate;
     private RequestQueue mQueue;
     private double exchangeRate = 0;
-    private boolean deleted;
     private final static String PREF_NAME = "sharedPrefs";
+    private DecimalFormat df2 = new DecimalFormat("#.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,7 @@ public class EditRecordActivity extends AppCompatActivity {
         selectWallet.setText(wallet.getName());
         title.setText(record.getTitle());
         description.setText(record.getDescription());
-        amt.setText(String.valueOf(record.getAmount()));
+        amt.setText(df2.format(record.getAmount()));
         selectedCat.setText(record.getCategory());
 
         RecyclerView catRV = findViewById(R.id.editRecordCat_RV);
@@ -166,13 +166,12 @@ public class EditRecordActivity extends AppCompatActivity {
 
     private void getBaseCurrency(){
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        baseCurrency = prefs.getString("baseCurrency", "").toLowerCase();
+        baseCurrency = prefs.getString("baseCurrency", "");
     }
 
     private void promptConversion(){
-        String c = wallet.getCurrency().toLowerCase();
-        if (!baseCurrency.equals(c)){
-            getExchangeRate(c, baseCurrency);
+        if (!baseCurrency.equals(wallet.getCurrency())){
+            getExchangeRate(wallet.getCurrency().toLowerCase(), baseCurrency.toLowerCase());
         }
     }
 

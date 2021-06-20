@@ -17,13 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHolder>{
     ArrayList<Record> transactions;
     String baseCurrency;
     CategoryHandler categoryHandler = new CategoryHandler();
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private DecimalFormat df2 = new DecimalFormat("#.00");
 
     public TransactionAdaptor(ArrayList<Record> transactionList, String currency) {
         transactions = transactionList;
@@ -49,7 +52,7 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
     public void onBindViewHolder(TransactionViewHolder vh, int pos) {
         Record r = transactions.get(pos);
         vh.title.setText(r.getTitle());
-        vh.time.setText(r.getTimeCreated());
+        vh.time.setText(formatTime(r.getTimeCreated()));
         vh.cur.setText(baseCurrency);
         vh.amt.setText(df2.format(r.getAmount()));
         vh.cat.setImageResource(categoryHandler.setIcon(r.getCategory()));
@@ -65,5 +68,17 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
     public void filter(ArrayList<Record> rList) {
         transactions = rList;
         notifyDataSetChanged();
+    }
+
+    private String formatTime(String t){
+        String formatted;
+        try{
+            Date time = new SimpleDateFormat("HH:mm:ss").parse(t);
+            formatted = new SimpleDateFormat("h:mm a").format(time);
+        }
+        catch (ParseException e){
+            formatted = t;
+        }
+        return formatted;
     }
 }

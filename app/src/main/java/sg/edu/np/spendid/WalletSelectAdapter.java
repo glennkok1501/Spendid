@@ -22,7 +22,7 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectViewHo
     ArrayList<Wallet> data;
     String baseCurrency;
     Context context;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private DecimalFormat df2 = new DecimalFormat("#.00");
 
     public WalletSelectAdapter(ArrayList<Wallet> input, String currency, Context getContext){
         data = input;

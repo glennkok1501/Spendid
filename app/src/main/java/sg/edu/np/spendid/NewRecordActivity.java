@@ -189,7 +189,6 @@ public class NewRecordActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 if(s.length() != 0) {
-
                     baseAmt.setText(new DecimalFormat("0.00").format(Math.round((Double.parseDouble(forAmt.getText().toString()) * exchangeRate) * 100.0) / 100.0));
                 }
                 else{

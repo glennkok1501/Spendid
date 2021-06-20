@@ -77,7 +77,7 @@
             android:focusable="true"
             app:tint="@color/white"
             app:backgroundTint="?colorAccent"
-            android:src="@drawable/ic_add_24" />
+            android:src="@drawable/ic_wallet_24" />
     </RelativeLayout>
 </LinearLayout>
 

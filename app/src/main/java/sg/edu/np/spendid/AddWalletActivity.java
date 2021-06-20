@@ -11,12 +11,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class AddWalletActivity extends AppCompatActivity {
     private DBHandler dbhandler;
+    private EditText newWalletName, newWalletDescription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +36,9 @@ public class AddWalletActivity extends AppCompatActivity {
             }
         });
 
-        EditText newWalletName = findViewById(R.id.editWalletName);
-        EditText newWalletDescription = findViewById(R.id.addNewWalletDescription);
+        newWalletName = findViewById(R.id.editWalletName);
+        TextInputLayout walletNameLayout = findViewById(R.id.addNewWalletName_layout);
+        newWalletDescription = findViewById(R.id.addNewWalletDescription);
 
         Intent receivedData = getIntent();
         String currencyChosen = receivedData.getStringExtra("Currency").toUpperCase();
@@ -45,12 +49,19 @@ public class AddWalletActivity extends AppCompatActivity {
         CreateWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Wallet w = new Wallet(newWalletName.getText().toString(), newWalletDescription.getText().toString(), currencyChosen, currentDate());
-                dbhandler.addWallet(w);
-                Toast.makeText(getApplicationContext(), "New Wallet Added", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AddWalletActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                if (isValidWalletName()){
+                    Wallet w = new Wallet(newWalletName.getText().toString(), newWalletDescription.getText().toString(), currencyChosen, currentDate());
+                    dbhandler.addWallet(w);
+                    Toast.makeText(getApplicationContext(), "New Wallet Added", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddWalletActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    walletNameLayout.setError("Improper Wallet Name");
+                    Toast.makeText(getApplicationContext(), "Invalid Wallet Name", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -67,6 +78,11 @@ public class AddWalletActivity extends AppCompatActivity {
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(currentTime.getTime());
+    }
+
+    private boolean isValidWalletName(){
+        int len = newWalletName.getText().toString().length();
+        return len != 0 && len <= 15;
     }
 
 

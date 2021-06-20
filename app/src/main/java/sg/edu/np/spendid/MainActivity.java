@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
     private TextView monthText, balance, income, expense, currency, manage, viewAll;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private DecimalFormat df2 = new DecimalFormat("#.00");
     private final static String PREF_NAME = "sharedPrefs";
     private FloatingActionButton fab, addWallet, addRecord;
     private String baseCurrency;
@@ -135,12 +135,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void closeDrawer(){
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -204,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         resetFab();
         closeDrawer();
-
     }
 
     @Override
@@ -215,6 +208,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void closeDrawer(){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
     }
 
     private void showHiddenFab(){
