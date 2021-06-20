@@ -204,15 +204,22 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public ArrayList<Category> getCategories(){
         ArrayList<Category> catList = new ArrayList<Category>();
+        Category others = new Category();
         String query = "SELECT * FROM "+TABLE_CATEGORY;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
             String title = cursor.getString(0);
             Boolean exp = cursor.getInt(1)==1;
-            Category cat = new Category(title, exp);
-            catList.add(cat);
+            if (title.equals("Others")) {
+                others = new Category(title, exp);
+            }
+            else {
+                Category cat = new Category(title, exp);
+                catList.add(cat);
+            }
         }
+        catList.add(others);
         cursor.close();
         db.close();
         return catList;

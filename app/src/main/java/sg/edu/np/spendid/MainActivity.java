@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private String baseCurrency;
     private Animation open, close, up, down;
     private boolean fabClicked;
-    private LinearLayout manangeWallet, transHist, currencyRates, shoppingList, stats, settings, about;
+    private LinearLayout manangeWallet, transHist, categories, currencyRates, shoppingList, stats, settings, about;
 
     //For nav bar
     DrawerLayout drawerLayout;
@@ -290,6 +290,9 @@ public class MainActivity extends AppCompatActivity {
 
         transHist = findViewById(R.id.navbar_transHist);
         setButton(transHist, TransactionHistoryActivity.class);
+
+        categories = findViewById(R.id.navbar_category);
+        setButton(categories, CategoryActivity.class);
     }
 
     private void setButton(LinearLayout l, Class c){
