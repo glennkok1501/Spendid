@@ -14,11 +14,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,10 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private String baseCurrency;
     private Animation open, close, up, down;
     private boolean fabClicked;
-    private LinearLayout manangeWallet, transHist, currencyRates, shoppingList, stats, settings, about;
-
-    //For nav bar
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
 
-        //Drawer and Navbar
-        initDrawer();
-
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
@@ -83,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         getBaseCurrency();
         hideHiddenFab();
 
+        //Drawer and Navbar
+        initDrawer();
         manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,14 +272,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDrawer(){
         //Tool bar
+        LinearLayout manangeWallet, transHist, currencyRates, shoppingList, stats, settings, about;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
         ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
+        ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+        moreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(MainActivity.this, moreBtn);
+                popupMenu.getMenu().add("About");
+                popupMenu.getMenu().add("Settings");
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+
 
         //drawer
         manangeWallet = findViewById(R.id.navbar_manageWallets);
