@@ -297,7 +297,19 @@ public class MainActivity extends AppCompatActivity {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+                        Intent intent;
+                        switch (item.getTitle().toString()){
+                            case "About":
+                                intent = new Intent(MainActivity.this, AboutActivity.class);
+                                startActivity(intent);
+                                break;
+                            case "Settings":
+                                intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                startActivity(intent);
+                                break;
+                            default:
+                                Toast.makeText(getApplicationContext(), "Unknown Page", Toast.LENGTH_SHORT).show();
+                        }
                         return false;
                     }
                 });
@@ -312,6 +324,12 @@ public class MainActivity extends AppCompatActivity {
 
         transHist = findViewById(R.id.navbar_transHist);
         setButton(transHist, TransactionHistoryActivity.class);
+
+        about = findViewById(R.id.navbar_about);
+        setButton(about, AboutActivity.class);
+
+        settings = findViewById(R.id.navbar_settings);
+        setButton(settings, SettingsActivity.class);
     }
 
     private void setButton(LinearLayout l, Class c){
