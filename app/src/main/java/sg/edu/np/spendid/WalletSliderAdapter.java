@@ -19,7 +19,7 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
     ArrayList<Wallet> data;
     String baseCurrency;
     Context context;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private DecimalFormat df2 = new DecimalFormat("#.00");
 
     public WalletSliderAdapter(ArrayList<Wallet> input, String currency, Context getContext){
         data = input;
