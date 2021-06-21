@@ -42,7 +42,7 @@
                 <TextView
                     android:id="@+id/title_Record_textView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="Name"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -55,28 +55,39 @@
                     <TextView
                         android:id="@+id/time_Record_textView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="48"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
                         android:text="00:00:00"
+                        android:gravity="bottom"
+                        android:textColor="@color/light_grey"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/date_Record_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="38"
+                        android:text="dd MMMM yyyy"
+                        android:gravity="bottom"
                         android:textColor="@color/light_grey"
                         android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/currency_Record_textView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom|right"
                         android:layout_weight="1"
                         android:text="SGD"
-                        android:textAlignment="viewEnd"
                         android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/amount_Record_textView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="5.00"
-                        android:textAlignment="viewEnd"
+                        android:gravity="bottom|right"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -89,7 +100,8 @@
                 android:layout_weight="1"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                app:srcCompat="@drawable/ic_arrow_forward_24"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_forward_24"
                 app:tint="@color/grey" />
 
         </LinearLayout>

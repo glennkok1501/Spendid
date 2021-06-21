@@ -10,15 +10,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SearchActivity extends AppCompatActivity {
     private ArrayList<String> recordDetails = new ArrayList<>();
@@ -26,7 +23,7 @@ public class SearchActivity extends AppCompatActivity {
     private ImageView searchBtn;
     private DBHandler dbHandler;
     private ArrayList<Record> records;
-    private TransactionAdaptor ta;
+    private TransactionAdapter ta;
     private final static String PREF_NAME = "sharedPrefs";
 
     @Override
@@ -84,7 +81,7 @@ public class SearchActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String baseCurrency = prefs.getString("baseCurrency", "");
         RecyclerView searchRv = findViewById(R.id.search_recyclerView);
-        ta = new TransactionAdaptor(records, baseCurrency);
+        ta = new TransactionAdapter(records, baseCurrency, true);
         LinearLayoutManager lm = new LinearLayoutManager(SearchActivity.this);
         searchRv.setLayoutManager(lm);
         searchRv.setItemAnimator(new DefaultItemAnimator());

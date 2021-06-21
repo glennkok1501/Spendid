@@ -22,15 +22,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHolder>{
+public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHolder>{
     ArrayList<Record> transactions;
     String baseCurrency;
+    boolean showDate;
     CategoryHandler categoryHandler = new CategoryHandler();
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public TransactionAdaptor(ArrayList<Record> transactionList, String currency) {
+    public TransactionAdapter(ArrayList<Record> transactionList, String currency, boolean showDate) {
         transactions = transactionList;
         baseCurrency = currency;
+        this.showDate = showDate;
     }
 
     public TransactionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,6 +57,12 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
         vh.time.setText(formatTime(r.getTimeCreated()));
         vh.cur.setText(baseCurrency);
         vh.amt.setText(df2.format(r.getAmount()));
+        if (showDate){
+            vh.date.setText(formatDate(r.getDateCreated()));
+        }
+        else{
+            vh.date.setText("");
+        }
         vh.cat.setImageResource(categoryHandler.setIcon(r.getCategory()));
     }
 
@@ -68,6 +76,18 @@ public class TransactionAdaptor extends RecyclerView.Adapter<TransactionViewHold
     public void filter(ArrayList<Record> rList) {
         transactions = rList;
         notifyDataSetChanged();
+    }
+
+    private String formatDate(String d){
+        String dateFormat;
+        try{
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(d);
+            dateFormat = new SimpleDateFormat("dd MMMM yyyy").format(date);
+        }
+        catch (ParseException e) {
+            dateFormat = d;
+        }
+        return dateFormat;
     }
 
     private String formatTime(String t){
