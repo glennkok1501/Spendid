@@ -137,44 +137,59 @@ public class CustomDialog {
         dialog.show();
     }
 
-    public void showDecisionDialog(String Title, String Body, Runnable pos, Runnable neg) {
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.pos_neg_dialog);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(false);
-        RelativeLayout bg = dialog.findViewById(R.id.pos_neg_dialog_relativeLayout);
-        TextView title = dialog.findViewById(R.id.pos_neg_dialog_title);
-        TextView body = dialog.findViewById(R.id.pos_neg_dialog_body);
-        TextView yes = dialog.findViewById(R.id.pos_neg_dialog_yes);
-        TextView no = dialog.findViewById(R.id.pos_neg_dialog_no);
-        title.setText(Title);
-        body.setText(Body);
+    public class Alert {
+        private String title;
+        private String body;
+        private TextView positiveBtn;
+        private TextView negativeBtn;
+        private Dialog dialog;
 
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pos.run();
-                dialog.dismiss();
-            }
-        });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                neg.run();
-                dialog.dismiss();
-            }
-        });
+        public void setTitle(String title) {
+            this.title = title;
+        }
 
-        bg.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                dialog.dismiss();
-                return false;
-            }
-        });
-        dialog.show();
+        public void setBody(String body) {
+            this.body = body;
+        }
+
+        public TextView setPositive(){
+            return this.positiveBtn;
+        }
+
+        public TextView setNegative(){
+            return this.negativeBtn;
+        }
+
+        public Alert() {
+            this.dialog = new Dialog(context);
+            dialog.setContentView(R.layout.pos_neg_dialog);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setCancelable(false);
+            RelativeLayout bg = dialog.findViewById(R.id.pos_neg_dialog_relativeLayout);
+            bg.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    dialog.dismiss();
+                    return false;
+                }
+            });
+            this.positiveBtn = dialog.findViewById(R.id.pos_neg_dialog_yes);
+            this.negativeBtn = dialog.findViewById(R.id.pos_neg_dialog_no);
+            positiveBtn.setText("Yes");
+            negativeBtn.setText("No");
+        }
+
+        public void show(){
+            TextView dialogTitle = dialog.findViewById(R.id.pos_neg_dialog_title);
+            TextView dialogBody = dialog.findViewById(R.id.pos_neg_dialog_body);
+            dialogTitle.setText(title);
+            dialogBody.setText(body);
+            dialog.show();
+        }
+
+        public void dismiss(){
+            dialog.dismiss();
+        }
     }
-
-    public void blank(){};
 }

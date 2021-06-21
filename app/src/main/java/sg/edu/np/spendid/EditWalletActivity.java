@@ -39,13 +39,7 @@ public class EditWalletActivity extends AppCompatActivity {
         trash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //deleteDialog();
-                CustomDialog customDialog = new CustomDialog(EditWalletActivity.this);
-                customDialog.showDecisionDialog(
-                        "Delete Wallet",
-                        "Are you sure you want to permanently delete this wallet and all its transactions?",
-                        EditWalletActivity.this::deleteWallet,
-                        customDialog::blank);
+                deleteDialog();
             }
         });
 
@@ -95,5 +89,26 @@ public class EditWalletActivity extends AppCompatActivity {
     private boolean isValidWalletName(){
         int len = editWalletName.getText().toString().length();
         return len != 0 && len <= 15;
+    }
+
+    private void deleteDialog(){
+        CustomDialog.Alert alert = new CustomDialog(EditWalletActivity.this).new Alert();
+        alert.setTitle("Delete Wallet");
+        alert.setBody("Are you sure you want to permanently delete this wallet and all its transactions?");
+        alert.setPositive().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteWallet();
+                alert.dismiss();
+            }
+        });
+        alert.setNegative().setText("Cancel");
+        alert.setNegative().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
     }
 }

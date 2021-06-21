@@ -88,13 +88,7 @@ public class EditRecordActivity extends AppCompatActivity {
         trash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //deleteDialog();
-                CustomDialog customDialog = new CustomDialog(EditRecordActivity.this);
-                customDialog.showDecisionDialog(
-                        "Delete Transaction",
-                        "Are you sure you want to permanently delete this transaction?",
-                        EditRecordActivity.this::deleteRecord,
-                        customDialog::blank);
+                deleteDialog();
             }
         });
         checkValues = initCheckValues();
@@ -309,6 +303,28 @@ public class EditRecordActivity extends AppCompatActivity {
             }
         }
         return valid;
+    }
+
+    private void deleteDialog(){
+        CustomDialog.Alert alert = new CustomDialog(EditRecordActivity.this).new Alert();
+        alert.setTitle("Delete Transaction");
+        alert.setBody("Are you sure you want to permanently delete this transaction?");
+        alert.setPositive().setText("Delete");
+        alert.setPositive().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteRecord();
+                alert.dismiss();
+            }
+        });
+        alert.setNegative().setText("Cancel");
+        alert.setNegative().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
     }
 
     private void deleteRecord(){
