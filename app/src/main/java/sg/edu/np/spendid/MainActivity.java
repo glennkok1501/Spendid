@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Animation open, close, up, down;
     private boolean fabClicked;
     private DrawerLayout drawerLayout;
+    private boolean collapse_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDrawer(){
         //Tool bar
-        LinearLayout manangeWallet, transHist, currencyRates, shoppingList, stats, settings, about, search;
+        LinearLayout manangeWallet, transHist, currencyRates, shoppingList, settings, about, search, add, additional, addWallet, addRecord;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
         ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
@@ -327,6 +329,25 @@ public class MainActivity extends AppCompatActivity {
 
         search = findViewById(R.id.navbar_search);
         setButton(search, SearchActivity.class);
+
+        add = findViewById(R.id.navbar_add);
+        additional = findViewById(R.id.navbar_additional);
+        addWallet = findViewById(R.id.navbar_addWallet);
+        setButton(addWallet, WalletCurrencyActivity.class);
+        addRecord = findViewById(R.id.navbar_addRecord);
+        setButton(addRecord, SelectWalletActivity.class);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collapse_add = !collapse_add;
+                if (collapse_add){
+                    additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                }
+                else{
+                    additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+                }
+            }
+        });
 
         about = findViewById(R.id.navbar_about);
         setButton(about, AboutActivity.class);
