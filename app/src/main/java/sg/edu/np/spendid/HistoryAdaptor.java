@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +21,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
-public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
+public class HistoryAdaptor extends RecyclerView.Adapter<HistoryAdaptor.HistoryViewHolder>{
     HashMap<String, ArrayList<Record>> recordData;
     ArrayList<String> dates;
     String baseCurrency;
@@ -80,6 +81,17 @@ public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
             dateList.add(new SimpleDateFormat("yyyy-MM-dd").format(newDates[i]));
         }
         return dateList;
+    }
+
+    public class HistoryViewHolder extends RecyclerView.ViewHolder {
+        TextView date;
+        RecyclerView rv;
+
+        public HistoryViewHolder(View item) {
+            super(item);
+            date = item.findViewById(R.id.history_date_textView);
+            rv = item.findViewById(R.id.historyRV);
+        }
     }
 }
 

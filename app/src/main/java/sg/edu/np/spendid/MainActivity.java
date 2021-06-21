@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDrawer(){
         //Tool bar
-        LinearLayout manangeWallet, transHist, currencyRates, shoppingList, stats, settings, about;
+        LinearLayout manangeWallet, transHist, currencyRates, shoppingList, stats, settings, about, search;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
         ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
@@ -325,11 +325,16 @@ public class MainActivity extends AppCompatActivity {
         transHist = findViewById(R.id.navbar_transHist);
         setButton(transHist, TransactionHistoryActivity.class);
 
+        search = findViewById(R.id.navbar_search);
+        setButton(search, SearchActivity.class);
+
         about = findViewById(R.id.navbar_about);
         setButton(about, AboutActivity.class);
 
         settings = findViewById(R.id.navbar_settings);
         setButton(settings, SettingsActivity.class);
+
+
     }
 
     private void setButton(LinearLayout l, Class c){
