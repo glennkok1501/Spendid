@@ -15,14 +15,14 @@ import java.util.ArrayList;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>{
     ArrayList<ShoppingCart> data;
-    private Context context;
-    private DBHandler dbHandler;
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
+    Context context;
+    DBHandler dbHandler;
+    DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public ShoppingListAdapter(ArrayList<ShoppingCart> input, Context getContext){
+    public ShoppingListAdapter(ArrayList<ShoppingCart> input, Context context){
         data = input;
-        context = getContext;
-        dbHandler = new DBHandler(context, null, null, 1);
+        this.context = context;
+        dbHandler = new DBHandler(this.context, null, null, 1);
     }
 
     public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType){

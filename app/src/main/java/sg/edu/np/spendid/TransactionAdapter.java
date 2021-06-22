@@ -27,27 +27,17 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
     String baseCurrency;
     boolean showDate;
     CategoryHandler categoryHandler = new CategoryHandler();
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
+    DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public TransactionAdapter(ArrayList<Record> transactionList, String currency, boolean showDate) {
+    public TransactionAdapter(ArrayList<Record> transactionList, String baseCurrency, boolean showDate) {
         transactions = transactionList;
-        baseCurrency = currency;
+        this.baseCurrency = baseCurrency;
         this.showDate = showDate;
     }
 
     public TransactionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_layout, parent, false);
         TransactionViewHolder transactionViewHolder = new TransactionViewHolder(item);
-
-        item.findViewById(R.id.viewRecord_cardView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ViewTransactionActivity.class);
-                intent.putExtra("recordId", transactions.get(viewType).getId());
-                v.getContext().startActivity(intent);
-            }
-        });
-
         return transactionViewHolder;
     }
 
@@ -57,21 +47,20 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
         vh.time.setText(formatTime(r.getTimeCreated()));
         vh.cur.setText(baseCurrency);
         vh.amt.setText(df2.format(r.getAmount()));
-        if (showDate){
-            vh.date.setText(formatDate(r.getDateCreated()));
-        }
-        else{
-            vh.date.setText("");
-        }
+        if (showDate){vh.date.setText(formatDate(r.getDateCreated()));}
+        else{vh.date.setText("");}
         vh.cat.setImageResource(categoryHandler.setIcon(r.getCategory()));
+        vh.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ViewTransactionActivity.class);
+                intent.putExtra("recordId", r.getId());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     public int getItemCount() { return transactions.size(); }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
 
     public void filter(ArrayList<Record> rList) {
         transactions = rList;

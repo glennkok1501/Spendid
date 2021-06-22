@@ -19,7 +19,6 @@ import maes.tech.intentanim.CustomIntent;
 
 public class SelectWalletActivity extends AppCompatActivity {
     private DBHandler dbHandler;
-    private final static String PREF_NAME = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +41,9 @@ public class SelectWalletActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        String PREF_NAME = "sharedPrefs";
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String baseCurrency = prefs.getString("baseCurrency", "");
-
         RecyclerView selWalletRV = findViewById(R.id.sel_wallet_RV);
         WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(dbHandler.getWallets(), baseCurrency, this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);

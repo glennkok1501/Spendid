@@ -48,14 +48,11 @@ public class NewRecordActivity extends AppCompatActivity {
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
     private String baseCurrency, walletCurrency;
-    private RequestQueue mQueue;
-    private final static String PREF_NAME = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_record);
-        mQueue = Volley.newRequestQueue(this);
         dbHandler = new DBHandler(this, null, null, 1);
         selectedCat = findViewById(R.id.newRecordCat_textView);
         selectWallet = findViewById(R.id.newRecordWallet_textView);
@@ -148,6 +145,7 @@ public class NewRecordActivity extends AppCompatActivity {
     }
 
     private void getBaseCurrency(){
+        String PREF_NAME = "sharedPrefs";
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         baseCurrency = prefs.getString("baseCurrency", "");
     }

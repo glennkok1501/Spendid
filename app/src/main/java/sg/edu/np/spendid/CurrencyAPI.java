@@ -32,7 +32,7 @@ public class CurrencyAPI {
     private RequestQueue mQueue;
     private EditText amt;
     private double forFixedAmt;
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public double getExchangeRate() {
         return exchangeRate;

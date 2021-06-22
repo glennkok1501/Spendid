@@ -51,17 +51,13 @@ public class EditRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency, lastUpdate;
-    private RequestQueue mQueue;
-    private double exchangeRate = 0;
-    private final static String PREF_NAME = "sharedPrefs";
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
+    private String baseCurrency;
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_record);
-        mQueue = Volley.newRequestQueue(this);
         dbHandler = new DBHandler(this, null, null, 1);
         selectedCat = findViewById(R.id.editRecordCat_textView);
         selectWallet = findViewById(R.id.editRecordWallet_textView);
@@ -159,6 +155,7 @@ public class EditRecordActivity extends AppCompatActivity {
     }
 
     private void getBaseCurrency(){
+        String PREF_NAME = "sharedPrefs";
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         baseCurrency = prefs.getString("baseCurrency", "");
     }

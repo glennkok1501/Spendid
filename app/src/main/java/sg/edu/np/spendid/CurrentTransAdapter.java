@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,43 +30,38 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
     ArrayList<String> keys;
     String baseCurrency;
     CategoryHandler categoryHandler = new CategoryHandler();
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
+    DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input, String currency){
+    public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input, String baseCurrency){
         data = input;
         keys = new ArrayList<>(data.keySet());
-        baseCurrency = currency;
+        this.baseCurrency = baseCurrency;
     }
 
     public CurrentTransViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.current_transaction_layout, parent, false);
-        CurrentTransViewHolder holder = new CurrentTransViewHolder(item);
-        item.findViewById(R.id.currentTrans).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String cat = keys.get(viewType);
-                CustomDialog customDialog = new CustomDialog(v.getContext());
-                customDialog.showCurrentTrans(baseCurrency, cat, data.get(cat));
-            }
-        });
-        return holder;
+        return new CurrentTransViewHolder(item);
     }
 
     public void onBindViewHolder(CurrentTransViewHolder holder, int position){
-        String s = keys.get(position);
-        holder.image.setImageResource(categoryHandler.setIcon(s));
-        holder.cat.setText(s);
-        holder.amt.setText(df2.format(calAmt(data.get(s))));
+        String cat = keys.get(position);
+        ArrayList<Record> records = data.get(cat);
+        holder.image.setImageResource(categoryHandler.setIcon(cat));
+        holder.cat.setText(cat);
+        holder.amt.setText(df2.format(calAmt(records)));
         holder.currency.setText(baseCurrency);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cat = keys.get(position);
+                CustomDialog customDialog = new CustomDialog(v.getContext());
+                customDialog.showCurrentTrans(baseCurrency, cat, records);
+            }
+        });
     }
 
     public int getItemCount(){
         return data.size();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
     }
 
     private double calAmt(ArrayList<Record> r){
@@ -78,12 +74,14 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
     public class CurrentTransViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView cat, amt, currency;
+        CardView cardView;
         public CurrentTransViewHolder(View itemView){
             super(itemView);
             image = itemView.findViewById(R.id.currentTrans_imageView);
             cat = itemView.findViewById(R.id.currentTransCat_textView);
             amt = itemView.findViewById(R.id.currentTransAmt_textView);
             currency = itemView.findViewById(R.id.currentTransCur_textView);
+            cardView = itemView.findViewById(R.id.currentTrans);
         }
     }
 }

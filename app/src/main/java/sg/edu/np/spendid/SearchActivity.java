@@ -24,7 +24,6 @@ public class SearchActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private ArrayList<Record> records;
     private TransactionAdapter ta;
-    private final static String PREF_NAME = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +77,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         records = dbHandler.getAllRecords();
+        String PREF_NAME = "sharedPrefs";
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String baseCurrency = prefs.getString("baseCurrency", "");
         RecyclerView searchRv = findViewById(R.id.search_recyclerView);

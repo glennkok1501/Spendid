@@ -18,8 +18,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
     private Record record;
     private Wallet wallet;
     private DBHandler dbHandler;
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
-    private final static String PREF_NAME = "sharedPrefs";
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
 
     @Override
@@ -65,6 +64,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
         else{
             walletExpense.setImageResource(R.drawable.ic_income_up);
         }
+        String PREF_NAME = "sharedPrefs";
         dateTime.setText("Made Transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         cur.setText(prefs.getString("baseCurrency", ""));
@@ -75,7 +75,6 @@ public class ViewTransactionActivity extends AppCompatActivity {
         else{
             des.setText(des_text);
         }
-
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override

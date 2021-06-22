@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class WalletCurrencyActivity extends AppCompatActivity {
-    public static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String[] countries = getResources().getStringArray(R.array.countries);
@@ -37,7 +37,6 @@ public class WalletCurrencyActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(cLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(cAdapter);
-
     }
 
     @Override

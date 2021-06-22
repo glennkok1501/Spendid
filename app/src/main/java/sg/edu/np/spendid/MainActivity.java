@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
     private TextView monthText, balance, income, expense, currency, manage, viewAll;
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
-    private final static String PREF_NAME = "sharedPrefs";
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
+    private final String PREF_NAME = "sharedPrefs";
     private FloatingActionButton fab, addWallet, addRecord;
     private String baseCurrency;
     private Animation open, close, up, down;
