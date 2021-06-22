@@ -12,7 +12,7 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_margin="15dp"
-        app:cardElevation="15dp"
+        app:cardElevation="10dp"
         app:cardCornerRadius="15dp">
 
         <LinearLayout
@@ -25,13 +25,14 @@
                 android:id="@+id/cartItem_checkBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/cartItemName_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_weight="6"
                 android:text="Item Name" />
@@ -40,7 +41,7 @@
                 android:id="@+id/cartItemAmt_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAlignment="textEnd"
                 android:layout_weight="3"
                 android:text="0.00" />

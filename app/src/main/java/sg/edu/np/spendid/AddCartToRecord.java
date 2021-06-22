@@ -21,9 +21,7 @@ import java.util.Calendar;
 
 public class AddCartToRecord {
     private Context context;
-    private double exchangeRate;
-    private String baseCurrency;
-    private int cartId;
+    private String baseCurrency, des;
     private Wallet wallet;
     private ArrayList<CartItem> cartItems;
     private DBHandler dbHandler;
@@ -31,13 +29,11 @@ public class AddCartToRecord {
     private ArrayList<Wallet> walletArrayList;
     private EditText name, amt;
     private double amount;
-    private String des;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public AddCartToRecord(Context context, String baseCurrency, int cartId) {
         this.context = context;
         this.baseCurrency = baseCurrency.toLowerCase();
-        this.cartId = cartId;
         des = "";
         dbHandler = new DBHandler(context, null, null, 1);
         cartItems = dbHandler.getCartItems(cartId);
@@ -64,31 +60,13 @@ public class AddCartToRecord {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        String selected = spinner.getSelectedItem().toString();
-        wallet = findWallet(selected);
-        for (CartItem c : cartItems){
-            des += c.getName()+" "+c.getAmount()+" "+wallet.getCurrency();
-            if (c.isCheck()){
-                des +=" - Bought\n";
-                amount += c.getAmount();
-            }
-            else{
-                des +=" - Not Bought\n";
-            }
-        }
-        amt.setText(df2.format(amount));
+        wallet = findWallet(spinner.getSelectedItem().toString());
+        initDetails();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selected = spinner.getSelectedItem().toString();
-                wallet = findWallet(selected);
-                if (!baseCurrency.equals(wallet.getCurrency().toLowerCase())){
-                    CurrencyAPI currencyAPI = new CurrencyAPI(context, wallet.getCurrency().toLowerCase(), baseCurrency);
-                    currencyAPI.setAmt(amt);
-                    currencyAPI.setForFixedAmt(amount);
-                    currencyAPI.call(true);
-                }
-
+                wallet = findWallet(spinner.getSelectedItem().toString());
+                checkCurrency();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -125,16 +103,37 @@ public class AddCartToRecord {
         return wallet;
     }
 
+    private void initDetails(){
+        for (CartItem c : cartItems){
+            if (c.isCheck()){
+                des +="-Bought ";
+                amount += c.getAmount();
+            }
+            else{
+                des +="-Did not bought ";
+            }
+            des += c.getName()+" ("+c.getAmount()+" "+wallet.getCurrency()+")";
+        }
+        amt.setText(df2.format(amount));
+    }
+
+    private void checkCurrency(){
+        if (!baseCurrency.equals(wallet.getCurrency().toLowerCase())){
+            CurrencyAPI currencyAPI = new CurrencyAPI(context, wallet.getCurrency().toLowerCase(), baseCurrency);
+            currencyAPI.setAmt(amt);
+            currencyAPI.setForFixedAmt(amount);
+            currencyAPI.call(true);
+        }
+    }
+
     private Record createRecordFromCart(){
         String title = name.getText().toString();
         //TO DO error checking
-
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         String date = dateFormat.format(currentTime.getTime());
         String time = timeFormat.format(currentTime.getTime());
-        Record  r = new Record(title, des, Double.parseDouble(amt.getText().toString()), "Shopping", date, time, wallet.getWalletId());
-        return r;
+        return new Record(title, des, Double.parseDouble(amt.getText().toString()), "Shopping", date, time, wallet.getWalletId());
     }
 }
