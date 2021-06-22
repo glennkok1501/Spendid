@@ -43,7 +43,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 CartItem c = data.get(viewType);
-                c.setCheck(isChecked);
                 dbHandler.updateCartItem(new CartItem(c.getItemId(), c.getName(), c.getAmount(), isChecked, c.getCartId()));
             }
         });

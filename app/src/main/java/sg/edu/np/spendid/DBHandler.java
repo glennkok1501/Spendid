@@ -450,6 +450,8 @@ public class DBHandler extends SQLiteOpenHelper {
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             db.delete(TABLE_RECORD, COLUMN_WALLET_ID + "= ?", new String[]{String.valueOf(wId)});
         }
+        cursor.close();
+        db.close();
     }
 
     public boolean catIsExpense(String c){
@@ -525,13 +527,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return itemsList;
     }
 
-    public boolean deleteCartItem(int cId){
-        String query = "SELECT * FROM " + TABLE_CARTITEM + " WHERE " + COLUMN_CARTITEM_ID + " = \"" + cId + "\"";
+    public boolean deleteCartItem(int itemId){
+        String query = "SELECT * FROM " + TABLE_CARTITEM + " WHERE " + COLUMN_CARTITEM_ID + " = \"" + itemId + "\"";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         boolean deleted;
         if (cursor.moveToFirst()) {
-            db.delete(TABLE_CARTITEM, COLUMN_CARTITEM_ID + "= ?", new String[]{String.valueOf(cId)});
+            db.delete(TABLE_CARTITEM, COLUMN_CARTITEM_ID + "= ?", new String[]{String.valueOf(itemId)});
             deleted = true;
         } else {
             deleted = false;
@@ -550,5 +552,31 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TABLE_CARTITEM, values, COLUMN_CARTITEM_ID + " =?", new String[]{String.valueOf(c.getItemId())});
         db.close();
+    }
+
+    public void deleteCartItems(int cartId){
+        String query = "SELECT * FROM " + TABLE_CARTITEM;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+            db.delete(TABLE_CARTITEM, COLUMN_CART_ID + "= ?", new String[]{String.valueOf(cartId)});
+        }
+        cursor.close();
+        db.close();
+    }
+    public boolean deleteShoppingCart(int cartId){
+        String query = "SELECT * FROM " + TABLE_CART + " WHERE " + COLUMN_CART_ID + " = \"" + cartId + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean deleted;
+        if (cursor.moveToFirst()) {
+            db.delete(TABLE_CART, COLUMN_CART_ID + "= ?", new String[]{String.valueOf(cartId)});
+            deleted = true;
+        } else {
+            deleted = false;
+        }
+        cursor.close();
+        db.close();
+        return deleted;
     }
 }

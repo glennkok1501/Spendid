@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,6 +29,17 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shopping_list_main);
         dbHandler = new DBHandler(this, null, null, 1);
         addCartBtn = findViewById(R.id.shoppingListMain_fab);
+
+        //Tool Bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Shopping List");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         addCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override

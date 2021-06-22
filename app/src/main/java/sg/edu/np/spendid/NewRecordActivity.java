@@ -47,9 +47,8 @@ public class NewRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency, walletCurrency, lastUpdate;
+    private String baseCurrency, walletCurrency;
     private RequestQueue mQueue;
-    private double exchangeRate = 0;
     private final static String PREF_NAME = "sharedPrefs";
 
     @Override
@@ -155,89 +154,10 @@ public class NewRecordActivity extends AppCompatActivity {
 
     private void promptConversion(){
         if (!baseCurrency.equals(walletCurrency)){
-            getExchangeRate(walletCurrency.toLowerCase(), baseCurrency.toLowerCase());
+            CurrencyAPI currencyAPI = new CurrencyAPI(this, walletCurrency.toLowerCase(), baseCurrency.toLowerCase());
+            currencyAPI.setAmt(amt);
+            currencyAPI.call(false);
         }
-    }
-
-    private void currencyDialog(){
-        Dialog dialog = new Dialog(NewRecordActivity.this);
-        dialog.setContentView(R.layout.currency_exchange_layout);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(false);
-
-        TextView forCur = dialog.findViewById(R.id.foreignAmt_textView);
-        TextView baseCur = dialog.findViewById(R.id.baseCurrency_textView);
-        TextView baseAmt = dialog.findViewById(R.id.baseCurrencyAmt_textView);
-        TextView updateDate = dialog.findViewById(R.id.rateLastUpdate);
-        EditText forAmt = dialog.findViewById(R.id.foreignAmt_editText);
-        FloatingActionButton convertBtn = dialog.findViewById(R.id.convertCurrrency_fab);
-        TextView cancelDialog = dialog.findViewById(R.id.currencyExchangeCancel_textView);
-
-        baseCur.setText(baseCurrency);
-        forCur.setText(walletCurrency);
-        updateDate.setText("Last Updated: "+lastUpdate);
-
-        forAmt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if(s.length() != 0) {
-                    baseAmt.setText(new DecimalFormat("0.00").format(Math.round((Double.parseDouble(forAmt.getText().toString()) * exchangeRate) * 100.0) / 100.0));
-                }
-                else{
-                    baseAmt.setText("0.00");
-                }
-            }
-        });
-
-        convertBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                amt.setText(baseAmt.getText());
-                dialog.dismiss();
-            }
-        });
-
-        cancelDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
-    private void getExchangeRate(String from, String to){
-        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s/%s.json", from, to);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            exchangeRate = response.getDouble(to.toLowerCase());
-                            lastUpdate = response.getString("date");
-                            currencyDialog();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Data Unavailable", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Service Temporarily Unavailable", Toast.LENGTH_LONG).show();
-                error.printStackTrace();
-            }
-        });
-        mQueue.add(request);
     }
 
     private HashMap<String, Boolean> initCheckValues(){
