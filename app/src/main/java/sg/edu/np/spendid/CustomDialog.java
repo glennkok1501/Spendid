@@ -195,7 +195,7 @@ public class CustomDialog {
         }
     }
 
-    public void showItem(CartItem cartItem, boolean editable, int cartId, ArrayList<CartItem> items, CartItemsAdapter adapter){
+    public void showItem(CartItem cartItem, boolean editable, int cartId, CartItemsAdapter adapter){
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.add_cart_item_layout);
@@ -218,10 +218,9 @@ public class CustomDialog {
                 @Override
                 public void onClick(View v) {
                     if (dbHandler.deleteCartItem(cartItem.getItemId())){
-                        items.remove(cartItem);
                         Toast.makeText(v.getContext(), "Item Deleted", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                        adapter.notifyDataSetChanged();
+                        adapter.update(cartId);
                     }
                 }
             });
@@ -229,14 +228,11 @@ public class CustomDialog {
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = items.indexOf(cartItem);
-                    items.remove(cartItem);
                     CartItem c = new CartItem(cartItem.getItemId(), name.getText().toString(), Double.parseDouble(amt.getText().toString()), cartItem.isCheck(), cartId);
-                    items.add(pos, c);
                     dbHandler.updateCartItem(c);
                     Toast.makeText(v.getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    adapter.notifyDataSetChanged();
+                    adapter.update(cartId);
                 }
             });
         }
@@ -249,11 +245,10 @@ public class CustomDialog {
                 @Override
                 public void onClick(View v) {
                     CartItem c = new CartItem(name.getText().toString(), Double.parseDouble(amt.getText().toString()), false, cartId);
-                    items.add(c);
                     dbHandler.addCartItem(c);
                     Toast.makeText(v.getContext(), "Item Added", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    adapter.notifyDataSetChanged();
+                    adapter.update(cartId);
                 }
             });
         }

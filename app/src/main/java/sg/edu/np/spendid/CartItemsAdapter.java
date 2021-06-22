@@ -2,10 +2,12 @@ package sg.edu.np.spendid;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,29 +35,18 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             public void onClick(View v) {
                 CustomDialog customDialog = new CustomDialog(v.getContext());
                 CartItem c = data.get(viewType);
-                customDialog.showItem(c, true, c.getCartId(), data, CartItemsAdapter.this);
+                customDialog.showItem(c, true, c.getCartId(), CartItemsAdapter.this);
             }
         });
         CheckBox check = item.findViewById(R.id.cartItem_checkBox);
-        check.setOnClickListener(new View.OnClickListener() {
-            boolean tick;
+        check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (check.isChecked()){
-                    tick = true;
-                }
-                else{
-                    tick = false;
-                }
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 CartItem c = data.get(viewType);
-                CartItem newItem = new CartItem(c.getItemId(), c.getName(), c.getAmount(), tick, c.getCartId());
-                int pos = data.indexOf(c);
-                data.remove(c);
-                data.add(pos, newItem);
-                dbHandler.updateCartItem(newItem);
+                c.setCheck(isChecked);
+                dbHandler.updateCartItem(new CartItem(c.getItemId(), c.getName(), c.getAmount(), isChecked, c.getCartId()));
             }
         });
-
         return new CartItemsViewHolder(item);
     }
 
@@ -80,6 +71,10 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         return position;
     }
 
+    public void update(int cartId){
+        data = dbHandler.getCartItems(cartId);
+        notifyDataSetChanged();
+    }
 
     public class CartItemsViewHolder extends RecyclerView.ViewHolder{
         TextView name, amt;

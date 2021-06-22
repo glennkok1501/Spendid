@@ -513,7 +513,6 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            Log.v("TAG", cursor.getString(1));
             int id = cursor.getInt(0);
             String name = cursor.getString(1);
             double amt = cursor.getDouble(2);
@@ -552,5 +551,4 @@ public class DBHandler extends SQLiteOpenHelper {
         db.update(TABLE_CARTITEM, values, COLUMN_CARTITEM_ID + " =?", new String[]{String.valueOf(c.getItemId())});
         db.close();
     }
-
 }

@@ -1,5 +1,6 @@
 package sg.edu.np.spendid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +9,19 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>{
     ArrayList<ShoppingCart> data;
+    private Context context;
+    private DBHandler dbHandler;
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public ShoppingListAdapter(ArrayList<ShoppingCart> input){
+    public ShoppingListAdapter(ArrayList<ShoppingCart> input, Context getContext){
         data = input;
+        context = getContext;
+        dbHandler = new DBHandler(context, null, null, 1);
     }
 
     public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -33,8 +40,15 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public void onBindViewHolder(ShoppingListViewHolder holder, int position){
         ShoppingCart s = data.get(position);
         holder.name.setText(s.getName());
-        holder.amt.setText("amount");
-        holder.items.setText("items");
+        ArrayList<CartItem> items = dbHandler.getCartItems(s.getCartId());
+        double amount = 0;
+        int unchecked = 0;
+        for (CartItem c : items){
+            amount += c.getAmount();
+            if (c.isCheck()){unchecked += 1;}
+        }
+        holder.amt.setText(df2.format(amount));
+        holder.items.setText(""+unchecked+"/"+items.size()+" items");
     }
 
     public int getItemCount(){

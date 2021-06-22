@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class ShoppingListActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private int cartId;
-    private ArrayList<CartItem> cartItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +25,10 @@ public class ShoppingListActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null, null, 1);
         Intent intent = getIntent();
         cartId = intent.getIntExtra("cartId", 0);
-        cartItems = dbHandler.getCartItems(cartId);
         FloatingActionButton addItemBtn = findViewById(R.id.addCartItem_fab);
 
         RecyclerView recyclerView = findViewById(R.id.shopList_RV);
-        CartItemsAdapter myAdapter = new CartItemsAdapter(cartItems, this);
+        CartItemsAdapter myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -40,7 +38,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CustomDialog customDialog = new CustomDialog(ShoppingListActivity.this);
-                customDialog.showItem(null, false, cartId, cartItems, myAdapter);
+                customDialog.showItem(null, false, cartId, myAdapter);
             }
         });
     }
@@ -57,6 +55,9 @@ public class ShoppingListActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        for (CartItem c : dbHandler.getCartItems(cartId)){
+            Log.v("TAG", c.getName()+" - "+c.isCheck());
+        }
 
     }
 
