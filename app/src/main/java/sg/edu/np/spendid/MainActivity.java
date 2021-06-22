@@ -330,6 +330,10 @@ public class MainActivity extends AppCompatActivity {
         search = findViewById(R.id.navbar_search);
         setButton(search, SearchActivity.class);
 
+        shoppingList = findViewById(R.id.navbar_shoppingList);
+        setButton(shoppingList, ShoppingListMainActivity.class);
+
+        //additional options
         add = findViewById(R.id.navbar_add);
         additional = findViewById(R.id.navbar_additional);
         addWallet = findViewById(R.id.navbar_addWallet);

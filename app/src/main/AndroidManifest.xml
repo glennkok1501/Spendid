@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid_Light">
+        <activity android:name=".NewShoppingCartActivity"></activity>
+        <activity android:name=".ShoppingListMainActivity" />
+        <activity android:name=".ShoppingListActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".EditWalletActivity" />

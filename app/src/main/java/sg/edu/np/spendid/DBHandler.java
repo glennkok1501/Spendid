@@ -38,7 +38,18 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_RECORD_DATECREATED = "DateCreated";
     public static final String COLUMN_RECORD_TIMECREATED = "TimeCreated";
 
-    //
+    //Shopping Cart Table Attributes
+    public static final String TABLE_CART = "ShoppingCart";
+    public static final String COLUMN_CART_ID = "CartId";
+    public static final String COLUMN_CART_NAME = "Name";
+    public static final String COLUMN_CART_DATECREATED = "DateCreated";
+
+    //Shopping Cart Item Attributes
+    public static final String TABLE_CARTITEM = "CartItem";
+    public static final String COLUMN_CARTITEM_ID = "ItemId";
+    public static final String COLUMN_CARTITEM_NAME = "Name";
+    public static final String COLUMN_CARTITEM_AMOUNT = "Amount";
+    public static final String COLUMN_CARTITEM_CHECK = "Checked";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -66,9 +77,22 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_WALLET_ID + " INTEGER," +
                 "FOREIGN KEY (" + COLUMN_WALLET_ID + ") REFERENCES " + TABLE_WALLET + "(" + COLUMN_WALLET_ID + "), " +
                 "FOREIGN KEY (" + COLUMN_RECORD_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + COLUMN_CATEGORY_TITLE + "))";
+        String CREATE_CART_TABLE = "CREATE TABLE " + TABLE_CART +
+                " (" + COLUMN_CART_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_CART_NAME + " TEXT, "+
+                COLUMN_CART_DATECREATED+" TEXT)";
+        String CREATE_CARTITEM_TABLE = "CREATE TABLE " + TABLE_CARTITEM +
+                " (" + COLUMN_CARTITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_CARTITEM_NAME + " TEXT, "+
+                COLUMN_CARTITEM_AMOUNT + " REAL, "+
+                COLUMN_CARTITEM_CHECK+" INTEGER, "+
+                COLUMN_CART_ID+" INTEGER, "+
+                "FOREIGN KEY ("+COLUMN_CART_ID+") REFERENCES "+TABLE_CART+" ("+COLUMN_CART_ID+"))";
         db.execSQL(CREATE_WALLET_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_RECORD_TABLE);
+        db.execSQL(CREATE_CART_TABLE);
+        db.execSQL(CREATE_CARTITEM_TABLE);
 
         String cat1 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Shopping\", 1)";
         String cat2 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Food & Drinks\", 1)";
@@ -205,7 +229,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            int id = Integer.parseInt(cursor.getString(0));
+            int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String des = cursor.getString(2);
             String cur = cursor.getString(3);
@@ -330,7 +354,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
-            int id = Integer.parseInt(cursor.getString(0));
+            int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String des = cursor.getString(2);
             String cur = cursor.getString(3);
@@ -426,9 +450,9 @@ public class DBHandler extends SQLiteOpenHelper {
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             db.delete(TABLE_RECORD, COLUMN_WALLET_ID + "= ?", new String[]{String.valueOf(wId)});
         }
+        cursor.close();
+        db.close();
     }
-
-
 
     public boolean catIsExpense(String c){
         String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \""+c+"\"";
@@ -446,4 +470,113 @@ public class DBHandler extends SQLiteOpenHelper {
         return isExpense;
     }
 
+
+    //Shopping List Feature
+    public ArrayList<ShoppingCart> getShoppingCarts(){
+        ArrayList<ShoppingCart> cartList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_CART;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String date = cursor.getString(2);
+            ShoppingCart shoppingCart = new ShoppingCart(id, name, date);
+            cartList.add(shoppingCart);
+        }
+        cursor.close();
+        db.close();
+        return cartList;
+    }
+
+    public void addShoppingCart(ShoppingCart s){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CART_NAME, s.getName());
+        values.put(COLUMN_CART_DATECREATED, s.getDateCreated());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_CART, null, values);
+        db.close();
+    }
+
+    public void addCartItem(CartItem c){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CARTITEM_NAME, c.getName());
+        values.put(COLUMN_CARTITEM_AMOUNT, c.getAmount());
+        values.put(COLUMN_CARTITEM_CHECK, c.isCheck());
+        values.put(COLUMN_CART_ID, c.getCartId());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_CARTITEM, null, values);
+        db.close();
+    }
+
+    public ArrayList<CartItem> getCartItems(int cartId){
+        ArrayList<CartItem> itemsList = new ArrayList<>();
+        String query = "SELECT * FROM "+TABLE_CARTITEM+" WHERE "+COLUMN_CART_ID+" = "+cartId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            double amt = cursor.getDouble(2);
+            boolean check = cursor.getInt(3) == 1;
+            CartItem cartItem = new CartItem(id, name, amt, check, cartId);
+            itemsList.add(cartItem);
+        }
+        cursor.close();
+        db.close();
+        return itemsList;
+    }
+
+    public boolean deleteCartItem(int itemId){
+        String query = "SELECT * FROM " + TABLE_CARTITEM + " WHERE " + COLUMN_CARTITEM_ID + " = \"" + itemId + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean deleted;
+        if (cursor.moveToFirst()) {
+            db.delete(TABLE_CARTITEM, COLUMN_CARTITEM_ID + "= ?", new String[]{String.valueOf(itemId)});
+            deleted = true;
+        } else {
+            deleted = false;
+        }
+        cursor.close();
+        db.close();
+        return deleted;
+    }
+
+    public void updateCartItem(CartItem c) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CARTITEM_NAME, c.getName());
+        values.put(COLUMN_CARTITEM_AMOUNT, c.getAmount());
+        values.put(COLUMN_CARTITEM_CHECK, c.isCheck());
+        values.put(COLUMN_CART_ID, c.getCartId());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_CARTITEM, values, COLUMN_CARTITEM_ID + " =?", new String[]{String.valueOf(c.getItemId())});
+        db.close();
+    }
+
+    public void deleteCartItems(int cartId){
+        String query = "SELECT * FROM " + TABLE_CARTITEM;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+            db.delete(TABLE_CARTITEM, COLUMN_CART_ID + "= ?", new String[]{String.valueOf(cartId)});
+        }
+        cursor.close();
+        db.close();
+    }
+    public boolean deleteShoppingCart(int cartId){
+        String query = "SELECT * FROM " + TABLE_CART + " WHERE " + COLUMN_CART_ID + " = \"" + cartId + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean deleted;
+        if (cursor.moveToFirst()) {
+            db.delete(TABLE_CART, COLUMN_CART_ID + "= ?", new String[]{String.valueOf(cartId)});
+            deleted = true;
+        } else {
+            deleted = false;
+        }
+        cursor.close();
+        db.close();
+        return deleted;
+    }
 }
