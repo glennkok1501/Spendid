@@ -112,7 +112,7 @@ public class AddCartToRecord {
             else{
                 des +="-Did not bought ";
             }
-            des += c.getName()+" ("+c.getAmount()+" "+wallet.getCurrency()+")";
+            des += c.getName()+" ("+c.getAmount()+" "+wallet.getCurrency()+")\n";
         }
         amt.setText(df2.format(amount));
     }

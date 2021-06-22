@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
@@ -26,14 +27,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
     public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_cart_layout, parent, false);
-        item.findViewById(R.id.shopListMainCart_cardView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ShoppingListActivity.class);
-                intent.putExtra("cartId", data.get(viewType).getCartId());
-                v.getContext().startActivity(intent);
-            }
-        });
         return new ShoppingListViewHolder(item);
     }
 
@@ -49,24 +42,29 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         }
         holder.amt.setText(df2.format(amount));
         holder.items.setText(""+unchecked+"/"+items.size()+" items");
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ShoppingListActivity.class);
+                intent.putExtra("cartId", data.get(position).getCartId());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     public int getItemCount(){
         return data.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
     public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
         TextView name, amt, items;
+        CardView cardView;
         public ShoppingListViewHolder(View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.shopListMainCartName_textView);
             amt = itemView.findViewById(R.id.shopListMainCartAmt_textView);
             items = itemView.findViewById(R.id.shopListMainCartItems_textView);
+            cardView = itemView.findViewById(R.id.shopListMainCart_cardView);
         }
     }
 }

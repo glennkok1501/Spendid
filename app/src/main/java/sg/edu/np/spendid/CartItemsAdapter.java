@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
@@ -18,34 +19,18 @@ import java.util.ArrayList;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.CartItemsViewHolder> {
     ArrayList<CartItem> data;
-    private Context context;
-    private DBHandler dbHandler;
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
+    Context context;
+    DBHandler dbHandler;
+    DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public CartItemsAdapter(ArrayList<CartItem> input, Context getContext){
+    public CartItemsAdapter(ArrayList<CartItem> input, Context context){
         data = input;
-        context = getContext;
-        dbHandler = new DBHandler(context, null, null, 1);
+        this.context = context;
+        dbHandler = new DBHandler(this.context, null, null, 1);
     }
 
     public CartItemsViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item_layout, parent, false);
-        item.findViewById(R.id.cartItem_cardView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CustomDialog customDialog = new CustomDialog(v.getContext());
-                CartItem c = data.get(viewType);
-                customDialog.showItem(c, true, c.getCartId(), CartItemsAdapter.this);
-            }
-        });
-        CheckBox check = item.findViewById(R.id.cartItem_checkBox);
-        check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                CartItem c = data.get(viewType);
-                dbHandler.updateCartItem(new CartItem(c.getItemId(), c.getName(), c.getAmount(), isChecked, c.getCartId()));
-            }
-        });
         return new CartItemsViewHolder(item);
     }
 
@@ -59,15 +44,23 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         else{
             holder.check.setChecked(false);
         }
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomDialog customDialog = new CustomDialog(holder.itemView.getContext());
+                customDialog.showItem(c, true, c.getCartId(), CartItemsAdapter.this);
+            }
+        });
+        holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                dbHandler.updateCartItem(new CartItem(c.getItemId(), c.getName(), c.getAmount(), isChecked, c.getCartId()));
+            }
+        });
     }
 
     public int getItemCount(){
         return data.size();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
     }
 
     public void update(int cartId){
@@ -78,11 +71,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
     public class CartItemsViewHolder extends RecyclerView.ViewHolder{
         TextView name, amt;
         CheckBox check;
+        CardView cardView;
         public CartItemsViewHolder(View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.cartItemName_textView);
             amt = itemView.findViewById(R.id.cartItemAmt_textView);
             check = itemView.findViewById(R.id.cartItem_checkBox);
+            cardView = itemView.findViewById(R.id.cartItem_cardView);
         }
+
     }
 }

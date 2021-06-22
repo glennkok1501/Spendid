@@ -8,7 +8,7 @@
         android:id="@+id/cartItem_cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
+        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:layout_margin="15dp"
