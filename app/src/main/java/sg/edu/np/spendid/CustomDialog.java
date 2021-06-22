@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -191,5 +193,78 @@ public class CustomDialog {
         public void dismiss(){
             dialog.dismiss();
         }
+    }
+
+    public void showItem(CartItem cartItem, boolean editable, int cartId, ArrayList<CartItem> items, CartItemsAdapter adapter){
+        DBHandler dbHandler = new DBHandler(context, null, null, 1);
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.add_cart_item_layout);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setCancelable(false);
+
+        EditText name = dialog.findViewById(R.id.addCartItemName_editText);
+        EditText amt = dialog.findViewById(R.id.addCartItemAmt_editText);
+        ImageView close = dialog.findViewById(R.id.addCartItemClose_imageView);
+        Button btn = dialog.findViewById(R.id.addCartItem_btn);
+        FloatingActionButton delBtn = dialog.findViewById(R.id.deleteCartItem_fab);
+
+        if (editable){
+            name.setText(cartItem.getName());
+            amt.setText(df2.format(cartItem.getAmount()));
+            delBtn.setVisibility(View.VISIBLE);
+            delBtn.setClickable(true);
+            delBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (dbHandler.deleteCartItem(cartItem.getItemId())){
+                        items.remove(cartItem);
+                        Toast.makeText(v.getContext(), "Item Deleted", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            });
+            btn.setText("Edit Item");
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = items.indexOf(cartItem);
+                    items.remove(cartItem);
+                    CartItem c = new CartItem(cartItem.getItemId(), name.getText().toString(), Double.parseDouble(amt.getText().toString()), cartItem.isCheck(), cartId);
+                    items.add(pos, c);
+                    dbHandler.updateCartItem(c);
+                    Toast.makeText(v.getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+        else{
+            delBtn.setVisibility(View.INVISIBLE);
+            delBtn.setClickable(false);
+            delBtn.setOnClickListener(null);
+            btn.setText("Add to Cart");
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CartItem c = new CartItem(name.getText().toString(), Double.parseDouble(amt.getText().toString()), false, cartId);
+                    items.add(c);
+                    dbHandler.addCartItem(c);
+                    Toast.makeText(v.getContext(), "Item Added", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+
+        close.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                dialog.dismiss();
+                return false;
+            }
+        });
+        dialog.show();
     }
 }
