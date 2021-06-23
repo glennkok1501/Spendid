@@ -32,8 +32,6 @@
                     android:layout_height="match_parent"
                     app:startIconDrawable="@drawable/ic_shopping_cart_24"
                     android:hint="Name"
-                    app:counterMaxLength="15"
-                    app:counterEnabled="true"
                     app:helperTextTextColor="@color/red">
 
                     <com.google.android.material.textfield.TextInputEditText
