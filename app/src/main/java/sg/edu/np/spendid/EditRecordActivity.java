@@ -57,7 +57,6 @@ public class EditRecordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        toggleNightMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_record);
         dbHandler = new DBHandler(this, null, null, 1);
@@ -256,12 +255,4 @@ public class EditRecordActivity extends AppCompatActivity {
         }
     }
 
-    private void toggleNightMode(){
-        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else{
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
 }
