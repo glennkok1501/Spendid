@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -142,72 +143,123 @@ public class CustomDialog {
         dialog.show();
     }
 
-    public void showItem(CartItem cartItem, boolean editable, int cartId, CartItemsAdapter adapter){
-        DBHandler dbHandler = new DBHandler(context, null, null, 1);
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.add_cart_item_layout);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(false);
+    public class ShowCartItem {
+        private Dialog dialog;
+        private CartItem cartItem;
+        private boolean editable;
+        private int cartId;
+        private CartItemsAdapter adapter;
+        private DBHandler dbHandler;
 
-        EditText name = dialog.findViewById(R.id.addCartItemName_editText);
-        EditText amt = dialog.findViewById(R.id.addCartItemAmt_editText);
-        ImageView close = dialog.findViewById(R.id.addCartItemClose_imageView);
-        Button btn = dialog.findViewById(R.id.addCartItem_btn);
-        FloatingActionButton delBtn = dialog.findViewById(R.id.deleteCartItem_fab);
+        public void setCartItem(CartItem cartItem) {
+            this.cartItem = cartItem;
+        }
 
-        if (editable){
-            name.setText(cartItem.getName());
-            amt.setText(df2.format(cartItem.getAmount()));
-            delBtn.setVisibility(View.VISIBLE);
-            delBtn.setClickable(true);
-            delBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (dbHandler.deleteCartItem(cartItem.getItemId())){
-                        Toast.makeText(v.getContext(), "Item Deleted", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        adapter.update(cartId);
+        public void setCartId(int cartId) {
+            this.cartId = cartId;
+        }
+
+        public ShowCartItem(boolean editable, CartItemsAdapter adapter) {
+            this.editable = editable;
+            this.adapter = adapter;
+            dbHandler = new DBHandler(context, null, null, 1);
+
+            dialog = new Dialog(context);
+            dialog.setContentView(R.layout.add_cart_item_layout);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setCancelable(false);
+        }
+
+        public void show() {
+            EditText name = dialog.findViewById(R.id.addCartItemName_editText);
+            EditText amt = dialog.findViewById(R.id.addCartItemAmt_editText);
+            ImageView close = dialog.findViewById(R.id.addCartItemClose_imageView);
+            Button btn = dialog.findViewById(R.id.addCartItem_btn);
+            FloatingActionButton delBtn = dialog.findViewById(R.id.deleteCartItem_fab);
+
+            if (editable) {
+                name.setText(cartItem.getName());
+                amt.setText(df2.format(cartItem.getAmount()));
+                setDeleteBtn(delBtn, true);
+                btn.setText("Edit Item");
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String n = name.getText().toString();
+                        if (checkInput(n)){
+                            CartItem c = new CartItem(cartItem.getItemId(), n, Double.parseDouble(checkAmt(amt.getText().toString())), cartItem.isCheck(), cartItem.getCartId());
+                            dbHandler.updateCartItem(c);
+                            Toast.makeText(v.getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
+                            adapter.edit(cartItem, c);
+                            dialog.dismiss();
+                        }
                     }
-                }
-            });
-            btn.setText("Edit Item");
-            btn.setOnClickListener(new View.OnClickListener() {
+                });
+            } else {
+                setDeleteBtn(delBtn, false);
+                btn.setText("Add to Cart");
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String n = name.getText().toString();
+                        if (checkInput(n)) {
+                            CartItem c = new CartItem(n, Double.parseDouble(checkAmt(amt.getText().toString())), false, cartId);
+                            dbHandler.addCartItem(c);
+                            Toast.makeText(v.getContext(), "Item Added", Toast.LENGTH_SHORT).show();
+                            adapter.update(dbHandler.getCartItems(cartId));
+                            dialog.dismiss();
+                        }
+                    }
+                });
+            }
+
+            close.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View v) {
-                    CartItem c = new CartItem(cartItem.getItemId(), name.getText().toString(), Double.parseDouble(amt.getText().toString()), cartItem.isCheck(), cartId);
-                    dbHandler.updateCartItem(c);
-                    Toast.makeText(v.getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
+                public boolean onTouch(View v, MotionEvent event) {
                     dialog.dismiss();
-                    adapter.update(cartId);
+                    return false;
                 }
             });
-        }
-        else{
-            delBtn.setVisibility(View.INVISIBLE);
-            delBtn.setClickable(false);
-            delBtn.setOnClickListener(null);
-            btn.setText("Add to Cart");
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CartItem c = new CartItem(name.getText().toString(), Double.parseDouble(amt.getText().toString()), false, cartId);
-                    dbHandler.addCartItem(c);
-                    Toast.makeText(v.getContext(), "Item Added", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                    adapter.update(cartId);
-                }
-            });
+            dialog.show();
         }
 
-        close.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                dialog.dismiss();
+        private void setDeleteBtn(FloatingActionButton delBtn, boolean visible) {
+            if (visible) {
+                delBtn.setVisibility(View.VISIBLE);
+                delBtn.setClickable(true);
+                delBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dbHandler.deleteCartItem(cartItem.getItemId())) {
+                            Toast.makeText(v.getContext(), "Item Deleted", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            adapter.delete(cartItem);
+                        }
+                    }
+                });
+            } else {
+                delBtn.setVisibility(View.INVISIBLE);
+                delBtn.setClickable(false);
+                delBtn.setOnClickListener(null);
+            }
+        }
+
+        private boolean checkInput(String name) {
+            if (name.length() == 0 || name.length() > 15) {
+                TextInputLayout editLayout = dialog.findViewById(R.id.addCartItemName_layout);
+                editLayout.setError("Invalid Name");
                 return false;
             }
-        });
-        dialog.show();
+            return true;
+        }
+
+        private String checkAmt(String amt) {
+            if (amt.length() == 0) {
+                amt = "0";
+            }
+            return amt;
+        }
     }
 
     public class Alert {

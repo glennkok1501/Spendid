@@ -38,23 +38,20 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         CartItem c = data.get(position);
         holder.name.setText(c.getName());
         holder.amt.setText(df2.format(c.getAmount()));
-        if (c.isCheck()){
-            holder.check.setChecked(true);
-        }
-        else{
-            holder.check.setChecked(false);
-        }
+        holder.check.setChecked(c.isCheck());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialog customDialog = new CustomDialog(holder.itemView.getContext());
-                customDialog.showItem(c, true, c.getCartId(), CartItemsAdapter.this);
+                CustomDialog.ShowCartItem showCartItem = new CustomDialog(holder.itemView.getContext()).new ShowCartItem(true, CartItemsAdapter.this);
+                showCartItem.setCartItem(c);
+                showCartItem.show();
             }
         });
         holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 dbHandler.updateCartItem(new CartItem(c.getItemId(), c.getName(), c.getAmount(), isChecked, c.getCartId()));
+                c.setCheck(isChecked);
             }
         });
     }
@@ -63,9 +60,28 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         return data.size();
     }
 
-    public void update(int cartId){
-        data = dbHandler.getCartItems(cartId);
+    public void update(ArrayList<CartItem> updatedData){
+        data = updatedData;
         notifyDataSetChanged();
+    }
+
+    public void edit(CartItem c, CartItem newC){
+        int pos = data.indexOf(c);
+        data.remove(pos);
+        data.add(pos, newC);
+        notifyItemChanged(pos);
+    }
+
+    public void delete(CartItem c){
+        int pos = data.indexOf(c);
+        data.remove(c);
+        notifyItemRemoved(pos);
+    }
+
+    public void clear(){
+        int size = data.size();
+        data.clear();
+        notifyItemRangeRemoved(0, size);
     }
 
     public class CartItemsViewHolder extends RecyclerView.ViewHolder{
