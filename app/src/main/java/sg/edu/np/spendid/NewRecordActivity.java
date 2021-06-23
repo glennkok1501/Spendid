@@ -108,11 +108,11 @@ public class NewRecordActivity extends AppCompatActivity {
 
                 if (validRecord()){
                     dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, intent.getIntExtra("walletId", 0)));
-                    Toast.makeText(getApplicationContext(), "Transaction Saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Please fill in", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please enter details", Toast.LENGTH_SHORT).show();
                 }
             }
         });

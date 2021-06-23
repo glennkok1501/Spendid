@@ -293,14 +293,7 @@ public class CustomDialog {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             dialog.setCancelable(false);
-            RelativeLayout bg = dialog.findViewById(R.id.pos_neg_dialog_relativeLayout);
-            bg.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    dialog.dismiss();
-                    return false;
-                }
-            });
+;
             this.positiveBtn = dialog.findViewById(R.id.pos_neg_dialog_yes);
             this.negativeBtn = dialog.findViewById(R.id.pos_neg_dialog_no);
             positiveBtn.setText("Yes");
