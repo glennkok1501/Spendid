@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
         l.removeAllViews();
         for (int i = 0; i < d.length; i++){
             d[i] = new TextView(this);
-            d[i].setText(Html.fromHtml("&#8226;"));
+            d[i].setText(Html.fromHtml(getResources().getString(R.string.dot)));
             d[i].setTextSize(18);
             l.addView(d[i]);
         }

@@ -2,6 +2,8 @@ package sg.edu.np.spendid;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,15 +114,17 @@ public class AddCartToRecord {
     }
 
     private void initDetails(){
+        Resources res = context.getResources();
         for (CartItem c : cartItems){
+            des += String.format("%s %s (%s %s)", Html.fromHtml(res.getString(R.string.dot)), c.getName(), df2.format(c.getAmount()), wallet.getCurrency());
             if (c.isCheck()){
-                des +="-Bought ";
+                des += String.format("%s\n", Html.fromHtml(res.getString(R.string.tick)));
                 amount += c.getAmount();
             }
             else{
-                des +="-Did not bought ";
+                des += String.format("%s\n", Html.fromHtml(res.getString(R.string.cross)));
             }
-            des += c.getName()+" ("+c.getAmount()+" "+wallet.getCurrency()+")\n";
+            des+="\n";
         }
         amt.setText(df2.format(amount));
     }

@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Spendid</string>
+    <string name="tick">&#9989;</string>
+    <string name="cross">&#10060;</string>
+    <string name="dot">&#8226;</string>
+
     <string-array name="countries">
         <item>Australian Dollar;aud</item>
         <item>Brazilian Real;brl</item>
