@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDrawer(){
         //Tool bar
-        LinearLayout manangeWallet, transHist, currencyRates, shoppingList, settings, about, search, add, additional, addWallet, addRecord;
+        LinearLayout manangeWallet, transHist, currencyRates, shoppingList, settings, about, search, subscriptions, add, additional, addWallet, addRecord;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
         ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
@@ -290,6 +290,69 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+        initPopupMenu(moreBtn);
+
+        //drawer
+        manangeWallet = findViewById(R.id.navbar_manageWallets);
+        setButton(manangeWallet, ManageWalletActivity.class);
+
+        transHist = findViewById(R.id.navbar_transHist);
+        setButton(transHist, TransactionHistoryActivity.class);
+
+        search = findViewById(R.id.navbar_search);
+        setButton(search, SearchActivity.class);
+
+        currencyRates = findViewById(R.id.navbar_currencyRate);
+        setButton(currencyRates, ExchangeRateActivity.class);
+
+        shoppingList = findViewById(R.id.navbar_shoppingList);
+        setButton(shoppingList, ShoppingListMainActivity.class);
+
+        //additional options
+        add = findViewById(R.id.navbar_add);
+        additional = findViewById(R.id.navbar_additional);
+        addWallet = findViewById(R.id.navbar_addWallet);
+        setButton(addWallet, WalletCurrencyActivity.class);
+        addRecord = findViewById(R.id.navbar_addRecord);
+        setButton(addRecord, SelectWalletActivity.class);
+        collapseBar(add, additional);
+
+        about = findViewById(R.id.navbar_about);
+        setButton(about, AboutActivity.class);
+
+        settings = findViewById(R.id.navbar_settings);
+        setButton(settings, SettingsActivity.class);
+
+
+    }
+
+    private void setButton(LinearLayout l, Class c){
+        l.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, c);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void collapseBar(LinearLayout add, LinearLayout additional){
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collapse_add = !collapse_add;
+                if (collapse_add){
+                    additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                }
+                else{
+                    additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+                }
+            }
+        });
+    }
+
+    private void initPopupMenu(ImageView moreBtn){
         moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -316,62 +379,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 popupMenu.show();
-            }
-        });
-
-
-        //drawer
-        manangeWallet = findViewById(R.id.navbar_manageWallets);
-        setButton(manangeWallet, ManageWalletActivity.class);
-
-        transHist = findViewById(R.id.navbar_transHist);
-        setButton(transHist, TransactionHistoryActivity.class);
-
-        search = findViewById(R.id.navbar_search);
-        setButton(search, SearchActivity.class);
-
-        currencyRates = findViewById(R.id.navbar_currencyRate);
-        setButton(currencyRates, ExchangeRateActivity.class);
-
-        shoppingList = findViewById(R.id.navbar_shoppingList);
-        setButton(shoppingList, ShoppingListMainActivity.class);
-
-        //additional options
-        add = findViewById(R.id.navbar_add);
-        additional = findViewById(R.id.navbar_additional);
-        addWallet = findViewById(R.id.navbar_addWallet);
-        setButton(addWallet, WalletCurrencyActivity.class);
-        addRecord = findViewById(R.id.navbar_addRecord);
-        setButton(addRecord, SelectWalletActivity.class);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                collapse_add = !collapse_add;
-                if (collapse_add){
-                    additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                }
-                else{
-                    additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
-                }
-            }
-        });
-
-        about = findViewById(R.id.navbar_about);
-        setButton(about, AboutActivity.class);
-
-        settings = findViewById(R.id.navbar_settings);
-        setButton(settings, SettingsActivity.class);
-
-
-    }
-
-    private void setButton(LinearLayout l, Class c){
-        l.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, c);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
             }
         });
     }

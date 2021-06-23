@@ -84,6 +84,11 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         notifyItemRangeRemoved(0, size);
     }
 
+    public void add(CartItem c){
+        data.add(c);
+        notifyItemInserted(data.size());
+    }
+
     public class CartItemsViewHolder extends RecyclerView.ViewHolder{
         TextView name, amt;
         CheckBox check;
