@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,7 +24,6 @@ public class ShoppingListActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private int cartId;
     private CartItemsAdapter myAdapter;
-    private CustomDialog customDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,6 @@ public class ShoppingListActivity extends AppCompatActivity {
         //Tool bar
         initToolbar();
 
-        customDialog = new CustomDialog(ShoppingListActivity.this);
         RecyclerView recyclerView = findViewById(R.id.shopList_RV);
         myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
@@ -47,7 +46,9 @@ public class ShoppingListActivity extends AppCompatActivity {
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customDialog.showItem(null, false, cartId, myAdapter);
+                CustomDialog.ShowCartItem showCartItem = new CustomDialog(ShoppingListActivity.this).new ShowCartItem(false, myAdapter);
+                showCartItem.setCartId(cartId);
+                showCartItem.show();
             }
         });
     }
@@ -64,6 +65,9 @@ public class ShoppingListActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+//        for (CartItem c : dbHandler.getCartItems(cartId)){
+//            Log.v("TAG", c.getName()+" - "+c.isCheck());
+//        }
     }
 
     @Override
@@ -107,7 +111,9 @@ public class ShoppingListActivity extends AppCompatActivity {
                                 finish();
                                 break;
                             case "Create Transaction":
-                                AddCartToRecord addCartToRecord = new AddCartToRecord(ShoppingListActivity.this, "SGD", cartId);
+                                String PREF_NAME = "sharedPrefs";
+                                SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                                AddCartToRecord addCartToRecord = new AddCartToRecord(ShoppingListActivity.this, prefs.getString("baseCurrency", ""), cartId);
                                 addCartToRecord.add();
                                 break;
                             default:
@@ -124,7 +130,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     private void clearCart(){
         Log.v("TAG", "ID: "+cartId);
         dbHandler.deleteCartItems(cartId);
-        myAdapter.update(cartId);
+        myAdapter.clear();
         Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
     }
 

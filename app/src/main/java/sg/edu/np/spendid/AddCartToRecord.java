@@ -14,6 +14,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +32,8 @@ public class AddCartToRecord {
     private ArrayList<Wallet> walletArrayList;
     private EditText name, amt;
     private double amount;
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
+    private Dialog dialog;
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public AddCartToRecord(Context context, String baseCurrency, int cartId) {
         this.context = context;
@@ -45,7 +49,7 @@ public class AddCartToRecord {
     }
 
     public void add(){
-        Dialog dialog = new Dialog(context);
+        dialog = new Dialog(context);
         dialog.setContentView(R.layout.cart_to_wallet_layout);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -76,9 +80,13 @@ public class AddCartToRecord {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHandler.addRecord(createRecordFromCart());
-                Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                Record r = createRecordFromCart();
+                if (r != null){
+                    dbHandler.addRecord(r);
+                    Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+
             }
         });
 
@@ -128,12 +136,24 @@ public class AddCartToRecord {
 
     private Record createRecordFromCart(){
         String title = name.getText().toString();
+        if (title.length() == 0 || title.length() > 15){
+            TextInputLayout editLayout = dialog.findViewById(R.id.cartToRecordName_layout);
+            editLayout.setError("Invalid Name");
+            return null;
+        }
+        else{
+            Calendar currentTime = Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            String date = dateFormat.format(currentTime.getTime());
+            String time = timeFormat.format(currentTime.getTime());
+            String a = amt.getText().toString();
+            if (a.length() == 0){
+                a = "0";
+            }
+            return new Record(title, des, Double.parseDouble(a), "Shopping", date, time, wallet.getWalletId());
+        }
         //TO DO error checking
-        Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-        String date = dateFormat.format(currentTime.getTime());
-        String time = timeFormat.format(currentTime.getTime());
-        return new Record(title, des, Double.parseDouble(amt.getText().toString()), "Shopping", date, time, wallet.getWalletId());
+
     }
 }
