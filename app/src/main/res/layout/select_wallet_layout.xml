@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="?colorOnBackground"
         app:cardElevation="10dp"
         android:id="@+id/sel_wallet_cardView"
         android:layout_width="match_parent"
@@ -24,26 +24,19 @@
             android:padding="10dp"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+            <TextView
+                android:id="@+id/sel_walletName_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Wallet Name"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="5dp">
-
-                <TextView
-                    android:id="@+id/sel_walletName_textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Wallet Name"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="18sp" />
-            </LinearLayout>
+                android:gravity="center|start"
+                android:paddingStart="5dp"
+                android:textStyle="bold"
+                android:textSize="18sp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
@@ -59,6 +52,7 @@
                     android:id="@+id/sel_walletDate_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?subtitleTextColor"
                     android:text="Last Updated"
                     android:textSize="12sp" />
             </LinearLayout>

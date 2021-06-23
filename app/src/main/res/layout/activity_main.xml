@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?backgroundColor"
     android:id="@+id/dashboard_drawer_layout"
     tools:context=".MainActivity">
 
@@ -36,7 +37,7 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="30dp"
                         android:layout_marginBottom="15dp"
-                        android:background="@color/white"
+                        app:cardBackgroundColor="?colorOnBackground"
                         app:cardCornerRadius="50dp"
                         app:cardElevation="25dp">
 
@@ -183,8 +184,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Manage"
-                            android:textColor="?colorOnPrimary"
-                            app:drawableTint="?colorOnPrimary"
+                            android:textColor="?subtitleTextColor"
+                            app:drawableTint="?subtitleTextColor"
                             android:textAlignment="textEnd"
                             android:textSize="14sp"
                             app:drawableEndCompat="@drawable/ic_arrow_forward_24" />
@@ -225,7 +226,6 @@
                             android:layout_weight="1"
                             android:drawablePadding="5dp"
                             android:textStyle="bold"
-                            android:textColor="@color/black"
                             app:drawableTint="?colorPrimary"
                             android:text="Today's Transactions"
                             android:textSize="16sp"
@@ -238,8 +238,8 @@
                             android:layout_weight="1"
                             android:text="View All"
                             android:textAlignment="textEnd"
-                            android:textColor="?colorOnPrimary"
-                            app:drawableTint="?colorOnPrimary"
+                            android:textColor="?subtitleTextColor"
+                            app:drawableTint="?subtitleTextColor"
                             android:textSize="14sp"
                             app:drawableEndCompat="@drawable/ic_arrow_forward_24" />
                     </LinearLayout>
@@ -274,7 +274,7 @@
                 android:focusable="true"
                 app:backgroundTint="?colorAccent"
                 android:src="@drawable/ic_add_24"
-                app:tint="@color/white" />
+                app:tint="?colorOnPrimary" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/dashboardAddRecord_fab"
@@ -288,7 +288,7 @@
                 android:focusable="true"
                 app:backgroundTint="?colorPrimaryVariant"
                 android:src="@drawable/ic_transaction_24"
-                app:tint="@color/white" />
+                app:tint="?colorOnPrimary" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/dashboardAddWallet_fab"
@@ -302,7 +302,7 @@
                 android:focusable="true"
                 app:backgroundTint="?colorPrimaryVariant"
                 android:src="@drawable/ic_wallet_24"
-                app:tint="@color/white" />
+                app:tint="?colorOnPrimary" />
         </RelativeLayout>
     </LinearLayout>
     <RelativeLayout

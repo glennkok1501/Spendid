@@ -5,6 +5,7 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?backgroundColor"
     xmlns:tools="http://schemas.android.com/tools">
 
     <include layout="@layout/main_toolbar"/>
@@ -26,7 +27,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/white"
+                    app:cardBackgroundColor="?colorOnBackground"
                     app:cardElevation="25dp"
                     app:cardCornerRadius="50dp"
                     android:layout_marginLeft="15dp"
@@ -53,6 +54,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
                                 android:hint="0.00"
+                                android:textColorHint="?subtitleTextColor"
                                 android:inputType="numberDecimal"
                                 android:textAlignment="center"
                                 android:textSize="36sp"
@@ -65,7 +67,8 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_alignParentEnd="true"
                                 android:paddingBottom="25dp"
-                                android:paddingRight="5dp"
+                                android:textColor="?subtitleTextColor"
+                                android:paddingEnd="5dp"
                                 android:text="currency" />
                         </RelativeLayout>
 
@@ -90,6 +93,7 @@
                     android:layout_height="match_parent"
                     app:startIconDrawable="@drawable/ic_title_24"
                     android:hint="Title"
+                    app:startIconTint="?colorOnPrimarySurface"
                     app:counterEnabled="true"
                     app:counterMaxLength="15"
                     app:helperTextTextColor="@color/red">
@@ -97,13 +101,14 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editRecordTitle_editText"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/editRecordDes_layout"
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="15dp"
+                    app:startIconTint="?colorOnPrimarySurface"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -119,7 +124,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.cardview.widget.CardView
-                    app:cardBackgroundColor="@color/white"
+                    app:cardBackgroundColor="?colorOnBackground"
                     app:cardElevation="10dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
@@ -148,9 +153,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:drawableLeft="@drawable/ic_category_24"
+                                android:drawableStart="@drawable/ic_category_24"
                                 android:drawablePadding="10dp"
-                                android:drawableTint="@color/dark_grey"
+                                app:drawableTint="?colorOnPrimarySurface"
                                 android:text="Category:"
                                 android:textSize="16sp" />
 
@@ -160,6 +165,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="4"
                                 android:text="Select a Category"
+                                android:textColor="?subtitleTextColor"
                                 android:textSize="16sp"
                                 android:textStyle="italic" />
                         </LinearLayout>
@@ -177,13 +183,13 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editRecord_fab"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:clickable="true"
             android:focusable="true"
-            app:tint="@color/white"
+            app:tint="?colorOnPrimary"
             app:backgroundTint="?colorAccent"
             android:src="@drawable/ic_save_24" />
     </RelativeLayout>

@@ -21,7 +21,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            app:tint="?colorOnSecondary"
+            app:tint="?colorOnPrimary"
             android:src="@drawable/ic_menu_32" />
 
         <TextView
@@ -32,7 +32,7 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:textColor="?colorOnSecondary"
+            android:textColor="?colorOnPrimary"
             android:text="Dashboard" />
 
         <ImageView
@@ -43,7 +43,7 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_more_32"
-            app:tint="?colorOnSecondary" />
+            app:tint="?colorOnPrimary" />
     </LinearLayout>
 
 

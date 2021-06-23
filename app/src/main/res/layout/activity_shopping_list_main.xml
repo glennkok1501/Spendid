@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?backgroundColor"
     tools:context=".ShoppingListMainActivity">
 
     <LinearLayout
@@ -28,5 +29,5 @@
         android:focusable="true"
         app:backgroundTint="?colorAccent"
         android:src="@drawable/ic_add_24"
-        app:tint="@color/white" />
+        app:tint="?colorOnPrimary" />
 </RelativeLayout>

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?backgroundColor"
     tools:context=".NewShoppingCartActivity">
     <include layout="@layout/page_toolbar" />
 
@@ -30,6 +31,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:startIconTint="?colorOnPrimarySurface"
                     app:startIconDrawable="@drawable/ic_shopping_cart_24"
                     android:hint="Name"
                     app:helperTextTextColor="@color/red">
@@ -46,7 +48,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:textColor="@color/white"
+                    app:backgroundTint="?colorPrimary"
+                    android:textColor="?colorOnPrimary"
                     android:text="Add Cart" />
 
             </LinearLayout>
