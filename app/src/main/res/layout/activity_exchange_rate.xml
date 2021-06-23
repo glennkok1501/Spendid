@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?backgroundColor"
     tools:context=".ExchangeRateActivity">
 
     <LinearLayout
@@ -57,6 +58,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/exchangeRateSelFrom_cardView"
+                app:cardBackgroundColor="?colorOnBackground"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:cardCornerRadius="15dp"
@@ -70,7 +72,7 @@
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:text="Select"
-                    app:drawableTint="@color/light_grey"
+                    app:drawableTint="?subtitleTextColor"
                     app:drawableEndCompat="@drawable/ic_arrow_down_24"
                     android:gravity="center"/>
 
@@ -87,11 +89,13 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:rotation="90"
+                app:tint="?colorOnSecondary"
                 app:backgroundTint="?colorSecondary"
                 android:src="@drawable/ic_loop_24" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/exchangeRateSelTo_cardView"
+                app:cardBackgroundColor="?colorOnBackground"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
@@ -105,7 +109,7 @@
                     android:padding="5dp"
                     android:text="Select"
                     android:textSize="16sp"
-                    app:drawableTint="@color/light_grey"
+                    app:drawableTint="?subtitleTextColor"
                     app:drawableEndCompat="@drawable/ic_arrow_down_24"
                     android:gravity="center" />
             </androidx.cardview.widget.CardView>
@@ -113,6 +117,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/exchangeRateAmt_layout"
+            app:cardBackgroundColor="?colorOnBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -156,7 +161,7 @@
                             android:layout_marginBottom="10dp"
                             android:hint="0.00"
                             android:inputType="numberDecimal"
-                            android:text=""
+                            android:textColorHint="?subtitleTextColor"
                             android:textAlignment="center"
                             android:textSize="16sp" />
 
@@ -204,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:textSize="12sp"
-                    android:textColor="@color/light_grey"/>
+                    android:textColor="?subtitleTextColor"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

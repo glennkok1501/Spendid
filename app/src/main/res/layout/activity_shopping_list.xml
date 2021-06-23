@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?backgroundColor"
     tools:context=".ShoppingListActivity">
     <include layout="@layout/main_toolbar"/>
 
@@ -29,6 +30,6 @@
             android:focusable="true"
             app:backgroundTint="?colorAccent"
             android:src="@drawable/ic_add_24"
-            app:tint="@color/white" />
+            app:tint="?colorOnPrimary" />
     </RelativeLayout>
 </LinearLayout>

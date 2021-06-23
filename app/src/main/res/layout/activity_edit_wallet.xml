@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?backgroundColor"
     tools:context=".AddWalletActivity">
 
     <include layout="@layout/main_toolbar"/>
@@ -30,6 +31,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:startIconTint="?colorOnPrimarySurface"
                     app:startIconDrawable="@drawable/ic_wallet_24"
                     android:hint="Name"
                     app:counterMaxLength="15"
@@ -39,7 +41,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editWalletName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -50,6 +52,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:startIconTint="?colorOnPrimarySurface"
                     app:startIconDrawable="@drawable/ic_notes_24"
                     android:hint="Description"
                     app:helperTextTextColor="@color/red">
@@ -57,7 +60,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editWalletDescription"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -74,7 +77,7 @@
             android:focusable="true"
             app:backgroundTint="?colorAccent"
             android:src="@drawable/ic_save_24"
-            app:tint="@color/white" />
+            app:tint="?colorOnPrimary" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?backgroundColor"
     tools:context=".TransactionHistoryActivity">
 
     <include layout="@layout/page_toolbar"/>
@@ -32,6 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
+                    android:textColorHint="?subtitleTextColor"
                     android:hint="Search..."
                     android:ems="10"
                     android:inputType="textPersonName" />
@@ -43,7 +45,7 @@
                     android:padding="5dp"
                     android:layout_weight="1"
                     android:src="@drawable/ic_search_24"
-                    app:tint="@color/grey" />
+                    app:tint="?subtitleTextColor" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

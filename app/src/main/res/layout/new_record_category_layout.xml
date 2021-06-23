@@ -16,7 +16,6 @@
         android:layout_margin="10dp"
         app:cardCornerRadius="50dp"
         app:cardBackgroundColor="?colorSecondary"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,7 +24,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="10dp"
-            app:tint="@color/white"
+            app:tint="?colorOnSecondary"
             tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

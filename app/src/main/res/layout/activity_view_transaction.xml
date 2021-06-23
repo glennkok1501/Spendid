@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?backgroundColor"
     android:orientation="vertical">
 
     <include layout="@layout/page_toolbar"/>
@@ -42,7 +43,7 @@
                         android:layout_height="100dp"
                         android:padding="10dp"
                         android:src="@drawable/ic_category_24"
-                        app:tint="@color/white" />
+                        app:tint="?colorOnSecondary" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -80,7 +81,7 @@
                     android:layout_marginBottom="15dp"
                     android:text="currency"
                     android:textAlignment="center"
-                    android:textColor="@color/light_grey"
+                    android:textColor="?subtitleTextColor"
                     android:textSize="12sp" />
 
                 <androidx.cardview.widget.CardView
@@ -111,7 +112,8 @@
                             android:paddingStart="15dp"
                             android:text="Title"
                             android:textAlignment="center"
-                            android:textColor="@color/white"
+                            app:drawableTint="?colorOnPrimary"
+                            android:textColor="?colorOnPrimary"
                             android:textSize="24sp"
                             app:drawableStartCompat="@drawable/ic_wallet_24" />
 
@@ -121,7 +123,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:src="@drawable/ic_income_24"
-                            app:tint="@color/white" />
+                            app:tint="?colorOnPrimary" />
                     </LinearLayout>
 
 
@@ -134,7 +136,7 @@
                     android:layout_marginBottom="15dp"
                     android:text="Date and Time"
                     android:textAlignment="center"
-                    android:textColor="@color/light_grey"
+                    android:textColor="?subtitleTextColor"
                     android:textSize="12sp" />
 
                 <TextView
@@ -174,6 +176,6 @@
             android:focusable="true"
             android:src="@drawable/ic_edit_24"
             app:backgroundTint="?colorAccent"
-            app:tint="@color/white" />
+            app:tint="?colorOnPrimary" />
     </RelativeLayout>
 </LinearLayout>

@@ -7,14 +7,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:showDividers="end"
-    android:divider="@color/light_grey"
+    android:divider="?subtitleTextColor"
     tools:context=".CurrencyAdapter">
 
     <TextView
         android:id="@+id/countryCurrencies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="?backgroundColor"
         android:clickable="true"
         android:focusable="true"
         android:textSize="16sp"
@@ -24,10 +24,5 @@
         android:paddingEnd="20dp"
         android:text="Country" />
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
 
 </LinearLayout>

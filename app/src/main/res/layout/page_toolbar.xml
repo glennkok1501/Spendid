@@ -15,6 +15,7 @@
         android:focusable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:tint="?colorOnPrimary"
         android:src="@drawable/ic_back_arrow_32" />
 
     <TextView
@@ -24,7 +25,7 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:textColor="@color/white"
+        android:textColor="?colorOnPrimary"
         android:text="Activity" />
 
 </RelativeLayout>

@@ -209,7 +209,7 @@ public class CustomDialog {
                             CartItem c = new CartItem(n, Double.parseDouble(checkAmt(amt.getText().toString())), false, cartId);
                             dbHandler.addCartItem(c);
                             Toast.makeText(v.getContext(), "Item Added", Toast.LENGTH_SHORT).show();
-                            adapter.add(c);
+                            adapter.update(dbHandler.getCartItems(cartId));
                             dialog.dismiss();
                         }
                     }

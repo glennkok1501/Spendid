@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Spendid_Light">
+        android:theme="@style/Theme.Spendid">
         <activity android:name=".ExchangeRateActivity"></activity>
         <activity android:name=".NewShoppingCartActivity" />
         <activity android:name=".ShoppingListMainActivity" />
