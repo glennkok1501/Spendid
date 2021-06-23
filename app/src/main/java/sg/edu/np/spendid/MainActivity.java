@@ -330,6 +330,9 @@ public class MainActivity extends AppCompatActivity {
         search = findViewById(R.id.navbar_search);
         setButton(search, SearchActivity.class);
 
+        currencyRates = findViewById(R.id.navbar_currencyRate);
+        setButton(currencyRates, ExchangeRateActivity.class);
+
         shoppingList = findViewById(R.id.navbar_shoppingList);
         setButton(shoppingList, ShoppingListMainActivity.class);
 

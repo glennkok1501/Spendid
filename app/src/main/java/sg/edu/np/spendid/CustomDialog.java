@@ -18,11 +18,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -315,6 +317,42 @@ public class CustomDialog {
 
         public void dismiss(){
             dialog.dismiss();
+        }
+    }
+
+    public class SelectCountry{
+        private String[] countries;
+        private Dialog dialog;
+        private TextView textView;
+
+        public SelectCountry(String[] countries, TextView textView) {
+            this.countries = countries;
+            this.textView = textView;
+            dialog = new Dialog(context);
+            dialog.setContentView(R.layout.country_currency_dialog_layout);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setCancelable(true);
+        }
+
+        public void show(){
+            RecyclerView recyclerView = dialog.findViewById(R.id.selCurrency_RV);
+            SelectCurrencyAdapter myAdapter = new SelectCurrencyAdapter(countries, dialog, textView);
+            LinearLayoutManager myLayoutManager = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(myLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(myAdapter);
+
+            RelativeLayout layout = dialog.findViewById(R.id.selCurrency_relativeLayout);
+            layout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    dialog.dismiss();
+                    return false;
+                }
+            });
+
+            dialog.show();
         }
     }
 }
