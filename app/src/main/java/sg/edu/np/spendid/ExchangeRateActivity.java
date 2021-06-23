@@ -40,7 +40,6 @@ public class ExchangeRateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        toggleNightMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange_rate);
 
@@ -144,12 +143,4 @@ public class ExchangeRateActivity extends AppCompatActivity {
         mQueue.add(request);
     }
 
-    private void toggleNightMode(){
-        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else{
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
 }

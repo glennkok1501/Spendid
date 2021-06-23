@@ -12,7 +12,6 @@ public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        toggleNightMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
@@ -26,14 +25,5 @@ public class AboutActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    private void toggleNightMode(){
-        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else{
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
     }
 }

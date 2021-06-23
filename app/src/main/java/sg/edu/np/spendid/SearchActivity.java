@@ -28,7 +28,6 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        toggleNightMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
@@ -124,12 +123,4 @@ public class SearchActivity extends AppCompatActivity {
         ta.filter(out);
     }
 
-    private void toggleNightMode(){
-        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else{
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
 }

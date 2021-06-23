@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toggleNightMode();
         dbHandler = new DBHandler(this, null, null, 1);
         monthText = findViewById(R.id.totalBalMonth_textView);
         balance = findViewById(R.id.totalBalCost_textView);
@@ -138,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        toggleNightMode();
         super.onStart();
         //Total Balance
         HashMap<String, Double> bal = dbHandler.getBalance(currentMonth());
@@ -397,10 +397,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void toggleNightMode(){
         if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
         else{
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }
