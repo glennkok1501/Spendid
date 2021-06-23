@@ -56,7 +56,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         ArrayList<ShoppingCart> shoppingCarts = dbHandler.getShoppingCarts();
         RecyclerView recyclerView = findViewById(R.id.shoppingListMain_RV);
         ShoppingListAdapter myAdapter = new ShoppingListAdapter(shoppingCarts, this);
-        LinearLayoutManager myLayoutManager = new GridLayoutManager(this, 2);
+        LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myAdapter);
