@@ -1,6 +1,7 @@
    package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        toggleNightMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_transaction);
         dbHandler = new DBHandler(this, null, null, 1);
@@ -85,5 +87,14 @@ public class ViewTransactionActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void toggleNightMode(){
+        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else{
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class AddWalletActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        toggleNightMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_wallet);
         dbhandler = new DBHandler(this, null, null, 1);
@@ -85,5 +87,13 @@ public class AddWalletActivity extends AppCompatActivity {
         return len != 0 && len <= 15;
     }
 
+    private void toggleNightMode(){
+        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else{
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
 
 }

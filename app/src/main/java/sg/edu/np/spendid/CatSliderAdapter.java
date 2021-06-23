@@ -36,7 +36,7 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
                 for(View i : itemViewList) {
                     CardView ic = i.findViewById(R.id.newRecordCat_bubble);
                     if (itemViewList.get(viewType) == i) {
-                        ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.pizza));
+                        ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.denim));
                     } else {
                         ic.setCardBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.fire_bush));
                     }
@@ -68,6 +68,4 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
             image = itemView.findViewById(R.id.newRecordCat_imageView);
         }
     }
-
-
 }

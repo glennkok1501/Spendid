@@ -1,6 +1,7 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ public class NewShoppingCartActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        toggleNightMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_shopping_cart);
         //Tool Bar
@@ -52,5 +54,14 @@ public class NewShoppingCartActivity extends AppCompatActivity {
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(currentTime.getTime());
+    }
+
+    private void toggleNightMode(){
+        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else{
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 }

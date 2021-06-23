@@ -3,6 +3,7 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        toggleNightMode();
         super.onStart();
         //Total Balance
         HashMap<String, Double> bal = dbHandler.getBalance(currentMonth());
@@ -390,6 +392,15 @@ public class MainActivity extends AppCompatActivity {
             d[i].setText(Html.fromHtml(getResources().getString(R.string.dot)));
             d[i].setTextSize(18);
             l.addView(d[i]);
+        }
+    }
+
+    private void toggleNightMode(){
+        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else{
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }
