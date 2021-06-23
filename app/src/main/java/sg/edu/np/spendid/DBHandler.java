@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -402,4 +405,40 @@ public class DBHandler extends SQLiteOpenHelper {
         return isExpense;
     }
 
+    public ArrayList<String> getAllCategoriesWithRecords() {
+        ArrayList<String> catList = new ArrayList<>();
+        String query = "SELECT c."+COLUMN_CATEGORY_TITLE+" FROM "+TABLE_CATEGORY+" c "+"INNER JOIN "+TABLE_RECORD+" r "
+                +"ON c."+COLUMN_CATEGORY_TITLE+" = r."+COLUMN_RECORD_CATEGORY+" GROUP BY c."+COLUMN_CATEGORY_TITLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.moveToLast(); cursor.moveToNext()) {
+            catList.add(cursor.getString(0));
+        }
+        return catList;
+    }
+
+    public ArrayList<String> deleteCategory(String title) {
+        ArrayList<String> values = new ArrayList<>();
+        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \""+title+"\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            if (getAllCategoriesWithRecords().contains(title)) {
+                values.add("false");
+                values.add("Cannot be deleted, there are transactions under this category");
+                cursor.close();
+                db.close();
+                return values;
+            }
+            values.add("true");
+            values.add(title + "deleted");
+            db.delete(TABLE_CATEGORY, COLUMN_CATEGORY_TITLE+"= ?", new String[] {title});
+        } else {
+            values.add("false");
+            values.add("No such category");
+        }
+        cursor.close();
+        db.close();
+        return values;
+    }
 }

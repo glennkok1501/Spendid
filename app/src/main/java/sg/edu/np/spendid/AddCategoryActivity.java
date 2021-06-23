@@ -60,7 +60,8 @@ public class AddCategoryActivity extends AppCompatActivity {
                 if (isValidName()) {
                     Category newCat = new Category(newCatName.getText().toString(), ie.isChecked());
                     dbHandler.addCategory(newCat);
-                    Toast.makeText(getApplicationContext(), "Added New Category", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Added " + newCatName.getText().toString() +
+                            " Category", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

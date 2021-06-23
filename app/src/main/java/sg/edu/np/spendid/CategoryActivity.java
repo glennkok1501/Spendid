@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CategoryActivity extends AppCompatActivity {
     private DBHandler dbHandler;
-    private final static String PREF_NAME = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +28,7 @@ public class CategoryActivity extends AppCompatActivity {
         TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
         ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView delete = findViewById(R.id.mainToolbarMore_imageView);
-        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
+        delete.setImageResource(R.drawable.ic_delete_32);
         activityTitle.setText("Categories");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +38,8 @@ public class CategoryActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(CategoryActivity.this, DeleteCategoryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -55,12 +54,11 @@ public class CategoryActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        RecyclerView catRv = findViewById(R.id.category_recyclerView);
-        CatAdaptor ca = new CatAdaptor(dbHandler.getCategories());
+        RecyclerView catRv = findViewById(R.id.delete_Category_recyclerView);
+        CatAdaptor ca = new CatAdaptor(dbHandler.getCategories(), false);
         LinearLayoutManager lm = new LinearLayoutManager(this);
         catRv.setLayoutManager(lm);
         catRv.setItemAnimator(new DefaultItemAnimator());
         catRv.setAdapter(ca);
-        ca.notifyDataSetChanged();
     }
 }
