@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -103,7 +104,7 @@ public class CustomDialog {
             });
         }
         else{
-            star.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            star.setVisibility(View.INVISIBLE);
         }
 
         bg.setOnTouchListener(new View.OnTouchListener() {
