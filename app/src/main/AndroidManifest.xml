@@ -20,6 +20,10 @@
         <activity android:name=".EditWalletActivity" />
         <activity android:name=".CategoryActivity" />
         <activity android:name=".SearchActivity" />
+        <activity android:name=".DeleteCategoryActivity" />
+        <activity android:name=".AddCategoryActivity" />
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".SearchActivity" />
         <activity android:name=".ViewTransactionActivity" />
         <activity android:name=".WalletCurrencyActivity" />
         <activity android:name=".AddWalletActivity" />

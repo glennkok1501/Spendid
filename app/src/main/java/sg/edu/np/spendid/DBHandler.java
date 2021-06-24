@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.TableRow;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -249,7 +253,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             String title = cursor.getString(0);
-            Boolean exp = cursor.getInt(1) == 1;
+            boolean exp = cursor.getInt(1)==1;
             Category cat = new Category(title, exp);
             catList.add(cat);
         }
@@ -290,12 +294,16 @@ public class DBHandler extends SQLiteOpenHelper {
     public String lastMadeTransaction(int wId) {
         String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_WALLET_ID + " = " + wId + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC LIMIT 1";
         SQLiteDatabase db = this.getReadableDatabase();
+        String s;
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
-            return cursor.getString(5);
+            s = cursor.getString(5);
         } else {
-            return null;
+            s = null;
         }
+        cursor.close();
+        db.close();
+        return s;
     }
 
     //return an array of all records sorted in descending order - Hong Li
@@ -353,21 +361,26 @@ public class DBHandler extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
+        Wallet w;
         if (cursor.moveToFirst()) {
             int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String des = cursor.getString(2);
             String cur = cursor.getString(3);
             String date = cursor.getString(4);
-            return new Wallet(id, name, des, cur, date);
+            w = new Wallet(id, name, des, cur, date);
         } else {
-            return null;
+            w = null;
         }
+        cursor.close();
+        db.close();
+        return w;
     }
 
     public Record getRecord(int rId) {
         String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_RECORD_ID + " = " + rId;
         SQLiteDatabase db = this.getReadableDatabase();
+        Record r;
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             int id = cursor.getInt(0);
@@ -378,10 +391,13 @@ public class DBHandler extends SQLiteOpenHelper {
             String dateCreated = cursor.getString(5);
             String timeCreated = cursor.getString(6);
             int walletId = cursor.getInt(7);
-            return new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+            r = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
         } else {
-            return null;
+            r = null;
         }
+        cursor.close();
+        db.close();
+        return r;
     }
 
     public void updateRecord(Record r) {
@@ -470,6 +486,51 @@ public class DBHandler extends SQLiteOpenHelper {
         return isExpense;
     }
 
+    //Returns
+    public boolean catDeletable(String search) {
+        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_RECORD_CATEGORY+" = "+"\""+search+"\"";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean b;
+        if (cursor.moveToFirst()) {
+            b = false;
+        } else {
+            b = true;
+        }
+        cursor.close();
+        db.close();
+        return b;
+    }
+
+    public ArrayList<String> getAllCategoriesWithRecords() {
+        ArrayList<String> catList = new ArrayList<>();
+        String query = "SELECT c."+COLUMN_CATEGORY_TITLE+" FROM "+TABLE_CATEGORY+" c "+"INNER JOIN "+TABLE_RECORD+" r "
+                +"ON c."+COLUMN_CATEGORY_TITLE+" = r."+COLUMN_RECORD_CATEGORY+" GROUP BY c."+COLUMN_CATEGORY_TITLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.moveToLast(); cursor.moveToNext()) {
+            catList.add(cursor.getString(0));
+        }
+        cursor.close();
+        db.close();
+        return catList;
+    }
+
+    public boolean deleteCategory(String title) {
+        boolean b;
+        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \""+title+"\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            b = true;
+            db.delete(TABLE_CATEGORY, COLUMN_CATEGORY_TITLE+"= ?", new String[] {title});
+        } else {
+            b = false;
+        }
+        cursor.close();
+        db.close();
+        return b;
+    }
 
     //Shopping List Feature
     public ArrayList<ShoppingCart> getShoppingCarts(){

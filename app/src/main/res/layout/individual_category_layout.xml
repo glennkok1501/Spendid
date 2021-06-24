@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/deleteCategory_linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/newRecordCat_bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="?colorSecondary"
+            app:cardCornerRadius="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/cat_imageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                app:tint="@color/white"
+                tools:srcCompat="@tools:sample/avatars" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/name_Category_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_weight="8"
+            android:text="TextView"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/delete_Category_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            app:srcCompat="@drawable/ic_delete_24"
+            app:tint="#FF0400" />
+
+    </LinearLayout>
+
+</RelativeLayout>
