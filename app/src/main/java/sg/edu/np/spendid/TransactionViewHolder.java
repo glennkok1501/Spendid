@@ -5,11 +5,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TransactionViewHolder extends RecyclerView.ViewHolder {
-    TextView title, time, amt, cur;
+    TextView title, time, amt, cur, date;
     ImageView editBtn, cat;
+    CardView cardView;
 
     public TransactionViewHolder(View item) {
         super(item);
@@ -19,5 +21,7 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
         cur = item.findViewById(R.id.currency_Record_textView);
         editBtn = item.findViewById(R.id.edit_Record_imageView);
         cat = item.findViewById(R.id.cat_Record_imageView);
+        date = item.findViewById(R.id.date_Record_textView);
+        cardView = item.findViewById(R.id.viewRecord_cardView);
     }
 }

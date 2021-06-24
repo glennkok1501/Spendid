@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?backgroundColor"
     tools:context=".TransactionHistoryActivity">
 
     <include layout="@layout/main_toolbar"/>
@@ -38,7 +39,7 @@
             android:clickable="true"
             android:focusable="true"
             app:backgroundTint="?colorAccent"
-            android:src="@drawable/ic_add_24"
-            app:tint="@color/white" />
+            android:src="@drawable/ic_transaction_24"
+            app:tint="?colorOnPrimary" />
     </RelativeLayout>
 </LinearLayout>

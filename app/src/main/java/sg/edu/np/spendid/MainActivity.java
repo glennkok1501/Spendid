@@ -3,6 +3,7 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -14,11 +15,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,21 +38,20 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
     private TextView monthText, balance, income, expense, currency, manage, viewAll;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
-    private final static String PREF_NAME = "sharedPrefs";
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
+    private final String PREF_NAME = "sharedPrefs";
     private FloatingActionButton fab, addWallet, addRecord;
     private String baseCurrency;
     private Animation open, close, up, down;
     private boolean fabClicked;
-    private LinearLayout manangeWallet, transHist, categories, currencyRates, shoppingList, stats, settings, about;
-
-    //For nav bar
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
+    private boolean collapse_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toggleNightMode();
         dbHandler = new DBHandler(this, null, null, 1);
         monthText = findViewById(R.id.totalBalMonth_textView);
         balance = findViewById(R.id.totalBalCost_textView);
@@ -67,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
 
-        //Drawer and Navbar
-        initDrawer();
-
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         getBaseCurrency();
         hideHiddenFab();
 
+        //Drawer and Navbar
+        initDrawer();
         manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,12 +137,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void closeDrawer(){
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -153,9 +149,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Wallets view pager
         walletList = sortWallet(dbHandler.getWallets());
+        TextView noWallet = findViewById(R.id.walletViewPageStatus_textView);
         if (walletList.size() == 0){
-            TextView noWallet = findViewById(R.id.walletViewPageStatus_textView);
             noWallet.setText("No Wallets");
+        }
+        else{
+            noWallet.setText("");
         }
         ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, baseCurrency, this);
@@ -182,9 +181,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Current Transactions
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
+        TextView noCurTrans = findViewById(R.id.curTransStatus_textView);
         if (curTransMap.size() == 0){
-            TextView noCurTrans = findViewById(R.id.curTransStatus_textView);
             noCurTrans.setText("No Transactions");
+        }
+        else{
+            noCurTrans.setText("");
         }
         RecyclerView currentTransRV = findViewById(R.id.main_transHist_RV);
         CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap, baseCurrency);
@@ -204,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         resetFab();
         closeDrawer();
-
     }
 
     @Override
@@ -215,6 +216,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void closeDrawer(){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
     }
 
     private void showHiddenFab(){
@@ -275,14 +282,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDrawer(){
         //Tool bar
+        LinearLayout manangeWallet, transHist, categories, currencyRates, shoppingList, settings, about, search, subscriptions, add, additional, addWallet, addRecord;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
         ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
+        ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+        initPopupMenu(moreBtn);
 
         //drawer
         manangeWallet = findViewById(R.id.navbar_manageWallets);
@@ -293,6 +303,32 @@ public class MainActivity extends AppCompatActivity {
 
         categories = findViewById(R.id.navbar_category);
         setButton(categories, CategoryActivity.class);
+
+        search = findViewById(R.id.navbar_search);
+        setButton(search, SearchActivity.class);
+
+        currencyRates = findViewById(R.id.navbar_currencyRate);
+        setButton(currencyRates, ExchangeRateActivity.class);
+
+        shoppingList = findViewById(R.id.navbar_shoppingList);
+        setButton(shoppingList, ShoppingListMainActivity.class);
+
+        //additional options
+        add = findViewById(R.id.navbar_add);
+        additional = findViewById(R.id.navbar_additional);
+        addWallet = findViewById(R.id.navbar_addWallet);
+        setButton(addWallet, WalletCurrencyActivity.class);
+        addRecord = findViewById(R.id.navbar_addRecord);
+        setButton(addRecord, SelectWalletActivity.class);
+        collapseBar(add, additional);
+
+        about = findViewById(R.id.navbar_about);
+        setButton(about, AboutActivity.class);
+
+        settings = findViewById(R.id.navbar_settings);
+        setButton(settings, SettingsActivity.class);
+
+
     }
 
     private void setButton(LinearLayout l, Class c){
@@ -306,13 +342,68 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void collapseBar(LinearLayout add, LinearLayout additional){
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collapse_add = !collapse_add;
+                if (collapse_add){
+                    additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                }
+                else{
+                    additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+                }
+            }
+        });
+    }
+
+    private void initPopupMenu(ImageView moreBtn){
+        moreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(MainActivity.this, moreBtn);
+                popupMenu.getMenu().add("About");
+                popupMenu.getMenu().add("Settings");
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Intent intent;
+                        switch (item.getTitle().toString()){
+                            case "About":
+                                intent = new Intent(MainActivity.this, AboutActivity.class);
+                                startActivity(intent);
+                                break;
+                            case "Settings":
+                                intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                startActivity(intent);
+                                break;
+                            default:
+                                Toast.makeText(getApplicationContext(), "Unknown Page", Toast.LENGTH_SHORT).show();
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+    }
+
     private void viewPagerIndicators(TextView[] d, LinearLayout l){
         l.removeAllViews();
         for (int i = 0; i < d.length; i++){
             d[i] = new TextView(this);
-            d[i].setText(Html.fromHtml("&#8226;"));
+            d[i].setText(Html.fromHtml(getResources().getString(R.string.dot)));
             d[i].setTextSize(18);
             l.addView(d[i]);
+        }
+    }
+
+    private void toggleNightMode(){
+        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }

@@ -11,7 +11,4 @@ public class CurrencyViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         txt=itemView.findViewById(R.id.countryCurrencies);
     }
-    public TextView getTextView(){
-        return txt;
-    }
 }

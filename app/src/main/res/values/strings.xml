@@ -1,40 +1,44 @@
 <resources>
     <string name="app_name">Spendid</string>
+    <string name="tick">&#9989;</string>
+    <string name="cross">&#10060;</string>
+    <string name="dot">&#8226;</string>
+
     <string-array name="countries">
-        <item>United States Dollar;usd</item>
-        <item>Euro;eur</item>
-        <item>Japanese Yen;jpy</item>
-        <item>Pound Sterling;gbp</item>
         <item>Australian Dollar;aud</item>
-        <item>Canadian Dollar;cad</item>
-        <item>Swiss Franc;chf</item>
-        <item>Renminbi;cny</item>
-        <item>Hong Kong Dollar;hkd</item>
-        <item>New Zealand Dollar;nzd</item>
-        <item>Swedish Krona;sek</item>
-        <item>South Korean Won;krw</item>
-        <item>Singapore Dollar;sgd</item>
-        <item>Norwegian Krone;nok</item>
-        <item>Mexican Peso;mxn</item>
-        <item>Indian Rupee;inr</item>
-        <item>Russian Ruble;rub</item>
-        <item>South African Rand;zar</item>
-        <item>Turkish Lira;try</item>
         <item>Brazilian Real;brl</item>
-        <item>New Taiwan Dollar;twd</item>
-        <item>Danish Krone;dkk</item>
-        <item>Polish Złoty;pln</item>
-        <item>Thai Baht;thb</item>
-        <item>Indonesian Rupiah;idr</item>
-        <item>Hungarian Forint;huf</item>
-        <item>Czech Koruna;czk</item>
-        <item>Israeli New Shekel;ils</item>
+        <item>Canadian Dollar;cad</item>
         <item>Chilean Peso;clp</item>
-        <item>Philippine Peso;php</item>
-        <item>Uae Dirham;aed</item>
         <item>Colombian Peso;cop</item>
-        <item>Saudi Riyal;sar</item>
+        <item>Czech Koruna;czk</item>
+        <item>Danish Krone;dkk</item>
+        <item>Euro;eur</item>
+        <item>Hong Kong Dollar;hkd</item>
+        <item>Hungarian Forint;huf</item>
+        <item>Indian Rupee;inr</item>
+        <item>Indonesian Rupiah;idr</item>
+        <item>Israeli New Shekel;ils</item>
+        <item>Japanese Yen;jpy</item>
         <item>Malaysian Ringgit;myr</item>
+        <item>Mexican Peso;mxn</item>
+        <item>New Taiwan Dollar;twd</item>
+        <item>New Zealand Dollar;nzd</item>
+        <item>Norwegian Krone;nok</item>
+        <item>Philippine Peso;php</item>
+        <item>Polish Złoty;pln</item>
+        <item>Pound Sterling;gbp</item>
+        <item>Renminbi;cny</item>
         <item>Romanian Leu;ron</item>
+        <item>Russian Ruble;rub</item>
+        <item>Saudi Riyal;sar</item>
+        <item>Singapore Dollar;sgd</item>
+        <item>South African Rand;zar</item>
+        <item>South Korean Won;krw</item>
+        <item>Swedish Krona;sek</item>
+        <item>Swiss Franc;chf</item>
+        <item>Thai Baht;thb</item>
+        <item>Turkish Lira;try</item>
+        <item>Uae Dirham;aed</item>
+        <item>United States Dollar;usd</item>
     </string-array>
 </resources>

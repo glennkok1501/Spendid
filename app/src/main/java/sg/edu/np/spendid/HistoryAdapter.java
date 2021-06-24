@@ -1,11 +1,9 @@
 package sg.edu.np.spendid;
 
-import android.database.DatabaseErrorHandler;
-import android.icu.text.Collator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,55 +13,37 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
-public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>{
     HashMap<String, ArrayList<Record>> recordData;
     ArrayList<String> dates;
     String baseCurrency;
 
-    public HistoryAdaptor(HashMap<String, ArrayList<Record>> recordList, String currency) {
+    public HistoryAdapter(HashMap<String, ArrayList<Record>> recordList, String baseCurrency) {
         recordData = recordList;
         dates = sortDates(new ArrayList<>(recordList.keySet()));
-        baseCurrency = currency;
+        this.baseCurrency = baseCurrency;
     }
 
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_layout, parent, false);
-        HistoryViewHolder historyViewHolder = new HistoryViewHolder(item);
-
-        RecyclerView rv = item.findViewById(R.id.historyRV);
-        TransactionAdaptor ta = new TransactionAdaptor(recordData.get(dates.get(viewType)), baseCurrency);
-        LinearLayoutManager lm = new LinearLayoutManager(parent.getContext());
-        rv.setLayoutManager(lm);
-        rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(ta);
-
-        return historyViewHolder;
+        return new HistoryViewHolder(item);
     }
 
     public void onBindViewHolder(HistoryViewHolder vh, int pos) {
         String s = dates.get(pos);
-        String dateFormat;
-        try{
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(s);
-            dateFormat = new SimpleDateFormat("dd MMMM yyyy").format(date);
-        }
-        catch (ParseException e) {
-            dateFormat = s;
-        }
-        vh.date.setText(dateFormat);
+        vh.date.setText(formatDate(s));
+        TransactionAdapter ta = new TransactionAdapter(recordData.get(s), baseCurrency, false);
+        LinearLayoutManager lm = new LinearLayoutManager(vh.itemView.getContext());
+        vh.rv.setLayoutManager(lm);
+        vh.rv.setItemAnimator(new DefaultItemAnimator());
+        vh.rv.setAdapter(ta);
     }
 
     public int getItemCount() { return recordData.size(); }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
 
     private ArrayList<String> sortDates(ArrayList<String> dates){
         Date[] newDates = new Date[dates.size()];
@@ -80,6 +60,28 @@ public class HistoryAdaptor extends RecyclerView.Adapter<HistoryViewHolder>{
             dateList.add(new SimpleDateFormat("yyyy-MM-dd").format(newDates[i]));
         }
         return dateList;
+    }
+
+    private String formatDate(String d){
+        String dateFormat;
+        try{
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(d);
+            dateFormat = new SimpleDateFormat("dd MMMM yyyy").format(date);
+        }
+        catch (ParseException e) {
+            dateFormat = d;
+        }
+        return dateFormat;
+    }
+
+    public class HistoryViewHolder extends RecyclerView.ViewHolder {
+        TextView date;
+        RecyclerView rv;
+        public HistoryViewHolder(View item) {
+            super(item);
+            date = item.findViewById(R.id.history_date_textView);
+            rv = item.findViewById(R.id.historyRV);
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,8 +26,9 @@ import maes.tech.intentanim.CustomIntent;
 
 public class ManageWalletActivity extends AppCompatActivity {
     private final static String PREF_NAME = "sharedPrefs";
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
     private DBHandler dbHandler;
+    private String baseCurrency;
     private TextView bal;
 
     @Override
@@ -34,8 +36,11 @@ public class ManageWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_wallet);
         dbHandler = new DBHandler(this, null, null, 1);
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        baseCurrency = prefs.getString("baseCurrency", "");
         bal = findViewById(R.id.totalWalletBal_textView);
-        bal.setText(df2.format(dbHandler.getTotalBalance()));
+        TextView header = findViewById(R.id.totalWalletTitle_textView);
+        header.setText("Total Balance");
 
         //Tool bar
         TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
@@ -48,13 +53,46 @@ public class ManageWalletActivity extends AppCompatActivity {
             }
         });
 
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        FloatingActionButton addWalletBtn = findViewById(R.id.manageWallet_fab);
+        addWalletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ManageWalletActivity.this, WalletCurrencyActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bal.setText(df2.format(dbHandler.getTotalBalance()));
         RecyclerView recyclerView = findViewById(R.id.manageWallet_RV);
-        WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), prefs.getString("baseCurrency", ""), this);
+        WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), baseCurrency, this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 }

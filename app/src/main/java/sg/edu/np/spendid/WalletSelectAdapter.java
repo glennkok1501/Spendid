@@ -22,21 +22,30 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectViewHo
     ArrayList<Wallet> data;
     String baseCurrency;
     Context context;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public WalletSelectAdapter(ArrayList<Wallet> input, String currency, Context getContext){
+    public WalletSelectAdapter(ArrayList<Wallet> input, String baseCurrency, Context context){
         data = input;
-        baseCurrency = currency;
-        context = getContext;
+        this.baseCurrency = baseCurrency;
+        this.context = context;
     }
 
     public WalletSelectViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_wallet_layout, parent, false);
-        WalletSelectViewHolder holder = new WalletSelectViewHolder(item);
-        item.findViewById(R.id.sel_wallet_cardView).setOnClickListener(new View.OnClickListener() {
+        return new WalletSelectViewHolder(item);
+    }
+
+    public void onBindViewHolder(WalletSelectViewHolder holder, int position){
+        DBHandler dbHandler = new DBHandler(context, null, null, 1);
+        Wallet w = data.get(position);
+        holder.name.setText(w.getName());
+        holder.amount.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId()))+" "+baseCurrency);
+        String lastUpdated = dbHandler.lastMadeTransaction(w.getWalletId());
+        if (lastUpdated == null){ holder.date.setText("No Transactions"); }
+        else{ holder.date.setText("Last Updated: "+lastUpdated); }
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Wallet w = data.get(viewType);
                 Intent intent = new Intent(v.getContext(), NewRecordActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("walletId", w.getWalletId());
@@ -44,33 +53,12 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectViewHo
                 bundle.putString("walletCurrency", w.getCurrency());
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
-//                CustomIntent.customType(v.getContext(), "bottom-to-up");
             }
         });
-        return holder;
-    }
-
-    public void onBindViewHolder(WalletSelectViewHolder holder, int position){
-        DBHandler dbHandler = new DBHandler(context, null, null, 1);
-        Wallet s = data.get(position);
-        holder.name.setText(s.getName());
-        holder.amount.setText(df2.format(dbHandler.getWalletTotal(s.getWalletId()))+" "+baseCurrency);
-        String lastUpdated = dbHandler.lastMadeTransaction(s.getWalletId());
-        if (lastUpdated == null){
-            holder.date.setText("No Transactions");
-        }
-        else{
-            holder.date.setText("Last Updated: "+lastUpdated);
-        }
-
     }
 
     public int getItemCount(){
         return data.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
 }

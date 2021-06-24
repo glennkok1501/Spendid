@@ -22,29 +22,17 @@ public class SeedData {
         dbHandler.addWallet(new Wallet("Computer", "Computer parts costs", "SGD", currentDate()));
         dbHandler.addWallet(new Wallet("Hobby", "", "USD", "2021-06-10"));
 
-        //Create Category
-        dbHandler.addCategory(new Category("Shopping", true));
-        dbHandler.addCategory(new Category("Food", true));
-        dbHandler.addCategory(new Category("Entertainment", true));
-        dbHandler.addCategory(new Category("Leisure", true));
-        dbHandler.addCategory(new Category("Transport", true));
-        dbHandler.addCategory(new Category("Housing", true));
-        dbHandler.addCategory(new Category("Vehicle", true));
-        dbHandler.addCategory(new Category("Income", false));
-        dbHandler.addCategory(new Category("Salary", false));
-        dbHandler.addCategory(new Category("Others", true));
-
         //Create Records
-        dbHandler.addRecord(new Record("Lunch at KFC", "Ate Fried Chickens!!", 14.50, "Food", "2021-01-01", "13:10:02", 1));
+        dbHandler.addRecord(new Record("Lunch at KFC", "Ate Fried Chickens!!", 14.50, "Food & Drinks", "2021-01-01", "13:10:02", 1));
         dbHandler.addRecord(new Record("Shopping", "", 158.95, "Shopping", "2021-01-02", "15:04:32", 1));
-        dbHandler.addRecord(new Record("Good Dinner", "Best pasta ever", 9.00, "Food", "2021-01-02", "20:43:23", 1));
+        dbHandler.addRecord(new Record("Good Dinner", "Best pasta ever", 9.00, "Food & Drinks", "2021-01-02", "20:43:23", 1));
         dbHandler.addRecord(new Record("Bought gifts", "New toy for baby cousin", 30.50, "Others", "2021-02-20", "10:00:55", 1));
         dbHandler.addRecord(new Record("New TV", "", 1999.00, "Entertainment", "2021-03-19", "18:54:12", 1));
         dbHandler.addRecord(new Record("Won lottery", "", 5000.00, "Income", currentDate(), currentTime(), 1));
 
-        dbHandler.addRecord(new Record("Airport meal", "Omurice Oishi", 20.00, "Food", "2021-02-14", "8:02:11", 2));
+        dbHandler.addRecord(new Record("Airport meal", "Omurice Oishi", 20.00, "Food & Drinks", "2021-02-14", "8:02:11", 2));
         dbHandler.addRecord(new Record("Shopping", "Bought some new clothes", 274.93, "Shopping", "2021-02-15", "12:02:53", 2));
-        dbHandler.addRecord(new Record("Last Dinner", "", 98.12, "Food", "2021-02-16", "18:51:54", 2));
+        dbHandler.addRecord(new Record("Last Dinner", "", 98.12, "Food & Drinks", "2021-02-16", "18:51:54", 2));
 
         dbHandler.addRecord(new Record("Graphic Card", "", 2000.00, "Entertainment", currentDate(), currentTime(), 3));
         dbHandler.addRecord(new Record("CPU and MOBO", "", 700.00, "Entertainment", currentDate(), currentTime(), 3));

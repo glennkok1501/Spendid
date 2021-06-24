@@ -3,6 +3,7 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,6 @@ import maes.tech.intentanim.CustomIntent;
 
 public class SelectWalletActivity extends AppCompatActivity {
     private DBHandler dbHandler;
-    private final static String PREF_NAME = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +42,16 @@ public class SelectWalletActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        String PREF_NAME = "sharedPrefs";
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String baseCurrency = prefs.getString("baseCurrency", "");
-
         RecyclerView selWalletRV = findViewById(R.id.sel_wallet_RV);
-        WalletSelectAdapter WalletSelectAdapter = new WalletSelectAdapter(dbHandler.getWallets(), baseCurrency, this);
+        WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(dbHandler.getWallets(), baseCurrency, this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         selWalletRV.setLayoutManager(myLayoutManager);
         selWalletRV.setItemAnimator(new DefaultItemAnimator());
-        selWalletRV.setAdapter(WalletSelectAdapter);
+        selWalletRV.setAdapter(walletSelectAdapter);
+
     }
 
     @Override
@@ -72,4 +73,5 @@ public class SelectWalletActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

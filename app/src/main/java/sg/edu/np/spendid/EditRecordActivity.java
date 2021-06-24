@@ -1,6 +1,7 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,17 +52,13 @@ public class EditRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency, lastUpdate;
-    private RequestQueue mQueue;
-    private double exchangeRate = 0;
-    private boolean deleted;
-    private final static String PREF_NAME = "sharedPrefs";
+    private String baseCurrency;
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_record);
-        mQueue = Volley.newRequestQueue(this);
         dbHandler = new DBHandler(this, null, null, 1);
         selectedCat = findViewById(R.id.editRecordCat_textView);
         selectWallet = findViewById(R.id.editRecordWallet_textView);
@@ -76,7 +73,7 @@ public class EditRecordActivity extends AppCompatActivity {
         TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
         ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView trash = findViewById(R.id.mainToolbarMore_imageView);
-        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
+        backArrow.setImageResource(R.drawable.ic_clear_32);
         trash.setImageResource(R.drawable.ic_delete_32);
         activityTitle.setText("Edit Transaction");
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +88,6 @@ public class EditRecordActivity extends AppCompatActivity {
                 deleteDialog();
             }
         });
-
         checkValues = initCheckValues();
         Intent intent = getIntent();
         record  = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
@@ -102,7 +98,7 @@ public class EditRecordActivity extends AppCompatActivity {
         selectWallet.setText(wallet.getName());
         title.setText(record.getTitle());
         description.setText(record.getDescription());
-        amt.setText(String.valueOf(record.getAmount()));
+        amt.setText(df2.format(record.getAmount()));
         selectedCat.setText(record.getCategory());
 
         RecyclerView catRV = findViewById(R.id.editRecordCat_RV);
@@ -160,97 +156,17 @@ public class EditRecordActivity extends AppCompatActivity {
     }
 
     private void getBaseCurrency(){
+        String PREF_NAME = "sharedPrefs";
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        baseCurrency = prefs.getString("baseCurrency", "").toLowerCase();
+        baseCurrency = prefs.getString("baseCurrency", "");
     }
 
     private void promptConversion(){
-        String c = wallet.getCurrency().toLowerCase();
-        if (!baseCurrency.equals(c)){
-            getExchangeRate(c, baseCurrency);
+        if (!baseCurrency.equals(wallet.getCurrency())){
+            CurrencyAPI currencyAPI = new CurrencyAPI(this, wallet.getCurrency().toLowerCase(), baseCurrency.toLowerCase());
+            currencyAPI.setAmt(amt);
+            currencyAPI.call(false);
         }
-    }
-
-    private void currencyDialog(){
-        Dialog dialog = new Dialog(EditRecordActivity.this);
-        dialog.setContentView(R.layout.currency_exchange_layout);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(false);
-
-        TextView forCur = dialog.findViewById(R.id.foreignAmt_textView);
-        TextView baseCur = dialog.findViewById(R.id.baseCurrency_textView);
-        TextView baseAmt = dialog.findViewById(R.id.baseCurrencyAmt_textView);
-        TextView updateDate = dialog.findViewById(R.id.rateLastUpdate);
-        EditText forAmt = dialog.findViewById(R.id.foreignAmt_editText);
-        FloatingActionButton convertBtn = dialog.findViewById(R.id.convertCurrrency_fab);
-        TextView cancelDialog = dialog.findViewById(R.id.currencyExchangeCancel_textView);
-
-        baseCur.setText(baseCurrency.toUpperCase());
-        forCur.setText(wallet.getCurrency().toUpperCase());
-        updateDate.setText("Last Updated: "+lastUpdate);
-
-        forAmt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if(s.length() != 0) {
-
-                    baseAmt.setText(new DecimalFormat("0.00").format(Math.round((Double.parseDouble(forAmt.getText().toString()) * exchangeRate) * 100.0) / 100.0));
-                }
-                else{
-                    baseAmt.setText("0.00");
-                }
-            }
-        });
-
-        convertBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                amt.setText(baseAmt.getText());
-                dialog.dismiss();
-            }
-        });
-
-        cancelDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
-    private void getExchangeRate(String from, String to){
-        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s/%s.json", from, to);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            exchangeRate = response.getDouble(to);
-                            lastUpdate = response.getString("date");
-                            currencyDialog();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Data Unavailable", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Service Temporarily Unavailable", Toast.LENGTH_LONG).show();
-                error.printStackTrace();
-            }
-        });
-        mQueue.add(request);
     }
 
     private HashMap<String, Boolean> initCheckValues(){
@@ -307,49 +223,36 @@ public class EditRecordActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void deleteDialog() {
-        Dialog dialog = new Dialog(EditRecordActivity.this);
-        dialog.setContentView(R.layout.pos_neg_dialog);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(false);
-        RelativeLayout bg = dialog.findViewById(R.id.pos_neg_dialog_relativeLayout);
-        TextView title = dialog.findViewById(R.id.pos_neg_dialog_title);
-        TextView body = dialog.findViewById(R.id.pos_neg_dialog_body);
-        TextView yes = dialog.findViewById(R.id.pos_neg_dialog_yes);
-        TextView no = dialog.findViewById(R.id.pos_neg_dialog_no);
-
-        title.setText("Delete Transaction");
-        body.setText("Are you sure you want to permanently delete the transaction?");
-
-        yes.setOnClickListener(new View.OnClickListener() {
-
+    private void deleteDialog(){
+        CustomDialog.Alert alert = new CustomDialog(EditRecordActivity.this).new Alert();
+        alert.setTitle("Delete Transaction");
+        alert.setBody("Are you sure you want to permanently delete this transaction?");
+        alert.setPositive().setText("Delete");
+        alert.setPositive().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dbHandler.deleteRecord(record.getId())){
-                    Toast.makeText(getApplicationContext(), "Transaction Deleted", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Unknown Transaction", Toast.LENGTH_SHORT).show();
-                }
-                dialog.dismiss();
+                deleteRecord();
+                alert.dismiss();
             }
         });
-        no.setOnClickListener(new View.OnClickListener() {
+        alert.setNegative().setText("Cancel");
+        alert.setNegative().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                alert.dismiss();
             }
         });
-
-        bg.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                dialog.dismiss();
-                return false;
-            }
-        });
-        dialog.show();
+        alert.show();
     }
+
+    private void deleteRecord(){
+        if (dbHandler.deleteRecord(record.getId())){
+            Toast.makeText(getApplicationContext(), "Transaction Deleted", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Unknown Transaction", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

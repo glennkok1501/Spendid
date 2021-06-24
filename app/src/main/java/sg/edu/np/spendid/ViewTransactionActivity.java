@@ -1,6 +1,7 @@
    package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,8 +19,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
     private Record record;
     private Wallet wallet;
     private DBHandler dbHandler;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
-    private final static String PREF_NAME = "sharedPrefs";
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
 
     @Override
@@ -65,7 +65,8 @@ public class ViewTransactionActivity extends AppCompatActivity {
         else{
             walletExpense.setImageResource(R.drawable.ic_income_up);
         }
-        dateTime.setText("Made transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
+        String PREF_NAME = "sharedPrefs";
+        dateTime.setText("Made Transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         cur.setText(prefs.getString("baseCurrency", ""));
         String des_text = record.getDescription();
@@ -75,7 +76,6 @@ public class ViewTransactionActivity extends AppCompatActivity {
         else{
             des.setText(des_text);
         }
-
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,4 +87,30 @@ public class ViewTransactionActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
 }

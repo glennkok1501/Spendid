@@ -136,6 +136,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/navbar_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search_24"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center_horizontal"
+                    app:tint="@color/white" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/white"
+                    android:text="Search Transactions" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/navbar_currencyRate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -194,7 +223,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/navbar_stats"
+                android:id="@+id/navbar_subs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -206,7 +235,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_bar_chart_24"
+                    android:src="@drawable/ic_subscriptions_24"
                     android:layout_weight="1"
                     android:layout_marginStart="20dp"
                     android:layout_gravity="center_horizontal"
@@ -219,7 +248,107 @@
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/white"
-                    android:text="Statistics" />
+                    android:text="Subscriptions" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?colorPrimary" />
+
+            <LinearLayout
+                android:id="@+id/navbar_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_add_box_24"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center_horizontal"
+                    app:tint="@color/white" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="40dp"
+                    android:text="Add"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navbar_additional"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/navbar_addWallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_wallet_24"
+                        android:layout_weight="1"
+                        android:layout_marginStart="20dp"
+                        android:layout_gravity="center_horizontal"
+                        app:tint="@color/white" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="9"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/white"
+                        android:text="Add Wallet" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/navbar_addRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_transaction_24"
+                        android:layout_weight="1"
+                        android:layout_marginStart="20dp"
+                        android:layout_gravity="center_horizontal"
+                        app:tint="@color/white" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="9"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/white"
+                        android:text="Add Transaction" />
+                </LinearLayout>
             </LinearLayout>
 
             <View

@@ -10,6 +10,7 @@
         android:id="@+id/viewWallet_cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="?backgroundColor"
         android:layout_margin="30dp"
         android:layout_centerInParent="true"
         app:cardElevation="50dp"
@@ -44,8 +45,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    app:tint="?colorOnPrimary"
-                    android:src="@drawable/ic_star_24" />
+                    app:tint="@color/light_grey"
+                    android:src="@drawable/ic_favorite_24" />
             </RelativeLayout>
 
             <LinearLayout
@@ -139,6 +140,6 @@
         app:elevation="65dp"
         android:focusable="true"
         app:backgroundTint="?colorSecondary"
-        app:srcCompat="@drawable/ic_edit_24"
-        app:tint="@color/white" />
+        android:src="@drawable/ic_edit_24"
+        app:tint="?colorOnSecondary" />
 </RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about">
+        Spendid is an expense tracking application that allows users to create transaction made and store them in wallets.
+    </string>
+    <string name="developers">
+        If you enjoy using Spendid, consider following us, the developers, on social media.
+    </string>
+    <string name="api_diclaimer">
+        Spendid is uses a currency exchange rate API created by Fawaz Ahmed and is NOT affiliated, endorsed or supported by Fawaz Ahmed.
+    </string>
+</resources>

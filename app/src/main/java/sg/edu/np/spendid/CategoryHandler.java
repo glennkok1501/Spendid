@@ -11,7 +11,7 @@ public class CategoryHandler {
             case "Shopping":
                 img = R.drawable.ic_shopping_24;
                 break;
-            case "Food":
+            case "Food & Drinks":
                 img = R.drawable.ic_food_24;
                 break;
             case "Entertainment":
