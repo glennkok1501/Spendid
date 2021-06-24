@@ -25,19 +25,20 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/delete_Category_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp">
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <TextView
-                android:id="@+id/noDeletable_Category_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1080px"
-                android:text="No custom categories to delete"
-                android:textAlignment="center"
-                app:tint="@color/black" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/noDeletable_Category_textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No custom categories to delete"
+            android:textAlignment="center" />
 
     </RelativeLayout>
 

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DeleteCategoryActivity extends AppCompatActivity {
+    TextView noDeletable;
     private DBHandler dbHandler;
 
     @Override
@@ -18,7 +19,7 @@ public class DeleteCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_category);
 
-        TextView noDeletable = findViewById(R.id.noDeletable_Category_textView);
+        noDeletable = findViewById(R.id.noDeletable_Category_textView);
         dbHandler = new DBHandler(this, null, null, 1);
 
         //Tool bar
@@ -29,16 +30,16 @@ public class DeleteCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { finish(); }
         });
-    }
 
-    protected void onStart() {
-        super.onStart();
         RecyclerView catRv = findViewById(R.id.delete_Category_recyclerView);
-        CatAdaptor ca = new CatAdaptor(dbHandler.getCategories(), true);
+        CatAdaptor ca = new CatAdaptor(dbHandler.getCategories(), true, noDeletable);
         LinearLayoutManager lm = new LinearLayoutManager(this);
         catRv.setLayoutManager(lm);
         catRv.setItemAnimator(new DefaultItemAnimator());
         catRv.setAdapter(ca);
-        ca.notifyDataSetChanged();
+    }
+
+    protected void onStart() {
+        super.onStart();
     }
 }

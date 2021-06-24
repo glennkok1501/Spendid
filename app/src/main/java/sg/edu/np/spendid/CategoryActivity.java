@@ -29,6 +29,7 @@ public class CategoryActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView delete = findViewById(R.id.mainToolbarMore_imageView);
         delete.setImageResource(R.drawable.ic_delete_32);
+        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         activityTitle.setText("Categories");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +56,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         RecyclerView catRv = findViewById(R.id.delete_Category_recyclerView);
-        CatAdaptor ca = new CatAdaptor(dbHandler.getCategories(), false);
+        CatAdaptor ca = new CatAdaptor(dbHandler.getCategories(), false, null);
         LinearLayoutManager lm = new LinearLayoutManager(this);
         catRv.setLayoutManager(lm);
         catRv.setItemAnimator(new DefaultItemAnimator());
