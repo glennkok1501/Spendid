@@ -167,7 +167,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //returns the balance of a wallet retrieved from the respective records from the wallet - Glenn.
     public double getWalletTotal(int id) {
-        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " WHERE r." + COLUMN_WALLET_ID + " = \"" + id + "\"";
+        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " WHERE r." + COLUMN_WALLET_ID + " = "+id;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         double income = 0;
@@ -206,7 +206,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public HashMap<String, Double> getBalance(String MM) {
         HashMap<String, Double> bal = new HashMap<String, Double>();
         String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
-                " WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \"%-" + MM + "-%\"";
+                " WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \'%-" + MM + "-%\'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         double income = 0;
@@ -266,7 +266,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public HashMap<String, ArrayList<Record>> getGroupedTransaction(String date) {
         HashMap<String, ArrayList<Record>> group = new HashMap<String, ArrayList<Record>>();
         String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
-                " WHERE r." + COLUMN_WALLET_DATECREATED + " = " + "\"" + date + "\" ORDER BY " + COLUMN_RECORD_TIMECREATED + " DESC";
+                " WHERE r." + COLUMN_WALLET_DATECREATED + " = " + "\'" + date + "\' ORDER BY " + COLUMN_RECORD_TIMECREATED + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
@@ -428,7 +428,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public boolean deleteRecord(int rId) {
-        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_RECORD_ID + " = \"" + rId + "\"";
+        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_RECORD_ID + " = " + rId;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         boolean deleted;
@@ -444,7 +444,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public boolean deleteWallet(int wId) {
-        String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = \"" + wId + "\"";
+        String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         boolean deleted;
@@ -471,7 +471,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public boolean catIsExpense(String c){
-        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \""+c+"\"";
+        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \'"+c+"\'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         boolean isExpense;
@@ -488,7 +488,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //Returns
     public boolean catDeletable(String search) {
-        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_RECORD_CATEGORY+" = "+"\""+search+"\"";
+        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_RECORD_CATEGORY+" = "+"\'"+search+"\'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         boolean b;
@@ -518,7 +518,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public boolean deleteCategory(String title) {
         boolean b;
-        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \""+title+"\"";
+        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \'"+title+"\'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -589,7 +589,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public boolean deleteCartItem(int itemId){
-        String query = "SELECT * FROM " + TABLE_CARTITEM + " WHERE " + COLUMN_CARTITEM_ID + " = \"" + itemId + "\"";
+        String query = "SELECT * FROM " + TABLE_CARTITEM + " WHERE " + COLUMN_CARTITEM_ID + " = " + itemId;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         boolean deleted;
@@ -626,7 +626,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
     public boolean deleteShoppingCart(int cartId){
-        String query = "SELECT * FROM " + TABLE_CART + " WHERE " + COLUMN_CART_ID + " = \"" + cartId + "\"";
+        String query = "SELECT * FROM " + TABLE_CART + " WHERE " + COLUMN_CART_ID + " = " + cartId;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         boolean deleted;

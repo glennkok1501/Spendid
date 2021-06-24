@@ -151,10 +151,11 @@ public class MainActivity extends AppCompatActivity {
         walletList = sortWallet(dbHandler.getWallets());
         TextView noWallet = findViewById(R.id.walletViewPageStatus_textView);
         if (walletList.size() == 0){
+            noWallet.setVisibility(View.VISIBLE);
             noWallet.setText("No Wallets");
         }
         else{
-            noWallet.setText("");
+            noWallet.setVisibility(View.GONE);
         }
         ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, baseCurrency, this);
@@ -183,10 +184,11 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
         TextView noCurTrans = findViewById(R.id.curTransStatus_textView);
         if (curTransMap.size() == 0){
+            noCurTrans.setVisibility(View.VISIBLE);
             noCurTrans.setText("No Transactions");
         }
         else{
-            noCurTrans.setText("");
+            noCurTrans.setVisibility(View.GONE);
         }
         RecyclerView currentTransRV = findViewById(R.id.main_transHist_RV);
         CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap, baseCurrency);
