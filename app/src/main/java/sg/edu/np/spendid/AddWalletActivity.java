@@ -30,6 +30,7 @@ public class AddWalletActivity extends AppCompatActivity {
         TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
         ImageView backArrow = findViewById(R.id.activityImg_toolBar);
         activityTitle.setText("Add Wallet");
+        backArrow.setImageResource(R.drawable.ic_clear_32);
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +75,31 @@ public class AddWalletActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
     private String currentDate(){
         Calendar currentTime = Calendar.getInstance();

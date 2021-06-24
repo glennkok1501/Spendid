@@ -73,7 +73,7 @@ public class EditRecordActivity extends AppCompatActivity {
         TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
         ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView trash = findViewById(R.id.mainToolbarMore_imageView);
-        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
+        backArrow.setImageResource(R.drawable.ic_clear_32);
         trash.setImageResource(R.drawable.ic_delete_32);
         activityTitle.setText("Edit Transaction");
         backArrow.setOnClickListener(new View.OnClickListener() {
