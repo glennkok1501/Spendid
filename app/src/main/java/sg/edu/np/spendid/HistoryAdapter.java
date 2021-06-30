@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>{
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
     HashMap<String, ArrayList<Record>> recordData;
     ArrayList<String> dates;
 
@@ -70,16 +70,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             dateFormat = d;
         }
         return dateFormat;
-    }
-
-    public class HistoryViewHolder extends RecyclerView.ViewHolder {
-        TextView date;
-        RecyclerView rv;
-        public HistoryViewHolder(View item) {
-            super(item);
-            date = item.findViewById(R.id.history_date_textView);
-            rv = item.findViewById(R.id.historyRV);
-        }
     }
 }
 

@@ -77,6 +77,11 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         records = dbHandler.getAllRecords();
         RecyclerView searchRv = findViewById(R.id.search_recyclerView);
         ta = new TransactionAdapter(records, true);
@@ -86,11 +91,6 @@ public class SearchActivity extends AppCompatActivity {
         searchRv.setAdapter(ta);
         ta.notifyDataSetChanged();
         search.getText().clear();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

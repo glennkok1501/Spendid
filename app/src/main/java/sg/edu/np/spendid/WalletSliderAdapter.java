@@ -17,7 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapter.WalletSliderViewHolder> {
+public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderViewHolder> {
     ArrayList<Wallet> data;
     Context context;
     DecimalFormat df2 = new DecimalFormat("#0.00");
@@ -52,17 +52,4 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
         return data.size();
     }
 
-
-    public class WalletSliderViewHolder extends RecyclerView.ViewHolder {
-        TextView name, amount, currency;
-        CardView cardView;
-        public WalletSliderViewHolder(View itemView){
-            super(itemView);
-            name = itemView.findViewById(R.id.viewpager_wallet_name);
-            amount = itemView.findViewById(R.id.viewpager_wallet_amount);
-            currency = itemView.findViewById(R.id.viewpager_wallet_currency);
-            cardView = itemView.findViewById(R.id.viewpager_wallet);
-
-        }
-    }
 }

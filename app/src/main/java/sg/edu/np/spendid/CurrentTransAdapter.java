@@ -25,7 +25,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapter.CurrentTransViewHolder> {
+public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHolder> {
     HashMap<String, ArrayList<Record>> data;
     ArrayList<String> keys;
     CategoryHandler categoryHandler = new CategoryHandler();
@@ -68,18 +68,5 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
             amt += r.get(i).getAmount();
         }
         return amt;
-    }
-    public class CurrentTransViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView cat, amt, currency;
-        CardView cardView;
-        public CurrentTransViewHolder(View itemView){
-            super(itemView);
-            image = itemView.findViewById(R.id.currentTrans_imageView);
-            cat = itemView.findViewById(R.id.currentTransCat_textView);
-            amt = itemView.findViewById(R.id.currentTransAmt_textView);
-            currency = itemView.findViewById(R.id.currentTransCur_textView);
-            cardView = itemView.findViewById(R.id.currentTrans);
-        }
     }
 }

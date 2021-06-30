@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>{
+public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHolder>{
     ArrayList<ShoppingCart> data;
     Context context;
     DBHandler dbHandler;
@@ -56,15 +56,4 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         return data.size();
     }
 
-    public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
-        TextView name, amt, items;
-        CardView cardView;
-        public ShoppingListViewHolder(View itemView){
-            super(itemView);
-            name = itemView.findViewById(R.id.shopListMainCartName_textView);
-            amt = itemView.findViewById(R.id.shopListMainCartAmt_textView);
-            items = itemView.findViewById(R.id.shopListMainCartItems_textView);
-            cardView = itemView.findViewById(R.id.shopListMainCart_cardView);
-        }
-    }
 }

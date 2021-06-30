@@ -59,17 +59,17 @@ public class TransactionHistoryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         RecyclerView transactionHistoryRV = findViewById(R.id.transaction_history_recyclerView);
         HistoryAdapter ha = new HistoryAdapter(dbHandler.getRecordHistory());
         LinearLayoutManager lm = new LinearLayoutManager(this);
         transactionHistoryRV.setLayoutManager(lm);
         transactionHistoryRV.setItemAnimator(new DefaultItemAnimator());
         transactionHistoryRV.setAdapter(ha);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

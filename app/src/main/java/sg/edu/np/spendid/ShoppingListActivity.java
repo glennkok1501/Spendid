@@ -66,9 +66,6 @@ public class ShoppingListActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-//        for (CartItem c : dbHandler.getCartItems(cartId)){
-//            Log.v("TAG", c.getName()+" - "+c.isCheck());
-//        }
     }
 
     @Override

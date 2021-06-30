@@ -42,7 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         fetchAPI("sgd");
 
         CountDownTimer myCountDown;
-        myCountDown = new CountDownTimer(1500, 1000) {
+        myCountDown = new CountDownTimer(1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
             }
