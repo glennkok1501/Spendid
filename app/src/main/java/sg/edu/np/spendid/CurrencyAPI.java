@@ -1,6 +1,7 @@
 package sg.edu.np.spendid;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,6 +20,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class CurrencyAPI {
     private String[] currencyList;
     private DBHandler dbHandler;
@@ -26,6 +29,7 @@ public class CurrencyAPI {
     private RequestQueue mQueue;
     private boolean currencyIsEmpty;
     private Context context;
+    private final String PREF_NAME = "sharedPrefs";
 
     public CurrencyAPI(Context context, DBHandler dbHandler) {
         this.context = context;

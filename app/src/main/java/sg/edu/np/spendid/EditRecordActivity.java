@@ -137,7 +137,6 @@ public class EditRecordActivity extends AppCompatActivity {
         if (!wallet.getCurrency().equals("SGD")){
             CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, wallet.getCurrency().toLowerCase());
             currencyConvertDialog.setAmt(amt);
-            currencyConvertDialog.setForFixedAmt(record.getAmount());
             currencyConvertDialog.show();
         }
     }

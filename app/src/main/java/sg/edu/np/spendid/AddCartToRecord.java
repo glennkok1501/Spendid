@@ -130,6 +130,7 @@ public class AddCartToRecord {
             CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(context, wallet.getCurrency().toLowerCase());
             currencyConvertDialog.setAmt(amt);
             currencyConvertDialog.setForFixedAmt(amount);
+            currencyConvertDialog.show();
         }
     }
 
