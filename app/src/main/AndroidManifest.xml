@@ -11,7 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid">
-        <activity android:name=".ExchangeRateActivity"></activity>
+        <activity android:name=".SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ExchangeRateActivity" />
         <activity android:name=".NewShoppingCartActivity" />
         <activity android:name=".ShoppingListMainActivity" />
         <activity android:name=".ShoppingListActivity" />
@@ -38,11 +45,7 @@
             android:name=".SelectWalletActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".NewRecordActivity"

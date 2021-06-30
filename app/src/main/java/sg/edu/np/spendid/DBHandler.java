@@ -55,6 +55,12 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_CARTITEM_AMOUNT = "Amount";
     public static final String COLUMN_CARTITEM_CHECK = "Checked";
 
+    //Currencies
+    public static final String TABLE_CURRENCY = "Currency";
+    public static final String COLUMN_CURRENCY_FOREIGNCURRENCY = "ForeignCurrency";
+    public static final String COLUMN_CURRENCY_RATE = "Rate";
+    public static final String COLUMN_CURRENCY_DATE = "LastUpdated";
+
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -92,11 +98,16 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_CARTITEM_CHECK+" INTEGER, "+
                 COLUMN_CART_ID+" INTEGER, "+
                 "FOREIGN KEY ("+COLUMN_CART_ID+") REFERENCES "+TABLE_CART+" ("+COLUMN_CART_ID+"))";
+        String CREATE_CURRENCY_TABLE = "CREATE TABLE " + TABLE_CURRENCY +
+                " (" + COLUMN_CURRENCY_FOREIGNCURRENCY + " TEXT PRIMARY KEY, " +
+                COLUMN_CURRENCY_RATE + " REAL, " +
+                COLUMN_CURRENCY_DATE + " TEXT)";
         db.execSQL(CREATE_WALLET_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_RECORD_TABLE);
         db.execSQL(CREATE_CART_TABLE);
         db.execSQL(CREATE_CARTITEM_TABLE);
+        db.execSQL(CREATE_CURRENCY_TABLE);
 
         String cat1 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Shopping\", 1)";
         String cat2 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Food & Drinks\", 1)";
@@ -640,4 +651,50 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return deleted;
     }
+
+    public void addCurrencies(ArrayList<Currency> currencyList){
+        SQLiteDatabase db = this.getWritableDatabase();
+        for (Currency c : currencyList){
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_CURRENCY_FOREIGNCURRENCY, c.getForeign());
+            values.put(COLUMN_CURRENCY_RATE, c.getRate());
+            values.put(COLUMN_CURRENCY_DATE, c.getDate());
+            db.insert(TABLE_CURRENCY, null, values);
+        }
+        db.close();
+    }
+
+    public Currency getCurrency(String c){
+        String query = "SELECT * FROM " + TABLE_CURRENCY + " WHERE " + COLUMN_CURRENCY_FOREIGNCURRENCY + " = " + "\'"+c+"\'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Currency currency = new Currency();
+        if (cursor.moveToFirst()){
+            currency.setForeign(cursor.getString(0));
+            currency.setRate(cursor.getDouble(1));
+            currency.setDate(cursor.getString(2));
+        }
+        else{
+            currency = null;
+        }
+        cursor.close();
+        db.close();
+        return currency;
+    }
+
+    public void updateCurrencies(ArrayList<Currency> currencyList){
+        SQLiteDatabase db = this.getWritableDatabase();
+        for (Currency c : currencyList){
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_CURRENCY_RATE, c.getRate());
+            values.put(COLUMN_CURRENCY_DATE, c.getDate());
+            db.update(TABLE_CURRENCY, values, COLUMN_CURRENCY_FOREIGNCURRENCY + " =?", new String[]{String.valueOf(c.getForeign())});
+        }
+        db.close();
+    }
+
+
+
 }
+
+
