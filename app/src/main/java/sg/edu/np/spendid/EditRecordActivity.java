@@ -1,46 +1,24 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 
 public class EditRecordActivity extends AppCompatActivity {
@@ -93,7 +71,6 @@ public class EditRecordActivity extends AppCompatActivity {
         record  = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
         wallet = dbHandler.getWallet(record.getWalletId());
         getBaseCurrency();
-        promptConversion();
         recordCur.setText(baseCurrency);
         selectWallet.setText(wallet.getName());
         title.setText(record.getTitle());
@@ -108,6 +85,8 @@ public class EditRecordActivity extends AppCompatActivity {
         myLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         catRV.setItemAnimator(new DefaultItemAnimator());
         catRV.setAdapter(myCatAdapter);
+
+        promptConversion();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,9 +142,10 @@ public class EditRecordActivity extends AppCompatActivity {
 
     private void promptConversion(){
         if (!baseCurrency.equals(wallet.getCurrency())){
-            CurrencyAPI currencyAPI = new CurrencyAPI(this, wallet.getCurrency().toLowerCase(), baseCurrency.toLowerCase());
-            currencyAPI.setAmt(amt);
-            currencyAPI.call(false);
+            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, wallet.getCurrency().toLowerCase());
+            currencyConvertDialog.setAmt(amt);
+            currencyConvertDialog.setForFixedAmt(record.getAmount());
+            currencyConvertDialog.show();
         }
     }
 

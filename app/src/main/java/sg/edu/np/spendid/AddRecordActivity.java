@@ -3,45 +3,27 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import maes.tech.intentanim.CustomIntent;
-
-public class NewRecordActivity extends AppCompatActivity {
+public class AddRecordActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private TextView selectedCat, selectWallet, recordCur;
     private EditText title, description, amt;
@@ -153,9 +135,9 @@ public class NewRecordActivity extends AppCompatActivity {
 
     private void promptConversion(){
         if (!baseCurrency.equals(walletCurrency)){
-            CurrencyAPI currencyAPI = new CurrencyAPI(this, walletCurrency.toLowerCase(), baseCurrency.toLowerCase());
-            currencyAPI.setAmt(amt);
-            currencyAPI.call(false);
+            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, walletCurrency.toLowerCase());
+            currencyConvertDialog.setAmt(amt);
+            currencyConvertDialog.show();
         }
     }
 
