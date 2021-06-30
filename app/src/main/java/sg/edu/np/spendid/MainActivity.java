@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
 
+        //Fetch Data from API
+        new CurrencyAPI(this, dbHandler).getData("sgd");
+
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
@@ -135,11 +138,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         //Total Balance
         HashMap<String, Double> bal = dbHandler.getBalance(currentMonth());
         monthText.setText("Total Balance - "+new SimpleDateFormat("MMMM").format(Calendar.getInstance().getTime()));
@@ -194,6 +192,11 @@ public class MainActivity extends AppCompatActivity {
         currentTransRV.setLayoutManager(myLayoutManager);
         currentTransRV.setItemAnimator(new DefaultItemAnimator());
         currentTransRV.setAdapter(myCurrentTransAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

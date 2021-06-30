@@ -11,13 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid">
-        <activity android:name=".SplashScreenActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".ExchangeRateActivity" />
         <activity android:name=".NewShoppingCartActivity" />
         <activity android:name=".ShoppingListMainActivity" />
@@ -29,27 +22,21 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".DeleteCategoryActivity" />
         <activity android:name=".AddCategoryActivity" />
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".SearchActivity" />
         <activity android:name=".ViewTransactionActivity" />
         <activity android:name=".WalletCurrencyActivity" />
         <activity android:name=".AddWalletActivity" />
         <activity android:name=".EditRecordActivity" />
-        <activity
-            android:name=".TransactionHistoryActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".ManageWalletActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".SelectWalletActivity"
-            android:parentActivityName=".MainActivity" />
+        <activity android:name=".TransactionHistoryActivity"/>
+        <activity android:name=".ManageWalletActivity"/>
+        <activity android:name=".SelectWalletActivity"/>
+        <activity android:name=".AddRecordActivity"/>
         <activity android:name=".MainActivity">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity
-            android:name=".AddRecordActivity"
-            android:parentActivityName=".SelectWalletActivity" />
+
     </application>
 
 </manifest>

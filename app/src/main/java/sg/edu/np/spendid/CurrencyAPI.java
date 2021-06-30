@@ -1,10 +1,6 @@
 package sg.edu.np.spendid;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.content.Context;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,44 +19,26 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class CurrencyAPI {
     private String[] currencyList;
     private DBHandler dbHandler;
     private ArrayList<Currency> currencyArrayList;
     private RequestQueue mQueue;
     private boolean currencyIsEmpty;
+    private Context context;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-        currencyList = getResources().getStringArray(R.array.countries);
+    public CurrencyAPI(Context context, DBHandler dbHandler) {
+        this.context = context;
+        this.dbHandler = dbHandler;
         currencyArrayList = new ArrayList<>();
-        dbHandler = new DBHandler(this, null, null, 1);
+        currencyList = this.context.getResources().getStringArray(R.array.countries);
+        mQueue = Volley.newRequestQueue(this.context);
         currencyIsEmpty = dbHandler.getCurrency("sgd") == null;
-        mQueue = Volley.newRequestQueue(this);
-        fetchAPI("sgd");
-
-        CountDownTimer myCountDown;
-        myCountDown = new CountDownTimer(1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-            }
-            @Override
-            public void onFinish() {
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        };
-        myCountDown.start();
-
-
     }
 
-    private void fetchAPI(String currency){
-//        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency);
-        String url = "";
+    public void getData(String currency){
+        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency);
+//        String url = String.format("https://cdn.jsdelivr.net/gh/nothing.json", currency);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -77,8 +55,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                             else{
                                 dbHandler.updateCurrencies(currencyArrayList);
                             }
+
                         } catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), "Data Unavailable", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Data Unavailable", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                             useBackUp();
                         }
@@ -86,7 +65,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Service Temporarily Unavailable", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Service Temporarily Unavailable", Toast.LENGTH_LONG).show();
                 error.printStackTrace();
                 useBackUp();
             }
@@ -95,15 +74,15 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void useBackUp(){
-        if (currencyIsEmpty) {
+        if (currencyIsEmpty){
             retrieveBackup();
             dbHandler.addCurrencies(currencyArrayList);
-            Toast.makeText(getApplicationContext(), "Backup Retrieved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Retrieved Backup", Toast.LENGTH_LONG).show();
         }
     }
 
     private void retrieveBackup() {
-        InputStream stream = getResources().openRawResource(R.raw.rates_2021_06_29);
+        InputStream stream = context.getResources().openRawResource(R.raw.rates_2021_06_29);
         BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
         String jsonStr = "";
         String line="";
@@ -127,5 +106,4 @@ public class SplashScreenActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 }
