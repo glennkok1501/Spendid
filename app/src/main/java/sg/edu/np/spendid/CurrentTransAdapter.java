@@ -25,17 +25,15 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapter.CurrentTransViewHolder> {
+public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHolder> {
     HashMap<String, ArrayList<Record>> data;
     ArrayList<String> keys;
-    String baseCurrency;
     CategoryHandler categoryHandler = new CategoryHandler();
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input, String baseCurrency){
+    public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input){
         data = input;
         keys = new ArrayList<>(data.keySet());
-        this.baseCurrency = baseCurrency;
     }
 
     public CurrentTransViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -49,13 +47,13 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
         holder.image.setImageResource(categoryHandler.setIcon(cat));
         holder.cat.setText(cat);
         holder.amt.setText(df2.format(calAmt(records)));
-        holder.currency.setText(baseCurrency);
+        holder.currency.setText("SGD");
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String cat = keys.get(position);
-                CustomDialog customDialog = new CustomDialog(v.getContext());
-                customDialog.showCurrentTrans(baseCurrency, cat, records);
+                CurrentTransDialog dialog = new CurrentTransDialog(v.getContext(), cat, records);
+                dialog.show();
             }
         });
     }
@@ -70,18 +68,5 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransAdapte
             amt += r.get(i).getAmount();
         }
         return amt;
-    }
-    public class CurrentTransViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView cat, amt, currency;
-        CardView cardView;
-        public CurrentTransViewHolder(View itemView){
-            super(itemView);
-            image = itemView.findViewById(R.id.currentTrans_imageView);
-            cat = itemView.findViewById(R.id.currentTransCat_textView);
-            amt = itemView.findViewById(R.id.currentTransAmt_textView);
-            currency = itemView.findViewById(R.id.currentTransCur_textView);
-            cardView = itemView.findViewById(R.id.currentTrans);
-        }
     }
 }

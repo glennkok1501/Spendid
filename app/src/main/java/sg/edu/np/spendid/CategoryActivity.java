@@ -55,6 +55,11 @@ public class CategoryActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         RecyclerView catRv = findViewById(R.id.delete_Category_recyclerView);
         CatAdaptor ca = new CatAdaptor(dbHandler.getCategories(), false, null);
         LinearLayoutManager lm = new LinearLayoutManager(this);

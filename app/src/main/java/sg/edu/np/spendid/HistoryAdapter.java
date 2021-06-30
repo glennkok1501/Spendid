@@ -17,15 +17,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>{
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
     HashMap<String, ArrayList<Record>> recordData;
     ArrayList<String> dates;
-    String baseCurrency;
 
-    public HistoryAdapter(HashMap<String, ArrayList<Record>> recordList, String baseCurrency) {
+    public HistoryAdapter(HashMap<String, ArrayList<Record>> recordList) {
         recordData = recordList;
         dates = sortDates(new ArrayList<>(recordList.keySet()));
-        this.baseCurrency = baseCurrency;
     }
 
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,7 +34,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(HistoryViewHolder vh, int pos) {
         String s = dates.get(pos);
         vh.date.setText(formatDate(s));
-        TransactionAdapter ta = new TransactionAdapter(recordData.get(s), baseCurrency, false);
+        TransactionAdapter ta = new TransactionAdapter(recordData.get(s), false);
         LinearLayoutManager lm = new LinearLayoutManager(vh.itemView.getContext());
         vh.rv.setLayoutManager(lm);
         vh.rv.setItemAnimator(new DefaultItemAnimator());
@@ -72,16 +70,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             dateFormat = d;
         }
         return dateFormat;
-    }
-
-    public class HistoryViewHolder extends RecyclerView.ViewHolder {
-        TextView date;
-        RecyclerView rv;
-        public HistoryViewHolder(View item) {
-            super(item);
-            date = item.findViewById(R.id.history_date_textView);
-            rv = item.findViewById(R.id.historyRV);
-        }
     }
 }
 

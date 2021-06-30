@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatViewHolder> {
+public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderViewHolder> {
     ArrayList<Category> data;
     TextView cat;
     int selectedPos = -1;
@@ -25,12 +25,12 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
         cat = select;
     }
 
-    public CatViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public CatSliderViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_record_category_layout, parent, false);
-        return new CatViewHolder(item);
+        return new CatSliderViewHolder(item);
     }
 
-    public void onBindViewHolder(CatViewHolder holder, int position){
+    public void onBindViewHolder(CatSliderViewHolder holder, int position){
         Category s = data.get(position);
         holder.image.setImageResource(categoryHandler.setIcon(s.getTitle()));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -53,18 +53,4 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderAdapter.CatV
         return data.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    public class CatViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        CardView cardView;
-        public CatViewHolder(View itemView){
-            super(itemView);
-            image = itemView.findViewById(R.id.newRecordCat_imageView);
-            cardView = itemView.findViewById(R.id.newRecordCat_bubble);
-        }
-    }
 }

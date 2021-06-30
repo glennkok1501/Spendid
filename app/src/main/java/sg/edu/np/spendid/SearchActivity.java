@@ -77,23 +77,20 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         records = dbHandler.getAllRecords();
-        String PREF_NAME = "sharedPrefs";
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String baseCurrency = prefs.getString("baseCurrency", "");
         RecyclerView searchRv = findViewById(R.id.search_recyclerView);
-        ta = new TransactionAdapter(records, baseCurrency, true);
+        ta = new TransactionAdapter(records, true);
         LinearLayoutManager lm = new LinearLayoutManager(SearchActivity.this);
         searchRv.setLayoutManager(lm);
         searchRv.setItemAnimator(new DefaultItemAnimator());
         searchRv.setAdapter(ta);
         ta.notifyDataSetChanged();
         search.getText().clear();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

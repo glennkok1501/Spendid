@@ -14,7 +14,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
-public class CatAdaptor extends RecyclerView.Adapter<CatAdaptor.CatViewHolder> {
+public class CatAdaptor extends RecyclerView.Adapter<CatViewHolder> {
     ArrayList<Category> categories;
     TextView noDeletable;
     CategoryHandler categoryHandler = new CategoryHandler();
@@ -71,16 +71,6 @@ public class CatAdaptor extends RecyclerView.Adapter<CatAdaptor.CatViewHolder> {
         return position;
     }
 
-    public class CatViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView catName;
-        public CatViewHolder(View item){
-            super(item);
-            image = item.findViewById(R.id.cat_imageView);
-            catName = item.findViewById(R.id.name_Category_textView);
-        }
-    }
-
     private void isEmpty() {
         if (noDeletable != null) {
             if (categories.size() == 10) {
@@ -92,7 +82,7 @@ public class CatAdaptor extends RecyclerView.Adapter<CatAdaptor.CatViewHolder> {
     }
 
     private void deleteDialog(ViewGroup parent, Category toDelete) {
-        CustomDialog.Alert alert = new CustomDialog(parent.getContext()).new Alert();
+        AlertDialog alert = new AlertDialog(parent.getContext());
         alert.setTitle("Delete Category");
         alert.setBody("Are you sure you want to permanently delete this category?");
         alert.setPositive().setText("Delete");

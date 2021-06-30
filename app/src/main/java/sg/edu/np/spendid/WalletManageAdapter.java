@@ -13,12 +13,10 @@ import java.util.ArrayList;
 public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
     ArrayList<Wallet> data;
     Context context;
-    String baseCurrency;
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public WalletManageAdapter(ArrayList<Wallet> input, String baseCurrency, Context context){
+    public WalletManageAdapter(ArrayList<Wallet> input, Context context){
         data = input;
-        this.baseCurrency = baseCurrency;
         this.context = context;
     }
 
@@ -31,7 +29,7 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Wallet w = data.get(position);
         holder.name.setText(w.getName());
-        holder.amount.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId()))+" "+baseCurrency);
+        holder.amount.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId()))+" SGD");
         String lastUpdated = dbHandler.lastMadeTransaction(w.getWalletId());
         if (lastUpdated == null){ holder.date.setText("No Transactions"); }
         else{ holder.date.setText("Last Updated: "+lastUpdated); }
@@ -39,8 +37,8 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialog dialog = new CustomDialog(v.getContext());
-                dialog.showManageWallet(w, true);
+                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), w, true);
+                dialog.show();
             }
         });
     }

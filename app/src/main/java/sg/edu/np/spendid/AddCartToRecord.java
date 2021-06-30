@@ -23,7 +23,7 @@ import java.util.Calendar;
 
 public class AddCartToRecord {
     private Context context;
-    private String baseCurrency, des;
+    private String des;
     private Wallet wallet;
     private ArrayList<CartItem> cartItems;
     private DBHandler dbHandler;
@@ -34,9 +34,8 @@ public class AddCartToRecord {
     private Dialog dialog;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public AddCartToRecord(Context context, String baseCurrency, int cartId) {
+    public AddCartToRecord(Context context, int cartId) {
         this.context = context;
-        this.baseCurrency = baseCurrency.toLowerCase();
         des = "";
         dbHandler = new DBHandler(context, null, null, 1);
         cartItems = dbHandler.getCartItems(cartId);
@@ -127,10 +126,11 @@ public class AddCartToRecord {
     }
 
     private void checkCurrency(){
-        if (!baseCurrency.equals(wallet.getCurrency().toLowerCase())){
+        if (!wallet.getCurrency().equals("SGD")){
             CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(context, wallet.getCurrency().toLowerCase());
             currencyConvertDialog.setAmt(amt);
             currencyConvertDialog.setForFixedAmt(amount);
+            currencyConvertDialog.show();
         }
     }
 

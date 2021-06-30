@@ -47,9 +47,9 @@ public class ShoppingListActivity extends AppCompatActivity {
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialog.ShowCartItem showCartItem = new CustomDialog(ShoppingListActivity.this).new ShowCartItem(false, myAdapter);
-                showCartItem.setCartId(cartId);
-                showCartItem.show();
+                CartItemDialog dialog = new CartItemDialog(ShoppingListActivity.this, false, myAdapter);
+                dialog.setCartId(cartId);
+                dialog.show();
             }
         });
     }
@@ -66,9 +66,6 @@ public class ShoppingListActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-//        for (CartItem c : dbHandler.getCartItems(cartId)){
-//            Log.v("TAG", c.getName()+" - "+c.isCheck());
-//        }
     }
 
     @Override
@@ -112,9 +109,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                                 finish();
                                 break;
                             case "Create Transaction":
-                                String PREF_NAME = "sharedPrefs";
-                                SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-                                AddCartToRecord addCartToRecord = new AddCartToRecord(ShoppingListActivity.this, prefs.getString("baseCurrency", ""), cartId);
+                                AddCartToRecord addCartToRecord = new AddCartToRecord(ShoppingListActivity.this, cartId);
                                 addCartToRecord.add();
                                 break;
                             default:

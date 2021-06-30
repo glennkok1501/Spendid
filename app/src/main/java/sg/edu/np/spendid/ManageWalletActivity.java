@@ -25,10 +25,8 @@ import java.text.DecimalFormat;
 import maes.tech.intentanim.CustomIntent;
 
 public class ManageWalletActivity extends AppCompatActivity {
-    private final static String PREF_NAME = "sharedPrefs";
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
     private DBHandler dbHandler;
-    private String baseCurrency;
     private TextView bal;
 
     @Override
@@ -36,8 +34,6 @@ public class ManageWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_wallet);
         dbHandler = new DBHandler(this, null, null, 1);
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        baseCurrency = prefs.getString("baseCurrency", "");
         bal = findViewById(R.id.totalWalletBal_textView);
         TextView header = findViewById(R.id.totalWalletTitle_textView);
         header.setText("Total Balance");
@@ -66,18 +62,18 @@ public class ManageWalletActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        bal.setText(df2.format(dbHandler.getTotalBalance()));
-        RecyclerView recyclerView = findViewById(R.id.manageWallet_RV);
-        WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), baseCurrency, this);
-        LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(myLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(myAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        bal.setText(df2.format(dbHandler.getTotalBalance()));
+        RecyclerView recyclerView = findViewById(R.id.manageWallet_RV);
+        WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), this);
+        LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(myLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(myAdapter);
     }
 
     @Override

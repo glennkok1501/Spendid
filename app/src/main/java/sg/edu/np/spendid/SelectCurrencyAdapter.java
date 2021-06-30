@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SelectCurrencyAdapter extends RecyclerView.Adapter<CurrencyViewHolder> {
+public class SelectCurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyViewHolder> {
     String[] data;
     private Dialog dialog;
     private TextView textView;
@@ -19,12 +19,12 @@ public class SelectCurrencyAdapter extends RecyclerView.Adapter<CurrencyViewHold
         this.textView = textView;
     }
 
-    public CurrencyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public SelectCurrencyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_currency_layout, parent, false);
-        return new CurrencyViewHolder(item);
+        return new SelectCurrencyViewHolder(item);
     }
 
-    public void onBindViewHolder(CurrencyViewHolder holder, int position){
+    public void onBindViewHolder(SelectCurrencyViewHolder holder, int position){
         String[] s = data[position].split(";");
         holder.txt.setText(s[0]);
         holder.txt.setOnClickListener(new View.OnClickListener() {

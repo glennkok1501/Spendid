@@ -118,7 +118,7 @@ public class EditWalletActivity extends AppCompatActivity {
     }
 
     private void deleteDialog(){
-        CustomDialog.Alert alert = new CustomDialog(EditWalletActivity.this).new Alert();
+        AlertDialog alert = new AlertDialog(this);
         alert.setTitle("Delete Wallet");
         alert.setBody("Are you sure you want to permanently delete this wallet and all its transactions?");
         alert.setPositive().setText("Delete");

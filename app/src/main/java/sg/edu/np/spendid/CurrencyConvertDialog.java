@@ -67,8 +67,8 @@ public class CurrencyConvertDialog {
         forCur.setText(foreign.toUpperCase());
         updateDate.setText(currency.getDate());
         if (forFixedAmt > 0){
-            forAmt.setText(df2.format(forFixedAmt*currency.getRate()));
-            baseAmt.setText(df2.format(forFixedAmt));
+            forAmt.setText(df2.format(forFixedAmt));
+            baseAmt.setText(df2.format(convert(Double.parseDouble(forAmt.getText().toString()))));
         }
 
         forAmt.addTextChangedListener(new TextWatcher() {

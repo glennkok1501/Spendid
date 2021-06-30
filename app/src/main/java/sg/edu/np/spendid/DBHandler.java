@@ -98,6 +98,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_CARTITEM_CHECK+" INTEGER, "+
                 COLUMN_CART_ID+" INTEGER, "+
                 "FOREIGN KEY ("+COLUMN_CART_ID+") REFERENCES "+TABLE_CART+" ("+COLUMN_CART_ID+"))";
+
         String CREATE_CURRENCY_TABLE = "CREATE TABLE " + TABLE_CURRENCY +
                 " (" + COLUMN_CURRENCY_FOREIGNCURRENCY + " TEXT PRIMARY KEY, " +
                 COLUMN_CURRENCY_RATE + " REAL, " +
@@ -136,6 +137,9 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WALLET);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECORD);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CARTITEM);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURRENCY);
         onCreate(db);
     }
 
@@ -669,6 +673,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Currency currency = new Currency();
+
         if (cursor.moveToFirst()){
             currency.setForeign(cursor.getString(0));
             currency.setRate(cursor.getDouble(1));
@@ -691,6 +696,13 @@ public class DBHandler extends SQLiteOpenHelper {
             db.update(TABLE_CURRENCY, values, COLUMN_CURRENCY_FOREIGNCURRENCY + " =?", new String[]{String.valueOf(c.getForeign())});
         }
         db.close();
+    }
+
+    public int currencySize(){
+        String query = "SELECT COUNT(*) FROM " + TABLE_CURRENCY;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor.getInt(0);
     }
 
 

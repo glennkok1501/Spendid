@@ -17,15 +17,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransChildAdapter.CurrentTransChildViewHolder> {
+public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransChildViewHolder> {
     ArrayList<Record> data;
-    String baseCurrency;
     Dialog dialog;
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public CurrentTransChildAdapter(ArrayList<Record> input, String baseCurrency, Dialog dialog){
+    public CurrentTransChildAdapter(ArrayList<Record> input, Dialog dialog){
         data = input;
-        this.baseCurrency = baseCurrency;
         this.dialog = dialog;
     }
 
@@ -39,7 +37,7 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
         holder.name.setText(r.getTitle());
         holder.time.setText(formatTime(r.getTimeCreated()));
         holder.amt.setText(df2.format(r.getAmount()));
-        holder.currency.setText(baseCurrency);
+        holder.currency.setText("SGD");
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,11 +53,6 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
         return data.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
     private String formatTime(String t){
         String formatted;
         try{
@@ -72,16 +65,5 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
         return formatted;
     }
 
-    public class CurrentTransChildViewHolder extends RecyclerView.ViewHolder {
-        TextView name, time, amt, currency;
-        LinearLayout layout;
-        public CurrentTransChildViewHolder(View itemView){
-            super(itemView);
-            name = itemView.findViewById(R.id.curTransChildName_textView);
-            time = itemView.findViewById(R.id.curTransChildTime_textView);
-            amt = itemView.findViewById(R.id.curTransChildAmt_textView);
-            currency = itemView.findViewById(R.id.curTransChildCur_textView);
-            layout = itemView.findViewById(R.id.curTransChild_linearLayout);
-        }
-    }
+
 }

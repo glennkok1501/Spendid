@@ -42,21 +42,17 @@ public class SelectWalletActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String PREF_NAME = "sharedPrefs";
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String baseCurrency = prefs.getString("baseCurrency", "");
-        RecyclerView selWalletRV = findViewById(R.id.sel_wallet_RV);
-        WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(dbHandler.getWallets(), baseCurrency, this);
-        LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
-        selWalletRV.setLayoutManager(myLayoutManager);
-        selWalletRV.setItemAnimator(new DefaultItemAnimator());
-        selWalletRV.setAdapter(walletSelectAdapter);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        RecyclerView selWalletRV = findViewById(R.id.sel_wallet_RV);
+        WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(dbHandler.getWallets(), this);
+        LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
+        selWalletRV.setLayoutManager(myLayoutManager);
+        selWalletRV.setItemAnimator(new DefaultItemAnimator());
+        selWalletRV.setAdapter(walletSelectAdapter);
     }
 
     @Override

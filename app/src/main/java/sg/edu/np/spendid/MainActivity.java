@@ -37,11 +37,10 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
-    private TextView monthText, balance, income, expense, currency, manage, viewAll;
+    private TextView monthText, balance, income, expense, currency, manage, viewAll, noWallet, noCurTrans;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
     private final String PREF_NAME = "sharedPrefs";
     private FloatingActionButton fab, addWallet, addRecord;
-    private String baseCurrency;
     private Animation open, close, up, down;
     private boolean fabClicked;
     private DrawerLayout drawerLayout;
@@ -63,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         addWallet = findViewById(R.id.dashboardAddWallet_fab);
         manage = findViewById(R.id.manage_textView);
         viewAll = findViewById(R.id.viewAll_textView);
+        noWallet = findViewById(R.id.walletViewPageStatus_textView);
+        noCurTrans = findViewById(R.id.curTransStatus_textView);
 
         //fab animations
         open = AnimationUtils.loadAnimation(this, R.anim.rotate_open_animation);
@@ -70,21 +71,18 @@ public class MainActivity extends AppCompatActivity {
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
 
+        //Fetch Data from API
+        new CurrencyAPI(this, dbHandler).getData("sgd");
+
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
         }
-        //Seed currency
-        SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-        editor.putString("baseCurrency", "SGD");
-        editor.apply();
+        hideHiddenFab(); //Init hidden buttons
 
-        getBaseCurrency();
-        hideHiddenFab();
+        initDrawer(); //Drawer and Navbar;
 
-        //Drawer and Navbar
-        initDrawer();
         manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Wallets view pager
         walletList = sortWallet(dbHandler.getWallets());
-        TextView noWallet = findViewById(R.id.walletViewPageStatus_textView);
         if (walletList.size() == 0){
             noWallet.setVisibility(View.VISIBLE);
             noWallet.setText("No Wallets");
@@ -158,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             noWallet.setVisibility(View.GONE);
         }
         ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
-        WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, baseCurrency, this);
+        WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, this);
         viewPager.setAdapter(walletSliderAdapter);
 
         LinearLayout indicators = findViewById(R.id.walletsIndicators_linearLayout);
@@ -182,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Current Transactions
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
-        TextView noCurTrans = findViewById(R.id.curTransStatus_textView);
         if (curTransMap.size() == 0){
             noCurTrans.setVisibility(View.VISIBLE);
             noCurTrans.setText("No Transactions");
@@ -191,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
             noCurTrans.setVisibility(View.GONE);
         }
         RecyclerView currentTransRV = findViewById(R.id.main_transHist_RV);
-        CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap, baseCurrency);
+        CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         currentTransRV.setLayoutManager(myLayoutManager);
         currentTransRV.setItemAnimator(new DefaultItemAnimator());
@@ -250,12 +246,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getBaseCurrency(){
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        baseCurrency = prefs.getString("baseCurrency", "");
-        currency.setText(baseCurrency);
-    }
-
     private ArrayList<Wallet> sortWallet(ArrayList<Wallet> w){
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         int value = prefs.getInt("firstWallet",0);
@@ -283,8 +273,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDrawer(){
-        //Tool bar
-        LinearLayout manangeWallet, transHist, categories, currencyRates, shoppingList, settings, about, search, subscriptions, add, additional, addWallet, addRecord;
+        LinearLayout manageWallet, transHist, categories, currencyRates,
+                shoppingList, settings, about, search, subscriptions, add,
+                additional, addWallet, addRecord;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
         ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
@@ -297,8 +288,8 @@ public class MainActivity extends AppCompatActivity {
         initPopupMenu(moreBtn);
 
         //drawer
-        manangeWallet = findViewById(R.id.navbar_manageWallets);
-        setButton(manangeWallet, ManageWalletActivity.class);
+        manageWallet = findViewById(R.id.navbar_manageWallets);
+        setButton(manageWallet, ManageWalletActivity.class);
 
         transHist = findViewById(R.id.navbar_transHist);
         setButton(transHist, TransactionHistoryActivity.class);
