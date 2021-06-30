@@ -30,7 +30,6 @@ public class EditRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     @Override
@@ -70,8 +69,7 @@ public class EditRecordActivity extends AppCompatActivity {
         Intent intent = getIntent();
         record  = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
         wallet = dbHandler.getWallet(record.getWalletId());
-        getBaseCurrency();
-        recordCur.setText(baseCurrency);
+        recordCur.setText("SGD");
         selectWallet.setText(wallet.getName());
         title.setText(record.getTitle());
         description.setText(record.getDescription());
@@ -134,14 +132,9 @@ public class EditRecordActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void getBaseCurrency(){
-        String PREF_NAME = "sharedPrefs";
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        baseCurrency = prefs.getString("baseCurrency", "");
-    }
 
     private void promptConversion(){
-        if (!baseCurrency.equals(wallet.getCurrency())){
+        if (!wallet.getCurrency().equals("SGD")){
             CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, wallet.getCurrency().toLowerCase());
             currencyConvertDialog.setAmt(amt);
             currencyConvertDialog.setForFixedAmt(record.getAmount());
@@ -204,7 +197,7 @@ public class EditRecordActivity extends AppCompatActivity {
     }
 
     private void deleteDialog(){
-        CustomDialog.Alert alert = new CustomDialog(EditRecordActivity.this).new Alert();
+        AlertDialog alert = new AlertDialog(this);
         alert.setTitle("Delete Transaction");
         alert.setBody("Are you sure you want to permanently delete this transaction?");
         alert.setPositive().setText("Delete");

@@ -59,11 +59,8 @@ public class TransactionHistoryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String PREF_NAME = "sharedPrefs";
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String baseCurrency = prefs.getString("baseCurrency", "");
         RecyclerView transactionHistoryRV = findViewById(R.id.transaction_history_recyclerView);
-        HistoryAdapter ha = new HistoryAdapter(dbHandler.getRecordHistory(), baseCurrency);
+        HistoryAdapter ha = new HistoryAdapter(dbHandler.getRecordHistory());
         LinearLayoutManager lm = new LinearLayoutManager(this);
         transactionHistoryRV.setLayoutManager(lm);
         transactionHistoryRV.setItemAnimator(new DefaultItemAnimator());

@@ -19,13 +19,11 @@ import java.util.ArrayList;
 
 public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapter.WalletSliderViewHolder> {
     ArrayList<Wallet> data;
-    String baseCurrency;
     Context context;
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public WalletSliderAdapter(ArrayList<Wallet> input, String baseCurrency, Context context){
+    public WalletSliderAdapter(ArrayList<Wallet> input, Context context){
         data = input;
-        this.baseCurrency = baseCurrency;
         this.context = context;
     }
 
@@ -39,13 +37,13 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderAdapte
         Wallet w = data.get(position);
         holder.name.setText(w.getName());
         holder.amount.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId())));
-        holder.currency.setText(baseCurrency);
+        holder.currency.setText("SGD");
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialog dialog = new CustomDialog(v.getContext());
-                dialog.showManageWallet(w, false);
+                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), w, false);
+                dialog.show();
             }
         });
     }

@@ -16,14 +16,12 @@ import java.util.ArrayList;
 
 public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
     ArrayList<Wallet> data;
-    String baseCurrency;
     Context context;
     DBHandler dbHandler;
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public WalletSelectAdapter(ArrayList<Wallet> input, String baseCurrency, Context context){
+    public WalletSelectAdapter(ArrayList<Wallet> input, Context context){
         data = input;
-        this.baseCurrency = baseCurrency;
         this.context = context;
         dbHandler = new DBHandler(this.context, null, null, 1);
 
@@ -37,7 +35,7 @@ public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectViewHo
     public void onBindViewHolder(WalletSelectViewHolder holder, int position){
         Wallet w = data.get(position);
         holder.name.setText(w.getName());
-        holder.amount.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId()))+" "+baseCurrency);
+        holder.amount.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId()))+" SGD");
         holder.date.setText("Date Created: "+data.get(position).getDateCreated());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

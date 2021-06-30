@@ -24,14 +24,12 @@ import java.util.Date;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHolder>{
     ArrayList<Record> transactions;
-    String baseCurrency;
     boolean showDate;
     CategoryHandler categoryHandler = new CategoryHandler();
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public TransactionAdapter(ArrayList<Record> transactionList, String baseCurrency, boolean showDate) {
+    public TransactionAdapter(ArrayList<Record> transactionList, boolean showDate) {
         transactions = transactionList;
-        this.baseCurrency = baseCurrency;
         this.showDate = showDate;
     }
 
@@ -45,7 +43,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
         Record r = transactions.get(pos);
         vh.title.setText(r.getTitle());
         vh.time.setText(formatTime(r.getTimeCreated()));
-        vh.cur.setText(baseCurrency);
+        vh.cur.setText("SGD");
         vh.amt.setText(df2.format(r.getAmount()));
         if (showDate){vh.date.setText(formatDate(r.getDateCreated()));}
         else{vh.date.setText("");}

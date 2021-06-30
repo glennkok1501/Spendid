@@ -30,7 +30,7 @@ public class AddRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency, walletCurrency;
+    private String walletCurrency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +59,9 @@ public class AddRecordActivity extends AppCompatActivity {
 
         checkValues = initCheckValues();
         Intent intent = getIntent();
-        String walletName = intent.getStringExtra("walletName");
-        String currency = intent.getStringExtra("walletCurrency");
-        getBaseCurrency();
-        walletCurrency = currency;
-        recordCur.setText(baseCurrency.toUpperCase());
-        selectWallet.setText(walletName);
+        selectWallet.setText(intent.getStringExtra("walletName"));
+        walletCurrency = intent.getStringExtra("walletCurrency");
+        recordCur.setText("SGD");
         promptConversion();
 
         RecyclerView catRV = findViewById(R.id.newRecordCat_RV);
@@ -127,14 +124,9 @@ public class AddRecordActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void getBaseCurrency(){
-        String PREF_NAME = "sharedPrefs";
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        baseCurrency = prefs.getString("baseCurrency", "");
-    }
 
     private void promptConversion(){
-        if (!baseCurrency.equals(walletCurrency)){
+        if (!walletCurrency.equals("SGD")){
             CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, walletCurrency.toLowerCase());
             currencyConvertDialog.setAmt(amt);
             currencyConvertDialog.show();

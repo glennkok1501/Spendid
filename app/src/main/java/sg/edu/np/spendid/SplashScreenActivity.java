@@ -59,8 +59,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void fetchAPI(String currency){
-        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency);
-//        String url = "";
+//        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency);
+        String url = "";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override

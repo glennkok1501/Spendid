@@ -33,7 +33,6 @@ import java.text.DecimalFormat;
 public class ExchangeRateActivity extends AppCompatActivity {
 
     private String from, to, lastUpdated;
-    private CustomDialog.SelectCountry selectCountry;
     private double exchangeRate;
     private RequestQueue mQueue;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
@@ -105,8 +104,8 @@ public class ExchangeRateActivity extends AppCompatActivity {
         c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectCountry = new CustomDialog(ExchangeRateActivity.this).new SelectCountry(getResources().getStringArray(R.array.countries), t);
-                selectCountry.show();
+                SelectCountryDialog dialog = new SelectCountryDialog(ExchangeRateActivity.this, getResources().getStringArray(R.array.countries), t);
+                dialog.show();
             }
         });
     }

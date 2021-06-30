@@ -19,13 +19,11 @@ import java.util.HashMap;
 
 public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransChildAdapter.CurrentTransChildViewHolder> {
     ArrayList<Record> data;
-    String baseCurrency;
     Dialog dialog;
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public CurrentTransChildAdapter(ArrayList<Record> input, String baseCurrency, Dialog dialog){
+    public CurrentTransChildAdapter(ArrayList<Record> input, Dialog dialog){
         data = input;
-        this.baseCurrency = baseCurrency;
         this.dialog = dialog;
     }
 
@@ -39,7 +37,7 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
         holder.name.setText(r.getTitle());
         holder.time.setText(formatTime(r.getTimeCreated()));
         holder.amt.setText(df2.format(r.getAmount()));
-        holder.currency.setText(baseCurrency);
+        holder.currency.setText("SGD");
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

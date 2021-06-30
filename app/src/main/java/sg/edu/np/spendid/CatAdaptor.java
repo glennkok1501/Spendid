@@ -92,7 +92,7 @@ public class CatAdaptor extends RecyclerView.Adapter<CatAdaptor.CatViewHolder> {
     }
 
     private void deleteDialog(ViewGroup parent, Category toDelete) {
-        CustomDialog.Alert alert = new CustomDialog(parent.getContext()).new Alert();
+        AlertDialog alert = new AlertDialog(parent.getContext());
         alert.setTitle("Delete Category");
         alert.setBody("Are you sure you want to permanently delete this category?");
         alert.setPositive().setText("Delete");

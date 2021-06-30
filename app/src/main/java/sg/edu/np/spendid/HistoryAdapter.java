@@ -20,12 +20,10 @@ import java.util.HashMap;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>{
     HashMap<String, ArrayList<Record>> recordData;
     ArrayList<String> dates;
-    String baseCurrency;
 
-    public HistoryAdapter(HashMap<String, ArrayList<Record>> recordList, String baseCurrency) {
+    public HistoryAdapter(HashMap<String, ArrayList<Record>> recordList) {
         recordData = recordList;
         dates = sortDates(new ArrayList<>(recordList.keySet()));
-        this.baseCurrency = baseCurrency;
     }
 
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,7 +34,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(HistoryViewHolder vh, int pos) {
         String s = dates.get(pos);
         vh.date.setText(formatDate(s));
-        TransactionAdapter ta = new TransactionAdapter(recordData.get(s), baseCurrency, false);
+        TransactionAdapter ta = new TransactionAdapter(recordData.get(s), false);
         LinearLayoutManager lm = new LinearLayoutManager(vh.itemView.getContext());
         vh.rv.setLayoutManager(lm);
         vh.rv.setItemAnimator(new DefaultItemAnimator());

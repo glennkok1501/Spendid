@@ -65,10 +65,8 @@ public class ViewTransactionActivity extends AppCompatActivity {
         else{
             walletExpense.setImageResource(R.drawable.ic_income_up);
         }
-        String PREF_NAME = "sharedPrefs";
         dateTime.setText("Made Transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        cur.setText(prefs.getString("baseCurrency", ""));
+        cur.setText("SGD");
         String des_text = record.getDescription();
         if (des_text.length() == 0){
             des.setText("No Description");
