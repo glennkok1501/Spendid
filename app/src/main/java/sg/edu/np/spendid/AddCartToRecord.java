@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,10 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.DecimalFormat;
@@ -131,10 +128,9 @@ public class AddCartToRecord {
 
     private void checkCurrency(){
         if (!baseCurrency.equals(wallet.getCurrency().toLowerCase())){
-            CurrencyAPI currencyAPI = new CurrencyAPI(context, wallet.getCurrency().toLowerCase(), baseCurrency);
-            currencyAPI.setAmt(amt);
-            currencyAPI.setForFixedAmt(amount);
-            currencyAPI.call(true);
+            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(context, wallet.getCurrency().toLowerCase());
+            currencyConvertDialog.setAmt(amt);
+            currencyConvertDialog.setForFixedAmt(amount);
         }
     }
 

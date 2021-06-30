@@ -2,7 +2,9 @@ package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,6 +28,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private ArrayList<Currency> currencyArrayList;
     private RequestQueue mQueue;
+    private boolean currencyIsEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +37,30 @@ public class SplashScreenActivity extends AppCompatActivity {
         currencyList = getResources().getStringArray(R.array.countries);
         currencyArrayList = new ArrayList<>();
         dbHandler = new DBHandler(this, null, null, 1);
+        currencyIsEmpty = dbHandler.getCurrency("sgd") == null;
         mQueue = Volley.newRequestQueue(this);
         fetchAPI("sgd");
+
+        CountDownTimer myCountDown;
+        myCountDown = new CountDownTimer(1500, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+            @Override
+            public void onFinish() {
+                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+        myCountDown.start();
+
 
     }
 
     private void fetchAPI(String currency){
         String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency);
+//        String url = "";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -51,7 +71,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 String[] split = s.split(";");
                                 currencyArrayList.add(new Currency(split[1], exchangeRates.getDouble(split[1]), response.getString("date")));
                             }
-                            dbHandler.updateCurrencies(currencyArrayList);
+                            if (currencyIsEmpty){
+                                dbHandler.addCurrencies(currencyArrayList);
+                            }
+                            else{
+                                dbHandler.updateCurrencies(currencyArrayList);
+                            }
                         } catch (JSONException e) {
                             Toast.makeText(getApplicationContext(), "Data Unavailable", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
@@ -69,9 +94,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         mQueue.add(request);
     }
 
-
     private void useBackUp(){
-        if (dbHandler.getCurrency("sgd") == null) {
+        if (currencyIsEmpty) {
             retrieveBackup();
             dbHandler.addCurrencies(currencyArrayList);
             Toast.makeText(getApplicationContext(), "Backup Retrieved", Toast.LENGTH_SHORT).show();

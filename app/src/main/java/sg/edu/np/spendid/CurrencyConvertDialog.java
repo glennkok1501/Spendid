@@ -23,24 +23,14 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
-public class CurrencyAPI {
+public class CurrencyConvertDialog {
     private Context context;
-    private String base;
-    private String foreign;
-    private double exchangeRate;
-    private String lastUpdate;
-    private RequestQueue mQueue;
     private EditText amt;
     private double forFixedAmt;
+    private Currency currency;
+    private DBHandler dbHandler;
+    private String foreign;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
-
-    public double getExchangeRate() {
-        return exchangeRate;
-    }
-
-    public String getLastUpdate() {
-        return lastUpdate;
-    }
 
     public void setAmt(EditText amt) {
         this.amt = amt;
@@ -50,39 +40,15 @@ public class CurrencyAPI {
         this.forFixedAmt = forFixedAmt;
     }
 
-    public CurrencyAPI(Context context, String foreign, String base) {
+    public CurrencyConvertDialog(Context context, String foreign) {
         this.context = context;
-        this.base = base;
+        forFixedAmt = 0;
         this.foreign = foreign;
-        this.mQueue = Volley.newRequestQueue(context);
     }
 
-    public void call(boolean fixedAmt){
-        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s/%s.json", foreign, base);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            exchangeRate = response.getDouble(base.toLowerCase());
-                            lastUpdate = response.getString("date");
-                            currencyDialog(fixedAmt);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, "Data Unavailable", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Service Temporarily Unavailable", Toast.LENGTH_LONG).show();
-                error.printStackTrace();
-            }
-        });
-        mQueue.add(request);
-    }
-
-    public void currencyDialog(boolean fixedAmt){
+    public void show(){
+        dbHandler = new DBHandler(context, null,null,1);
+        currency = dbHandler.getCurrency(foreign);
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.currency_exchange_layout);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -97,26 +63,25 @@ public class CurrencyAPI {
         FloatingActionButton convertBtn = dialog.findViewById(R.id.convertCurrrency_fab);
         TextView cancelDialog = dialog.findViewById(R.id.currencyExchangeCancel_textView);
 
-        baseCur.setText(base.toUpperCase());
+        baseCur.setText("SGD");
         forCur.setText(foreign.toUpperCase());
-        updateDate.setText("Last Updated: "+lastUpdate);
-        if (fixedAmt){
-            forAmt.setText(df2.format(forFixedAmt));
-            baseAmt.setText(df2.format(Double.parseDouble(forAmt.getText().toString()) * exchangeRate));
+        updateDate.setText(currency.getDate());
+        if (forFixedAmt > 0){
+            forAmt.setText(df2.format(forFixedAmt*currency.getRate()));
+            baseAmt.setText(df2.format(forFixedAmt));
         }
 
         forAmt.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {}
             @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
             @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length() != 0) {
-                    baseAmt.setText(df2.format(Double.parseDouble(forAmt.getText().toString()) * exchangeRate));
+                    baseAmt.setText(df2.format(convert(Double.parseDouble(forAmt.getText().toString()))));
                 }
                 else{
                     baseAmt.setText("0.00");
@@ -140,5 +105,9 @@ public class CurrencyAPI {
         });
 
         dialog.show();
+    }
+
+    private double convert(double amt){
+        return amt / currency.getRate();
     }
 }
