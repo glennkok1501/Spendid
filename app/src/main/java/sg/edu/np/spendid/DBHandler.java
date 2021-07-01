@@ -670,7 +670,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Currency getCurrency(String c){
         String query = "SELECT * FROM " + TABLE_CURRENCY + " WHERE " + COLUMN_CURRENCY_FOREIGNCURRENCY + " = " + "\'"+c+"\'";
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Currency currency = new Currency();
 
