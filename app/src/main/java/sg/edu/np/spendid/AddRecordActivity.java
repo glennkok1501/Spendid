@@ -186,6 +186,4 @@ public class AddRecordActivity extends AppCompatActivity {
         }
         return valid;
     }
-
-
 }

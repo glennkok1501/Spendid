@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+
 public class EditWalletActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private Wallet wallet;
@@ -59,7 +61,7 @@ public class EditWalletActivity extends AppCompatActivity {
         editWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValidWalletName()){
+                if (isValidWalletName() && isValidWallet(editWalletName.getText().toString().toLowerCase())){
                     Wallet w = new Wallet(chosenWalletID, editWalletName.getText().toString(), editWalletDescription.getText().toString(), wallet.getCurrency(), wallet.getDateCreated());
                     dbHandler.updateWallet(w);
                     Toast.makeText(getApplicationContext(), "Wallet Updated", Toast.LENGTH_SHORT).show();
@@ -137,6 +139,18 @@ public class EditWalletActivity extends AppCompatActivity {
             }
         });
         alert.show();
+    }
+
+    private boolean isValidWallet(String walletName){
+        boolean valid = true;
+        ArrayList<Wallet> walletList = dbHandler.getWallets();
+        for (Wallet w : walletList){
+            if (w.getName().toLowerCase().equals(walletName)){
+                valid = false;
+                break;
+            }
+        }
+        return valid;
     }
 
 }

@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddWalletActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class AddWalletActivity extends AppCompatActivity {
         CreateWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValidWalletName()){
+                if (isValidWalletName() && isValidWallet(newWalletName.getText().toString().toLowerCase())){
                     Wallet w = new Wallet(newWalletName.getText().toString(), newWalletDescription.getText().toString(), currencyChosen, currentDate());
                     dbhandler.addWallet(w);
                     Toast.makeText(getApplicationContext(), "New Wallet Added", Toast.LENGTH_SHORT).show();
@@ -60,7 +61,7 @@ public class AddWalletActivity extends AppCompatActivity {
                     finish();
                 }
                 else{
-                    walletNameLayout.setError("Improper Wallet Name");
+                    walletNameLayout.setError("Invalid Wallet Name");
                     Toast.makeText(getApplicationContext(), "Invalid Wallet Name", Toast.LENGTH_SHORT).show();
                 }
 
@@ -110,6 +111,18 @@ public class AddWalletActivity extends AppCompatActivity {
     private boolean isValidWalletName(){
         int len = newWalletName.getText().toString().length();
         return len != 0 && len <= 15;
+    }
+
+    private boolean isValidWallet(String walletName){
+        boolean valid = true;
+        ArrayList<Wallet> walletList = dbhandler.getWallets();
+        for (Wallet w : walletList){
+            if (w.getName().toLowerCase().equals(walletName)){
+                valid = false;
+                break;
+            }
+        }
+        return valid;
     }
 
 }
