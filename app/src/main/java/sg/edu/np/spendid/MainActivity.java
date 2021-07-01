@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         income = findViewById(R.id.totalBalIncCost_textView);
         expense = findViewById(R.id.totalBalExpCost_textView);
         currency = findViewById(R.id.totalBalCur_textView);
+        currency.setText("SGD");
         fab = findViewById(R.id.dashboard_fab);
         addRecord = findViewById(R.id.dashboardAddRecord_fab);
         addWallet = findViewById(R.id.dashboardAddWallet_fab);
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         //Total Balance
         HashMap<String, Double> bal = dbHandler.getBalance(currentMonth());
-        monthText.setText("Total Balance - "+new SimpleDateFormat("MMMM").format(Calendar.getInstance().getTime()));
+        monthText.setText(new SimpleDateFormat("MMMM").format(Calendar.getInstance().getTime())+" Balance");
         balance.setText(df2.format(bal.get("balance")));
         income.setText(df2.format(bal.get("income")));
         expense.setText(df2.format(bal.get("expense")));
