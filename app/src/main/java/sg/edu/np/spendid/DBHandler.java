@@ -372,6 +372,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return recordList;
     }
 
+
+
     public Wallet getWallet(int wId) {
         String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -414,6 +416,31 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return r;
     }
+
+    public Record getWalletRecords(int wId) {
+        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Record r;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String timeCreated = cursor.getString(6);
+            int walletId = cursor.getInt(7);
+            r = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+        } else {
+            r = null;
+        }
+        cursor.close();
+        db.close();
+        return r;
+    }
+
+    //SELECT * FROM RECORD WHERE WALLETID = wID
 
     public void updateRecord(Record r) {
         ContentValues values = new ContentValues();

@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
 
         //Fetch Data from API
-        new CurrencyAPI(this, dbHandler).getData("sgd");
+        //new CurrencyAPI(this, dbHandler).getData("sgd");
 
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
