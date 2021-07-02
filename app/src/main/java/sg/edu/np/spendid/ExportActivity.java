@@ -142,7 +142,15 @@ public class ExportActivity extends AppCompatActivity {
             String line;
             while ((line = reader.readLine()) != null ){
                 String[] data = line.split(delimiter);
-                dbHandler.addRecord(new Record(data[0], data[1], Double.parseDouble(data[2]), data[3], data[4], data[5], wallet.getWalletId()));
+                Record record = new Record();
+                record.setTitle(data[0]);
+                record.setDescription(data[1]);
+                record.setAmount(Double.parseDouble(data[2]));
+                record.setCategory(data[3]);
+                record.setDateCreated(data[4]);
+                record.setTimeCreated(data[5]);
+                record.setWalletId(wallet.getWalletId());
+                dbHandler.addRecord(record);
             }
             Toast.makeText(getApplicationContext(), "File successfully imported", Toast.LENGTH_SHORT).show();
         }
@@ -154,7 +162,7 @@ public class ExportActivity extends AppCompatActivity {
 
     private void exportRecords (ArrayList<Record> records){
         StringBuilder data = new StringBuilder();
-        String filename = new SimpleDateFormat("spendid_dd-MM-yyyy_HH:mm:ss").format(Calendar.getInstance().getTime())+".csv";
+        String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".csv";
         for (Record r : records){
             data.append(r.getTitle()+delimiter+r.getDescription()+delimiter+r.getAmount()+delimiter+r.getCategory()+delimiter+r.getDateCreated()+delimiter+r.getTimeCreated()+"\n");
         }
@@ -164,7 +172,6 @@ public class ExportActivity extends AppCompatActivity {
             File fileLocation = new File(getFilesDir(), filename);
             out.write(data.toString().getBytes());
             out.close();
-            Toast.makeText(getApplicationContext(), "File exported", Toast.LENGTH_SHORT).show();
 
             String authority = this.getPackageName() + ".fileprovider";
             path = FileProvider.getUriForFile(this, authority, fileLocation);
@@ -187,6 +194,7 @@ public class ExportActivity extends AppCompatActivity {
 
         catch(Exception e){
             e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Error occurred: unable to share file", Toast.LENGTH_LONG).show();
         }
     }
 }
