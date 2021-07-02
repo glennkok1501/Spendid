@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -372,6 +373,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return recordList;
     }
 
+
+
     public Wallet getWallet(int wId) {
         String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -413,6 +416,28 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return r;
+    }
+
+    public ArrayList<Record> getWalletRecords(int wId) {
+        ArrayList<Record> recordList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_WALLET_ID + " = " + wId
+                + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "+ COLUMN_RECORD_TIMECREATED + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String timeCreated = cursor.getString(6);
+            int walletId = cursor.getInt(7);
+            recordList.add(new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId));
+        }
+        cursor.close();
+        db.close();
+        return recordList;
     }
 
     public void updateRecord(Record r) {

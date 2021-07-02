@@ -41,8 +41,8 @@ public class CurrencyAPI {
     }
 
     public void getData(String currency){
-        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency);
-//        String url = String.format("https://cdn.jsdelivr.net/gh/nothing.json", currency);
+//        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency);
+        String url = String.format("https://www.youtube.com/watch?v=XA2YEHn-A8Q", currency);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override

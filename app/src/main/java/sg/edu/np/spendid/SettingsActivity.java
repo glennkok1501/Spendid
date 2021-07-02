@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +50,15 @@ public class SettingsActivity extends AppCompatActivity {
                     editor.putBoolean("nightMode", false);
                 }
                 editor.apply();
+            }
+        });
+
+        Button eButton = findViewById(R.id.settings_exportButton);
+        eButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, ExportActivity.class);
+                startActivity(intent);
             }
         });
     }
