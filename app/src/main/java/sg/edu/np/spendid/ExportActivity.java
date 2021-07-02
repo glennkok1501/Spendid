@@ -13,19 +13,21 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
 public class ExportActivity extends AppCompatActivity {
     private DBHandler dbHandler;
-    private final int CREATE_CODE = 40;
-    private int READ_REQUEST_CODE = 2;
-    private static final int CREATE_FILE = 1;
     private Uri path;
 
     @Override
@@ -37,126 +39,56 @@ public class ExportActivity extends AppCompatActivity {
         exportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                export();
+                export(dbHandler.getWalletRecords(1));
             }
         });
-        //StringBuilder data = new StringBuilder();
-        //data.append("\n" + dbHandler.getWalletRecords(0).getId() + "," + dbHandler.getWalletRecords(0).getDescription()+ ","+ dbHandler.getWalletRecords(0).getAmount()+","+ dbHandler.getWalletRecords(0).getCategory()+ ","+ dbHandler.getWalletRecords(0).getDateCreated()+","+ dbHandler.getWalletRecords(0).getTimeCreated()+","+ dbHandler.getWalletRecords(0).getWalletId());
-//        exportButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-//                //Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-//                intent.putExtra(Intent.EXTRA_TITLE, "exportData.csv");
-//                startActivityForResult(intent, 2);
-//
-//            }
-//        });
+
     }
-    private void export (){
+    private void export (ArrayList<Record> records){
+        Log.v("TAG", ""+records.size());
+
         StringBuilder data = new StringBuilder();
-        data.append("\n" + dbHandler.getWalletRecords(1).getId() + ";n%" + dbHandler.getWalletRecords(1).getDescription()+ ";n%"+ dbHandler.getWalletRecords(1).getAmount()+";n%"+ dbHandler.getWalletRecords(1).getCategory()+ ";n%"+ dbHandler.getWalletRecords(1).getDateCreated()+";n%"+ dbHandler.getWalletRecords(1).getTimeCreated()+";n%"+ dbHandler.getWalletRecords(1).getWalletId());
-//        try{
-//            FileOutputStream out = openFileOutput("data.csv", Context.MODE_PRIVATE);
-//            out.write((data.toString().getBytes()));
-//            out.close();
-//
-//            Context context = getApplicationContext();
-//
-//            File filelocation = new File(getFilesDir(), "data.csv");
-//            String authority = context.getPackageName() + ".fileprovider";
-//            Uri path = FileProvider.getUriForFile(context, authority, filelocation);
-//
-//            //context.grantUriPermission(getPackageName(), path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//
-//            Intent fileIntent = new Intent(Intent.ACTION_SEND);
-//            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            fileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//            fileIntent.setType("text/csv");
-//            fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Data");
-//            fileIntent.putExtra(Intent.EXTRA_STREAM, path);
-//            //startActivity(fileIntent);
-//
-//            startActivity(Intent.createChooser(fileIntent, "Send mail"));
-//            //revoke permisions
-//            context.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
+        String delimiter = ",";
+        String filename = new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss").format(Calendar.getInstance().getTime())+".csv";
+        for (Record r : records){
+            data.append(r.getTitle()+delimiter+r.getDescription()+delimiter+r.getAmount()+delimiter+r.getCategory()+delimiter+r.getDateCreated()+delimiter+r.getTimeCreated()+"\n");
+        }
+
         try {
-            FileOutputStream out = openFileOutput("data.csv", Context.MODE_PRIVATE);
+            FileOutputStream out = openFileOutput(filename, Context.MODE_PRIVATE);
+            File fileLocation = new File(getFilesDir(), filename);
             out.write((data.toString().getBytes()));
             out.close();
-        }
+            Toast.makeText(getApplicationContext(), "Saved to "+fileLocation, Toast.LENGTH_LONG).show();
+
+            String authority = this.getPackageName() + ".fileprovider";
+            path = FileProvider.getUriForFile(this, authority, fileLocation);
+
+            Intent fileIntent = new Intent(Intent.ACTION_SEND);
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            fileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            fileIntent.setType("text/csv");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT, filename);
+            fileIntent.putExtra(Intent.EXTRA_STREAM, path);
+
+            Intent chooser = Intent.createChooser(fileIntent, null);
+            List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                this.grantUriPermission(packageName, path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            startActivity(chooser);
+            }
+
         catch(Exception e){
             e.printStackTrace();
         }
-        Context context = getApplicationContext();
 
-        File filelocation = new File(getFilesDir(), "data.csv");
-        String authority = context.getPackageName() + ".fileprovider";
-        path = FileProvider.getUriForFile(context, authority, filelocation);
-
-        //context.grantUriPermission(getPackageName(), path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        Intent fileIntent = new Intent(Intent.ACTION_SEND);
-        fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        fileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        fileIntent.setType("text/csv");
-        fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Data");
-        fileIntent.putExtra(Intent.EXTRA_STREAM, path);
-        //startActivity(fileIntent);
-        Intent chooser = Intent.createChooser(fileIntent, "Send mail");
-        List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
-        for (ResolveInfo resolveInfo : resInfoList) {
-            String packageName = resolveInfo.activityInfo.packageName;
-            context.grantUriPermission(packageName, path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-
-        startActivity(chooser);
-        //revoke permisions
-        //this.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         this.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
-    //    private void createFile(Uri pickerInitialUri) {
-//        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setType("application/pdf");
-//        intent.putExtra(Intent.EXTRA_TITLE, "invoice.pdf");
-//
-//        // Optionally, specify a URI for the directory that should be opened in
-//        // the system file picker when your app creates the document.
-//        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
-//
-//        startActivityForResult(intent, CREATE_FILE);
-//    }
-
-//    public void btnExportPress(View v){
-//        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-//        intent.putExtra(Intent.EXTRA_TITLE, "exportData.csv");
-//        startActivityForResult(intent, CREATE_CODE);
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Uri fileURL = null;
-//        if (resultCode == Activity.RESULT_OK){
-//            if (resultCode == CREATE_CODE){
-//                if (data != null){
-//                    Toast.makeText(this, "Exported", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
-//    public void performFileSearch() {
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-//        startActivityForResult(intent, READ_REQUEST_CODE);
-//    }
 }
