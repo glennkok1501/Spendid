@@ -14,7 +14,6 @@
         android:theme="@style/Theme.Spendid">
         <activity android:name=".ExportActivity"></activity>
         <activity android:name=".ExchangeRateActivity" />
-        <activity android:name=".NewShoppingCartActivity" />
         <activity android:name=".ShoppingListMainActivity" />
         <activity android:name=".ShoppingListActivity" />
         <activity android:name=".SettingsActivity" />
@@ -44,7 +43,6 @@
             android:authorities="sg.edu.np.spendid.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
-<!--            android:authorities="sg.edu.np.spendid.fileprovider"-->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />

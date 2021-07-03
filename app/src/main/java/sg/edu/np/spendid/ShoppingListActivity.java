@@ -1,13 +1,11 @@
 package sg.edu.np.spendid;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -25,6 +23,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private int cartId;
     private CartItemsAdapter myAdapter;
+    private TextView empty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +33,12 @@ public class ShoppingListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         cartId = intent.getIntExtra("cartId", 0);
         FloatingActionButton addItemBtn = findViewById(R.id.addCartItem_fab);
+        empty = findViewById(R.id.cartItemsEmpty_textView);
         //Tool bar
         initToolbar();
 
-        RecyclerView recyclerView = findViewById(R.id.shopList_RV);
-        myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), this);
+        RecyclerView recyclerView = findViewById(R.id.cartItems_RV);
+        myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), empty ,this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -94,21 +94,21 @@ public class ShoppingListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PopupMenu popupMenu = new PopupMenu(ShoppingListActivity.this, more);
-                popupMenu.getMenu().add("Clear");
-                popupMenu.getMenu().add("Delete");
-                popupMenu.getMenu().add("Create Transaction");
+                popupMenu.getMenu().add("Clear All");
+                popupMenu.getMenu().add("Delete Shopping List");
+                popupMenu.getMenu().add("Add to Transaction");
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getTitle().toString()){
-                            case "Clear":
+                            case "Clear All":
                                 clearCart();
                                 break;
-                            case "Delete":
+                            case "Delete Shopping List":
                                 deleteShoppingCart();
                                 finish();
                                 break;
-                            case "Create Transaction":
+                            case "Add to Transaction":
                                 AddCartToRecord addCartToRecord = new AddCartToRecord(ShoppingListActivity.this, cartId);
                                 addCartToRecord.add();
                                 break;
@@ -133,7 +133,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     private void deleteShoppingCart(){
         dbHandler.deleteCartItems(cartId);
         dbHandler.deleteShoppingCart(cartId);
-        Toast.makeText(getApplicationContext(), "Shopping Cart Deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Shopping List Deleted", Toast.LENGTH_SHORT).show();
     }
 
 }
