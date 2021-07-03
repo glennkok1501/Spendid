@@ -94,9 +94,16 @@ public class ExportActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
+        clearFiles();
         this.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
@@ -121,20 +128,13 @@ public class ExportActivity extends AppCompatActivity {
         try{
             InputStream inputStream = getContentResolver().openInputStream(uri);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            Log.v("TAG", reader.toString());
+            ArrayList<Record> newRecords = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null ){
                 String[] data = line.split(delimiter);
-                Record record = new Record();
-                record.setTitle(data[0]);
-                record.setDescription(data[1]);
-                record.setAmount(Double.parseDouble(data[2]));
-                record.setCategory(data[3]);
-                record.setDateCreated(data[4]);
-                record.setTimeCreated(data[5]);
-                record.setWalletId(wallet.getWalletId());
-                dbHandler.addRecord(record);
+                newRecords.add(new Record(data[0], data[1],Double.parseDouble(data[2]), data[3], data[4],data[5],wallet.getWalletId()));
             }
+            dbHandler.addRangeRecord(newRecords);
             Toast.makeText(getApplicationContext(), "File successfully imported", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){
@@ -178,6 +178,17 @@ public class ExportActivity extends AppCompatActivity {
         catch(Exception e){
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Error occurred: unable to share file", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void clearFiles(){
+        Log.v("TAG", getFilesDir().toString());
+        File folder = new File(getFilesDir(), "");
+        if (folder.isDirectory()){
+            String[] files = folder.list();
+            for (String file : files) {
+                new File(folder, file).delete();
+            }
         }
     }
 }
