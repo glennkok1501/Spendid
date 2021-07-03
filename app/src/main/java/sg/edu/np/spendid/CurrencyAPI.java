@@ -29,7 +29,6 @@ public class CurrencyAPI {
     private RequestQueue mQueue;
     private boolean currencyIsEmpty;
     private Context context;
-    private final String PREF_NAME = "sharedPrefs";
 
     public CurrencyAPI(Context context, DBHandler dbHandler) {
         this.context = context;

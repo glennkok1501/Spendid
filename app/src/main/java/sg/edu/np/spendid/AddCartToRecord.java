@@ -113,6 +113,7 @@ public class AddCartToRecord {
         Resources res = context.getResources();
         for (CartItem c : cartItems){
             des += String.format("%s %s (%s %s)", Html.fromHtml(res.getString(R.string.dot)), c.getName(), df2.format(c.getAmount()), wallet.getCurrency());
+
             if (c.isCheck()){
                 des += String.format("%s\n", Html.fromHtml(res.getString(R.string.tick)));
                 amount += c.getAmount();
