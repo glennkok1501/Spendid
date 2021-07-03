@@ -130,14 +130,8 @@ public class ExportActivity extends AppCompatActivity {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             ArrayList<Record> newRecords = new ArrayList<>();
             String line;
-            String dataLine = "";
             while ((line = reader.readLine()) != null ){
-                Log.v("TAG", line);
-                dataLine += line;
-            }
-            String[] dataList = dataLine.split(";\t;");
-            for (int i = 0; i < dataList.length; i++){
-                String[] data = dataList[i].split(delimiter);
+                String[] data = line.split(delimiter);
                 newRecords.add(new Record(data[0], data[1],Double.parseDouble(data[2]), data[3], data[4],data[5],wallet.getWalletId()));
             }
             dbHandler.addRangeRecord(newRecords);
@@ -151,9 +145,11 @@ public class ExportActivity extends AppCompatActivity {
 
     private void exportRecords (ArrayList<Record> records){
         StringBuilder data = new StringBuilder();
-        String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".txt";
+        String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".csv";
         for (Record r : records){
-            data.append(r.getTitle()+delimiter+r.getDescription()+delimiter+r.getAmount()+delimiter+r.getCategory()+delimiter+r.getDateCreated()+delimiter+r.getTimeCreated()+";\t;");
+            String title = r.getTitle().replace("\n", "");
+            String des = r.getDescription().replace("\n","");
+            data.append(title+delimiter+des+delimiter+r.getAmount()+delimiter+r.getCategory()+delimiter+r.getDateCreated()+delimiter+r.getTimeCreated()+"\n");
         }
 
         try {
