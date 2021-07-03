@@ -45,7 +45,7 @@ public class ExportActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null, null, 1);
         walletArrayList = dbHandler.getWallets();
         String[] walletList = getWalletList();
-        delimiter = ";!:";
+        delimiter = ",";
 
         Spinner spinner = findViewById(R.id.export_wallet_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, walletList);
@@ -92,7 +92,6 @@ public class ExportActivity extends AppCompatActivity {
                 getFile.launch("*/*");
             }
         });
-
     }
 
     @Override
@@ -103,6 +102,11 @@ public class ExportActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         clearFiles();
         this.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
@@ -147,8 +151,8 @@ public class ExportActivity extends AppCompatActivity {
         StringBuilder data = new StringBuilder();
         String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".csv";
         for (Record r : records){
-            String title = r.getTitle().replace("\n", "");
-            String des = r.getDescription().replace("\n","");
+            String title = r.getTitle().replaceAll("[\n,]", "");
+            String des = r.getDescription().replaceAll("[\n,]","");
             data.append(title+delimiter+des+delimiter+r.getAmount()+delimiter+r.getCategory()+delimiter+r.getDateCreated()+delimiter+r.getTimeCreated()+"\n");
         }
 
@@ -168,7 +172,7 @@ public class ExportActivity extends AppCompatActivity {
             fileIntent.putExtra(Intent.EXTRA_SUBJECT, filename);
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
 
-            Intent chooser = Intent.createChooser(fileIntent, null);
+            Intent chooser = Intent.createChooser(fileIntent, "Spendid_backup");
             List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {
                 String packageName = resolveInfo.activityInfo.packageName;
