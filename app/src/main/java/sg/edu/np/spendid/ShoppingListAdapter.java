@@ -17,12 +17,15 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
     ArrayList<ShoppingCart> data;
     Context context;
     DBHandler dbHandler;
+    TextView empty;
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public ShoppingListAdapter(ArrayList<ShoppingCart> input, Context context){
+    public ShoppingListAdapter(ArrayList<ShoppingCart> input, TextView empty, Context context){
         data = input;
         this.context = context;
+        this.empty = empty;
         dbHandler = new DBHandler(this.context, null, null, 1);
+        checkEmpty();
     }
 
     public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -54,6 +57,21 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
 
     public int getItemCount(){
         return data.size();
+    }
+
+    public void update(ArrayList<ShoppingCart> updatedData){
+        data = updatedData;
+        notifyDataSetChanged();
+        checkEmpty();
+    }
+
+    private void checkEmpty(){
+        if (data.size() == 0){
+            empty.setVisibility(View.VISIBLE);
+        }
+        else{
+            empty.setVisibility(View.INVISIBLE);
+        }
     }
 
 }

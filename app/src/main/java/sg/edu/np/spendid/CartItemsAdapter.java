@@ -21,12 +21,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
     ArrayList<CartItem> data;
     Context context;
     DBHandler dbHandler;
+    TextView empty;
     DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public CartItemsAdapter(ArrayList<CartItem> input, Context context){
+    public CartItemsAdapter(ArrayList<CartItem> input, TextView empty, Context context){
         data = input;
         this.context = context;
+        this.empty = empty;
         dbHandler = new DBHandler(this.context, null, null, 1);
+        checkEmpty();
     }
 
     public CartItemsViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -63,6 +66,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
     public void update(ArrayList<CartItem> updatedData){
         data = updatedData;
         notifyDataSetChanged();
+        checkEmpty();
     }
 
     public void edit(CartItem c, CartItem newC){
@@ -76,12 +80,23 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         int pos = data.indexOf(c);
         data.remove(c);
         notifyItemRemoved(pos);
+        checkEmpty();
     }
 
     public void clear(){
         int size = data.size();
         data.clear();
         notifyItemRangeRemoved(0, size);
+        empty.setVisibility(View.VISIBLE);
+    }
+
+    private void checkEmpty(){
+        if (data.size() == 0){
+            empty.setVisibility(View.VISIBLE);
+        }
+        else{
+            empty.setVisibility(View.INVISIBLE);
+        }
     }
 
 }
