@@ -110,27 +110,8 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_CART_TABLE);
         db.execSQL(CREATE_CARTITEM_TABLE);
         db.execSQL(CREATE_CURRENCY_TABLE);
+        initCategories(db);
 
-        String cat1 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Shopping\", 1)";
-        String cat2 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Food & Drinks\", 1)";
-        String cat3 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Entertainment\", 1)";
-        String cat4 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Leisure\", 1)";
-        String cat5 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Transport\", 1)";
-        String cat6 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Housing\", 1)";
-        String cat7 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Vehicle\", 1)";
-        String cat8 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Income\", 0)";
-        String cat9 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Salary\", 0)";
-        String cat10 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\"Others\", 1)";
-        db.execSQL(cat1);
-        db.execSQL(cat2);
-        db.execSQL(cat3);
-        db.execSQL(cat4);
-        db.execSQL(cat5);
-        db.execSQL(cat6);
-        db.execSQL(cat7);
-        db.execSQL(cat8);
-        db.execSQL(cat9);
-        db.execSQL(cat10);
     }
 
     @Override
@@ -142,6 +123,29 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CARTITEM);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURRENCY);
         onCreate(db);
+    }
+
+    private void initCategories(SQLiteDatabase db){
+        String cat1 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Shopping\', 1)";
+        String cat2 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Food & Drinks\', 1)";
+        String cat3 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Entertainment\', 1)";
+        String cat4 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Leisure\', 1)";
+        String cat5 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Transport\', 1)";
+        String cat6 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Housing\', 1)";
+        String cat7 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Vehicle\', 1)";
+        String cat8 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Income\', 0)";
+        String cat9 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Salary\', 0)";
+        String cat10 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Others\', 1)";
+        db.execSQL(cat1);
+        db.execSQL(cat2);
+        db.execSQL(cat3);
+        db.execSQL(cat4);
+        db.execSQL(cat5);
+        db.execSQL(cat6);
+        db.execSQL(cat7);
+        db.execSQL(cat8);
+        db.execSQL(cat9);
+        db.execSQL(cat10);
     }
 
     //Add wallet to DB - Glenn
@@ -178,6 +182,29 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_WALLET_ID, r.getWalletId());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_RECORD, null, values);
+        db.close();
+    }
+
+    public void addRangeRecord(ArrayList<Record> recordArrayList){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try{
+            for (Record record : recordArrayList){
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_RECORD_TITLE, record.getTitle());
+                values.put(COLUMN_RECORD_DESCRIPTION, record.getDescription());
+                values.put(COLUMN_RECORD_AMOUNT, record.getAmount());
+                values.put(COLUMN_RECORD_CATEGORY, record.getCategory());
+                values.put(COLUMN_RECORD_DATECREATED, record.getDateCreated());
+                values.put(COLUMN_RECORD_TIMECREATED, record.getTimeCreated());
+                values.put(COLUMN_WALLET_ID, record.getWalletId());
+                db.insert(TABLE_RECORD, null, values);
+            }
+            db.setTransactionSuccessful();
+        }
+        finally {
+            db.endTransaction();
+        }
         db.close();
     }
 
@@ -304,22 +331,6 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return group;
-    }
-
-    //returns the last transaction from the wallet - Glenn
-    public String lastMadeTransaction(int wId) {
-        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_WALLET_ID + " = " + wId + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC LIMIT 1";
-        SQLiteDatabase db = this.getReadableDatabase();
-        String s;
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            s = cursor.getString(5);
-        } else {
-            s = null;
-        }
-        cursor.close();
-        db.close();
-        return s;
     }
 
     //return an array of all records sorted in descending order - Hong Li
@@ -722,14 +733,6 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         db.close();
     }
-
-    public int currencySize(){
-        String query = "SELECT COUNT(*) FROM " + TABLE_CURRENCY;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        return cursor.getInt(0);
-    }
-
 
 
 }

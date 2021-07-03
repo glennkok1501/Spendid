@@ -30,10 +30,7 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
         Wallet w = data.get(position);
         holder.name.setText(w.getName());
         holder.amount.setText(df2.format(dbHandler.getWalletTotal(w.getWalletId()))+" SGD");
-        String lastUpdated = dbHandler.lastMadeTransaction(w.getWalletId());
-        if (lastUpdated == null){ holder.date.setText("No Transactions"); }
-        else{ holder.date.setText("Last Updated: "+lastUpdated); }
-
+        holder.date.setText("Date Created: "+data.get(position).getDateCreated());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
