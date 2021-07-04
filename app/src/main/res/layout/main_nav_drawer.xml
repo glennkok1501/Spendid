@@ -17,9 +17,9 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="75dp"
             android:layout_marginTop="20dp"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
+            app:srcCompat="@drawable/ic_spendid_256" />
 
         <TextView
             android:layout_width="match_parent"
@@ -28,24 +28,16 @@
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:layout_marginTop="10dp"
             android:paddingBottom="15dp"
             android:text="Spendid" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="16dp"
-        android:background="?colorPrimary" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical">
 
             <LinearLayout
