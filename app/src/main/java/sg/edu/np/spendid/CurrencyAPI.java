@@ -60,7 +60,7 @@ public class CurrencyAPI {
                             }
 
                         } catch (JSONException e) {
-                            Toast.makeText(context, "Data Unavailable", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Data unavailable", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                             useBackUp();
                         }
@@ -68,7 +68,7 @@ public class CurrencyAPI {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Service Temporarily Unavailable", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Currency exchange temporarily unavailable", Toast.LENGTH_LONG).show();
                 error.printStackTrace();
                 useBackUp();
             }
@@ -80,7 +80,7 @@ public class CurrencyAPI {
         if (currencyIsEmpty){
             retrieveBackup();
             dbHandler.addCurrencies(currencyArrayList);
-            Toast.makeText(context, "Retrieved Backup", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Retrieved backup", Toast.LENGTH_LONG).show();
         }
     }
 

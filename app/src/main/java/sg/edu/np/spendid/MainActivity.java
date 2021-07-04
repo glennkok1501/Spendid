@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toggleNightMode();
         dbHandler = new DBHandler(this, null, null, 1);
         monthText = findViewById(R.id.totalBalMonth_textView);
         balance = findViewById(R.id.totalBalCost_textView);
@@ -71,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
         close = AnimationUtils.loadAnimation(this, R.anim.rotate_close_animation);
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
-
-        //Fetch Data from API
-        new CurrencyAPI(this, dbHandler).getData("sgd");
 
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
@@ -392,12 +388,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void toggleNightMode(){
-        if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
 }
