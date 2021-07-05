@@ -53,8 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        Button eButton = findViewById(R.id.settings_exportButton);
-        eButton.setOnClickListener(new View.OnClickListener() {
+        TextView exportTextView = findViewById(R.id.settings_export_textView);
+        exportTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SettingsActivity.this, ExportActivity.class);
