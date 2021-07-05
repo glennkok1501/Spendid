@@ -25,23 +25,13 @@ public class CategoryActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null,null, 1);
 
         //Tool bar
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView delete = findViewById(R.id.mainToolbarMore_imageView);
-        delete.setImageResource(R.drawable.ic_delete_32);
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         activityTitle.setText("Categories");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { finish(); }
-        });
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CategoryActivity.this, DeleteCategoryActivity.class);
-                startActivity(intent);
-            }
         });
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,15 +43,13 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    protected void onStart() {
-        super.onStart();
-    }
+    protected void onStart() { super.onStart(); }
 
     @Override
     protected void onResume() {
         super.onResume();
-        RecyclerView catRv = findViewById(R.id.delete_Category_recyclerView);
-        CatAdaptor ca = new CatAdaptor(dbHandler.getCategories(), false, null);
+        RecyclerView catRv = findViewById(R.id.edit_Category_recyclerView);
+        CatAdaptor ca = new CatAdaptor(dbHandler.getCategories());
         LinearLayoutManager lm = new LinearLayoutManager(this);
         catRv.setLayoutManager(lm);
         catRv.setItemAnimator(new DefaultItemAnimator());

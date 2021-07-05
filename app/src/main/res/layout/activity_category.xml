@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".CategoryActivity">
 
-    <include layout="@layout/main_toolbar"/>
+    <include layout="@layout/page_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/delete_Category_recyclerView"
+                android:id="@+id/edit_Category_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
