@@ -17,7 +17,6 @@ public class CatAdaptor extends RecyclerView.Adapter<CatViewHolder> {
     ArrayList<Category> categories;
     CategoryHandler categoryHandler = new CategoryHandler();
     DBHandler dbHandler;
-    int selected = -1;
 
     public CatAdaptor(ArrayList<Category> cList) {
         categories = cList;
