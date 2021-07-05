@@ -17,7 +17,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -42,6 +44,18 @@ public class ExportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export);
+
+        //Tool Bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Export / Import");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         dbHandler = new DBHandler(this, null, null, 1);
         walletArrayList = dbHandler.getWallets();
         String[] walletList = getWalletList();
