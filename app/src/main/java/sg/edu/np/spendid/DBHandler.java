@@ -478,6 +478,15 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateCategory(String oldTitle, String newTitle, boolean isExp) {
+        ContentValues values = new ContentValues();
+        SQLiteDatabase db  = this.getWritableDatabase();
+        values.put(COLUMN_CATEGORY_TITLE, newTitle);
+        values.put(COLUMN_CATEGORY_EXPENSE, isExp);
+        db.update(TABLE_CATEGORY, values, COLUMN_CATEGORY_TITLE + " =?", new String[]{oldTitle});
+        db.close();
+    }
+
     public boolean deleteRecord(int rId) {
         String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_RECORD_ID + " = " + rId;
         SQLiteDatabase db = this.getWritableDatabase();
