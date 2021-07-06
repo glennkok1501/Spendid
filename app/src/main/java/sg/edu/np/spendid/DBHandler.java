@@ -148,7 +148,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(cat10);
     }
 
-    //Add wallet to DB - Glenn
+
+    //Wallet methods
+
+    //Add wallet to DB
     public void addWallet(Wallet w) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WALLET_NAME, w.getName());
@@ -160,17 +163,170 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //Add category to DB - Glenn
-    public void addCategory(Category c) {
+    //retrieve wallet by walletId
+    public Wallet getWallet(int wId) {
+        String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Wallet w;
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String des = cursor.getString(2);
+            String cur = cursor.getString(3);
+            String date = cursor.getString(4);
+            w = new Wallet(id, name, des, cur, date);
+        } else {
+            w = null;
+        }
+        cursor.close();
+        db.close();
+        return w;
+    }
+
+    //returns the balance of a wallet retrieved from the respective records from the wallet - Glenn.
+    public double getWalletTotal(int id) {
+        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " WHERE r." + COLUMN_WALLET_ID + " = "+id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        double income = 0;
+        double expense = 0;
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            if (cursor.getInt(9) == 1) {
+                expense += cursor.getDouble(3);
+            } else {
+                income += cursor.getDouble(3);
+            }
+        }
+        cursor.close();
+        db.close();
+        return income - expense;
+    }
+
+    //returns an array of Wallets
+    public ArrayList<Wallet> getWallets() {
+        ArrayList<Wallet> walletList = new ArrayList<Wallet>();
+        String query = "SELECT * FROM " + TABLE_WALLET;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String des = cursor.getString(2);
+            String cur = cursor.getString(3);
+            String date = cursor.getString(4);
+            Wallet wallet = new Wallet(id, name, des, cur, date);
+            walletList.add(wallet);
+        }
+        cursor.close();
+        db.close();
+        return walletList;
+    }
+
+    public void updateWallet(Wallet w) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_CATEGORY_TITLE, c.getTitle());
-        values.put(COLUMN_CATEGORY_EXPENSE, c.isExpense());
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_CATEGORY, null, values);
+        values.put(COLUMN_WALLET_ID, w.getWalletId());
+        values.put(COLUMN_WALLET_NAME, w.getName());
+        values.put(COLUMN_WALLET_DESCRIPTION, w.getDescription());
+        values.put(COLUMN_WALLET_DATECREATED, w.getDateCreated());
+        values.put(COLUMN_WALLET_CURRENCY, w.getCurrency());
+        db.update(TABLE_WALLET, values, COLUMN_WALLET_ID + " =?", new String[]{String.valueOf(w.getWalletId())});
         db.close();
     }
 
-    //Add record to DB - Glenn
+    public boolean deleteWallet(int wId) {
+        String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean deleted;
+        if (cursor.moveToFirst()) {
+            db.delete(TABLE_WALLET, COLUMN_WALLET_ID + "= ?", new String[]{String.valueOf(wId)});
+            deleted = true;
+        } else {
+            deleted = false;
+        }
+        cursor.close();
+        db.close();
+        return deleted;
+    }
+
+    //delete all records associated with a specific wallet
+    public void deleteWalletRecords(int wId) {
+        String query = "SELECT * FROM " + TABLE_RECORD;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            db.delete(TABLE_RECORD, COLUMN_WALLET_ID + "= ?", new String[]{String.valueOf(wId)});
+        }
+        cursor.close();
+        db.close();
+    }
+
+    //get all records associated with a wallet
+    public ArrayList<Record> getWalletRecords(int wId) {
+        ArrayList<Record> recordList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_WALLET_ID + " = " + wId
+                + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "+ COLUMN_RECORD_TIMECREATED + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String timeCreated = cursor.getString(6);
+            int walletId = cursor.getInt(7);
+            recordList.add(new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId));
+        }
+        cursor.close();
+        db.close();
+        return recordList;
+    }
+
+
+    //Category Methods
+
+    //returns an array of categories
+    public ArrayList<Category> getCategories() {
+        ArrayList<Category> catList = new ArrayList<Category>();
+        String query = "SELECT * FROM " + TABLE_CATEGORY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            String title = cursor.getString(0);
+            boolean exp = cursor.getInt(1)==1;
+            Category cat = new Category(title, exp);
+            catList.add(cat);
+        }
+        cursor.close();
+        db.close();
+        return catList;
+    }
+
+    //check if category is expense or income
+    public boolean catIsExpense(String c){
+        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \'"+c+"\'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean isExpense;
+        if (cursor.moveToFirst()){
+            isExpense = cursor.getInt(1) == 1;
+        }
+        else{
+            isExpense = false;
+        }
+        cursor.close();
+        db.close();
+        return isExpense;
+    }
+
+
+    //Record Methods
+
+    //Add record to DB
     public void addRecord(Record r) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_RECORD_TITLE, r.getTitle());
@@ -185,6 +341,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Add records in bulk
     public void addRangeRecord(ArrayList<Record> recordArrayList){
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
@@ -208,132 +365,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //returns the balance of a wallet retrieved from the respective records from the wallet - Glenn.
-    public double getWalletTotal(int id) {
-        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " WHERE r." + COLUMN_WALLET_ID + " = "+id;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        double income = 0;
-        double expense = 0;
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            if (cursor.getInt(9) == 1) {
-                expense += cursor.getDouble(3);
-            } else {
-                income += cursor.getDouble(3);
-            }
-        }
-        cursor.close();
-        db.close();
-        return income - expense;
-    }
-
-    public double getTotalBalance() {
-        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        double income = 0;
-        double expense = 0;
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            if (cursor.getInt(9) == 1) {
-                expense += cursor.getDouble(3);
-            } else {
-                income += cursor.getDouble(3);
-            }
-        }
-        cursor.close();
-        db.close();
-        return income - expense;
-    }
-
-    //returns the income, expense and balance of all the wallets combined - Glenn
-    public HashMap<String, Double> getBalance(String MM) {
-        HashMap<String, Double> bal = new HashMap<String, Double>();
-        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
-                " WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \'%-" + MM + "-%\'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        double income = 0;
-        double expense = 0;
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            if (cursor.getInt(9) == 1) {
-                expense += cursor.getDouble(3);
-            } else {
-                income += cursor.getDouble(3);
-            }
-        }
-        cursor.close();
-        db.close();
-        bal.put("income", income);
-        bal.put("expense", expense);
-        bal.put("balance", income - expense);
-        return bal;
-    }
-
-    //returns an array of Wallets - Glenn
-    public ArrayList<Wallet> getWallets() {
-        ArrayList<Wallet> walletList = new ArrayList<Wallet>();
-        String query = "SELECT * FROM " + TABLE_WALLET;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String des = cursor.getString(2);
-            String cur = cursor.getString(3);
-            String date = cursor.getString(4);
-            Wallet wallet = new Wallet(id, name, des, cur, date);
-            walletList.add(wallet);
-        }
-        cursor.close();
-        db.close();
-        return walletList;
-    }
-
-    public ArrayList<Category> getCategories() {
-        ArrayList<Category> catList = new ArrayList<Category>();
-        String query = "SELECT * FROM " + TABLE_CATEGORY;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            String title = cursor.getString(0);
-            boolean exp = cursor.getInt(1)==1;
-            Category cat = new Category(title, exp);
-            catList.add(cat);
-        }
-        cursor.close();
-        db.close();
-        return catList;
-    }
-
-    //return an array of records grouped by its category for a specific date - Glenn
-    public HashMap<String, ArrayList<Record>> getGroupedTransaction(String date) {
-        HashMap<String, ArrayList<Record>> group = new HashMap<String, ArrayList<Record>>();
-        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
-                " WHERE r." + COLUMN_WALLET_DATECREATED + " = " + "\'" + date + "\' ORDER BY " + COLUMN_RECORD_TIMECREATED + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            String key = cursor.getString(4);
-            int id = cursor.getInt(0);
-            String title = cursor.getString(1);
-            String des = cursor.getString(2);
-            double amt = cursor.getDouble(3);
-            String cat = cursor.getString(4);
-            String dateCreated = cursor.getString(5);
-            String timeCreated = cursor.getString(6);
-            int walletId = cursor.getInt(7);
-            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
-            if (!group.containsKey(key)) {
-                group.put(key, new ArrayList<Record>());
-            }
-            group.get(key).add(record);
-        }
-        cursor.close();
-        db.close();
-        return group;
-    }
-
-    //return an array of all records sorted in descending order - Hong Li
+    //return an array of all records sorted in descending order
     public HashMap<String, ArrayList<Record>> getRecordHistory() {
         HashMap<String, ArrayList<Record>> history = new HashMap<>();
         String query = "SELECT * FROM " + TABLE_RECORD + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "
@@ -361,6 +393,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return history;
     }
 
+    //returns an array of all records
     public ArrayList<Record> getAllRecords() {
         ArrayList<Record> recordList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_RECORD + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "
@@ -384,28 +417,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return recordList;
     }
 
-
-
-    public Wallet getWallet(int wId) {
-        String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        Wallet w;
-        if (cursor.moveToFirst()) {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String des = cursor.getString(2);
-            String cur = cursor.getString(3);
-            String date = cursor.getString(4);
-            w = new Wallet(id, name, des, cur, date);
-        } else {
-            w = null;
-        }
-        cursor.close();
-        db.close();
-        return w;
-    }
-
+    //get a specific record by recordId
     public Record getRecord(int rId) {
         String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_RECORD_ID + " = " + rId;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -429,28 +441,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return r;
     }
 
-    public ArrayList<Record> getWalletRecords(int wId) {
-        ArrayList<Record> recordList = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_WALLET_ID + " = " + wId
-                + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "+ COLUMN_RECORD_TIMECREATED + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-            int id = cursor.getInt(0);
-            String title = cursor.getString(1);
-            String des = cursor.getString(2);
-            double amt = cursor.getDouble(3);
-            String cat = cursor.getString(4);
-            String dateCreated = cursor.getString(5);
-            String timeCreated = cursor.getString(6);
-            int walletId = cursor.getInt(7);
-            recordList.add(new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId));
-        }
-        cursor.close();
-        db.close();
-        return recordList;
-    }
-
     public void updateRecord(Record r) {
         ContentValues values = new ContentValues();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -463,27 +453,6 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_RECORD_TIMECREATED, r.getTimeCreated());
         values.put(COLUMN_WALLET_ID, r.getWalletId());
         db.update(TABLE_RECORD, values, COLUMN_RECORD_ID + " =?", new String[]{String.valueOf(r.getId())});
-        db.close();
-    }
-
-    public void updateWallet(Wallet w) {
-        ContentValues values = new ContentValues();
-        SQLiteDatabase db = this.getWritableDatabase();
-        values.put(COLUMN_WALLET_ID, w.getWalletId());
-        values.put(COLUMN_WALLET_NAME, w.getName());
-        values.put(COLUMN_WALLET_DESCRIPTION, w.getDescription());
-        values.put(COLUMN_WALLET_DATECREATED, w.getDateCreated());
-        values.put(COLUMN_WALLET_CURRENCY, w.getCurrency());
-        db.update(TABLE_WALLET, values, COLUMN_WALLET_ID + " =?", new String[]{String.valueOf(w.getWalletId())});
-        db.close();
-    }
-
-    public void updateCategory(String oldTitle, String newTitle, boolean isExp) {
-        ContentValues values = new ContentValues();
-        SQLiteDatabase db  = this.getWritableDatabase();
-        values.put(COLUMN_CATEGORY_TITLE, newTitle);
-        values.put(COLUMN_CATEGORY_EXPENSE, isExp);
-        db.update(TABLE_CATEGORY, values, COLUMN_CATEGORY_TITLE + " =?", new String[]{oldTitle});
         db.close();
     }
 
@@ -503,96 +472,83 @@ public class DBHandler extends SQLiteOpenHelper {
         return deleted;
     }
 
-    public boolean deleteWallet(int wId) {
-        String query = "SELECT * FROM " + TABLE_WALLET + " WHERE " + COLUMN_WALLET_ID + " = " + wId;
-        SQLiteDatabase db = this.getWritableDatabase();
+
+    //Statistics Methods
+
+    //returns the total balance of all overall records and wallets combined
+    public double getTotalBalance() {
+        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY;
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        boolean deleted;
-        if (cursor.moveToFirst()) {
-            db.delete(TABLE_WALLET, COLUMN_WALLET_ID + "= ?", new String[]{String.valueOf(wId)});
-            deleted = true;
-        } else {
-            deleted = false;
+        double income = 0;
+        double expense = 0;
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            if (cursor.getInt(9) == 1) {
+                expense += cursor.getDouble(3);
+            } else {
+                income += cursor.getDouble(3);
+            }
         }
         cursor.close();
         db.close();
-        return deleted;
+        return income - expense;
     }
 
-    public void deleteWalletRecords(int wId) {
-        String query = "SELECT * FROM " + TABLE_RECORD;
-        SQLiteDatabase db = this.getWritableDatabase();
+    //returns the income, expense and balance of all the wallets combined
+    public HashMap<String, Double> getBalance(String MM) {
+        HashMap<String, Double> bal = new HashMap<String, Double>();
+        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
+                " WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \'%-" + MM + "-%\'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        double income = 0;
+        double expense = 0;
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            if (cursor.getInt(9) == 1) {
+                expense += cursor.getDouble(3);
+            } else {
+                income += cursor.getDouble(3);
+            }
+        }
+        cursor.close();
+        db.close();
+        bal.put("income", income);
+        bal.put("expense", expense);
+        bal.put("balance", income - expense);
+        return bal;
+    }
+
+    //return an array of records grouped by its category for a specific date
+    public HashMap<String, ArrayList<Record>> getGroupedTransaction(String date) {
+        HashMap<String, ArrayList<Record>> group = new HashMap<String, ArrayList<Record>>();
+        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
+                " WHERE r." + COLUMN_WALLET_DATECREATED + " = " + "\'" + date + "\' ORDER BY " + COLUMN_RECORD_TIMECREATED + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            db.delete(TABLE_RECORD, COLUMN_WALLET_ID + "= ?", new String[]{String.valueOf(wId)});
+            String key = cursor.getString(4);
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String timeCreated = cursor.getString(6);
+            int walletId = cursor.getInt(7);
+            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+            if (!group.containsKey(key)) {
+                group.put(key, new ArrayList<Record>());
+            }
+            group.get(key).add(record);
         }
         cursor.close();
         db.close();
+        return group;
     }
 
-    public boolean catIsExpense(String c){
-        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \'"+c+"\'";
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        boolean isExpense;
-        if (cursor.moveToFirst()){
-            isExpense = cursor.getInt(1) == 1;
-        }
-        else{
-            isExpense = false;
-        }
-        cursor.close();
-        db.close();
-        return isExpense;
-    }
+    //Shopping List Methods
 
-    //Returns
-    public boolean catDeletable(String search) {
-        String query = "SELECT * FROM "+TABLE_RECORD+" WHERE "+COLUMN_RECORD_CATEGORY+" = "+"\'"+search+"\'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        boolean b;
-        if (cursor.moveToFirst()) {
-            b = false;
-        } else {
-            b = true;
-        }
-        cursor.close();
-        db.close();
-        return b;
-    }
-
-    public ArrayList<String> getAllCategoriesWithRecords() {
-        ArrayList<String> catList = new ArrayList<>();
-        String query = "SELECT c."+COLUMN_CATEGORY_TITLE+" FROM "+TABLE_CATEGORY+" c "+"INNER JOIN "+TABLE_RECORD+" r "
-                +"ON c."+COLUMN_CATEGORY_TITLE+" = r."+COLUMN_RECORD_CATEGORY+" GROUP BY c."+COLUMN_CATEGORY_TITLE;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        for (cursor.moveToFirst(); !cursor.moveToLast(); cursor.moveToNext()) {
-            catList.add(cursor.getString(0));
-        }
-        cursor.close();
-        db.close();
-        return catList;
-    }
-
-    public boolean deleteCategory(String title) {
-        boolean b;
-        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \'"+title+"\'";
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            b = true;
-            db.delete(TABLE_CATEGORY, COLUMN_CATEGORY_TITLE+"= ?", new String[] {title});
-        } else {
-            b = false;
-        }
-        cursor.close();
-        db.close();
-        return b;
-    }
-
-    //Shopping List Feature
+    //returns an array of shopping carts
     public ArrayList<ShoppingCart> getShoppingCarts(){
         ArrayList<ShoppingCart> cartList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_CART;
@@ -619,17 +575,25 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addCartItem(CartItem c){
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_CARTITEM_NAME, c.getName());
-        values.put(COLUMN_CARTITEM_AMOUNT, c.getAmount());
-        values.put(COLUMN_CARTITEM_CHECK, c.isCheck());
-        values.put(COLUMN_CART_ID, c.getCartId());
+    public boolean deleteShoppingCart(int cartId){
+        String query = "SELECT * FROM " + TABLE_CART + " WHERE " + COLUMN_CART_ID + " = " + cartId;
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_CARTITEM, null, values);
+        Cursor cursor = db.rawQuery(query, null);
+        boolean deleted;
+        if (cursor.moveToFirst()) {
+            db.delete(TABLE_CART, COLUMN_CART_ID + "= ?", new String[]{String.valueOf(cartId)});
+            deleted = true;
+        } else {
+            deleted = false;
+        }
+        cursor.close();
         db.close();
+        return deleted;
     }
 
+    //Cart items Methods
+
+    //returns an array of shopping cart items
     public ArrayList<CartItem> getCartItems(int cartId){
         ArrayList<CartItem> itemsList = new ArrayList<>();
         String query = "SELECT * FROM "+TABLE_CARTITEM+" WHERE "+COLUMN_CART_ID+" = "+cartId;
@@ -646,6 +610,17 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return itemsList;
+    }
+
+    public void addCartItem(CartItem c){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CARTITEM_NAME, c.getName());
+        values.put(COLUMN_CARTITEM_AMOUNT, c.getAmount());
+        values.put(COLUMN_CARTITEM_CHECK, c.isCheck());
+        values.put(COLUMN_CART_ID, c.getCartId());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_CARTITEM, null, values);
+        db.close();
     }
 
     public boolean deleteCartItem(int itemId){
@@ -685,22 +660,10 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
     }
-    public boolean deleteShoppingCart(int cartId){
-        String query = "SELECT * FROM " + TABLE_CART + " WHERE " + COLUMN_CART_ID + " = " + cartId;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        boolean deleted;
-        if (cursor.moveToFirst()) {
-            db.delete(TABLE_CART, COLUMN_CART_ID + "= ?", new String[]{String.valueOf(cartId)});
-            deleted = true;
-        } else {
-            deleted = false;
-        }
-        cursor.close();
-        db.close();
-        return deleted;
-    }
 
+    //Currency Methods
+
+    //returns an array of currencies
     public void addCurrencies(ArrayList<Currency> currencyList){
         SQLiteDatabase db = this.getWritableDatabase();
         for (Currency c : currencyList){
@@ -732,6 +695,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return currency;
     }
 
+    //update all currencies in database based on currencyList
     public void updateCurrencies(ArrayList<Currency> currencyList){
         SQLiteDatabase db = this.getWritableDatabase();
         for (Currency c : currencyList){

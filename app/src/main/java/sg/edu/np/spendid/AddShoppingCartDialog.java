@@ -2,28 +2,27 @@ package sg.edu.np.spendid;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+//class to create a shopping cart in shopping list
 public class AddShoppingCartDialog {
     private Context context;
     private DBHandler dbHandler;
     private Dialog dialog;
-    private ShoppingListAdapter shoppingListAdapter;
+    private ShoppingListMainAdapter shoppingListMainAdapter;
 
-    public AddShoppingCartDialog(Context context, ShoppingListAdapter shoppingListAdapter) {
+    public AddShoppingCartDialog(Context context, ShoppingListMainAdapter shoppingListMainAdapter) {
         this.context = context;
-        this.shoppingListAdapter = shoppingListAdapter;
+        this.shoppingListMainAdapter = shoppingListMainAdapter;
         dbHandler = new DBHandler(context, null, null, 1);
 
         dialog = new Dialog(context);
@@ -38,11 +37,12 @@ public class AddShoppingCartDialog {
         Button addBtn = dialog.findViewById(R.id.addShoppingCart_btn);
         ImageView close = dialog.findViewById(R.id.addShoppingCartClose_imageView);
 
+        //getting name of cart and creating a cart
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addCart(name.getText().toString());
-                shoppingListAdapter.update(dbHandler.getShoppingCarts());
+                shoppingListMainAdapter.update(dbHandler.getShoppingCarts());
                 dialog.dismiss();
             }
         });

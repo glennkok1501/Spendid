@@ -25,6 +25,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
         dbHandler = new DBHandler(this, null, null, 1);
+
+        //check for night mode
         toggleNightMode();
 
         //Fetch Data from API

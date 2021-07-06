@@ -23,13 +23,14 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
+//class to prompt currency exchange dialog
 public class CurrencyConvertDialog {
     private Context context;
     private EditText amt;
     private double forFixedAmt;
     private Currency currency;
     private DBHandler dbHandler;
-    private String foreign;
+    private String foreign, baseCurrency;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public void setAmt(EditText amt) {
@@ -44,6 +45,7 @@ public class CurrencyConvertDialog {
         this.context = context;
         forFixedAmt = 0;
         this.foreign = foreign;
+        baseCurrency = context.getString(R.string.baseCurrency);
     }
 
     public void show(){
@@ -63,21 +65,22 @@ public class CurrencyConvertDialog {
         FloatingActionButton convertBtn = dialog.findViewById(R.id.convertCurrrency_fab);
         TextView cancelDialog = dialog.findViewById(R.id.currencyExchangeCancel_textView);
 
-        baseCur.setText("SGD");
+        baseCur.setText(baseCurrency);
         forCur.setText(foreign.toUpperCase());
-        updateDate.setText(currency.getDate());
+        updateDate.setText("Last Updated: "+currency.getDate());
+
+        //set value in amount and converted field if amount needed to be set
         if (forFixedAmt > 0){
             forAmt.setText(df2.format(forFixedAmt));
             baseAmt.setText(df2.format(convert(Double.parseDouble(forAmt.getText().toString()))));
         }
 
+        //change conversion as amount changes
         forAmt.addTextChangedListener(new TextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) { }
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length() != 0) {

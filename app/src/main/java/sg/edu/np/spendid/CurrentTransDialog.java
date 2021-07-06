@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+//class to display transactions for the day grouped by category
 public class CurrentTransDialog {
     private Context context;
     private String Title;

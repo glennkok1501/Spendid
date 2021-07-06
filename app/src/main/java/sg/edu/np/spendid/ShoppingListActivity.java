@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+//display list of items in shopping list
 public class ShoppingListActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private int cartId;
@@ -34,8 +35,8 @@ public class ShoppingListActivity extends AppCompatActivity {
         cartId = intent.getIntExtra("cartId", 0);
         FloatingActionButton addItemBtn = findViewById(R.id.addCartItem_fab);
         empty = findViewById(R.id.cartItemsEmpty_textView);
-        //Tool bar
-        initToolbar();
+
+        initToolbar(); //set toolbar
 
         RecyclerView recyclerView = findViewById(R.id.cartItems_RV);
         myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), empty ,this);
@@ -90,6 +91,11 @@ public class ShoppingListActivity extends AppCompatActivity {
                 finish();
             }
         });
+        initPopupMenu(more);
+
+    }
+
+    private void initPopupMenu(ImageView more){
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +129,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         });
     }
 
+    //delete all items in shopping list
     private void clearCart(){
         Log.v("TAG", "ID: "+cartId);
         dbHandler.deleteCartItems(cartId);
@@ -130,6 +137,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
     }
 
+    //delete shopping list with associated items
     private void deleteShoppingCart(){
         dbHandler.deleteCartItems(cartId);
         dbHandler.deleteShoppingCart(cartId);

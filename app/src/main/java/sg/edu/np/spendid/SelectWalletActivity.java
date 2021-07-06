@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import maes.tech.intentanim.CustomIntent;
 
+//select wallet to add transaction to
 public class SelectWalletActivity extends AppCompatActivity {
     private DBHandler dbHandler;
 
@@ -26,17 +27,7 @@ public class SelectWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_wallet);
         dbHandler = new DBHandler(this, null, null, 1);
-
-        //Tool bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Select a Wallet");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolbar(); //set toolbar
     }
 
     @Override
@@ -68,6 +59,19 @@ public class SelectWalletActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void initToolbar(){
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Select a Wallet");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 }

@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+//Class to compile cart items and to create a transaction
+
 public class AddCartToRecord {
     private Context context;
     private String des;
@@ -38,12 +40,14 @@ public class AddCartToRecord {
         this.context = context;
         des = "";
         dbHandler = new DBHandler(context, null, null, 1);
+
+        //Get an array list of cart items based on the cart Id
         cartItems = dbHandler.getCartItems(cartId);
+
+        //Get all wallets
         walletArrayList = dbHandler.getWallets();
-        walletList = new String[walletArrayList.size()];
-        for(int i = 0; i < walletList.length; i++){
-            walletList[i] = walletArrayList.get(i).getName();
-        }
+
+        walletList = getWalletList();
     }
 
     public void add(){
@@ -58,12 +62,16 @@ public class AddCartToRecord {
         ImageView close = dialog.findViewById(R.id.cartToRecordClose_imageView);
         Button addBtn = dialog.findViewById(R.id.cartToRecord_btn);
         Spinner spinner = dialog.findViewById(R.id.cartToRecordWallet_spinner);
+
+        //initiate spinner with string array of wallets for user to select
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, walletList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        //get wallet object on first selected choice based on name
         wallet = findWallet(spinner.getSelectedItem().toString());
-        initDetails();
+        checkCurrency(); //check if wallet is not SGD then prompt for exchange
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -72,13 +80,18 @@ public class AddCartToRecord {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // pass
+                //pass
             }
         });
+
+        //gather information about the cart such as cost, items, and bought or not bought
+        initDetails();
+
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Record r = createRecordFromCart();
+                //insert record if valid
                 if (r != null){
                     dbHandler.addRecord(r);
                     Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show();
@@ -98,6 +111,7 @@ public class AddCartToRecord {
         dialog.show();
     }
 
+    //search through wallet array list to find wallet object based on name
     private Wallet findWallet(String selected){
         Wallet wallet = null;
         for (Wallet w : walletArrayList){
@@ -109,15 +123,28 @@ public class AddCartToRecord {
         return wallet;
     }
 
+    //create a string array of wallet names for spinner to use
+    private String[] getWalletList(){
+        String[] walletList = new String[walletArrayList.size()];
+        for (int i = 0; i < walletArrayList.size(); i++){
+            walletList[i] = walletArrayList.get(i).getName();
+        }
+        return walletList;
+    }
+
+    //calculate information to create a transaction from cart items
     private void initDetails(){
         Resources res = context.getResources();
         for (CartItem c : cartItems){
+            //add cart item into description with amount
             des += String.format("%s %s (%s %s)", Html.fromHtml(res.getString(R.string.dot)), c.getName(), df2.format(c.getAmount()), wallet.getCurrency());
 
+            //check if item is bought
             if (c.isCheck()){
                 des += String.format("%s\n", Html.fromHtml(res.getString(R.string.tick)));
                 amount += c.getAmount();
             }
+            //item not bought
             else{
                 des += String.format("%s\n", Html.fromHtml(res.getString(R.string.cross)));
             }
@@ -126,8 +153,9 @@ public class AddCartToRecord {
         amt.setText(df2.format(amount));
     }
 
+    //prompt currency exchange dialog if wallet currency is not in SGD
     private void checkCurrency(){
-        if (!wallet.getCurrency().equals("SGD")){
+        if (!wallet.getCurrency().equals(context.getString(R.string.baseCurrency))){
             CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(context, wallet.getCurrency().toLowerCase());
             currencyConvertDialog.setAmt(amt);
             currencyConvertDialog.setForFixedAmt(amount);
@@ -135,8 +163,10 @@ public class AddCartToRecord {
         }
     }
 
+    //create transaction based on values calculated
     private Record createRecordFromCart(){
         String title = name.getText().toString();
+        //validate name
         if (title.length() == 0 || title.length() > 15){
             TextInputLayout editLayout = dialog.findViewById(R.id.cartToRecordName_layout);
             editLayout.setError("Invalid Name");
@@ -149,12 +179,11 @@ public class AddCartToRecord {
             String date = dateFormat.format(currentTime.getTime());
             String time = timeFormat.format(currentTime.getTime());
             String a = amt.getText().toString();
+            //validate if amount is blank
             if (a.length() == 0){
                 a = "0";
             }
             return new Record(title, des, Double.parseDouble(a), "Shopping", date, time, wallet.getWalletId());
         }
-        //TO DO error checking
-
     }
 }

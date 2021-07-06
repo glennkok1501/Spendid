@@ -22,6 +22,9 @@ import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
+//class to call currency API
+//Github repo: https://github.com/fawazahmed0/currency-api
+
 public class CurrencyAPI {
     private String[] currencyList;
     private DBHandler dbHandler;
@@ -39,19 +42,22 @@ public class CurrencyAPI {
         currencyIsEmpty = dbHandler.getCurrency("sgd") == null;
     }
 
+    //retrieve json data from API
     public void getData(String currency){
-//        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency);
+//        String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s.json", currency.toLowerCase());
         String url = String.format("https://www.youtube.com/watch?v=XA2YEHn-A8Q", currency);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONObject exchangeRates = response.getJSONObject(currency);
+                            JSONObject exchangeRates = response.getJSONObject(currency); //get json object from request
+                            //get only currencies needed based on currency list
                             for (String s : currencyList){
-                                String[] split = s.split(";");
+                                String[] split = s.split(";"); //split to use currency code
                                 currencyArrayList.add(new Currency(split[1], exchangeRates.getDouble(split[1]), response.getString("date")));
                             }
+                            //add currencies if database is empty and update if not based on currencyArrayList
                             if (currencyIsEmpty){
                                 dbHandler.addCurrencies(currencyArrayList);
                             }
@@ -76,7 +82,9 @@ public class CurrencyAPI {
         mQueue.add(request);
     }
 
+    //use backup currency data if no Internet connection or API downtime
     private void useBackUp(){
+        //only add if database is empty if not last updated will be used
         if (currencyIsEmpty){
             retrieveBackup();
             dbHandler.addCurrencies(currencyArrayList);
@@ -85,28 +93,27 @@ public class CurrencyAPI {
     }
 
     private void retrieveBackup() {
+        //read raw json data
         InputStream stream = context.getResources().openRawResource(R.raw.rates_2021_06_29);
         BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
         String jsonStr = "";
-        String line="";
+        String line;
         try {
             while ((line=reader.readLine())!=null){
-                jsonStr += line;
+                jsonStr += line; //append to line for each next line
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try{
-            JSONObject jsonObject = new JSONObject(jsonStr);
+            JSONObject jsonObject = new JSONObject(jsonStr); //create json object from string
             JSONObject exchangeRates = jsonObject.getJSONObject("sgd");
+            //get only currencies needed based on currency list
             for (String s : currencyList) {
                 String[] split = s.split(";");
                 currencyArrayList.add(new Currency(split[1], exchangeRates.getDouble(split[1]), jsonObject.getString("date")));
             }
         }
-        catch (JSONException e){
+        catch (JSONException | IOException e){
             e.printStackTrace();
+            Toast.makeText(context, "Unable to retrieved backup", Toast.LENGTH_LONG).show();
         }
     }
 }

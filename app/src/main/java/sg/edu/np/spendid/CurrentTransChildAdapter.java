@@ -19,8 +19,8 @@ import java.util.HashMap;
 
 public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransChildViewHolder> {
     ArrayList<Record> data;
-    Dialog dialog;
-    DecimalFormat df2 = new DecimalFormat("#0.00");
+    private Dialog dialog;
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public CurrentTransChildAdapter(ArrayList<Record> input, Dialog dialog){
         data = input;
@@ -33,17 +33,17 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
     }
 
     public void onBindViewHolder(CurrentTransChildViewHolder holder, int position){
-        Record r = data.get(position);
-        holder.name.setText(r.getTitle());
-        holder.time.setText(formatTime(r.getTimeCreated()));
-        holder.amt.setText(df2.format(r.getAmount()));
-        holder.currency.setText("SGD");
+        Record record = data.get(position);
+        holder.name.setText(record.getTitle());
+        holder.time.setText(formatTime(record.getTimeCreated()));
+        holder.amt.setText(df2.format(record.getAmount()));
+        holder.currency.setText(holder.itemView.getContext().getString(R.string.baseCurrency));
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
                 Intent intent = new Intent(v.getContext(), ViewTransactionActivity.class);
-                intent.putExtra("recordId", r.getId());
+                intent.putExtra("recordId", record.getId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -53,6 +53,7 @@ public class CurrentTransChildAdapter extends RecyclerView.Adapter<CurrentTransC
         return data.size();
     }
 
+    //Convert time format for better presentation
     private String formatTime(String t){
         String formatted;
         try{

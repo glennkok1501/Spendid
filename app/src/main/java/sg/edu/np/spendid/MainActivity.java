@@ -65,20 +65,21 @@ public class MainActivity extends AppCompatActivity {
         noWallet = findViewById(R.id.walletViewPageStatus_textView);
         noCurTrans = findViewById(R.id.curTransStatus_textView);
 
-        //fab animations
+        //floating action button (fab) animations
         open = AnimationUtils.loadAnimation(this, R.anim.rotate_open_animation);
         close = AnimationUtils.loadAnimation(this, R.anim.rotate_close_animation);
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
+        hideHiddenFab(); //Init hidden buttons
+        initToolbar(); //set toolbar
+        initDrawer(); //Drawer and Navbar;
 
         //Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
         }
-        hideHiddenFab(); //Init hidden buttons
 
-        initDrawer(); //Drawer and Navbar;
 
         manage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //hide or show hidden fab when clicked
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,15 +137,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //Total Balance
+        //get total balance for the month with income and expenses
         HashMap<String, Double> bal = dbHandler.getBalance(currentMonth());
         monthText.setText(new SimpleDateFormat("MMMM").format(Calendar.getInstance().getTime())+" Balance");
         balance.setText(df2.format(bal.get("balance")));
         income.setText(df2.format(bal.get("income")));
         expense.setText(df2.format(bal.get("expense")));
 
-        //Wallets view pager
+
+        //retrieve wallet array list and sort based on favourite
         walletList = sortWallet(dbHandler.getWallets());
+
+        //check if wallet data is empty and show message
         if (walletList.size() == 0){
             noWallet.setVisibility(View.VISIBLE);
             noWallet.setText("No Wallets");
@@ -151,13 +156,17 @@ public class MainActivity extends AppCompatActivity {
         else{
             noWallet.setVisibility(View.GONE);
         }
+
+        //Wallets view pager
         ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, this);
         viewPager.setAdapter(walletSliderAdapter);
 
+        //view pager indicators
         LinearLayout indicators = findViewById(R.id.walletsIndicators_linearLayout);
         TextView[] dots = new TextView[walletList.size()];
         viewPagerIndicators(dots, indicators);
+        //change color depending on which page
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -176,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Current Transactions
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
+
+        //check if there are any transactions today and show message if empty
         if (curTransMap.size() == 0){
             noCurTrans.setVisibility(View.VISIBLE);
             noCurTrans.setText("No Transactions");
@@ -234,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetFab(){
+        //hide fab if hidden fab shown (used for onPause)
         if (fabClicked){
             addWallet.startAnimation(down);
             addRecord.startAnimation(down);
@@ -243,37 +255,50 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<Wallet> sortWallet(ArrayList<Wallet> w){
+    private ArrayList<Wallet> sortWallet(ArrayList<Wallet> walletList){
+        //retrieve preferred first wallet from shared prefs
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         int value = prefs.getInt("firstWallet",0);
-        for (int i = 0; i < w.size(); i++){
-            Wallet t = w.get(i);
+        //insert preferred wallet to the first index
+        for (int i = 0; i < walletList.size(); i++){
+            Wallet t = walletList.get(i);
             if (t.getWalletId() == value){
-                w.remove(i);
-                w.add(0, t);
+                walletList.remove(i);
+                walletList.add(0, t);
                 break;
             }
         }
-        return w;
+        return walletList;
     }
 
+    //create view pager indicators
+    private void viewPagerIndicators(TextView[] d, LinearLayout l){
+        l.removeAllViews();
+        //add new TextView with bullet points into linear layout depending on viewpager size
+        for (int i = 0; i < d.length; i++){
+            d[i] = new TextView(this);
+            d[i].setText(Html.fromHtml(getResources().getString(R.string.dot)));
+            d[i].setTextSize(18);
+            l.addView(d[i]);
+        }
+    }
+
+    //get current date
     private String currentDate(){
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(currentTime.getTime());
     }
 
+    //get current month
     private String currentMonth(){
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
         return dateFormat.format(currentTime.getTime());
     }
 
-    private void initDrawer(){
-        LinearLayout manageWallet, transHist, categories, currencyRates,
-                shoppingList, settings, about, search, subscriptions, add,
-                additional, addWallet, addRecord;
-        drawerLayout = findViewById(R.id.dashboard_drawer_layout);
+    //Toolbar
+    private void initToolbar(){
         ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
         menuBtn.setOnClickListener(new View.OnClickListener() {
@@ -283,16 +308,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         initPopupMenu(moreBtn);
+    }
 
-        //drawer
+    //navigation drawer
+    private void initDrawer(){
+        LinearLayout manageWallet, transHist, currencyRates,
+                shoppingList, settings, about, search, recurring, add,
+                additional, addWallet, addRecord;
+        drawerLayout = findViewById(R.id.dashboard_drawer_layout);
+
+        //set re-directions to activities
         manageWallet = findViewById(R.id.navbar_manageWallets);
         setButton(manageWallet, ManageWalletActivity.class);
 
         transHist = findViewById(R.id.navbar_transHist);
         setButton(transHist, TransactionHistoryActivity.class);
-
-        categories = findViewById(R.id.navbar_category);
-        setButton(categories, CategoryActivity.class);
 
         search = findViewById(R.id.navbar_search);
         setButton(search, SearchActivity.class);
@@ -303,6 +333,12 @@ public class MainActivity extends AppCompatActivity {
         shoppingList = findViewById(R.id.navbar_shoppingList);
         setButton(shoppingList, ShoppingListMainActivity.class);
 
+        about = findViewById(R.id.navbar_about);
+        setButton(about, AboutActivity.class);
+
+        settings = findViewById(R.id.navbar_settings);
+        setButton(settings, SettingsActivity.class);
+
         //additional options
         add = findViewById(R.id.navbar_add);
         additional = findViewById(R.id.navbar_additional);
@@ -312,31 +348,27 @@ public class MainActivity extends AppCompatActivity {
         setButton(addRecord, SelectWalletActivity.class);
         collapseBar(add, additional);
 
-        about = findViewById(R.id.navbar_about);
-        setButton(about, AboutActivity.class);
-
-        settings = findViewById(R.id.navbar_settings);
-        setButton(settings, SettingsActivity.class);
-
-
     }
 
-    private void setButton(LinearLayout l, Class c){
-        l.setOnClickListener(new View.OnClickListener() {
+    //attach intent re-direction to layout when clicked
+    private void setButton(LinearLayout linearLayout, Class _class){
+        linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, c);
+                Intent intent = new Intent(MainActivity.this, _class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
     }
 
+    //collapse addition row in navigation bar
     private void collapseBar(LinearLayout add, LinearLayout additional){
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 collapse_add = !collapse_add;
+                //change height to collapse
                 if (collapse_add){
                     additional.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 }
@@ -376,16 +408,6 @@ public class MainActivity extends AppCompatActivity {
                 popupMenu.show();
             }
         });
-    }
-
-    private void viewPagerIndicators(TextView[] d, LinearLayout l){
-        l.removeAllViews();
-        for (int i = 0; i < d.length; i++){
-            d[i] = new TextView(this);
-            d[i].setText(Html.fromHtml(getResources().getString(R.string.dot)));
-            d[i].setTextSize(18);
-            l.addView(d[i]);
-        }
     }
 
 }

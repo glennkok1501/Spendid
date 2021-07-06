@@ -28,20 +28,12 @@ public class ViewTransactionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_transaction);
         dbHandler = new DBHandler(this, null, null, 1);
 
-        //Tool Bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("View Transaction");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolbar(); //set toolbar
 
+        //retrieve record Id
         Intent intent = getIntent();
         record = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
-        wallet = dbHandler.getWallet(record.getWalletId());
+        wallet = dbHandler.getWallet(record.getWalletId()); //get wallet based on record Id
         FloatingActionButton editBtn = findViewById(R.id.viewTransEdit_fab);
         ImageView catImg = findViewById(R.id.viewTransCatImg_imageView);
         TextView catName = findViewById(R.id.viewTransCat_textView);
@@ -53,12 +45,16 @@ public class ViewTransactionActivity extends AppCompatActivity {
         TextView cur = findViewById(R.id.viewTransCur_textView);
         TextView des = findViewById(R.id.viewTransDes_textView);
 
-        String category = record.getCategory();
-        catImg.setImageResource(new CategoryHandler().setIcon(category));
-        catName.setText(category);
         title.setText(record.getTitle());
         amt.setText(df2.format(record.getAmount()));
         walletName.setText(wallet.getName());
+
+        //change image based on category
+        String category = record.getCategory();
+        catImg.setImageResource(new CategoryHandler().setIcon(category));
+        catName.setText(category);
+
+        //check if record is an expense or income to change image accordingly
         if (dbHandler.catIsExpense(category)){
             walletExpense.setImageResource(R.drawable.ic_expense_down);
         }
@@ -66,7 +62,9 @@ public class ViewTransactionActivity extends AppCompatActivity {
             walletExpense.setImageResource(R.drawable.ic_income_up);
         }
         dateTime.setText("Made Transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
-        cur.setText("SGD");
+        cur.setText(getString(R.string.baseCurrency));
+
+        //validate description
         String des_text = record.getDescription();
         if (des_text.length() == 0){
             des.setText("No Description");
@@ -109,6 +107,19 @@ public class ViewTransactionActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void initToolbar(){
+        //Tool Bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("View Transaction");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 }
