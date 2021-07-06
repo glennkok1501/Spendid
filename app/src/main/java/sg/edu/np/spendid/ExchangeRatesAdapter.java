@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class ExchangeRatesAdapter extends RecyclerView.Adapter<ExchangeRatesViewHolder> {
     ArrayList<Currency> data;
+    private CountryFlagsHandler countryFlagsHandler = new CountryFlagsHandler();
 
     public ExchangeRatesAdapter(ArrayList<Currency> input, String baseCurrency){
         data = input;
@@ -25,6 +26,7 @@ public class ExchangeRatesAdapter extends RecyclerView.Adapter<ExchangeRatesView
         Currency currency = data.get(position);
         holder.foreign.setText(currency.getForeign().toUpperCase());
         holder.rate.setText(String.valueOf(currency.getRate()));
+        holder.flag.setImageResource(countryFlagsHandler.setIcon(currency.getForeign()));
     }
 
     public int getItemCount(){

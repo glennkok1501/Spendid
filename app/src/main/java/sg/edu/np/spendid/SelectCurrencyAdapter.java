@@ -12,6 +12,7 @@ public class SelectCurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyVi
     String[] data;
     private Dialog dialog;
     private TextView textView;
+    private CountryFlagsHandler countryFlagsHandler = new CountryFlagsHandler();
 
     public SelectCurrencyAdapter(String[] input, Dialog dialog, TextView textView){
         data = input;
@@ -28,7 +29,8 @@ public class SelectCurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyVi
         String[] split = data[position].split(";");
         //set TextView of chosen currency
         holder.txt.setText(split[0]);
-        holder.txt.setOnClickListener(new View.OnClickListener() {
+        holder.img.setImageResource(countryFlagsHandler.setIcon(split[1]));
+        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textView.setText((split[1]).toUpperCase());
