@@ -14,16 +14,20 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.util.ArrayList;
+
 public class SettingsActivity extends AppCompatActivity {
     private final String PREF_NAME = "sharedPrefs";
+    private DBHandler dbHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
+        dbHandler = new DBHandler(this, null, null, 1);
         initToolbar(); //set toolbar
 
         SwitchMaterial nightModeSw = findViewById(R.id.settings_nightMode_switch);
@@ -43,6 +47,16 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        TextView clearAllTextView = findViewById(R.id.settings_clearAll_textView);
+        clearAllTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllDialog();
+            }
+        });
+
+
     }
 
     @Override
@@ -94,6 +108,45 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void clearAllDialog(){
+        AlertDialog alert = new AlertDialog(this);
+        alert.setTitle("Clear All Data");
+        alert.setBody("Are you sure you want to permanently delete everything?");
+        alert.setPositive().setText("Clear");
+        alert.setPositive().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllData();
+                alert.dismiss();
+            }
+        });
+        alert.setNegative().setText("Cancel");
+        alert.setNegative().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    private void clearAllData(){
+        ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
+        try{
+            for (Wallet wallet : walletArrayList){
+                int walletId = wallet.getWalletId();
+                dbHandler.deleteWalletRecords(walletId);
+                dbHandler.deleteWallet(walletId);
+            }
+            Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Some data may not have been deleted properly", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 }
