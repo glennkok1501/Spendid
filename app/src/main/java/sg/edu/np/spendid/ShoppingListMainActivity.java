@@ -28,16 +28,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         addCartBtn = findViewById(R.id.shoppingListMain_fab);
         empty = findViewById(R.id.shoppingListEmpty_textView);
 
-        //Tool Bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Shopping List");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolbar(); //set toolbar
 
         addCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +42,11 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         ArrayList<ShoppingCart> shoppingCarts = dbHandler.getShoppingCarts();
         RecyclerView recyclerView = findViewById(R.id.shoppingListMain_RV);
         myAdapter = new ShoppingListMainAdapter(shoppingCarts, empty, this);
@@ -58,11 +54,6 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myAdapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -78,6 +69,19 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void initToolbar(){
+        //Tool Bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Shopping List");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 }

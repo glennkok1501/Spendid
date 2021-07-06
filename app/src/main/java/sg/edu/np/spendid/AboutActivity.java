@@ -19,7 +19,6 @@ public class AboutActivity extends AppCompatActivity {
         initToolBar(); //set toolbars
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();

@@ -21,7 +21,7 @@ public class WalletCurrencyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country_currency);
 
-        initToolbar();
+        initToolbar(); //set toolbar
 
         RecyclerView recyclerView = findViewById(R.id.listOfCountryRV);
         CurrencyAdapter cAdapter = new CurrencyAdapter(countries);
