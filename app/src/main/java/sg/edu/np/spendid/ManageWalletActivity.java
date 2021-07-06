@@ -28,6 +28,7 @@ public class ManageWalletActivity extends AppCompatActivity {
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
     private DBHandler dbHandler;
     private TextView bal;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class ManageWalletActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null, null, 1);
         bal = findViewById(R.id.totalWalletBal_textView);
         TextView header = findViewById(R.id.totalWalletTitle_textView);
+        recyclerView = findViewById(R.id.manageWallet_RV);
         header.setText("Total Balance");
 
         initToolbar(); //set toolbar
@@ -54,7 +56,6 @@ public class ManageWalletActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         bal.setText(df2.format(dbHandler.getTotalBalance()));
-        RecyclerView recyclerView = findViewById(R.id.manageWallet_RV);
         WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);

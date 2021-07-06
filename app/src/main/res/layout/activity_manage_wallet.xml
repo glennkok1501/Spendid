@@ -24,9 +24,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginBottom="15dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
                 android:background="@color/white"
                 app:cardBackgroundColor="?colorOnBackground"
                 app:cardElevation="25dp"
@@ -62,8 +62,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/manageWallet_RV"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="20dp" />
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
