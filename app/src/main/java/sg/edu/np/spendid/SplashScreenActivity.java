@@ -25,6 +25,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
         dbHandler = new DBHandler(this, null, null, 1);
+
+        //check for night mode
         toggleNightMode();
 
         //Fetch Data from API
@@ -47,6 +49,31 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_SCREEN);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void toggleNightMode(){

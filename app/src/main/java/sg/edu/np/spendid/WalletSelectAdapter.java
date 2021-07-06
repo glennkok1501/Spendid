@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
     ArrayList<Wallet> data;
-    Context context;
-    DBHandler dbHandler;
-    DecimalFormat df2 = new DecimalFormat("#0.00");
+    private Context context;
+    private DBHandler dbHandler;
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public WalletSelectAdapter(ArrayList<Wallet> input, Context context){
         data = input;

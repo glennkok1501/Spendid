@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?backgroundColor"
+    android:orientation="vertical"
     tools:context=".SettingsActivity">
+
+    <include layout="@layout/page_toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,8 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
-            <include layout="@layout/page_toolbar"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/settings_nightMode_switch"
@@ -44,7 +45,39 @@
                 android:paddingBottom="10dp"
                 android:text="Export / Import"/>
 
+            <TextView
+                android:id="@+id/settings_dailyLimit_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_arrow_forward_24"
+                android:drawableTint="?colorOnPrimarySurface"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="16sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Daily Limit"/>
+
+            <TextView
+                android:id="@+id/settings_clearAll_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_arrow_forward_24"
+                android:drawableTint="?colorOnPrimarySurface"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="16sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Clear All"/>
+
         </LinearLayout>
     </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>

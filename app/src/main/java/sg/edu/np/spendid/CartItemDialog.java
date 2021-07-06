@@ -15,6 +15,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.DecimalFormat;
 
+//class to create or edit cart items
+//with a custom dialog
 public class CartItemDialog {
     private Dialog dialog;
     private CartItem cartItem;
@@ -54,35 +56,40 @@ public class CartItemDialog {
         FloatingActionButton delBtn = dialog.findViewById(R.id.deleteCartItem_fab);
 
         if (editable) {
+            //set all fields with given value (name and amount)
             name.setText(cartItem.getName());
             amt.setText(df2.format(cartItem.getAmount()));
-            setDeleteBtn(delBtn, true);
+            setDeleteBtn(delBtn, true); //show delete button
             btn.setText("Edit Item");
+
+            //save cart item with edited values
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String n = name.getText().toString();
-                    if (checkInput(n)){
-                        CartItem c = new CartItem(cartItem.getItemId(), n, Double.parseDouble(checkAmt(amt.getText().toString())), cartItem.isCheck(), cartItem.getCartId());
+                    String itemName = name.getText().toString();
+                    //validate item name before adding to cart
+                    if (checkInput(itemName)){
+                        CartItem c = new CartItem(cartItem.getItemId(), itemName, Double.parseDouble(checkAmt(amt.getText().toString())), cartItem.isCheck(), cartItem.getCartId());
                         dbHandler.updateCartItem(c);
                         Toast.makeText(v.getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
-                        adapter.edit(cartItem, c);
+                        adapter.edit(cartItem, c); //update adapter data to reflect the edit
                         dialog.dismiss();
                     }
                 }
             });
         } else {
-            setDeleteBtn(delBtn, false);
+            setDeleteBtn(delBtn, false); //hide delete button
             btn.setText("Add to Cart");
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String n = name.getText().toString();
-                    if (checkInput(n)) {
-                        CartItem c = new CartItem(n, Double.parseDouble(checkAmt(amt.getText().toString())), false, cartId);
+                    String itemName = name.getText().toString();
+                    //validate item name before adding to cart
+                    if (checkInput(itemName)) {
+                        CartItem c = new CartItem(itemName, Double.parseDouble(checkAmt(amt.getText().toString())), false, cartId);
                         dbHandler.addCartItem(c);
                         Toast.makeText(v.getContext(), "Item Added", Toast.LENGTH_SHORT).show();
-                        adapter.update(dbHandler.getCartItems(cartId));
+                        adapter.update(dbHandler.getCartItems(cartId)); //update adapter data to reflect the added item
                         dialog.dismiss();
                     }
                 }
@@ -99,6 +106,7 @@ public class CartItemDialog {
         dialog.show();
     }
 
+    //choose to hide or show delete button depending on create or edit
     private void setDeleteBtn(FloatingActionButton delBtn, boolean visible) {
         if (visible) {
             delBtn.setVisibility(View.VISIBLE);
@@ -120,6 +128,7 @@ public class CartItemDialog {
         }
     }
 
+    //check if name is valid
     private boolean checkInput(String name) {
         if (name.length() == 0 || name.length() > 15) {
             TextInputLayout editLayout = dialog.findViewById(R.id.addCartItemName_layout);
@@ -129,6 +138,7 @@ public class CartItemDialog {
         return true;
     }
 
+    //valid if amount is empty
     private String checkAmt(String amt) {
         if (amt.length() == 0) {
             amt = "0";

@@ -19,13 +19,13 @@ public class CurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyViewHold
         return new SelectCurrencyViewHolder(item);
     }
     public void onBindViewHolder(SelectCurrencyViewHolder holder, int position){
-        String[] s = data[position].split(";");
-        holder.txt.setText(s[0]);
+        String[] split = data[position].split(";");
+        holder.txt.setText(split[0]);
         holder.txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), AddWalletActivity.class);
-                intent.putExtra("Currency", s[1]);
+                intent.putExtra("Currency", split[1]);
                 v.getContext().startActivity(intent);
             }
         });

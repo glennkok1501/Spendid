@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
     HashMap<String, ArrayList<Record>> recordData;
-    ArrayList<String> dates;
+    private ArrayList<String> dates;
 
     public HistoryAdapter(HashMap<String, ArrayList<Record>> recordList) {
         recordData = recordList;
@@ -43,23 +43,28 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
 
     public int getItemCount() { return recordData.size(); }
 
+    //sort record dates from most recent
     private ArrayList<String> sortDates(ArrayList<String> dates){
         Date[] newDates = new Date[dates.size()];
         ArrayList<String> dateList = new ArrayList<>();
+        //parse dates to Date object
         for (int i = 0; i < dates.size(); i++) {
             try {
                 newDates[i] = new SimpleDateFormat("yyyy-MM-dd").parse(dates.get(i));
             }
             catch (ParseException e) {}
         }
+        //sort using Arrays method
         Arrays.sort(newDates, Collections.reverseOrder());
 
+        //append back to array in order
         for (int i = 0; i < newDates.length; i++) {
             dateList.add(new SimpleDateFormat("yyyy-MM-dd").format(newDates[i]));
         }
         return dateList;
     }
 
+    //format date for better presentation
     private String formatDate(String d){
         String dateFormat;
         try{

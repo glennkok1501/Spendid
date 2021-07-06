@@ -2,24 +2,11 @@
 
 package sg.edu.np.spendid;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -27,9 +14,9 @@ import java.util.HashMap;
 
 public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHolder> {
     HashMap<String, ArrayList<Record>> data;
-    ArrayList<String> keys;
-    CategoryHandler categoryHandler = new CategoryHandler();
-    DecimalFormat df2 = new DecimalFormat("#0.00");
+    private ArrayList<String> keys;
+    private CategoryHandler categoryHandler = new CategoryHandler();
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input){
         data = input;
@@ -47,7 +34,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
         holder.image.setImageResource(categoryHandler.setIcon(cat));
         holder.cat.setText(cat);
         holder.amt.setText(df2.format(calAmt(records)));
-        holder.currency.setText("SGD");
+        holder.currency.setText(holder.itemView.getContext().getString(R.string.baseCurrency));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +49,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
         return data.size();
     }
 
+    //calculate total amount in for category
     private double calAmt(ArrayList<Record> r){
         double amt = 0;
         for (int i = 0; i < r.size(); i++){

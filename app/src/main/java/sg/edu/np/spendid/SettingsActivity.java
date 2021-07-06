@@ -14,42 +14,28 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.util.ArrayList;
+
 public class SettingsActivity extends AppCompatActivity {
     private final String PREF_NAME = "sharedPrefs";
+    private DBHandler dbHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean nightMode = getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("nightMode", false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        //Tool Bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Settings");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        dbHandler = new DBHandler(this, null, null, 1);
+        initToolbar(); //set toolbar
 
         SwitchMaterial nightModeSw = findViewById(R.id.settings_nightMode_switch);
         nightModeSw.setChecked(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("nightMode", false));
         nightModeSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-                if (isChecked){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    editor.putBoolean("nightMode", true);
-                }
-                else{
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    editor.putBoolean("nightMode", false);
-                }
-                editor.apply();
+                toggleNightMode(isChecked);
             }
         });
 
@@ -61,6 +47,16 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        TextView clearAllTextView = findViewById(R.id.settings_clearAll_textView);
+        clearAllTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllDialog();
+            }
+        });
+
+
     }
 
     @Override
@@ -86,6 +82,71 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void toggleNightMode(boolean isChecked){
+        SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+        if (isChecked){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            editor.putBoolean("nightMode", true);
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            editor.putBoolean("nightMode", false);
+        }
+        editor.apply();
+    }
+
+    private void initToolbar(){
+        //Tool Bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Settings");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void clearAllDialog(){
+        AlertDialog alert = new AlertDialog(this);
+        alert.setTitle("Clear All Data");
+        alert.setBody("Are you sure you want to permanently delete everything?");
+        alert.setPositive().setText("Clear");
+        alert.setPositive().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllData();
+                alert.dismiss();
+            }
+        });
+        alert.setNegative().setText("Cancel");
+        alert.setNegative().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    private void clearAllData(){
+        ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
+        try{
+            for (Wallet wallet : walletArrayList){
+                int walletId = wallet.getWalletId();
+                dbHandler.deleteWalletRecords(walletId);
+                dbHandler.deleteWallet(walletId);
+            }
+            Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Some data may not have been deleted properly", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 }

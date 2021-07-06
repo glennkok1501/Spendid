@@ -26,26 +26,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null,null, 1);
         FloatingActionButton fab = findViewById(R.id.transaction_history_fab);
 
-        //Tool bar
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView search = findViewById(R.id.mainToolbarMore_imageView);
-        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
-        search.setImageResource(R.drawable.ic_search_32);
-        activityTitle.setText("Trasaction History");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TransactionHistoryActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        initToolbar(); //set toolbar
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +66,29 @@ public class TransactionHistoryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void initToolbar(){
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
+        ImageView search = findViewById(R.id.mainToolbarMore_imageView);
+        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
+        search.setImageResource(R.drawable.ic_search_32);
+        activityTitle.setText("Transaction History");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransactionHistoryActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

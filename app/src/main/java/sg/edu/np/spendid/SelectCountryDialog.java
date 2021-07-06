@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+//class to select country in a dialog
 public class SelectCountryDialog{
     private String[] countries;
     private Dialog dialog;

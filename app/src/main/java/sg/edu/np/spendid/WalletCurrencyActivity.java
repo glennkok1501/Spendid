@@ -21,16 +21,7 @@ public class WalletCurrencyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country_currency);
 
-        //Tool bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Select a Currency");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolbar(); //set toolbar
 
         RecyclerView recyclerView = findViewById(R.id.listOfCountryRV);
         CurrencyAdapter cAdapter = new CurrencyAdapter(countries);
@@ -66,5 +57,17 @@ public class WalletCurrencyActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private void initToolbar(){
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Select a Currency");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
 }

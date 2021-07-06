@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderViewHolder> {
     ArrayList<Category> data;
-    TextView cat;
-    int selectedPos = -1;
-    CategoryHandler categoryHandler = new CategoryHandler();
+    private TextView cat;
+    private int selectedPos = -1;
+    private CategoryHandler categoryHandler = new CategoryHandler();
 
     public CatSliderAdapter(ArrayList<Category> input, TextView select){
         data = input;
@@ -31,13 +31,13 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderViewHolder> 
     }
 
     public void onBindViewHolder(CatSliderViewHolder holder, int position){
-        Category s = data.get(position);
-        holder.image.setImageResource(categoryHandler.setIcon(s.getTitle()));
+        Category category = data.get(position);
+        holder.image.setImageResource(categoryHandler.setIcon(category.getTitle()));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedPos = position;
-                cat.setText(s.getTitle());
+                cat.setText(category.getTitle());
                 notifyDataSetChanged();
             }
         });

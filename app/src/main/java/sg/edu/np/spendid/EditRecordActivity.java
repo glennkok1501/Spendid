@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
+//edit and delete transaction
 public class EditRecordActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private Wallet wallet;
@@ -30,6 +31,7 @@ public class EditRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
+    private String baseCurrency;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     @Override
@@ -45,31 +47,17 @@ public class EditRecordActivity extends AppCompatActivity {
         fab = findViewById(R.id.editRecord_fab);
         title_layout = findViewById(R.id.editRecordTitle_layout);
         recordCur = findViewById(R.id.editRecordCur_textView);
+        baseCurrency = getString(R.string.baseCurrency);
 
-        //Tool bar
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView trash = findViewById(R.id.mainToolbarMore_imageView);
-        backArrow.setImageResource(R.drawable.ic_clear_32);
-        trash.setImageResource(R.drawable.ic_delete_32);
-        activityTitle.setText("Edit Transaction");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        trash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteDialog();
-            }
-        });
-        checkValues = initCheckValues();
+        initToolbar(); //set toolbar
+
+        checkValues = initCheckValues(); //set values to check for fields
+
+        //retrieve record id
         Intent intent = getIntent();
         record  = dbHandler.getRecord(intent.getIntExtra("recordId", 0));
-        wallet = dbHandler.getWallet(record.getWalletId());
-        recordCur.setText("SGD");
+        wallet = dbHandler.getWallet(record.getWalletId()); //get wallet by record Id
+        recordCur.setText(baseCurrency);
         selectWallet.setText(wallet.getName());
         title.setText(record.getTitle());
         description.setText(record.getDescription());
@@ -84,16 +72,16 @@ public class EditRecordActivity extends AppCompatActivity {
         catRV.setItemAnimator(new DefaultItemAnimator());
         catRV.setAdapter(myCatAdapter);
 
-        promptConversion();
+        promptConversion(); //if wallet currency not sgd prompt exchange
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title_txt = checkTitle();
-                String des_txt = description.getText().toString();
-                String cat = checkCat();
-                double amount = checkAmt();
-
+                String title_txt = checkTitle(); //validate title
+                String des_txt = description.getText().toString(); //get description
+                String cat = checkCat(); //validate category
+                double amount = checkAmt(); //validate amount
+                //update transaction if record is valid
                 if (validRecord()){
                     dbHandler.updateRecord(new Record(record.getId(), title_txt, des_txt, amount, cat, record.getDateCreated(), record.getTimeCreated(), record.getWalletId()));
                     Toast.makeText(getApplicationContext(), "Transaction Saved", Toast.LENGTH_SHORT).show();
@@ -132,15 +120,16 @@ public class EditRecordActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
+    //prompt currency exchange dialog if wallet currency is not in SGD
     private void promptConversion(){
-        if (!wallet.getCurrency().equals("SGD")){
+        if (!wallet.getCurrency().equals(baseCurrency)){
             CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, wallet.getCurrency().toLowerCase());
             currencyConvertDialog.setAmt(amt);
             currencyConvertDialog.show();
         }
     }
 
+    //values used for checking if record is valid
     private HashMap<String, Boolean> initCheckValues(){
         HashMap<String, Boolean> m = new HashMap<String, Boolean>();
         m.put("amount", false);
@@ -149,8 +138,10 @@ public class EditRecordActivity extends AppCompatActivity {
         return m;
     }
 
+    //check if amount is valid
     private double checkAmt(){
         String amt_txt = amt.getText().toString();
+        //set checkValues to true if valid
         if (amt_txt.length() > 0){
             checkValues.put("amount", true);
             return Double.parseDouble(amt_txt);
@@ -158,8 +149,10 @@ public class EditRecordActivity extends AppCompatActivity {
         return 0;
     }
 
+    //check if title is valid
     private String checkTitle(){
         String title_txt = title.getText().toString();
+        //set checkValues to true title is not more than 15 char and not 0
         if (title_txt.length() > 15){
             title_layout.setError("Character limit exceeded");
             return null;
@@ -174,8 +167,10 @@ public class EditRecordActivity extends AppCompatActivity {
         }
     }
 
+    //check if category is selected
     private String checkCat(){
         String cat = selectedCat.getText().toString();
+        //set checkValues to true when category is selected
         if (!cat.equals("Select a Category")){
             checkValues.put("category", true);
             return cat;
@@ -185,6 +180,7 @@ public class EditRecordActivity extends AppCompatActivity {
         }
     }
 
+    //check all values in checkValues to validate inputs
     private boolean validRecord(){
         boolean valid = true;
         for (String key : checkValues.keySet()) {
@@ -195,6 +191,7 @@ public class EditRecordActivity extends AppCompatActivity {
         return valid;
     }
 
+    //initiate alert dialog for deletion of transaction
     private void deleteDialog(){
         AlertDialog alert = new AlertDialog(this);
         alert.setTitle("Delete Transaction");
@@ -227,4 +224,25 @@ public class EditRecordActivity extends AppCompatActivity {
         }
     }
 
+    private void initToolbar(){
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
+        ImageView trash = findViewById(R.id.mainToolbarMore_imageView);
+        backArrow.setImageResource(R.drawable.ic_clear_32);
+        trash.setImageResource(R.drawable.ic_delete_32);
+        activityTitle.setText("Edit Transaction");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        trash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog();
+            }
+        });
+    }
 }

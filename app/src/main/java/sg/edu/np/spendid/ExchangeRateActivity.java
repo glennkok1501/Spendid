@@ -3,6 +3,9 @@ package sg.edu.np.spendid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -42,16 +45,7 @@ public class ExchangeRateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange_rate);
 
-        //Tool Bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Currency Rates");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolbar(); //set toolbar
 
         mQueue = Volley.newRequestQueue(this);
         CardView selFrom = findViewById(R.id.exchangeRateSelFrom_cardView);
@@ -61,18 +55,28 @@ public class ExchangeRateActivity extends AppCompatActivity {
         TextView toTextView = findViewById(R.id.exchangeRateSelTo_textView);
         setSelection(selTo, toTextView);
         FloatingActionButton convert_fab = findViewById(R.id.exchangeRateConvert_fab);
+
+        //select conversion from to to
         convert_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 from = fromTextView.getText().toString();
                 to = toTextView.getText().toString();
+                //check if both currencies are selected before calling API
                 if (!from.equals("Select") && !to.equals("Select")){
                     getExchangeRate();
+                    Toast.makeText(getApplicationContext(), from+" to "+to, Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(), from+" to "+to, Toast.LENGTH_SHORT).show();
-
             }
         });
+
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        RecyclerView recyclerView = findViewById(R.id.exchangeRateSgd_RV);
+        ExchangeRatesAdapter myAdapter = new ExchangeRatesAdapter(dbHandler.getCurrencies(), getString(R.string.baseCurrency).toLowerCase());
+        LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(myLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(myAdapter);
     }
 
     @Override
@@ -100,6 +104,7 @@ public class ExchangeRateActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //prompt dialog to select currency
     private void setSelection(CardView c, TextView t){
         c.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +115,7 @@ public class ExchangeRateActivity extends AppCompatActivity {
         });
     }
 
+    //initiate field to input values for currency conversion
     private void initConvertText(){
         EditText input = findViewById(R.id.exchangeRateAmtFrom_editText);
         TextView output = findViewById(R.id.exchangeRateAmtTo_textView);
@@ -122,16 +128,14 @@ public class ExchangeRateActivity extends AppCompatActivity {
         input.setText("1.00");
         output.setText(df2.format(1 * exchangeRate));
         date.setText(lastUpdated);
+        //converts as input changes
         input.addTextChangedListener(new TextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) { }
             @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length() != 0) {
                     output.setText(df2.format(Double.parseDouble(input.getText().toString()) * exchangeRate));
                 }
@@ -142,6 +146,7 @@ public class ExchangeRateActivity extends AppCompatActivity {
         });
     }
 
+    //retrieve conversion data from API
     private void getExchangeRate(){
         String url = String.format("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/%s/%s.json", from.toLowerCase(), to.toLowerCase());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -149,9 +154,9 @@ public class ExchangeRateActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            exchangeRate = response.getDouble(to.toLowerCase());
-                            lastUpdated = String.format("Last Updated: %s", response.getString("date"));
-                            initConvertText();
+                            exchangeRate = response.getDouble(to.toLowerCase()); //get rate value
+                            lastUpdated = String.format("Last Updated: %s", response.getString("date")); //get last updated
+                            initConvertText(); //start fields with data retrieved
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(ExchangeRateActivity.this, "Data Unavailable", Toast.LENGTH_SHORT).show();
@@ -167,4 +172,17 @@ public class ExchangeRateActivity extends AppCompatActivity {
         mQueue.add(request);
     }
 
+
+    private void initToolbar(){
+        //Tool Bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Currency Rates");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 }

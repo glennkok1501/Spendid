@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 
 import static android.content.Context.MODE_PRIVATE;
 
+//Class to display wallet details in dialog
 public class ManageWalletDialog {
     private Context context;
     private Wallet wallet;
@@ -46,7 +47,7 @@ public class ManageWalletDialog {
         TextView date = dialog.findViewById(R.id.viewWalletDate_textView);
         TextView des = dialog.findViewById(R.id.viewWalletDes_textView);
         TextView wCur = dialog.findViewById(R.id.viewWalletCurrency_textView);
-        ImageView star = dialog.findViewById(R.id.manageWalletFav_imageView);
+        ImageView fav = dialog.findViewById(R.id.manageWalletFav_imageView);
         FloatingActionButton editBtn = dialog.findViewById(R.id.viewWalletEdit_fab);
         RelativeLayout bg = dialog.findViewById(R.id.viewWallet_relativeLayout);
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -54,9 +55,10 @@ public class ManageWalletDialog {
         name.setText(wallet.getName());
         wCur.setText(wallet.getCurrency());
         amt.setText(df2.format(dbHandler.getWalletTotal(wallet.getWalletId())));
-        cur.setText("SGD");
+        cur.setText(context.getString(R.string.baseCurrency));
         date.setText("Date Created: " + wallet.getDateCreated());
         String des_text = wallet.getDescription();
+        //check if description is empty
         if (des_text.length() == 0) {
             des.setText("No Description");
         } else {
@@ -73,18 +75,21 @@ public class ManageWalletDialog {
             }
         });
 
+        //check if dialog is able to choose favourite wallet
         if (selectFav){
+            //change favourite wallet image color
             if (prefs.getInt("firstWallet", 0) == wallet.getWalletId()){
-                star.setColorFilter(ContextCompat.getColor(context, R.color.pinkish_red));
+                fav.setColorFilter(ContextCompat.getColor(context, R.color.pinkish_red));
             }
             else{
-                star.setColorFilter(ContextCompat.getColor(context, R.color.light_grey));
+                fav.setColorFilter(ContextCompat.getColor(context, R.color.light_grey));
             }
 
-            star.setOnClickListener(new View.OnClickListener() {
+            //update new favourite when selected
+            fav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    star.setColorFilter(ContextCompat.getColor(context, R.color.pinkish_red));
+                    fav.setColorFilter(ContextCompat.getColor(context, R.color.pinkish_red));
                     SharedPreferences.Editor editor = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
                     editor.putInt("firstWallet", wallet.getWalletId());
                     editor.apply();
@@ -92,7 +97,7 @@ public class ManageWalletDialog {
             });
         }
         else{
-            star.setVisibility(View.INVISIBLE);
+            fav.setVisibility(View.INVISIBLE);
         }
 
         bg.setOnTouchListener(new View.OnTouchListener() {

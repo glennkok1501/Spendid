@@ -24,9 +24,9 @@ import java.util.Date;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHolder>{
     ArrayList<Record> transactions;
-    boolean showDate;
-    CategoryHandler categoryHandler = new CategoryHandler();
-    DecimalFormat df2 = new DecimalFormat("#0.00");
+    private boolean showDate;
+    private CategoryHandler categoryHandler = new CategoryHandler();
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public TransactionAdapter(ArrayList<Record> transactionList, boolean showDate) {
         transactions = transactionList;
@@ -40,19 +40,19 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
     }
 
     public void onBindViewHolder(TransactionViewHolder vh, int pos) {
-        Record r = transactions.get(pos);
-        vh.title.setText(r.getTitle());
-        vh.time.setText(formatTime(r.getTimeCreated()));
-        vh.cur.setText("SGD");
-        vh.amt.setText(df2.format(r.getAmount()));
-        if (showDate){vh.date.setText(formatDate(r.getDateCreated()));}
-        else{vh.date.setText("");}
-        vh.cat.setImageResource(categoryHandler.setIcon(r.getCategory()));
+        Record record = transactions.get(pos);
+        vh.title.setText(record.getTitle());
+        vh.time.setText(formatTime(record.getTimeCreated()));
+        vh.cur.setText(vh.itemView.getContext().getString(R.string.baseCurrency));
+        vh.amt.setText(df2.format(record.getAmount()));
+        if (showDate){vh.date.setText(formatDate(record.getDateCreated()));}
+        else{vh.date.setVisibility(View.INVISIBLE);}
+        vh.cat.setImageResource(categoryHandler.setIcon(record.getCategory()));
         vh.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ViewTransactionActivity.class);
-                intent.putExtra("recordId", r.getId());
+                intent.putExtra("recordId", record.getId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -60,11 +60,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
 
     public int getItemCount() { return transactions.size(); }
 
+    //replace data with filtered data
     public void filter(ArrayList<Record> rList) {
         transactions = rList;
         notifyDataSetChanged();
     }
 
+    //change format of date
     private String formatDate(String d){
         String dateFormat;
         try{
@@ -77,6 +79,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
         return dateFormat;
     }
 
+    //change format of time
     private String formatTime(String t){
         String formatted;
         try{

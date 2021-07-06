@@ -25,12 +25,13 @@ public class SelectCurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyVi
     }
 
     public void onBindViewHolder(SelectCurrencyViewHolder holder, int position){
-        String[] s = data[position].split(";");
-        holder.txt.setText(s[0]);
+        String[] split = data[position].split(";");
+        //set TextView of chosen currency
+        holder.txt.setText(split[0]);
         holder.txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textView.setText((s[1]).toUpperCase());
+                textView.setText((split[1]).toUpperCase());
                 dialog.dismiss();
             }
         });

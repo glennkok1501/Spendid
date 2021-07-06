@@ -28,6 +28,7 @@ public class ManageWalletActivity extends AppCompatActivity {
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
     private DBHandler dbHandler;
     private TextView bal;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +37,10 @@ public class ManageWalletActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null, null, 1);
         bal = findViewById(R.id.totalWalletBal_textView);
         TextView header = findViewById(R.id.totalWalletTitle_textView);
+        recyclerView = findViewById(R.id.manageWallet_RV);
         header.setText("Total Balance");
 
-        //Tool bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Manage Wallets");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolbar(); //set toolbar
 
         FloatingActionButton addWalletBtn = findViewById(R.id.manageWallet_fab);
         addWalletBtn.setOnClickListener(new View.OnClickListener() {
@@ -62,18 +55,18 @@ public class ManageWalletActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         bal.setText(df2.format(dbHandler.getTotalBalance()));
-        RecyclerView recyclerView = findViewById(R.id.manageWallet_RV);
         WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myAdapter);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -91,4 +84,16 @@ public class ManageWalletActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private void initToolbar(){
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Manage Wallets");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 }

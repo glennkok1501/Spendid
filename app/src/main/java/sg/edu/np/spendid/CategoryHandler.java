@@ -1,5 +1,6 @@
 package sg.edu.np.spendid;
 
+//class to match name of category to icon
 public class CategoryHandler {
 
     public CategoryHandler() {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?backgroundColor"
-    tools:context=".AddWalletActivity">
+    tools:context=".EditWalletActivity">
 
     <include layout="@layout/main_toolbar"/>
 

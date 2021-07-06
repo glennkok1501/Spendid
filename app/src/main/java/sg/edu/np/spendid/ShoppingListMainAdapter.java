@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHolder>{
+public class ShoppingListMainAdapter extends RecyclerView.Adapter<ShoppingListViewHolder>{
     ArrayList<ShoppingCart> data;
-    Context context;
-    DBHandler dbHandler;
-    TextView empty;
-    DecimalFormat df2 = new DecimalFormat("#0.00");
+    private Context context;
+    private DBHandler dbHandler;
+    private TextView empty;
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public ShoppingListAdapter(ArrayList<ShoppingCart> input, TextView empty, Context context){
+    public ShoppingListMainAdapter(ArrayList<ShoppingCart> input, TextView empty, Context context){
         data = input;
         this.context = context;
         this.empty = empty;
@@ -34,17 +34,19 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
     }
 
     public void onBindViewHolder(ShoppingListViewHolder holder, int position){
-        ShoppingCart s = data.get(position);
-        holder.name.setText(s.getName());
-        ArrayList<CartItem> items = dbHandler.getCartItems(s.getCartId());
+        ShoppingCart shoppingCart = data.get(position);
+        holder.name.setText(shoppingCart.getName());
+        //calculate estimated cost based on associated cart items
+        ArrayList<CartItem> items = dbHandler.getCartItems(shoppingCart.getCartId());
         double amount = 0;
-        int unchecked = 0;
+        int checked = 0;
         for (CartItem c : items){
             amount += c.getAmount();
-            if (c.isCheck()){unchecked += 1;}
+            if (c.isCheck()){checked += 1;}
         }
         holder.amt.setText(df2.format(amount));
-        holder.items.setText(""+unchecked+"/"+items.size()+" items");
+        //get the number of items checked and all items
+        holder.items.setText(""+checked+"/"+items.size()+" items");
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +67,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
         checkEmpty();
     }
 
+    //show message if shopping list is empty
     private void checkEmpty(){
         if (data.size() == 0){
             empty.setVisibility(View.VISIBLE);

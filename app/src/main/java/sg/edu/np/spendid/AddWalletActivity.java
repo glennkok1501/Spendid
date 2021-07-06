@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+//create wallets
 public class AddWalletActivity extends AppCompatActivity {
     private DBHandler dbhandler;
     private EditText newWalletName, newWalletDescription;
@@ -27,31 +28,23 @@ public class AddWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_wallet);
         dbhandler = new DBHandler(this, null, null, 1);
-        //Tool Bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Add Wallet");
-        backArrow.setImageResource(R.drawable.ic_clear_32);
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initToolbar(); //set toolbar
 
         newWalletName = findViewById(R.id.editWalletName);
         TextInputLayout walletNameLayout = findViewById(R.id.addNewWalletName_layout);
         newWalletDescription = findViewById(R.id.addNewWalletDescription);
 
+        //retrieve currency from select country
         Intent receivedData = getIntent();
         String currencyChosen = receivedData.getStringExtra("Currency").toUpperCase();
-        TextView chosenC = findViewById(R.id.chosenWalletCurrency);
-        chosenC.setText(currencyChosen);
+        TextView chosenCurrency = findViewById(R.id.chosenWalletCurrency);
+        chosenCurrency.setText(currencyChosen);
 
         FloatingActionButton CreateWallet = findViewById(R.id.CreateWalletButton);
         CreateWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //create wallet if wallet is unique and name is valid
                 if (isValidWalletName() && isValidWallet(newWalletName.getText().toString().toLowerCase())){
                     Wallet w = new Wallet(newWalletName.getText().toString(), newWalletDescription.getText().toString(), currencyChosen, currentDate());
                     dbhandler.addWallet(w);
@@ -68,7 +61,8 @@ public class AddWalletActivity extends AppCompatActivity {
             }
         });
 
-        chosenC.setOnClickListener(new View.OnClickListener() {
+        //direct to select currency
+        chosenCurrency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AddWalletActivity.this, WalletCurrencyActivity.class);
@@ -102,17 +96,21 @@ public class AddWalletActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    //get current date
     private String currentDate(){
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(currentTime.getTime());
     }
 
+    //check if wallet name is valid
     private boolean isValidWalletName(){
         int len = newWalletName.getText().toString().length();
         return len != 0 && len <= 15;
     }
 
+    //check if wallet name is unique by comparing with all wallets
     private boolean isValidWallet(String walletName){
         boolean valid = true;
         ArrayList<Wallet> walletList = dbhandler.getWallets();
@@ -123,6 +121,20 @@ public class AddWalletActivity extends AppCompatActivity {
             }
         }
         return valid;
+    }
+
+    private void initToolbar(){
+        //Tool Bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Add Wallet");
+        backArrow.setImageResource(R.drawable.ic_clear_32);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 }

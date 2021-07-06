@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+//class for creating custom alert dialog
+// with positive and negative decision
 public class AlertDialog {
     private String title;
     private String body;

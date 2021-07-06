@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> {
     ArrayList<CartItem> data;
-    Context context;
-    DBHandler dbHandler;
-    TextView empty;
-    DecimalFormat df2 = new DecimalFormat("#0.00");
+    private Context context;
+    private DBHandler dbHandler;
+    private TextView empty;
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public CartItemsAdapter(ArrayList<CartItem> input, TextView empty, Context context){
         data = input;
@@ -38,23 +38,23 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
     }
 
     public void onBindViewHolder(CartItemsViewHolder holder, int position){
-        CartItem c = data.get(position);
-        holder.name.setText(c.getName());
-        holder.amt.setText(df2.format(c.getAmount()));
-        holder.check.setChecked(c.isCheck());
+        CartItem cartItem = data.get(position);
+        holder.name.setText(cartItem.getName());
+        holder.amt.setText(df2.format(cartItem.getAmount()));
+        holder.check.setChecked(cartItem.isCheck());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CartItemDialog dialog = new CartItemDialog(v.getContext(), true, CartItemsAdapter.this);
-                dialog.setCartItem(c);
+                dialog.setCartItem(cartItem);
                 dialog.show();
             }
         });
         holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                dbHandler.updateCartItem(new CartItem(c.getItemId(), c.getName(), c.getAmount(), isChecked, c.getCartId()));
-                c.setCheck(isChecked);
+                dbHandler.updateCartItem(new CartItem(cartItem.getItemId(), cartItem.getName(), cartItem.getAmount(), isChecked, cartItem.getCartId()));
+                cartItem.setCheck(isChecked);
             }
         });
     }
@@ -90,6 +90,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         empty.setVisibility(View.VISIBLE);
     }
 
+    //prompt message if not data
     private void checkEmpty(){
         if (data.size() == 0){
             empty.setVisibility(View.VISIBLE);

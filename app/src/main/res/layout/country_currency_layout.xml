@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:showDividers="end"
-    android:divider="?subtitleTextColor"
-    tools:context=".CurrencyAdapter">
+    android:background="?backgroundColor"
+    android:divider="?subtitleTextColor">
 
     <TextView
         android:id="@+id/countryCurrencies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?backgroundColor"
+        android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:textSize="16sp"
@@ -25,4 +23,4 @@
         android:text="Country" />
 
 
-</LinearLayout>
+</RelativeLayout>

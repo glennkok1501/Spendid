@@ -35,15 +35,10 @@ public class SearchActivity extends AppCompatActivity {
         searchBtn = findViewById(R.id.search_Btn_imageView);
         dbHandler = new DBHandler(this, null,null, 1);
 
-        //Tool bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Search Transactions");
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { finish(); }
-        });
-        search.requestFocus();
+        initToolbar(); //set toolbar
+        search.requestFocus(); //start keyboard
+
+        //filters as search string changes
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {}
@@ -118,6 +113,17 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
         ta.filter(out);
+    }
+
+    private void initToolbar(){
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        activityTitle.setText("Search Transactions");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { finish(); }
+        });
     }
 
 }
