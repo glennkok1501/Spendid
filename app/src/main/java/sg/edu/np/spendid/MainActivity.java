@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         income = findViewById(R.id.totalBalIncCost_textView);
         expense = findViewById(R.id.totalBalExpCost_textView);
         currency = findViewById(R.id.totalBalCur_textView);
-        currency.setText("SGD");
+        currency.setText(getString(R.string.baseCurrency));
         fab = findViewById(R.id.dashboard_fab);
         addRecord = findViewById(R.id.dashboardAddRecord_fab);
         addWallet = findViewById(R.id.dashboardAddWallet_fab);
@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
     //navigation drawer
     private void initDrawer(){
         LinearLayout manageWallet, transHist, currencyRates,
-                shoppingList, settings, about, search, recurring, add,
+                shoppingList, settings, about, search, add,
                 additional, addWallet, addRecord;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
 
