@@ -12,7 +12,6 @@
 
     <include layout="@layout/page_toolbar"/>
 
-
     <ScrollView
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
@@ -25,8 +24,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="?backgroundColor"
-                tools:context=".ExchangeRateActivity">
+                android:background="?backgroundColor">
 
                 <TextView
                     android:id="@+id/textView4"
