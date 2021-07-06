@@ -3,6 +3,9 @@ package sg.edu.np.spendid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -66,6 +69,14 @@ public class ExchangeRateActivity extends AppCompatActivity {
                 }
             }
         });
+
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        RecyclerView recyclerView = findViewById(R.id.exchangeRateSgd_RV);
+        ExchangeRatesAdapter myAdapter = new ExchangeRatesAdapter(dbHandler.getCurrencies(), getString(R.string.baseCurrency).toLowerCase());
+        LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(myLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(myAdapter);
     }
 
     @Override

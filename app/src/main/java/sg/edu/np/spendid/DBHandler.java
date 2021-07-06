@@ -707,6 +707,22 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //returns an array of all currencies
+    public ArrayList<Currency> getCurrencies(){
+        ArrayList<Currency> currencyArrayList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_CURRENCY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            String foreign = cursor.getString(0);
+            double rate = cursor.getDouble(1);
+            String date = cursor.getString(2);
+            currencyArrayList.add(new Currency(foreign,rate,date));
+        }
+        cursor.close();
+        db.close();
+        return currencyArrayList;
+    }
 
 }
 

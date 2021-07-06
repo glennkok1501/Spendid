@@ -27,7 +27,7 @@
                 android:background="?backgroundColor">
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/exchangeRateTo_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -40,7 +40,7 @@
                     app:layout_constraintStart_toStartOf="@+id/exchangeRateSelFrom_cardView" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/exchangeRateFrom_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -226,6 +226,12 @@
                 </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/exchangeRateSgd_RV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"/>
 
         </LinearLayout>
 
