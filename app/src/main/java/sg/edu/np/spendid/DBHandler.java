@@ -126,26 +126,29 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     private void initCategories(SQLiteDatabase db){
-        String cat1 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Shopping\', 1)";
-        String cat2 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Food & Drinks\', 1)";
-        String cat3 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Entertainment\', 1)";
-        String cat4 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Leisure\', 1)";
-        String cat5 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Transport\', 1)";
-        String cat6 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Housing\', 1)";
-        String cat7 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Vehicle\', 1)";
-        String cat8 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Income\', 0)";
-        String cat9 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Salary\', 0)";
-        String cat10 = "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Others\', 1)";
-        db.execSQL(cat1);
-        db.execSQL(cat2);
-        db.execSQL(cat3);
-        db.execSQL(cat4);
-        db.execSQL(cat5);
-        db.execSQL(cat6);
-        db.execSQL(cat7);
-        db.execSQL(cat8);
-        db.execSQL(cat9);
-        db.execSQL(cat10);
+        String[] queries = new String[] {
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Shopping\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Food & Drinks\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Entertainment\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Leisure\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Transport\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Housing\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Vehicle\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Income\', 0)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Salary\', 0)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Bills\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Rental\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Education\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Health Care\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Fitness\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Debt\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Stocks\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Others\', 1)"
+        };
+        for (String query : queries) {
+            db.execSQL(query);
+        }
+
     }
 
 

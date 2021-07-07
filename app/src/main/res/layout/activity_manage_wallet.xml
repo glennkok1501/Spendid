@@ -15,6 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/manageWallet_empty_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp"
+            android:text="You have no wallets" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

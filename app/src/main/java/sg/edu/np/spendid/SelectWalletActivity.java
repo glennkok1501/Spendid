@@ -16,17 +16,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import maes.tech.intentanim.CustomIntent;
 
 //select wallet to add transaction to
 public class SelectWalletActivity extends AppCompatActivity {
     private DBHandler dbHandler;
+    private TextView emptyWallets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_wallet);
         dbHandler = new DBHandler(this, null, null, 1);
+        emptyWallets = findViewById(R.id.selWallet_empty_textView);
         initToolbar(); //set toolbar
     }
 
@@ -39,7 +43,9 @@ public class SelectWalletActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         RecyclerView selWalletRV = findViewById(R.id.sel_wallet_RV);
-        WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(dbHandler.getWallets(), this);
+        ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
+        checkEmpty(walletArrayList);
+        WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(walletArrayList, this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         selWalletRV.setLayoutManager(myLayoutManager);
         selWalletRV.setItemAnimator(new DefaultItemAnimator());
@@ -72,6 +78,16 @@ public class SelectWalletActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void checkEmpty(ArrayList<Wallet> walletArrayList){
+        if (walletArrayList.size() > 0){
+            emptyWallets.setVisibility(View.GONE);
+        }
+        else{
+            emptyWallets.setVisibility(View.VISIBLE);
+            emptyWallets.setText("You have no wallets");
+        }
     }
 
 }

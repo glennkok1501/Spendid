@@ -15,8 +15,12 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class TransactionHistoryActivity extends AppCompatActivity {
     private DBHandler dbHandler;
+    private TextView emptyTrans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
 
         dbHandler = new DBHandler(this, null,null, 1);
         FloatingActionButton fab = findViewById(R.id.transaction_history_fab);
+        emptyTrans = findViewById(R.id.transaction_history_textView);
 
         initToolbar(); //set toolbar
 
@@ -46,7 +51,9 @@ public class TransactionHistoryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         RecyclerView transactionHistoryRV = findViewById(R.id.transaction_history_recyclerView);
-        HistoryAdapter ha = new HistoryAdapter(dbHandler.getRecordHistory());
+        HashMap<String, ArrayList<Record>> historyRecord = dbHandler.getRecordHistory();
+        checkEmpty(historyRecord);
+        HistoryAdapter ha = new HistoryAdapter(historyRecord);
         LinearLayoutManager lm = new LinearLayoutManager(this);
         transactionHistoryRV.setLayoutManager(lm);
         transactionHistoryRV.setItemAnimator(new DefaultItemAnimator());
@@ -89,6 +96,16 @@ public class TransactionHistoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void checkEmpty(HashMap<String, ArrayList<Record>> historyRecord){
+        if (historyRecord.size() > 0){
+            emptyTrans.setVisibility(View.GONE);
+        }
+        else{
+            emptyTrans.setVisibility(View.VISIBLE);
+            emptyTrans.setText("You have no transactions");
+        }
     }
 
 }

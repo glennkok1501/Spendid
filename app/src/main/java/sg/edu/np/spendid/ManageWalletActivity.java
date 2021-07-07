@@ -21,13 +21,15 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import maes.tech.intentanim.CustomIntent;
 
 public class ManageWalletActivity extends AppCompatActivity {
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
     private DBHandler dbHandler;
-    private TextView bal;
+    private TextView bal, emptyWallets;
     private RecyclerView recyclerView;
 
     @Override
@@ -37,6 +39,7 @@ public class ManageWalletActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null, null, 1);
         bal = findViewById(R.id.totalWalletBal_textView);
         TextView header = findViewById(R.id.totalWalletTitle_textView);
+        emptyWallets = findViewById(R.id.manageWallet_empty_textView);
         recyclerView = findViewById(R.id.manageWallet_RV);
         header.setText("Total Balance");
 
@@ -56,7 +59,9 @@ public class ManageWalletActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         bal.setText(df2.format(dbHandler.getTotalBalance()));
-        WalletManageAdapter myAdapter = new WalletManageAdapter(dbHandler.getWallets(), this);
+        ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
+        checkEmpty(walletArrayList);
+        WalletManageAdapter myAdapter = new WalletManageAdapter(walletArrayList, this);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -95,5 +100,15 @@ public class ManageWalletActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void checkEmpty(ArrayList<Wallet> walletArrayList){
+        if (walletArrayList.size() > 0){
+            emptyWallets.setVisibility(View.GONE);
+        }
+        else{
+            emptyWallets.setVisibility(View.VISIBLE);
+            emptyWallets.setText("You have no wallets");
+        }
     }
 }
