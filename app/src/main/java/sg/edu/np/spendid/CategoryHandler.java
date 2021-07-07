@@ -36,6 +36,27 @@ public class CategoryHandler {
             case "Salary":
                 img = R.drawable.ic_salary_24;
                 break;
+            case "Bills":
+                img = R.drawable.ic_bills_24;
+                break;
+            case "Rental":
+                img = R.drawable.ic_rental_24;
+                break;
+            case "Education":
+                img = R.drawable.ic_education_24;
+                break;
+            case "Health Care":
+                img = R.drawable.ic_healthcare_24;
+                break;
+            case "Fitness":
+                img = R.drawable.ic_fitness_24;
+                break;
+            case "Debt":
+                img = R.drawable.ic_debt_24;
+                break;
+            case "Stocks":
+                img = R.drawable.ic_stocks_24;
+                break;
             case "Others":
                 img = R.drawable.ic_others_24;
                 break;
