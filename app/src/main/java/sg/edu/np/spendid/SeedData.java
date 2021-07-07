@@ -46,15 +46,15 @@ public class SeedData {
         dbHandler.addRecord(new Record("Figurines", "", 70.60, "Others", currentDate(), currentTime(), 4));
         dbHandler.addRecord(new Record("Twice Albums", "", 70.60, "Others", currentDate(), currentTime(), 4));
 
-        dbHandler.addRecord(new Record("Gathering", "Watched a movie, went to the arcade and had dinner together", 40, "Leisure","2020-07-03" , "23:48:12", 4));
-        dbHandler.addRecord(new Record("Meet up", "Had Dinner at Korean Restaurant", 25, "Food & Drinks","2020-09-03" , "20:20:23", 4));
-        dbHandler.addRecord(new Record("Team Outing", "Team bonding trip with CCA at USS", 60, "Leisure","2021-04-17" , "14:00:23", 4));
+        dbHandler.addRecord(new Record("Gathering", "Watched a movie, went to the arcade and had dinner together", 40, "Leisure","2020-07-03" , "23:48:12", 5));
+        dbHandler.addRecord(new Record("Meet up", "Had Dinner at Korean Restaurant", 25, "Food & Drinks","2020-09-03" , "20:20:23", 5));
+        dbHandler.addRecord(new Record("Team Outing", "Team bonding trip with CCA at USS", 60, "Leisure","2021-04-17" , "14:00:23", 5));
 
 
-        dbHandler.addRecord(new Record("COD:BO4", "", 60, "Entertainment", "2019-06-01", "20:04", 5));
-        dbHandler.addRecord(new Record("COD:MW", "", 60, "Entertainment", "2019-06-01", "20:04", 5));
-        dbHandler.addRecord(new Record("CS:GO", "", 14, "Entertainment", "2017-02-03", "13:00", 5));
-        dbHandler.addRecord(new Record("Valorant", "", 180, "Entertainment", "2021-07-05", "20:04", 5));
+        dbHandler.addRecord(new Record("COD:BO4", "", 60, "Entertainment", "2019-06-01", "20:04", 6));
+        dbHandler.addRecord(new Record("COD:MW", "", 60, "Entertainment", "2019-06-01", "20:04", 6));
+        dbHandler.addRecord(new Record("CS:GO", "", 14, "Entertainment", "2017-02-03", "13:00", 6));
+        dbHandler.addRecord(new Record("Valorant", "", 180, "Entertainment", "2021-07-05", "20:04", 6));
         dbHandler.addRecord(new Record("LoL", "", 100, "Entertainment",currentDate() , currentTime(), 5));
     }
 
