@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
         initDrawer(); //Drawer and Navbar;
 
         //Seed Data
-//        if (dbHandler.getWallets().size() == 0){
-//            SeedData seedData = new SeedData(this);
-//            seedData.initDatabase();
-//        }
+        if (dbHandler.getWallets().size() == 0){
+            SeedData seedData = new SeedData(this);
+            seedData.initDatabase();
+        }
 
 
         manage.setOnClickListener(new View.OnClickListener() {
