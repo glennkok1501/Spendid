@@ -139,7 +139,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Bills\', 1)",
                 "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Rental\', 1)",
                 "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Education\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Health Care\', 1)",
+                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Healthcare\', 1)",
                 "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Fitness\', 1)",
                 "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Debt\', 1)",
                 "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Stocks\', 1)",

@@ -45,7 +45,7 @@ public class CategoryHandler {
             case "Education":
                 img = R.drawable.ic_education_24;
                 break;
-            case "Health Care":
+            case "Healthcare":
                 img = R.drawable.ic_healthcare_24;
                 break;
             case "Fitness":
