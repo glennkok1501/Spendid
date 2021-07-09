@@ -105,7 +105,7 @@ public class ExportActivity extends AppCompatActivity {
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFile.launch("*/*"); //initiate filer picker with any file type
+                getFile.launch("text/comma-separated-values"); //initiate filer picker with any file type
             }
         });
     }
@@ -183,7 +183,7 @@ public class ExportActivity extends AppCompatActivity {
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            fileIntent.setType("*/*");
+            fileIntent.setType("text/comma-separated-values");
             fileIntent.putExtra(Intent.EXTRA_SUBJECT, filename);
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
             Intent chooser = Intent.createChooser(fileIntent, "Spendid_backup");
