@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?backgroundColor"
     android:orientation="vertical"
-    tools:context=".ExportActivity">
+    tools:context=".ImportActivity">
 
     <include layout="@layout/page_toolbar" />
 
@@ -26,19 +24,19 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/export_import_imageView"
+                    android:id="@+id/import_imageView"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginTop="50dp"
-                    app:layout_constraintBottom_toTopOf="@id/export_wallet_cardView"
+                    app:layout_constraintBottom_toTopOf="@id/import_wallet_cardView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/ic_import_export_24"
+                    android:src="@drawable/ic_import_24"
                     app:tint="?colorOnPrimarySurface"/>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/export_wallet_cardView"
+                    android:id="@+id/import_wallet_cardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -49,7 +47,7 @@
                     app:cardBackgroundColor="?colorOnBackground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/export_import_imageView">
+                    app:layout_constraintTop_toBottomOf="@id/import_imageView">
 
                     <Spinner
                         android:id="@+id/export_wallet_spinner"
@@ -59,34 +57,34 @@
                 </androidx.cardview.widget.CardView>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/export_encrypt_switch"
+                    android:id="@+id/import_encrypt_switch"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_constraintTop_toBottomOf="@id/export_wallet_cardView"
+                    app:layout_constraintTop_toBottomOf="@id/import_wallet_cardView"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="15dp"
-                    android:text="Encryption"
+                    android:text="Encrypted"
                     android:textSize="16sp"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"/>
 
 
                 <Button
-                    android:id="@+id/export_exportData"
+                    android:id="@+id/import_cancel_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Export"
+                    android:text="Cancel"
                     android:layout_marginTop="50dp"
                     app:backgroundTint="?colorPrimary"
                     android:textColor="?colorOnPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/export_importData"
+                    app:layout_constraintEnd_toStartOf="@id/import_btn"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/export_encrypt_switch" />
+                    app:layout_constraintTop_toBottomOf="@id/import_encrypt_switch" />
 
                 <Button
-                    android:id="@+id/export_importData"
+                    android:id="@+id/import_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
@@ -95,13 +93,11 @@
                     android:textColor="?colorOnPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/export_exportData"
-                    app:layout_constraintTop_toBottomOf="@id/export_encrypt_switch" />
+                    app:layout_constraintStart_toEndOf="@id/import_cancel_btn"
+                    app:layout_constraintTop_toBottomOf="@id/import_encrypt_switch" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 
 
 </LinearLayout>
-
-

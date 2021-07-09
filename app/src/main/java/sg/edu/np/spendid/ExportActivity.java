@@ -25,6 +25,7 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -89,7 +90,13 @@ public class ExportActivity extends AppCompatActivity {
                     public void onActivityResult(Uri result) {
                         //import the file if result of file is chosen
                         if (result != null && wallet != null){
-                            importCSV(result);
+                            try{
+                                new ImportCSV(ExportActivity.this, result, wallet, dbHandler).run();
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Import failed: file corrupted", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
@@ -148,35 +155,6 @@ public class ExportActivity extends AppCompatActivity {
             }
         }
         return null;
-    }
-
-    private void importCSV(Uri uri){
-        try{
-            //resolved Uri to filepath
-            InputStream inputStream = getContentResolver().openInputStream(uri);
-
-            //read file
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            //initiate empty array list to store records retrieved
-            ArrayList<Record> newRecords = new ArrayList<>();
-
-            //read file line by line
-            String line;
-            while ((line = reader.readLine()) != null ){
-                String[] data = line.split(delimiter); //separate data by delimiter
-                //add record to arrayList
-                newRecords.add(new Record(data[0], data[1],Double.parseDouble(data[2]), data[3], data[4],data[5],wallet.getWalletId()));
-            }
-
-            //insert records to database in bulk when completed
-            dbHandler.addRangeRecord(newRecords);
-            Toast.makeText(getApplicationContext(), "File successfully imported", Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Import failed: file corrupted", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void exportRecords (ArrayList<Record> records){
