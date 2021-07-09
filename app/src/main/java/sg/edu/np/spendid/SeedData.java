@@ -55,7 +55,7 @@ public class SeedData {
         dbHandler.addRecord(new Record("COD:MW", "", 60, "Entertainment", "2019-06-01", "20:04", 6));
         dbHandler.addRecord(new Record("CS:GO", "", 14, "Entertainment", "2017-02-03", "13:00", 6));
         dbHandler.addRecord(new Record("Valorant", "", 180, "Entertainment", "2021-07-05", "20:04", 6));
-        dbHandler.addRecord(new Record("LoL", "", 100, "Entertainment",currentDate() , currentTime(), 5));
+        dbHandler.addRecord(new Record("LoL", "", 100, "Entertainment",currentDate() , currentTime(), 6));
     }
 
     public String currentDate(){
