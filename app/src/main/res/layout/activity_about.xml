@@ -47,37 +47,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:text="@string/about" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardBackgroundColor="?colorOnBackground"
-                android:layout_margin="20dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp">
-
-                <LinearLayout
-                    android:padding="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:text="Support Us" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:text="@string/developers" />
+                        android:text="@string/about"
+                        android:gravity="center"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -107,11 +78,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:text="@string/api_diclaimer" />
+                        android:text="@string/api_diclaimer"
+                        android:gravity="center"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="GitHub Repository: https://github.com/fawazahmed0/currency-api"/>
+                        android:text="@string/github_api_link"
+                        android:textColor="?subtitleTextColor"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
@@ -140,7 +113,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
-                        android:text="@string/icon_credits" />
+                        android:text="@string/icon_credits"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="@string/icon_link"
+                        android:textColor="?subtitleTextColor"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

@@ -11,6 +11,12 @@
         Spendid uses a currency exchange rate API created by Fawaz Ahmed, and is NOT affiliated, endorsed or supported by Fawaz Ahmed.
     </string>
     <string name="icon_credits">
-        Country flags by Freepik, from www.flaticon.com. We are NOT affiliated, endorsed or supported by www.flaticon.com.
+        Country flags by Freepik, from www.flaticon.com. Spendid is NOT affiliated, endorsed or supported by www.flaticon.com.
+    </string>
+    <string name="github_api_link">
+        GitHub Repository: https://github.com/fawazahmed0/currency-api
+    </string>
+    <string name="icon_link">
+        https://www.flaticon.com/packs/countrys-flags?k=1625654062939
     </string>
 </resources>
