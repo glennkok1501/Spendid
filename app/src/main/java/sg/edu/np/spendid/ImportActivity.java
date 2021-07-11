@@ -43,17 +43,24 @@ public class ImportActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        wallet = findWallet(spinner.getSelectedItem().toString());
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                wallet = findWallet(spinner.getSelectedItem().toString());
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // pass
-            }
-        });
+        if (walletArrayList.size() > 0){
+            wallet = findWallet(spinner.getSelectedItem().toString());
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    wallet = findWallet(spinner.getSelectedItem().toString());
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // pass
+                }
+            });
+        }
+        else{
+            wallet = null;
+            Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
+        }
+
 
         importBtn.setOnClickListener(new View.OnClickListener() {
             @Override
