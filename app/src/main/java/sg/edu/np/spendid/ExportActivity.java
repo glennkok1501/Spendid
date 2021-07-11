@@ -59,17 +59,23 @@ public class ExportActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         //get wallet object on first selected choice based on name
-        wallet = findWallet(spinner.getSelectedItem().toString());
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                wallet = findWallet(spinner.getSelectedItem().toString());
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // pass
-            }
-        });
+        if (walletArrayList.size() > 0){
+            wallet = findWallet(spinner.getSelectedItem().toString());
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    wallet = findWallet(spinner.getSelectedItem().toString());
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // pass
+                }
+            });
+        }
+        else{
+            wallet = null;
+            Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
+        }
 
         Button exportButton = findViewById(R.id.export_exportData);
         exportButton.setOnClickListener(new View.OnClickListener() {

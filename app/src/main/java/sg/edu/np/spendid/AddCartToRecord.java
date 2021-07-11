@@ -69,20 +69,25 @@ public class AddCartToRecord {
         spinner.setAdapter(adapter);
 
         //get wallet object on first selected choice based on name
-        wallet = findWallet(spinner.getSelectedItem().toString());
-        checkCurrency(); //check if wallet is not SGD then prompt for exchange
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                wallet = findWallet(spinner.getSelectedItem().toString());
-                checkCurrency();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                //pass
-            }
-        });
+        if (walletArrayList.size() > 0){
+            wallet = findWallet(spinner.getSelectedItem().toString());
+            checkCurrency(); //check if wallet is not SGD then prompt for exchange
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    wallet = findWallet(spinner.getSelectedItem().toString());
+                    checkCurrency();
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    //pass
+                }
+            });
+        }
+        else{
+            wallet = null;
+            Toast.makeText(context, "No wallets available", Toast.LENGTH_SHORT).show();
+        }
 
         //gather information about the cart such as cost, items, and bought or not bought
         initDetails();
@@ -90,14 +95,15 @@ public class AddCartToRecord {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Record r = createRecordFromCart();
-                //insert record if valid
-                if (r != null){
-                    dbHandler.addRecord(r);
-                    Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                if (wallet != null){
+                    Record r = createRecordFromCart();
+                    //insert record if valid
+                    if (r != null){
+                        dbHandler.addRecord(r);
+                        Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
                 }
-
             }
         });
 
