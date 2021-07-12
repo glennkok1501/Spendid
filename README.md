@@ -1,7 +1,7 @@
-# MADT01 2021 - Group 5
+# Spendid
 <p align="center">
   <a href="https://github.com/glennkok1501/Spendid/blob/master/README.md">
-    <img src="images/logo.jpg" alt="Spendid Logo" width="80" />
+    <img src="images/logo.jpg" alt="Spendid Logo" width="120" />
   </a>
   
   <h3 align="center">Spendid</h3>
@@ -44,11 +44,11 @@ Done by: Glenn Kok, Chea Hong Li, Clarence Ow
 
 ## Features
 <table>
-  <tr>
+  <tr id="headings">
     <th>Page</th>
     <th width="60%">Description</th>
     <th>Sample Image</th>
-  <tr align="center">
+  <tr id="main" align="center">
     <td>Main Page</td>
     <td>
         The main page of Spendid provides an overview of the financial situation of the users. They can get a quick glance of their balance for the month, a summary of their eWallets and the transactions they have made on that day.
@@ -56,12 +56,26 @@ Done by: Glenn Kok, Chea Hong Li, Clarence Ow
     <td><img src="images/MainActivityPage.png" alt="MainActivityPage" width="224dp" /></td>
   </tr>
   
-  <tr align="center">
+  <tr id="ewallet" align="center">
     <td>eWallets</td>
     <td>
-        This feature allows users to create eWallets to store their transactions in, for better organizational purposes. Adding an eWallet is quick and easy, simply tap on the <img src="images/add" alt="Add Button" width="24dp" /> button to add a transaction and you will be directed to select a wallet.
+        This feature allows users to create eWallets to store their transactions in, for better organizational purposes. Adding an eWallet is quick and easy, simply tap on the <img src="images/AddeWallet.png" alt="Add eWallet Button" width="24dp" /> button to add a transaction and you will be directed to select a wallet.
     </td>
     <td><img src="images/eWalletsPage.png" alt="eWalletsPage" width="224dp" /></td>
+  </tr>
+  
+   <tr id="transactions" align="center">
+    <td>Transactions</td>
+    <td>
+        This feature allows users to create transactions to record their expenses and income, which are then added into their eWallets. Similar to the eWallets Page, it is quick and easy to add transactions. Simply tap on the <img src="images/AddTransaction.png" alt="Add Transaction Button" width="24dp" /> button to add a transaction and you will be directed to select a wallet.
+    </td>
+    <td><img src="images/TransactionsPage.png" alt="TransactionsPage" width="224dp" /></td>
+  </tr>
+  
+  <tr id="search" align="center">
+    <td>Searching for Transactions</td>
+    <td></td>
+    <td><img src="images/SearchTransactionsPage.png" alt="SearchTransactionsPage" width="224dp" /></td>
   </tr>
 </table>
     
