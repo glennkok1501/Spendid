@@ -42,6 +42,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_RECORD_CATEGORY = "Category";
     public static final String COLUMN_RECORD_DATECREATED = "DateCreated";
     public static final String COLUMN_RECORD_TIMECREATED = "TimeCreated";
+    public static final String COLUMN_RECORD_IMAGE = "Image";
 
     //Shopping Cart Table Attributes
     public static final String TABLE_CART = "ShoppingCart";
@@ -85,6 +86,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_RECORD_CATEGORY + " TEXT, " +
                 COLUMN_RECORD_DATECREATED + " TEXT, " +
                 COLUMN_RECORD_TIMECREATED + " TEXT, " +
+                COLUMN_RECORD_IMAGE+ " BLOB, " +
                 COLUMN_WALLET_ID + " INTEGER," +
                 "FOREIGN KEY (" + COLUMN_WALLET_ID + ") REFERENCES " + TABLE_WALLET + "(" + COLUMN_WALLET_ID + "), " +
                 "FOREIGN KEY (" + COLUMN_RECORD_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + COLUMN_CATEGORY_TITLE + "))";
@@ -281,8 +283,9 @@ public class DBHandler extends SQLiteOpenHelper {
             String cat = cursor.getString(4);
             String dateCreated = cursor.getString(5);
             String timeCreated = cursor.getString(6);
-            int walletId = cursor.getInt(7);
-            recordList.add(new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId));
+            byte[] image = cursor.getBlob(7);
+            int walletId = cursor.getInt(8);
+            recordList.add(new Record(id, title, des, amt, cat, dateCreated, timeCreated, image, walletId));
         }
         cursor.close();
         db.close();
@@ -338,6 +341,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_RECORD_CATEGORY, r.getCategory());
         values.put(COLUMN_RECORD_DATECREATED, r.getDateCreated());
         values.put(COLUMN_RECORD_TIMECREATED, r.getTimeCreated());
+        values.put(COLUMN_RECORD_IMAGE, r.getImage());
         values.put(COLUMN_WALLET_ID, r.getWalletId());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_RECORD, null, values);
@@ -357,6 +361,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 values.put(COLUMN_RECORD_CATEGORY, record.getCategory());
                 values.put(COLUMN_RECORD_DATECREATED, record.getDateCreated());
                 values.put(COLUMN_RECORD_TIMECREATED, record.getTimeCreated());
+                values.put(COLUMN_RECORD_IMAGE, record.getImage());
                 values.put(COLUMN_WALLET_ID, record.getWalletId());
                 db.insert(TABLE_RECORD, null, values);
             }
@@ -384,8 +389,9 @@ public class DBHandler extends SQLiteOpenHelper {
             String cat = cursor.getString(4);
             String dateCreated = cursor.getString(5);
             String timeCreated = cursor.getString(6);
-            int walletId = cursor.getInt(7);
-            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+            byte[] image = cursor.getBlob(7);
+            int walletId = cursor.getInt(8);
+            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, image, walletId);
             if (!history.containsKey(key)) {
                 history.put(key, new ArrayList<Record>());
             }
@@ -411,8 +417,9 @@ public class DBHandler extends SQLiteOpenHelper {
             String cat = cursor.getString(4);
             String dateCreated = cursor.getString(5);
             String timeCreated = cursor.getString(6);
-            int walletId = cursor.getInt(7);
-            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+            byte[] image = cursor.getBlob(7);
+            int walletId = cursor.getInt(8);
+            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, image, walletId);
             recordList.add(record);
         }
         cursor.close();
@@ -434,8 +441,9 @@ public class DBHandler extends SQLiteOpenHelper {
             String cat = cursor.getString(4);
             String dateCreated = cursor.getString(5);
             String timeCreated = cursor.getString(6);
-            int walletId = cursor.getInt(7);
-            r = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+            byte[] image = cursor.getBlob(7);
+            int walletId = cursor.getInt(8);
+            r = new Record(id, title, des, amt, cat, dateCreated, timeCreated, image, walletId);
         } else {
             r = null;
         }
@@ -454,6 +462,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_RECORD_CATEGORY, r.getCategory());
         values.put(COLUMN_RECORD_DATECREATED, r.getDateCreated());
         values.put(COLUMN_RECORD_TIMECREATED, r.getTimeCreated());
+        values.put(COLUMN_RECORD_IMAGE, r.getImage());
         values.put(COLUMN_WALLET_ID, r.getWalletId());
         db.update(TABLE_RECORD, values, COLUMN_RECORD_ID + " =?", new String[]{String.valueOf(r.getId())});
         db.close();
@@ -537,8 +546,9 @@ public class DBHandler extends SQLiteOpenHelper {
             String cat = cursor.getString(4);
             String dateCreated = cursor.getString(5);
             String timeCreated = cursor.getString(6);
-            int walletId = cursor.getInt(7);
-            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, walletId);
+            byte[] image = cursor.getBlob(7);
+            int walletId = cursor.getInt(8);
+            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, image, walletId);
             if (!group.containsKey(key)) {
                 group.put(key, new ArrayList<Record>());
             }

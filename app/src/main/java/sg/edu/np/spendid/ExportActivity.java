@@ -173,7 +173,13 @@ public class ExportActivity extends AppCompatActivity {
             //remove characters that can cause issue to file or importing
             String title = r.getTitle().replaceAll("[\n,]", "");
             String des = r.getDescription().replaceAll("[\n,]","");
-            data.append(title+delimiter+des+delimiter+r.getAmount()+delimiter+r.getCategory()+delimiter+r.getDateCreated()+delimiter+r.getTimeCreated()+"\n");
+            data.append(title+delimiter+
+                    des+delimiter+r.getAmount()+
+                    delimiter+r.getCategory()+
+                    delimiter+r.getDateCreated()+
+                    delimiter+r.getTimeCreated()+
+                    delimiter+null+
+                    delimiter+"\n");
         }
 
         try {

@@ -1,5 +1,8 @@
 package sg.edu.np.spendid;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,9 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +24,9 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
@@ -32,6 +41,7 @@ public class EditRecordActivity extends AppCompatActivity {
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
     private String baseCurrency;
+    private byte[] imageData;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     @Override
@@ -47,8 +57,9 @@ public class EditRecordActivity extends AppCompatActivity {
         fab = findViewById(R.id.editRecord_fab);
         title_layout = findViewById(R.id.editRecordTitle_layout);
         recordCur = findViewById(R.id.editRecordCur_textView);
+        ImageView imageStatus = findViewById(R.id.editRecordImage_imageView);
+        TextView selImage = findViewById(R.id.editRecordImage_textView);
         baseCurrency = getString(R.string.baseCurrency);
-
         initToolbar(); //set toolbar
 
         checkValues = initCheckValues(); //set values to check for fields
@@ -63,6 +74,7 @@ public class EditRecordActivity extends AppCompatActivity {
         description.setText(record.getDescription());
         amt.setText(df2.format(record.getAmount()));
         selectedCat.setText(record.getCategory());
+        checkImage(imageStatus, selImage);
 
         RecyclerView catRV = findViewById(R.id.editRecordCat_RV);
         CatSliderAdapter myCatAdapter = new CatSliderAdapter(dbHandler.getCategories(), selectedCat);
@@ -74,6 +86,31 @@ public class EditRecordActivity extends AppCompatActivity {
 
         promptConversion(); //if wallet currency not sgd prompt exchange
 
+        //Open file picker
+        ActivityResultLauncher<String> getFile = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        //import the file if result of file is chosen
+                        if (result != null){
+                            try {
+                                renderImage(result, imageStatus, selImage);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Unable to save image", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+
+        selImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFile.launch("image/*"); //initiate filer picker with any file type
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +120,7 @@ public class EditRecordActivity extends AppCompatActivity {
                 double amount = checkAmt(); //validate amount
                 //update transaction if record is valid
                 if (validRecord()){
-                    dbHandler.updateRecord(new Record(record.getId(), title_txt, des_txt, amount, cat, record.getDateCreated(), record.getTimeCreated(), record.getWalletId()));
+                    dbHandler.updateRecord(new Record(record.getId(), title_txt, des_txt, amount, cat, record.getDateCreated(), record.getTimeCreated(), imageData, record.getWalletId()));
                     Toast.makeText(getApplicationContext(), "Transaction Saved", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -222,6 +259,56 @@ public class EditRecordActivity extends AppCompatActivity {
         else{
             Toast.makeText(getApplicationContext(), "Unknown Transaction", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void checkImage(ImageView image, TextView text){
+        if (record.getImage() != null){
+            imageData = record.getImage();
+            text.setText("Image Attached");
+            image.setImageResource(R.drawable.ic_clear_24);
+            removeImg(image, text);
+        }
+        else{
+            imageData = null;
+        }
+    }
+
+    private void renderImage(Uri uri, ImageView image, TextView text) throws Exception {
+        InputStream iStream = getContentResolver().openInputStream(uri);
+        int maxSize = 8388608; //8Mb
+        byte[] imageBytes = getBytes(iStream);
+        if (imageBytes.length < maxSize){
+            imageData = imageBytes;
+            text.setText("Image Attached");
+            image.setImageResource(R.drawable.ic_clear_24);
+            removeImg(image, text);
+        }
+        else{
+            Log.v("TAG", "File too Large");
+            Toast.makeText(getApplicationContext(), "File too large: exceeded 8Mb", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+    private void removeImg(ImageView image, TextView text){
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageData = null;
+                text.setText("Select an Image");
+                image.setImageResource(R.drawable.ic_image_24);
+            }
+        });
     }
 
     private void initToolbar(){

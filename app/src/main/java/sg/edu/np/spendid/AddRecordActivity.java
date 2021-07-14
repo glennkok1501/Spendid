@@ -2,6 +2,9 @@
 
 package sg.edu.np.spendid;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,8 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +26,11 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.w3c.dom.Text;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -34,6 +46,7 @@ public class AddRecordActivity extends AppCompatActivity {
     private HashMap<String, Boolean> checkValues;
     private String walletCurrency;
     private String baseCurrency;
+    private byte[] imageData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +61,10 @@ public class AddRecordActivity extends AppCompatActivity {
         fab = findViewById(R.id.newRecord_fab);
         title_layout = findViewById(R.id.newRecordTitle_layout);
         recordCur = findViewById(R.id.newRecordCur_textView);
+        TextView selImage = findViewById(R.id.newRecordImage_textView);
+        ImageView imageStatus = findViewById(R.id.newRecordImage_imageView);
         baseCurrency = getString(R.string.baseCurrency);
+        imageData = null;
 
         initToolbar(); //set toolbar
 
@@ -70,6 +86,31 @@ public class AddRecordActivity extends AppCompatActivity {
         catRV.setItemAnimator(new DefaultItemAnimator());
         catRV.setAdapter(myCatAdapter);
 
+        //Open file picker
+        ActivityResultLauncher<String> getFile = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        //import the file if result of file is chosen
+                        if (result != null){
+                            try {
+                                renderImage(result, imageStatus, selImage);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Unable to save image", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+
+        selImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFile.launch("image/*"); //initiate filer picker with any file type
+            }
+        });
+
         //create transaction when button is clicked
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +128,7 @@ public class AddRecordActivity extends AppCompatActivity {
 
                 //create transaction if record is valid
                 if (validRecord()){
-                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, intent.getIntExtra("walletId", 0)));
+                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, intent.getIntExtra("walletId", 0)));
                     Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -193,6 +234,44 @@ public class AddRecordActivity extends AppCompatActivity {
             }
         }
         return valid;
+    }
+
+    private void renderImage(Uri uri, ImageView image, TextView text) throws Exception {
+            InputStream iStream = getContentResolver().openInputStream(uri);
+            int maxSize = 8388608; //8Mb
+            byte[] imageBytes = getBytes(iStream);
+            if (imageBytes.length < maxSize){
+                imageData = imageBytes;
+                text.setText("Image Attached");
+                image.setImageResource(R.drawable.ic_clear_24);
+                removeImg(image, text);
+            }
+            else{
+                Log.v("TAG", "File too Large");
+                Toast.makeText(getApplicationContext(), "File too large: exceeded 8Mb", Toast.LENGTH_SHORT).show();
+            }
+    }
+
+    private byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+    private void removeImg(ImageView image, TextView text){
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageData = null;
+                text.setText("Select an Image");
+                image.setImageResource(R.drawable.ic_image_24);
+            }
+        });
     }
 
     private void initToolbar(){

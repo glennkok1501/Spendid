@@ -189,7 +189,7 @@ public class AddCartToRecord {
             if (a.length() == 0){
                 a = "0";
             }
-            return new Record(title, des, Double.parseDouble(a), "Shopping", date, time, wallet.getWalletId());
+            return new Record(title, des, Double.parseDouble(a), "Shopping", date, time, null,  wallet.getWalletId());
         }
     }
 }
