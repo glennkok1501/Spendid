@@ -8,6 +8,7 @@ public class Record {
     private String category;
     private String dateCreated;
     private String timeCreated;
+    private byte[] image;
     private int walletId;
 
     public int getId() {
@@ -66,6 +67,14 @@ public class Record {
         this.timeCreated = timeCreated;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     public int getWalletId() {
         return walletId;
     }
@@ -77,17 +86,18 @@ public class Record {
     public Record() {
     }
 
-    public Record(String title, String description, double amount, String category, String dateCreated, String timeCreated, int walletId) {
+    public Record(String title, String description, double amount, String category, String dateCreated, String timeCreated, byte[] image, int walletId) {
         this.title = title;
         this.description = description;
         this.amount = amount;
         this.category = category;
         this.dateCreated = dateCreated;
         this.timeCreated = timeCreated;
+        this.image = image;
         this.walletId = walletId;
     }
 
-    public Record(int id, String title, String description, double amount, String category, String dateCreated, String timeCreated,  int walletId) {
+    public Record(int id, String title, String description, double amount, String category, String dateCreated, String timeCreated, byte[] image, int walletId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -95,6 +105,7 @@ public class Record {
         this.category = category;
         this.dateCreated = dateCreated;
         this.timeCreated = timeCreated;
+        this.image = image;
         this.walletId = walletId;
     }
 }

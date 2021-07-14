@@ -140,6 +140,20 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/viewTransImage_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="center"
+                    app:drawableTint="?colorOnPrimarySurface"
+                    android:text="View Image"
+                    android:textSize="16sp"
+                    android:textColor="?subtitleTextColor"
+                    android:drawablePadding="5dp"
+                    app:drawableStartCompat="@drawable/ic_attachment_24" />
+
+                <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"

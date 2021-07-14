@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class ImportCSV {
     private Context context;
@@ -40,7 +41,7 @@ public class ImportCSV {
         while ((line = reader.readLine()) != null ){
             String[] data = line.split(delimiter); //separate data by delimiter
             //add record to arrayList
-            newRecords.add(new Record(data[0], data[1],Double.parseDouble(data[2]), data[3], data[4],data[5],wallet.getWalletId()));
+            newRecords.add(new Record(data[0], data[1],Double.parseDouble(data[2]), data[3], data[4],data[5], null, wallet.getWalletId()));
         }
 
         //insert records to database in bulk when completed

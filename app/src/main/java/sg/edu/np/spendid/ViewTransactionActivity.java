@@ -5,14 +5,18 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 
 public class ViewTransactionActivity extends AppCompatActivity {
@@ -20,7 +24,6 @@ public class ViewTransactionActivity extends AppCompatActivity {
     private Wallet wallet;
     private DBHandler dbHandler;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
         TextView dateTime = findViewById(R.id.viewTransDateTime_textView);
         TextView cur = findViewById(R.id.viewTransCur_textView);
         TextView des = findViewById(R.id.viewTransDes_textView);
+        TextView viewImage = findViewById(R.id.viewTransImage_textView);
 
         title.setText(record.getTitle());
         amt.setText(df2.format(record.getAmount()));
@@ -54,13 +58,9 @@ public class ViewTransactionActivity extends AppCompatActivity {
         catImg.setImageResource(new CategoryHandler().setIcon(category));
         catName.setText(category);
 
-        //check if record is an expense or income to change image accordingly
-        if (dbHandler.catIsExpense(category)){
-            walletExpense.setImageResource(R.drawable.ic_expense_down);
-        }
-        else{
-            walletExpense.setImageResource(R.drawable.ic_income_up);
-        }
+        //set expense or income image
+        checkExpense(dbHandler.catIsExpense(category), walletExpense);
+
         dateTime.setText("Made Transaction on "+record.getDateCreated()+" at "+record.getTimeCreated());
         cur.setText(getString(R.string.baseCurrency));
 
@@ -72,6 +72,9 @@ public class ViewTransactionActivity extends AppCompatActivity {
         else{
             des.setText(des_text);
         }
+
+        loadImage(viewImage);
+
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +110,30 @@ public class ViewTransactionActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void checkExpense(boolean isExpense, ImageView walletExpense){
+        //check if record is an expense or income to change image accordingly
+        if (isExpense){
+            walletExpense.setImageResource(R.drawable.ic_expense_down);
+        }
+        else{
+            walletExpense.setImageResource(R.drawable.ic_income_up);
+        }
+    }
+
+    private void loadImage(TextView viewImage){
+        if (record.getImage() != null){
+            viewImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new ImageViewDialog(ViewTransactionActivity.this, record.getImage()).show();
+                }
+            });
+        }
+        else{
+            viewImage.setVisibility(View.GONE);
+        }
     }
 
     private void initToolbar(){
