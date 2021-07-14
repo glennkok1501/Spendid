@@ -2,6 +2,7 @@ package sg.edu.np.spendid;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -36,12 +37,18 @@ public class ImportCSV {
         //initiate empty array list to store records retrieved
         ArrayList<Record> newRecords = new ArrayList<>();
 
+        CryptographyBase64 b64 = new CryptographyBase64();
+
         //read file line by line
         String line;
         while ((line = reader.readLine()) != null ){
             String[] data = line.split(delimiter); //separate data by delimiter
+
+            byte[] decodedImg = (!data[6].equals("null")) ? b64.b64ToBytes(data[6]) : null;
+
+            Log.v("TAG", data[6]);
             //add record to arrayList
-            newRecords.add(new Record(data[0], data[1],Double.parseDouble(data[2]), data[3], data[4],data[5], null, wallet.getWalletId()));
+            newRecords.add(new Record(data[0], data[1],Double.parseDouble(data[2]), data[3], data[4],data[5], decodedImg, wallet.getWalletId()));
         }
 
         //insert records to database in bulk when completed
