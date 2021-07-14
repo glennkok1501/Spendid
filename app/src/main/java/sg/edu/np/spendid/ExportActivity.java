@@ -165,7 +165,7 @@ public class ExportActivity extends AppCompatActivity {
 
     private void exportRecords (ArrayList<Record> records){
         StringBuilder data = new StringBuilder(); //initiate string builder to store data
-
+        CryptographyBase64 b64 = new CryptographyBase64();
         String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".csv";
 
         //iterate through records array list and add to string builder
@@ -173,13 +173,16 @@ public class ExportActivity extends AppCompatActivity {
             //remove characters that can cause issue to file or importing
             String title = r.getTitle().replaceAll("[\n,]", "");
             String des = r.getDescription().replaceAll("[\n,]","");
+
+            //encode image
+            String encodedImg = (r.getImage() != null) ? b64.bytesToB64(r.getImage()).replace("\n", "") : "null";
             data.append(title+delimiter+
-                    des+delimiter+r.getAmount()+
-                    delimiter+r.getCategory()+
-                    delimiter+r.getDateCreated()+
-                    delimiter+r.getTimeCreated()+
-                    delimiter+null+
-                    delimiter+"\n");
+                    des+delimiter+
+                    r.getAmount()+delimiter+
+                    r.getCategory()+delimiter+
+                    r.getDateCreated()+delimiter+
+                    r.getTimeCreated()+delimiter+
+                    encodedImg+"\n");
         }
 
         try {
