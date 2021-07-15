@@ -152,8 +152,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //get total balance for the month with income and expenses
-        HashMap<String, Double> bal = dbHandler.getBalance(currentMonth());
-        monthText.setText(new SimpleDateFormat("MMMM").format(Calendar.getInstance().getTime())+" Balance");
+        String[] splitDate = currentDate().split("-");
+        HashMap<String, Double> bal = dbHandler.getBalance(splitDate[0], splitDate[1]);
+        monthText.setText(currentMonth()+" Balance");
         balance.setText(df2.format(bal.get("balance")));
         income.setText(df2.format(bal.get("income")));
         expense.setText(df2.format(bal.get("expense")));
@@ -306,9 +307,7 @@ public class MainActivity extends AppCompatActivity {
 
     //get current month
     private String currentMonth(){
-        Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
-        return dateFormat.format(currentTime.getTime());
+        return new SimpleDateFormat("MMMM").format(Calendar.getInstance().getTime());
     }
 
     //Toolbar

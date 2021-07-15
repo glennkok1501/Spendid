@@ -191,16 +191,20 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //returns the balance of a wallet retrieved from the respective records from the wallet - Glenn.
     public double getWalletTotal(int id) {
-        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " WHERE r." + COLUMN_WALLET_ID + " = "+id;
+        String query = "SELECT r."+COLUMN_RECORD_AMOUNT+", c."+COLUMN_CATEGORY_EXPENSE+" " +
+                "FROM " + TABLE_RECORD + " " +
+                "r INNER JOIN " + TABLE_CATEGORY + " " +
+                "c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " " +
+                "WHERE r." + COLUMN_WALLET_ID + " = "+id;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         double income = 0;
         double expense = 0;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            if (cursor.getInt(9) == 1) {
-                expense += cursor.getDouble(3);
+            if (cursor.getInt(1) == 1) {
+                expense += cursor.getDouble(0);
             } else {
-                income += cursor.getDouble(3);
+                income += cursor.getDouble(0);
             }
         }
         cursor.close();
@@ -489,16 +493,19 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //returns the total balance of all overall records and wallets combined
     public double getTotalBalance() {
-        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY;
+        String query = "SELECT r."+COLUMN_RECORD_AMOUNT+", c."+COLUMN_CATEGORY_EXPENSE+" "+
+                "FROM " + TABLE_RECORD + " " +
+                "r INNER JOIN " + TABLE_CATEGORY + " c " +
+                "ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         double income = 0;
         double expense = 0;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            if (cursor.getInt(9) == 1) {
-                expense += cursor.getDouble(3);
+            if (cursor.getInt(1) == 1) {
+                expense += cursor.getDouble(0);
             } else {
-                income += cursor.getDouble(3);
+                income += cursor.getDouble(0);
             }
         }
         cursor.close();
@@ -507,19 +514,22 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //returns the income, expense and balance of all the wallets combined
-    public HashMap<String, Double> getBalance(String MM) {
+    public HashMap<String, Double> getBalance(String yyyy, String MM) {
         HashMap<String, Double> bal = new HashMap<String, Double>();
-        String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
-                " WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \'%-" + MM + "-%\'";
+        String query = "SELECT r."+COLUMN_RECORD_AMOUNT+", c."+COLUMN_CATEGORY_EXPENSE+" "+
+                "FROM " + TABLE_RECORD + " " +
+                "r INNER JOIN " + TABLE_CATEGORY + " c " +
+                "ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY+" " +
+                "WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \'"+yyyy+"-"+MM+"-%\'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         double income = 0;
         double expense = 0;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            if (cursor.getInt(9) == 1) {
-                expense += cursor.getDouble(3);
+            if (cursor.getInt(1) == 1) {
+                expense += cursor.getDouble(0);
             } else {
-                income += cursor.getDouble(3);
+                income += cursor.getDouble(0);
             }
         }
         cursor.close();
