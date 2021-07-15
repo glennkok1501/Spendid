@@ -35,7 +35,7 @@ public class ImageViewDialog {
         dialog.setContentView(R.layout.image_display_layout);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
 
         ImageView close = dialog.findViewById(R.id.imageDisplayClose_imageView);
         ImageView image = dialog.findViewById(R.id.imageDisplay_imageView);
