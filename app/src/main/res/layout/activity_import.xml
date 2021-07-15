@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?backgroundColor"
     android:orientation="vertical"
-    tools:context=".ImportActivity">
+    tools:context=".DataTransfer.ImportActivity">
 
     <include layout="@layout/page_toolbar" />
 

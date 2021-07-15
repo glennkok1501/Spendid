@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?backgroundColor"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".EditRecordActivity">
+    tools:context=".Records.EditRecordActivity">
 
     <include layout="@layout/main_toolbar"/>
 

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?backgroundColor"
-    tools:context=".WalletCurrencyActivity">
+    tools:context=".Wallets.WalletCurrencyActivity">
 
     <include layout="@layout/page_toolbar"/>
 
