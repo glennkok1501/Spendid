@@ -96,7 +96,12 @@ public class EditRecordActivity extends AppCompatActivity {
                         //import the file if result of file is chosen
                         if (result != null){
                             try {
-                                renderImage(result, imageStatus, selImage);
+                                imageData = new ProcessImage(EditRecordActivity.this).render(result);
+                                if (imageData != null){
+                                    selImage.setText("Image Attached");
+                                    imageStatus.setImageResource(R.drawable.ic_clear_24);
+                                    removeImg(imageStatus, selImage);
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Toast.makeText(getApplicationContext(), "Unable to save image", Toast.LENGTH_SHORT).show();
@@ -272,39 +277,6 @@ public class EditRecordActivity extends AppCompatActivity {
         else{
             imageData = null;
         }
-    }
-
-    private void renderImage(Uri uri, ImageView image, TextView text) throws Exception {
-        InputStream iStream = getContentResolver().openInputStream(uri);
-        int maxSize = 5248000; //5Mb
-        byte[] imageBytes = getBytes(iStream);
-        if (imageBytes.length < maxSize){
-            imageData = compressImg(imageBytes);
-            text.setText("Image Attached");
-            image.setImageResource(R.drawable.ic_clear_24);
-            removeImg(image, text);
-        }
-        else{
-            Log.v("TAG", "File too Large");
-            Toast.makeText(getApplicationContext(), "File too large: exceeded 8Mb", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private byte[] compressImg(byte[] image){
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BitmapFactory.decodeByteArray(image, 0, image.length).compress(Bitmap.CompressFormat.JPEG, 20, out);
-        return out.toByteArray();
-    }
-
-    private byte[] getBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-        int len = 0;
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
-        }
-        return byteBuffer.toByteArray();
     }
 
     private void removeImg(ImageView image, TextView text){

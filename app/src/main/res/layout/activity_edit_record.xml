@@ -32,7 +32,6 @@
                     app:cardCornerRadius="50dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="30dp"
 
                     android:padding="10dp">
@@ -96,7 +95,8 @@
                     app:startIconTint="?colorOnPrimarySurface"
                     app:counterEnabled="true"
                     app:counterMaxLength="15"
-                    app:helperTextTextColor="@color/red">
+                    app:helperTextTextColor="@color/red"
+                    android:layout_marginTop="20dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editRecordTitle_editText"
@@ -113,14 +113,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:startIconDrawable="@drawable/ic_notes_24"
+                    android:layout_marginTop="15dp"
                     android:hint="Description">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editRecordDes_editText"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="15dp"/>
+                        android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.cardview.widget.CardView
@@ -129,6 +128,7 @@
                     app:cardBackgroundColor="?colorOnBackground"
                     app:cardElevation="10dp"
                     app:cardCornerRadius="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="15dp">
 
@@ -170,7 +170,7 @@
                     app:cardElevation="10dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="50dp"
                     app:cardCornerRadius="15dp"
                     android:layout_width="match_parent"
