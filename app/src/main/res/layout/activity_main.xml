@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?backgroundColor"
     android:id="@+id/dashboard_drawer_layout"
-    tools:context=".MainActivity">
+    tools:context=".Dashboard.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

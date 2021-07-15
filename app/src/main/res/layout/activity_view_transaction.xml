@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?backgroundColor"
     android:orientation="vertical"
-    tools:context=".ViewTransactionActivity">
+    tools:context=".Records.ViewTransactionActivity">
 
     <include layout="@layout/page_toolbar"/>
 

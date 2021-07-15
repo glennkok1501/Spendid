@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="?backgroundColor"
     android:orientation="vertical"
-    tools:context=".ExportActivity">
+    tools:context=".DataTransfer.ExportActivity">
 
     <include layout="@layout/page_toolbar" />
 
