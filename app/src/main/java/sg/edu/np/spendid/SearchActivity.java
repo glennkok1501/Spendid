@@ -9,34 +9,88 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
+import android.os.strictmode.WebViewMethodCalledOnWrongThreadViolation;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SearchActivity extends AppCompatActivity {
     private ArrayList<String> recordDetails = new ArrayList<>();
-    private EditText search;
-    private ImageView searchBtn;
-    private DBHandler dbHandler;
     private ArrayList<Record> records;
     private TransactionAdapter ta;
+    private Calendar c = Calendar.getInstance();
+    private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    private TextView advanced, dateToSearch;
+    private EditText search;
+    private ImageView searchBtn;
+    private RadioButton nameR, descR, catR, walletR, amtR, dateR;
+    private CalendarView dateChosen;
+    private LinearLayout options;
+    private DBHandler dbHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        //setting views
+        advanced = findViewById(R.id.search_Advanced_textView);
         search = findViewById(R.id.search_Record_editText);
         searchBtn = findViewById(R.id.search_Btn_imageView);
+        nameR = findViewById(R.id.radioName);
+        descR = findViewById(R.id.radioDesc);
+        catR = findViewById(R.id.radioCategory);
+        walletR = findViewById(R.id.radioWallet);
+        amtR = findViewById(R.id.radioAmt);
+        dateR = findViewById(R.id.radioDate);
+        dateChosen= findViewById(R.id.search_calendarView);
+        dateToSearch = findViewById(R.id.dateToSearch_textView);
+        options = findViewById(R.id.options_linearLayout);
         dbHandler = new DBHandler(this, null,null, 1);
 
         initToolbar(); //set toolbar
-        search.requestFocus(); //start keyboard
+        options.setVisibility(View.GONE); //hide advanced search options
+        dateToSearch.setVisibility(View.GONE);
+        dateChosen.setVisibility(View.GONE);
+        //search.requestFocus(); //start keyboard
+
+        advanced.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (options.getVisibility() == View.GONE) {
+                    options.setVisibility(View.VISIBLE);
+                } else {
+                    options.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        dateR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dateToSearch.getVisibility() == View.GONE) {
+                    //dateToSearch.setText(dateChosen.getDate());
+                    dateToSearch.setVisibility(View.VISIBLE);
+                    dateChosen.setVisibility(View.VISIBLE);
+                } else {
+                    dateToSearch.setVisibility(View.GONE);
+                    dateChosen.setVisibility(View.GONE);
+                }
+
+            }
+        });
 
         //filters as search string changes
         search.addTextChangedListener(new TextWatcher() {
