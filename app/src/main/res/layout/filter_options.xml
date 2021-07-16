@@ -15,6 +15,7 @@
             android:id="@+id/radioName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:paddingRight="8dp"
             android:text="Name" />
 
@@ -22,6 +23,7 @@
             android:id="@+id/radioDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:paddingRight="8dp"
             android:text="Description" />
 
@@ -29,6 +31,7 @@
             android:id="@+id/radioCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:paddingRight="8dp"
             android:text="Category" />
 
@@ -43,6 +46,8 @@
             android:id="@+id/radioWallet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="false"
+            android:clickable="false"
             android:paddingRight="8dp"
             android:text="Wallet" />
 
@@ -50,6 +55,7 @@
             android:id="@+id/radioAmt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="false"
             android:paddingRight="28dp"
             android:text="Amount" />
 
@@ -57,6 +63,7 @@
             android:id="@+id/radioDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="false"
             android:paddingRight="8dp"
             android:text="Date" />
 

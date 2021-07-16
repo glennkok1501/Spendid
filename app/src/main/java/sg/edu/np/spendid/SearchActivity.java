@@ -6,27 +6,34 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentProviderClient;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
 import android.os.strictmode.WebViewMethodCalledOnWrongThreadViolation;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SearchActivity extends AppCompatActivity {
-    private ArrayList<String> recordDetails = new ArrayList<>();
+    private ArrayList<String> searchParams = new ArrayList<>();
+    private String[] defaultParams = new String[]{"Name", "Desc", "Category"};
+    private ArrayList<RadioButton> optionRadios = new ArrayList<>();
     private ArrayList<Record> records;
+    boolean checked;
     private TransactionAdapter ta;
     private Calendar c = Calendar.getInstance();
     private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -57,6 +64,12 @@ public class SearchActivity extends AppCompatActivity {
         dateChosen= findViewById(R.id.search_calendarView);
         dateToSearch = findViewById(R.id.dateToSearch_textView);
         options = findViewById(R.id.options_linearLayout);
+        optionRadios.add(nameR);
+        optionRadios.add(descR);
+        optionRadios.add(catR);
+        optionRadios.add(walletR);
+        optionRadios.add(amtR);
+        optionRadios.add(dateR);
         dbHandler = new DBHandler(this, null,null, 1);
 
         initToolbar(); //set toolbar
@@ -72,10 +85,26 @@ public class SearchActivity extends AppCompatActivity {
                     options.setVisibility(View.VISIBLE);
                 } else {
                     options.setVisibility(View.GONE);
+                    searchParams.toArray(defaultParams);
                 }
 
             }
         });
+
+        for (RadioButton r : optionRadios) {
+            r.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (searchParams.contains(r.getText().toString())) {
+                        searchParams.remove(r.getText().toString());
+                    } else {
+                        searchParams.add(r.getText().toString());
+                    }
+                    checked = !checked;
+                }
+            });
+
+        }
 
         dateR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +133,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 if(s.length() != 0) {
-                    searchString(search.getText().toString());
+                    searchString(search.getText().toString(), searchParams);
                     searchBtn.setImageResource(R.drawable.ic_clear_24);
                     searchBtn.setColorFilter(getResources().getColor(R.color.light_grey));
                     searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +144,7 @@ public class SearchActivity extends AppCompatActivity {
                     });
                 }
                 else{
-                    searchString("");
+                    searchString("", searchParams);
                     searchBtn.setImageResource(R.drawable.ic_search_24);
                     searchBtn.setColorFilter(getResources().getColor(R.color.light_grey));
                     searchBtn.setOnClickListener(null);
@@ -157,11 +186,27 @@ public class SearchActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void searchString(String s) {
+    private void searchString(String s, ArrayList<String> searchParams) {
         ArrayList<Record> out = new ArrayList<>();
+        String details = "";
         //Concatenating record details into a single string for all records, into a single list
         for (Record r : records) {
-            String details = r.getTitle() + " "+ r.getDescription() +" "+ r.getCategory();
+            for (String param : searchParams) {
+                switch (param) {
+                    case "Name":
+                        details += r.getTitle() + " ";
+                    case "Desc":
+                        details += r.getDescription() + " ";
+                    case "Category":
+                        details += r.getCategory() + " ";
+                    case "Wallet":
+                        details += r.getWalletId() + " ";
+                    case "Amt":
+                        details += r.getAmount() + " ";
+                    case "Date":
+                        details += r.getDateCreated() + " ";
+                }
+            }
             if (details.toLowerCase().contains(s.toLowerCase())) {
                 out.add(r);
             }
