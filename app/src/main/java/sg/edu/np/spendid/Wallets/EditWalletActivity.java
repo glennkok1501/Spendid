@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import sg.edu.np.spendid.Dashboard.MainActivity;
 import sg.edu.np.spendid.Database.DBHandler;
-import sg.edu.np.spendid.Dialogs.AlertDialog;
+import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Wallet;
 
@@ -112,7 +112,7 @@ public class EditWalletActivity extends AppCompatActivity {
 
     //prompt alert dialog for deletion of wallet
     private void deleteDialog(){
-        AlertDialog alert = new AlertDialog(this);
+        MyAlertDialog alert = new MyAlertDialog(this);
         alert.setTitle("Delete Wallet");
         alert.setBody("Are you sure you want to permanently delete this wallet and all its transactions?");
         alert.setPositive().setText("Delete");

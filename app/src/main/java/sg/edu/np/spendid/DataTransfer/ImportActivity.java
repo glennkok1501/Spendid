@@ -8,13 +8,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
 import java.util.ArrayList;
 
+import sg.edu.np.spendid.DataTransfer.Utils.ImportCSV;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Wallet;
@@ -25,6 +29,7 @@ public class ImportActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private Uri uri;
     private ArrayList<Wallet> walletArrayList;
+    private boolean encrypted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +68,21 @@ public class ImportActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
         }
 
+        SwitchMaterial encryptSwitch = findViewById(R.id.import_encrypt_switch);
+        encryptSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                encrypted = isChecked;
+            }
+        });
+
 
         importBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (uri != null && wallet != null){
                     try{
-                        new ImportCSV(ImportActivity.this, uri, wallet, dbHandler).run();
+                        new ImportCSV(ImportActivity.this, uri, wallet, dbHandler).run(encrypted);
                         finish();
                     }
                     catch (Exception e) {

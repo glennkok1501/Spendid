@@ -14,13 +14,13 @@ import java.util.ArrayList;
 
 import sg.edu.np.spendid.Models.Category;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Utils.CategoryHandler;
+import sg.edu.np.spendid.Utils.Helpers.CategoryHelper;
 
 public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderViewHolder> {
     ArrayList<Category> data;
     private TextView cat;
     private int selectedPos = -1;
-    private CategoryHandler categoryHandler = new CategoryHandler();
+    private CategoryHelper categoryHelper = new CategoryHelper();
 
     public CatSliderAdapter(ArrayList<Category> input, TextView select){
         data = input;
@@ -34,7 +34,7 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderViewHolder> 
 
     public void onBindViewHolder(CatSliderViewHolder holder, int position){
         Category category = data.get(position);
-        holder.image.setImageResource(categoryHandler.setIcon(category.getTitle()));
+        holder.image.setImageResource(categoryHelper.setIcon(category.getTitle()));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

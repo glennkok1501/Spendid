@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import sg.edu.np.spendid.DataTransfer.ExportActivity;
 import sg.edu.np.spendid.Database.DBHandler;
-import sg.edu.np.spendid.Dialogs.AlertDialog;
+import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.R;
 
@@ -113,7 +113,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void clearAllDialog(){
-        AlertDialog alert = new AlertDialog(this);
+        MyAlertDialog alert = new MyAlertDialog(this);
         alert.setTitle("Clear All Data");
         alert.setBody("Are you sure you want to permanently delete everything?");
         alert.setPositive().setText("Clear");

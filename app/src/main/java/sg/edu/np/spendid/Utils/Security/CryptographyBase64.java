@@ -1,4 +1,4 @@
-package sg.edu.np.spendid.Security;
+package sg.edu.np.spendid.Utils.Security;
 
 import android.util.Base64;
 

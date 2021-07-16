@@ -81,22 +81,10 @@
                     app:backgroundTint="?colorPrimary"
                     android:textColor="?colorOnPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/export_importData"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/export_encrypt_switch" />
 
-                <Button
-                    android:id="@+id/export_importData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:text="Import"
-                    app:backgroundTint="?colorPrimary"
-                    android:textColor="?colorOnPrimary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/export_exportData"
-                    app:layout_constraintTop_toBottomOf="@id/export_encrypt_switch" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

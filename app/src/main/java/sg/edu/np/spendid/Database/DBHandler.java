@@ -12,6 +12,7 @@ import java.util.HashMap;
 import sg.edu.np.spendid.Models.CartItem;
 import sg.edu.np.spendid.Models.Category;
 import sg.edu.np.spendid.Models.Currency;
+import sg.edu.np.spendid.Models.Friend;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.Models.ShoppingCart;
 import sg.edu.np.spendid.Models.Wallet;
@@ -63,6 +64,13 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_CURRENCY_RATE = "Rate";
     public static final String COLUMN_CURRENCY_DATE = "LastUpdated";
 
+    //Friends List
+    public static final String TABLE_FRIEND = "Friend";
+    public static final String COLUMN_FRIEND_ID = "FriendId";
+    public static final String COLUMN_FRIEND_NAME = "Name";
+    public static final String COLUMN_FRIEND_DATEADDED = "DateAdded";
+    public static final String COLUMN_FRIEND_PUBLICKEY = "PublicKey";
+
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -101,17 +109,23 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_CARTITEM_CHECK+" INTEGER, "+
                 COLUMN_CART_ID+" INTEGER, "+
                 "FOREIGN KEY ("+COLUMN_CART_ID+") REFERENCES "+TABLE_CART+" ("+COLUMN_CART_ID+"))";
-
         String CREATE_CURRENCY_TABLE = "CREATE TABLE " + TABLE_CURRENCY +
                 " (" + COLUMN_CURRENCY_FOREIGNCURRENCY + " TEXT PRIMARY KEY, " +
                 COLUMN_CURRENCY_RATE + " REAL, " +
                 COLUMN_CURRENCY_DATE + " TEXT)";
+        String CREATE_FRIEND_TABLE = "CREATE TABLE " + TABLE_FRIEND +
+                " (" + COLUMN_FRIEND_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_FRIEND_NAME + " TEXT, " +
+                COLUMN_FRIEND_DATEADDED + " TEXT, " +
+                COLUMN_FRIEND_PUBLICKEY +" TEXT)";
+
         db.execSQL(CREATE_WALLET_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_RECORD_TABLE);
         db.execSQL(CREATE_CART_TABLE);
         db.execSQL(CREATE_CARTITEM_TABLE);
         db.execSQL(CREATE_CURRENCY_TABLE);
+        db.execSQL(CREATE_FRIEND_TABLE);
         initCategories(db);
 
     }
@@ -124,6 +138,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CARTITEM);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURRENCY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FRIEND);
         onCreate(db);
     }
 
@@ -745,6 +760,35 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return currencyArrayList;
+    }
+
+    //Friends List
+    public ArrayList<Friend> getFriends() {
+        String query = "SELECT * FROM " + TABLE_FRIEND + " ORDER BY "+COLUMN_FRIEND_NAME+" DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Friend> friendsList = new ArrayList<>();
+        Cursor cursor = db.rawQuery(query, null);
+
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String date = cursor.getString(2);
+            String publicKey = cursor.getString(3);
+            friendsList.add(new Friend(id, name, date, publicKey));
+        }
+        cursor.close();
+        db.close();
+        return friendsList;
+    }
+
+    public void addFriend(Friend friend){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FRIEND_NAME, friend.getName());
+        values.put(COLUMN_FRIEND_DATEADDED, friend.getDateAdded());
+        values.put(COLUMN_FRIEND_PUBLICKEY, friend.getPublicKey());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_FRIEND, null, values);
+        db.close();
     }
 
 }

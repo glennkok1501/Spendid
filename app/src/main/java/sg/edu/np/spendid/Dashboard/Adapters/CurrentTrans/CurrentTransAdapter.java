@@ -14,12 +14,12 @@ import java.util.HashMap;
 
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
-import sg.edu.np.spendid.Utils.CategoryHandler;
+import sg.edu.np.spendid.Utils.Helpers.CategoryHelper;
 
 public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHolder> {
     HashMap<String, ArrayList<Record>> data;
     private ArrayList<String> keys;
-    private CategoryHandler categoryHandler = new CategoryHandler();
+    private CategoryHelper categoryHelper = new CategoryHelper();
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public CurrentTransAdapter(HashMap<String, ArrayList<Record>> input){
@@ -35,7 +35,7 @@ public class CurrentTransAdapter extends RecyclerView.Adapter<CurrentTransViewHo
     public void onBindViewHolder(CurrentTransViewHolder holder, int position){
         String cat = keys.get(position);
         ArrayList<Record> records = data.get(cat);
-        holder.image.setImageResource(categoryHandler.setIcon(cat));
+        holder.image.setImageResource(categoryHelper.setIcon(cat));
         holder.cat.setText(cat);
         holder.amt.setText(df2.format(calAmt(records)));
         holder.currency.setText(holder.itemView.getContext().getString(R.string.baseCurrency));

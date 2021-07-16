@@ -1,25 +1,31 @@
 package sg.edu.np.spendid.DataTransfer;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,10 +34,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import sg.edu.np.spendid.DataTransfer.Utils.ExportRecordHelper;
+import sg.edu.np.spendid.DataTransfer.Utils.SelectFriendDialog;
 import sg.edu.np.spendid.Database.DBHandler;
+import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Security.CryptographyBase64;
+import sg.edu.np.spendid.Utils.Security.Cryptography;
 import sg.edu.np.spendid.Models.Wallet;
 
 //export or import records from csv files to selected wallets
@@ -40,7 +49,9 @@ public class ExportActivity extends AppCompatActivity {
     private Uri path;
     private Wallet wallet;
     private ArrayList<Wallet> walletArrayList;
-    private final String delimiter = ",";
+    private boolean encryptFile;
+    private SelectFriendDialog sendToDialog;
+    private final int STORAGE_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +63,7 @@ public class ExportActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null, null, 1);
         walletArrayList = dbHandler.getWallets();
         String[] walletList = getWalletList();
+        sendToDialog = new SelectFriendDialog(this, dbHandler.getFriends());
 
         //initiate spinner to select wallet to export or import with walletList
         Spinner spinner = findViewById(R.id.export_wallet_spinner);
@@ -78,6 +90,17 @@ public class ExportActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
         }
 
+        SwitchMaterial encryptSwitch = findViewById(R.id.export_encrypt_switch);
+        encryptSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                encryptFile = isChecked;
+                if (isChecked){
+                    sendToDialog.show();
+                }
+            }
+        });
+
         Button exportButton = findViewById(R.id.export_exportData);
         exportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,31 +113,31 @@ public class ExportActivity extends AppCompatActivity {
         });
 
         //Open file picker
-        ActivityResultLauncher<String>getFile = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri result) {
-                        //import the file if result of file is chosen
-                        if (result != null && wallet != null){
-                            try{
-                                new ImportCSV(ExportActivity.this, result, wallet, dbHandler).run();
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), "Import failed: file corrupted", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                });
-
-        Button importButton = findViewById(R.id.export_importData);
-        importButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFile.launch("text/comma-separated-values"); //initiate filer picker with any file type
-            }
-        });
+//        ActivityResultLauncher<String>getFile = registerForActivityResult(
+//                new ActivityResultContracts.GetContent(),
+//                new ActivityResultCallback<Uri>() {
+//                    @Override
+//                    public void onActivityResult(Uri result) {
+//                        //import the file if result of file is chosen
+//                        if (result != null && wallet != null){
+//                            try{
+//                                new ImportCSV(ExportActivity.this, result, wallet, dbHandler).run();
+//                            }
+//                            catch (Exception e) {
+//                                e.printStackTrace();
+//                                Toast.makeText(getApplicationContext(), "Import failed: file corrupted", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }
+//                });
+//
+//        Button importButton = findViewById(R.id.export_importData);
+//        importButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getFile.launch("text/comma-separated-values"); //initiate filer picker with any file type
+//            }
+//        });
     }
 
     @Override
@@ -165,32 +188,16 @@ public class ExportActivity extends AppCompatActivity {
     }
 
     private void exportRecords (ArrayList<Record> records){
-        StringBuilder data = new StringBuilder(); //initiate string builder to store data
-        CryptographyBase64 b64 = new CryptographyBase64();
         String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".csv";
-
-        //iterate through records array list and add to string builder
-        for (Record r : records){
-            //remove characters that can cause issue to file or importing
-            String title = r.getTitle().replaceAll("[\n,]", "");
-            String des = r.getDescription().replaceAll("[\n,]","");
-
-            //encode image
-            String encodedImg = (r.getImage() != null) ? b64.bytesToB64(r.getImage()).replace("\n", "") : "null";
-            data.append(title+delimiter+
-                    des+delimiter+
-                    r.getAmount()+delimiter+
-                    r.getCategory()+delimiter+
-                    r.getDateCreated()+delimiter+
-                    r.getTimeCreated()+delimiter+
-                    encodedImg+"\n");
-        }
-
         try {
+            StringBuilder builderData = new ExportRecordHelper(records).ToCSV();
+            String data = (encryptFile && sendToDialog.getSelected() != null) ?
+                    new Cryptography(ExportActivity.this).Encrypt(builderData.toString(), sendToDialog.getSelected().getPublicKey())
+                    : builderData.toString();
             //write the file with string builder contents
             FileOutputStream out = openFileOutput(filename, Context.MODE_PRIVATE);
             File fileLocation = new File(getFilesDir(), filename);
-            out.write(data.toString().getBytes());
+            out.write(data.getBytes());
             out.close();
 
             //initiate file provider to share file written

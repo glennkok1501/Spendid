@@ -10,11 +10,11 @@ import java.util.ArrayList;
 
 import sg.edu.np.spendid.Models.Currency;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Utils.CountryFlagsHandler;
+import sg.edu.np.spendid.Utils.Helpers.CountryFlagsHelper;
 
 public class ExchangeRatesAdapter extends RecyclerView.Adapter<ExchangeRatesViewHolder> {
     ArrayList<Currency> data;
-    private CountryFlagsHandler countryFlagsHandler = new CountryFlagsHandler();
+    private CountryFlagsHelper countryFlagsHelper = new CountryFlagsHelper();
 
     public ExchangeRatesAdapter(ArrayList<Currency> input, String baseCurrency){
         data = input;
@@ -30,7 +30,7 @@ public class ExchangeRatesAdapter extends RecyclerView.Adapter<ExchangeRatesView
         Currency currency = data.get(position);
         holder.foreign.setText(currency.getForeign().toUpperCase());
         holder.rate.setText(String.valueOf(currency.getRate()));
-        holder.flag.setImageResource(countryFlagsHandler.setIcon(currency.getForeign()));
+        holder.flag.setImageResource(countryFlagsHelper.setIcon(currency.getForeign()));
     }
 
     public int getItemCount(){
