@@ -17,6 +17,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.util.ArrayList;
 
 import sg.edu.np.spendid.DataTransfer.ExportActivity;
+import sg.edu.np.spendid.DataTransfer.ImportActivity;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Wallet;
@@ -46,6 +47,15 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SettingsActivity.this, ExportActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        TextView importTextView = findViewById(R.id.settings_import_textView);
+        importTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, ImportActivity.class);
                 startActivity(intent);
             }
         });

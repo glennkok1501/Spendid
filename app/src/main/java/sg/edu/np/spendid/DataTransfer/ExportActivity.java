@@ -51,7 +51,6 @@ public class ExportActivity extends AppCompatActivity {
     private ArrayList<Wallet> walletArrayList;
     private boolean encryptFile;
     private SelectFriendDialog sendToDialog;
-    private final int STORAGE_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +72,11 @@ public class ExportActivity extends AppCompatActivity {
 
         //get wallet object on first selected choice based on name
         if (walletArrayList.size() > 0){
-            wallet = findWallet(spinner.getSelectedItem().toString());
+            wallet = walletArrayList.get(spinner.getSelectedItemPosition());
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    wallet = findWallet(spinner.getSelectedItem().toString());
+                    wallet = walletArrayList.get(spinner.getSelectedItemPosition());
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parentView) {
@@ -177,16 +176,6 @@ public class ExportActivity extends AppCompatActivity {
         return walletList;
     }
 
-    //search through wallet array list to find wallet object based on name
-    private Wallet findWallet(String walletName){
-        for (Wallet wallet : walletArrayList){
-            if (wallet.getName().equals(walletName)){
-                return wallet;
-            }
-        }
-        return null;
-    }
-
     private void exportRecords (ArrayList<Record> records){
         String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".csv";
         try {
@@ -241,7 +230,7 @@ public class ExportActivity extends AppCompatActivity {
         //Tool Bar
         TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
         ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Export / Import");
+        activityTitle.setText("Export");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

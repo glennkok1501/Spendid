@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?backgroundColor"
     android:orientation="vertical"
-    tools:context=".DataTransfer.ImportActivity">
+    tools:context=".DataTransfer.ImportExternalActivity">
 
     <include layout="@layout/page_toolbar" />
 
@@ -69,6 +69,20 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"/>
 
+
+                <Button
+                    android:id="@+id/import_cancel_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:layout_marginTop="50dp"
+                    app:backgroundTint="?colorPrimary"
+                    android:textColor="?colorOnPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/import_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/import_encrypt_switch" />
+
                 <Button
                     android:id="@+id/import_btn"
                     android:layout_width="wrap_content"
@@ -79,10 +93,11 @@
                     android:textColor="?colorOnPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/import_cancel_btn"
                     app:layout_constraintTop_toBottomOf="@id/import_encrypt_switch" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>

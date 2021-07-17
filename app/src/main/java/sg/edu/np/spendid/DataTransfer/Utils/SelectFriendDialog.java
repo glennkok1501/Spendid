@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import sg.edu.np.spendid.Friends.Adapters.SelectFriendAdapter;
 import sg.edu.np.spendid.Models.Friend;
@@ -37,7 +39,7 @@ public class SelectFriendDialog {
         this.context = context;
         this.friendsList = friendsList;
         SharedPreferences prefs = context.getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        this.friendsList.add(0, new Friend("Me", "0000-00-00", prefs.getString(PUBLIC_KEY, null)));
+        this.friendsList.add(0, new Friend("Myself", currentDate(), prefs.getString(PUBLIC_KEY, null)));
         this.selected = null;
         dialog = new Dialog(this.context);
         dialog.setContentView(R.layout.select_friend_dialog);
@@ -58,5 +60,11 @@ public class SelectFriendDialog {
 
     public void dismiss(){
         dialog.dismiss();
+    }
+
+    private String currentDate(){
+        Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(currentTime.getTime());
     }
 }

@@ -781,6 +781,41 @@ public class DBHandler extends SQLiteOpenHelper {
         return friendsList;
     }
 
+    public Friend getFriend(int friendId){
+        String query = "SELECT * FROM " + TABLE_FRIEND + " WHERE "+COLUMN_FRIEND_ID+" = \'"+friendId+"\'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Friend friend = new Friend();
+        if (cursor.moveToFirst()){
+            friend.setFriendId(cursor.getInt(0));
+            friend.setName(cursor.getString(1));
+            friend.setDateAdded(cursor.getString(2));
+            friend.setPublicKey(cursor.getString(3));
+        }
+        else{
+            friend = null;
+        }
+        cursor.close();
+        db.close();
+        return  friend;
+    }
+
+    public boolean deleteFriend(int friendId) {
+        String query = "SELECT * FROM " + TABLE_FRIEND + " WHERE " + COLUMN_FRIEND_ID + " = " + friendId;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean deleted;
+        if (cursor.moveToFirst()) {
+            db.delete(TABLE_FRIEND, COLUMN_FRIEND_ID + "= ?", new String[]{String.valueOf(friendId)});
+            deleted = true;
+        } else {
+            deleted = false;
+        }
+        cursor.close();
+        db.close();
+        return deleted;
+    }
+
     public void addFriend(Friend friend){
         ContentValues values = new ContentValues();
         values.put(COLUMN_FRIEND_NAME, friend.getName());

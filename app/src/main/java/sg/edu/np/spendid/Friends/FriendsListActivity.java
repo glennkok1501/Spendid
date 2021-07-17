@@ -45,7 +45,7 @@ public class FriendsListActivity extends AppCompatActivity {
         ImageView scan = findViewById(R.id.mainToolbarMore_imageView);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         scan.setImageResource(R.drawable.ic_scanner_24);
-        activityTitle.setText("Edit Transaction");
+        activityTitle.setText("Friends List");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

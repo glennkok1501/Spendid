@@ -31,6 +31,7 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<FriendsListViewHol
     public void onBindViewHolder(FriendsListViewHolder holder, int position){
         Friend friend = data.get(position);
         holder.name.setText(friend.getName());
+        holder.date.setText(friend.getDateAdded());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

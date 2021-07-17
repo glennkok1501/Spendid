@@ -77,12 +77,12 @@ public class AddCartToRecord {
 
         //get wallet object on first selected choice based on name
         if (walletArrayList.size() > 0){
-            wallet = findWallet(spinner.getSelectedItem().toString());
+            wallet = walletArrayList.get(spinner.getSelectedItemPosition());
             checkCurrency(); //check if wallet is not SGD then prompt for exchange
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    wallet = findWallet(spinner.getSelectedItem().toString());
+                    wallet = walletArrayList.get(spinner.getSelectedItemPosition());
                     checkCurrency();
                 }
                 @Override
@@ -122,18 +122,6 @@ public class AddCartToRecord {
             }
         });
         dialog.show();
-    }
-
-    //search through wallet array list to find wallet object based on name
-    private Wallet findWallet(String selected){
-        Wallet wallet = null;
-        for (Wallet w : walletArrayList){
-            if (selected.equals(w.getName())){
-                wallet = w;
-                break;
-            }
-        }
-        return wallet;
     }
 
     //create a string array of wallet names for spinner to use
