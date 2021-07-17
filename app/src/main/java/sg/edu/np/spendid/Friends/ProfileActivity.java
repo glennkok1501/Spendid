@@ -1,13 +1,18 @@
 package sg.edu.np.spendid.Friends;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,11 +26,16 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONObject;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import sg.edu.np.spendid.DataTransfer.ImportActivity;
+import sg.edu.np.spendid.DataTransfer.Utils.ImportCSV;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Friends.Utils.GenerateQRCode;
 import sg.edu.np.spendid.Friends.Utils.ShareText;
+import sg.edu.np.spendid.Friends.Utils.TransferKeyPair;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.ShoppingList.AddCartToRecord;
 import sg.edu.np.spendid.ShoppingList.ShoppingListActivity;
@@ -39,10 +49,12 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText username;
     private final String PREF_NAME = "sharedPrefs";
     private final String PUBLIC_KEY = "publicKey";
+    private final String PRIVATE_KEY = "privateKey";
     private final String DEFAULT_NAME = "Spendid User";
     private final String USERNAME = "Username";
     private SharedPreferences prefs;
     private GenerateQRCode genQRCode;
+    private ActivityResultLauncher<String> getFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +99,31 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+        getFile = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        //import the file if result of file is chosen
+                        if (result != null){
+                            try{
+                                //Import key pair
+                                JSONObject keyPairObj = new TransferKeyPair(ProfileActivity.this).Import(result);
+                                new Cryptography(ProfileActivity.this).importKeyPair(
+                                                keyPairObj.getString(PUBLIC_KEY),
+                                                keyPairObj.getString(PRIVATE_KEY));
+                                genQRCode.run(getQRCodeText());
+                                Toast.makeText(getApplicationContext(), "Import Successful", Toast.LENGTH_SHORT).show();
+
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Import failed: file corrupted", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 
     private String sendKeyText(){
@@ -112,7 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
         ImageView more = findViewById(R.id.mainToolbarMore_imageView);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
-        activityTitle.setText("Shopping Cart");
+        activityTitle.setText("Profile");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +167,7 @@ public class ProfileActivity extends AppCompatActivity {
                 PopupMenu popupMenu = new PopupMenu(ProfileActivity.this, more);
                 popupMenu.getMenu().add("New Key");
                 popupMenu.getMenu().add("Export Keys");
+                popupMenu.getMenu().add("Import Keys");
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -139,6 +177,18 @@ public class ProfileActivity extends AppCompatActivity {
                                 break;
                             case "Export Keys":
                                 Toast.makeText(getApplicationContext(), "Exporting Keys...", Toast.LENGTH_SHORT).show();
+                                try {
+                                    TransferKeyPair transfer = new TransferKeyPair(ProfileActivity.this);
+                                    transfer.setPublicKey(prefs.getString(PUBLIC_KEY, ""));
+                                    transfer.setPrivateKey(prefs.getString(PRIVATE_KEY, ""));
+                                    transfer.Export();
+                                } catch (Exception e) {
+                                    Toast.makeText(ProfileActivity.this, "Unable to Export", Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case "Import Keys":
+                                importDialog();
                                 break;
                             default:
                                 Toast.makeText(getApplicationContext(), "Unknown Page", Toast.LENGTH_SHORT).show();
@@ -168,6 +218,29 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 new Cryptography(ProfileActivity.this).newKeyPair();
                 Toast.makeText(getApplicationContext(), "Generated New Keys", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                genQRCode.run(getQRCodeText());
+            }
+        });
+        dialog.show();
+    }
+
+    private void importDialog(){
+        MyAlertDialog dialog = new MyAlertDialog(this);
+        dialog.setTitle("Import Keys");
+        dialog.setBody("You would not be able to decrypt any files that was previous encrypted with your current key\nAre you sure you want to import?");
+        dialog.setNegative().setText("Cancel");
+        dialog.setNegative().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setPositive().setText("Confirm");
+        dialog.setPositive().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFile.launch("application/json");
                 dialog.dismiss();
                 genQRCode.run(getQRCodeText());
             }

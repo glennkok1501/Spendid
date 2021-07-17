@@ -78,6 +78,6 @@ public class ImageViewDialog {
         FileOutputStream out = new FileOutputStream(fileLocation);
         out.write(imageBytes);
         out.close();
-        Toast.makeText(context, "Downloaded: "+fileLocation, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Saved to "+fileLocation, Toast.LENGTH_SHORT).show();
     }
 }

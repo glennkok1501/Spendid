@@ -83,4 +83,11 @@ public class Cryptography {
         editor.putString(PRIVATE_KEY, b64.bytesToB64(keyPair.getPrivate().getEncoded()));
         editor.apply();
     }
+
+    public void importKeyPair(String publicKey, String privateKey){
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PUBLIC_KEY, publicKey);
+        editor.putString(PRIVATE_KEY, privateKey);
+        editor.apply();
+    }
 }

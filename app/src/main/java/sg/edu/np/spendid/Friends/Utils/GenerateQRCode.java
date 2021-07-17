@@ -38,7 +38,7 @@ public class GenerateQRCode {
         int width = point.x;
 
         // generating dimension from width and height.
-        int dimen = (width / 4)*3;
+        int dimen = (width / 5)*4;
 
         QRGEncoder qrgEncoder = new QRGEncoder(text, null, QRGContents.Type.TEXT, dimen);
         try {
