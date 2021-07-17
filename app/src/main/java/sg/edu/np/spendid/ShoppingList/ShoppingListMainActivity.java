@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.ShoppingCart;
-import sg.edu.np.spendid.ShoppingList.Adapters.ShoppingLists.AddShoppingCartDialog;
 import sg.edu.np.spendid.ShoppingList.Adapters.ShoppingLists.ShoppingListAdapter;
 
 public class ShoppingListMainActivity extends AppCompatActivity {
