@@ -137,7 +137,7 @@ public class CartItemDialog {
     private boolean checkInput(String name) {
         if (name.length() == 0 || name.length() > 15) {
             TextInputLayout editLayout = dialog.findViewById(R.id.addCartItemName_layout);
-            editLayout.setError("Invalid Name");
+            editLayout.setError("Invalid Item Name");
             return false;
         }
         return true;

@@ -49,7 +49,7 @@ public class AddWalletActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //create wallet if wallet is unique and name is valid
-                if (isValidWalletName() && isValidWallet(newWalletName.getText().toString().toLowerCase())){
+                if (isValidWalletName()){
                     Wallet w = new Wallet(newWalletName.getText().toString(), newWalletDescription.getText().toString(), currencyChosen, currentDate());
                     dbhandler.addWallet(w);
                     Toast.makeText(getApplicationContext(), "New Wallet Added", Toast.LENGTH_SHORT).show();
@@ -112,19 +112,6 @@ public class AddWalletActivity extends AppCompatActivity {
     private boolean isValidWalletName(){
         int len = newWalletName.getText().toString().length();
         return len != 0 && len <= 15;
-    }
-
-    //check if wallet name is unique by comparing with all wallets
-    private boolean isValidWallet(String walletName){
-        boolean valid = true;
-        ArrayList<Wallet> walletList = dbhandler.getWallets();
-        for (Wallet w : walletList){
-            if (w.getName().toLowerCase().equals(walletName)){
-                valid = false;
-                break;
-            }
-        }
-        return valid;
     }
 
     private void initToolbar(){

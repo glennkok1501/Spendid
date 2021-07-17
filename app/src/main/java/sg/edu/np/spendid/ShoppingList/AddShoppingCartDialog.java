@@ -1,4 +1,4 @@
-package sg.edu.np.spendid.ShoppingList.Adapters.ShoppingLists;
+package sg.edu.np.spendid.ShoppingList;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,7 +33,7 @@ public class AddShoppingCartDialog {
         dbHandler = new DBHandler(context, null, null, 1);
 
         dialog = new Dialog(context);
-        dialog.setContentView(R.layout.add_shopping_list_layout);
+        dialog.setContentView(R.layout.add_shopping_cart_layout);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dialog.setCancelable(false);
@@ -41,14 +43,21 @@ public class AddShoppingCartDialog {
         EditText name = dialog.findViewById(R.id.addShoppingCartName_editText);
         Button addBtn = dialog.findViewById(R.id.addShoppingCart_btn);
         ImageView close = dialog.findViewById(R.id.addShoppingCartClose_imageView);
+        TextInputLayout layout = dialog.findViewById(R.id.addShoppingCartName_layout);
 
         //getting name of cart and creating a cart
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCart(name.getText().toString());
-                shoppingListAdapter.update(dbHandler.getShoppingCarts());
-                dialog.dismiss();
+                String cartName = name.getText().toString();
+                if (validCartName(cartName)){
+                    addCart(cartName);
+                    shoppingListAdapter.update(dbHandler.getShoppingCarts());
+                    dialog.dismiss();
+                }
+                else{
+                    layout.setError("Invalid Cart Name");
+                }
             }
         });
 
@@ -60,6 +69,10 @@ public class AddShoppingCartDialog {
             }
         });
         dialog.show();
+    }
+
+    private boolean validCartName(String name){
+        return !(name.length() < 1 || name.length() > 15);
     }
 
     private void addCart(String name){

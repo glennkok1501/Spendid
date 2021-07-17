@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         genQRCode.run(getQRCodeText());
 
-        checkName();
+        getName();
 
         keyText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name = username.getText().toString();
-                if (checkName(name)){
+                if (validName(name)){
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString(USERNAME, name);
                     editor.apply();
@@ -93,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
         return String.format("Hi, %s here, this is my code:\n%s", prefs.getString(USERNAME, DEFAULT_NAME), prefs.getString(PUBLIC_KEY, null));
     }
 
-    private void checkName(){
+    private void getName(){
         String name = prefs.getString(USERNAME, null);
         if (name == null){
             username.setText(DEFAULT_NAME);
@@ -103,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkName(String name){
+    private boolean validName(String name){
         return !(name.length() < 1 || name.length() > 15);
     }
 

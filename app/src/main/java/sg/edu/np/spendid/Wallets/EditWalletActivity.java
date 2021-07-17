@@ -51,7 +51,7 @@ public class EditWalletActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //update wallet if wallet is unique and name is valid
-                if (isValidWalletName() && isValidWallet(editWalletName.getText().toString().toLowerCase())){
+                if (isValidWalletName()){
                     Wallet w = new Wallet(chosenWalletID, editWalletName.getText().toString(), editWalletDescription.getText().toString(), wallet.getCurrency(), wallet.getDateCreated());
                     dbHandler.updateWallet(w);
                     Toast.makeText(getApplicationContext(), "Wallet Updated", Toast.LENGTH_SHORT).show();
@@ -131,19 +131,6 @@ public class EditWalletActivity extends AppCompatActivity {
             }
         });
         alert.show();
-    }
-
-    //check if wallet name is unique by comparing with all wallets
-    private boolean isValidWallet(String walletName){
-        boolean valid = true;
-        ArrayList<Wallet> walletList = dbHandler.getWallets();
-        for (Wallet w : walletList){
-            if (w.getName().toLowerCase().equals(walletName)){
-                valid = false;
-                break;
-            }
-        }
-        return valid;
     }
 
     private void initToolbar(){
