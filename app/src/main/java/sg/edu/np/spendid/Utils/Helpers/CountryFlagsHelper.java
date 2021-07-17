@@ -1,10 +1,10 @@
-package sg.edu.np.spendid.Utils;
+package sg.edu.np.spendid.Utils.Helpers;
 
 import sg.edu.np.spendid.R;
 
-public class CountryFlagsHandler {
+public class CountryFlagsHelper {
 
-    public CountryFlagsHandler() {
+    public CountryFlagsHelper() {
     }
 
     public int setIcon(String currency){

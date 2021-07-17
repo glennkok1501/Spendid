@@ -13,10 +13,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid">
-        <activity android:name=".DataTransfer.ImportActivity">
+        <activity android:name=".DataTransfer.ImportActivity"></activity>
+        <activity android:name=".Friends.ViewFriendActivity" />
+        <activity android:name=".Friends.ProfileActivity" />
+        <activity android:name=".Friends.FriendScannerActivity" />
+        <activity android:name=".Friends.FriendsListActivity" />
+        <activity
+            android:name=".Friends.Utils.Capture"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true" />
+        <activity android:name=".DataTransfer.ImportExternalActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="file" />
                 <data android:scheme="content" />
                 <data android:mimeType="text/comma-separated-values" />

@@ -9,7 +9,7 @@ import sg.edu.np.spendid.R;
 
 //class for creating custom alert dialog
 // with positive and negative decision
-public class AlertDialog {
+public class MyAlertDialog {
     private String title;
     private String body;
     private TextView positiveBtn;
@@ -33,7 +33,7 @@ public class AlertDialog {
         return this.negativeBtn;
     }
 
-    public AlertDialog(Context context) {
+    public MyAlertDialog(Context context) {
         this.context = context;
         dialog = new Dialog(this.context);
         dialog.setContentView(R.layout.pos_neg_dialog);

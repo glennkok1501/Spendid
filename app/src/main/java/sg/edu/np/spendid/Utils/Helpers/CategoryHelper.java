@@ -1,11 +1,11 @@
-package sg.edu.np.spendid.Utils;
+package sg.edu.np.spendid.Utils.Helpers;
 
 import sg.edu.np.spendid.R;
 
 //class to match name of category to icon
-public class CategoryHandler {
+public class CategoryHelper {
 
-    public CategoryHandler() {
+    public CategoryHelper() {
     }
 
     public int setIcon(String cat){

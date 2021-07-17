@@ -33,6 +33,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import sg.edu.np.spendid.Dashboard.Adapters.WalletSlider.WalletSliderAdapter;
+import sg.edu.np.spendid.Friends.FriendsListActivity;
+import sg.edu.np.spendid.Friends.ProfileActivity;
 import sg.edu.np.spendid.Misc.AboutActivity;
 import sg.edu.np.spendid.Dashboard.Adapters.CurrentTrans.CurrentTransAdapter;
 import sg.edu.np.spendid.Database.DBHandler;
@@ -327,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
     private void initDrawer(){
         LinearLayout manageWallet, transHist, currencyRates,
                 shoppingList, settings, about, search, add,
-                additional, addWallet, addRecord;
+                additional, addWallet, addRecord, friendsList;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
 
         //set re-directions to activities
@@ -351,6 +353,9 @@ public class MainActivity extends AppCompatActivity {
 
         settings = findViewById(R.id.navbar_settings);
         setButton(settings, SettingsActivity.class);
+
+        friendsList = findViewById(R.id.navbar_friendsList);
+        setButton(friendsList, FriendsListActivity.class);
 
         //additional options
         add = findViewById(R.id.navbar_add);
@@ -397,20 +402,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PopupMenu popupMenu = new PopupMenu(MainActivity.this, moreBtn);
+                popupMenu.getMenu().add("My Code");
                 popupMenu.getMenu().add("About");
                 popupMenu.getMenu().add("Settings");
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        Intent intent;
                         switch (item.getTitle().toString()){
+                            case "My Code":
+                                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                                break;
                             case "About":
-                                intent = new Intent(MainActivity.this, AboutActivity.class);
-                                startActivity(intent);
+                                startActivity(new Intent(MainActivity.this, AboutActivity.class));
                                 break;
                             case "Settings":
-                                intent = new Intent(MainActivity.this, SettingsActivity.class);
-                                startActivity(intent);
+                                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                                 break;
                             default:
                                 Toast.makeText(getApplicationContext(), "Unknown Page", Toast.LENGTH_SHORT).show();

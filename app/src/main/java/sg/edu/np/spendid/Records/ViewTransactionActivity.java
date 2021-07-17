@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Utils.CategoryHandler;
+import sg.edu.np.spendid.Utils.Helpers.CategoryHelper;
 import sg.edu.np.spendid.Models.Wallet;
 
    public class ViewTransactionActivity extends AppCompatActivity {
@@ -54,7 +54,7 @@ import sg.edu.np.spendid.Models.Wallet;
 
         //change image based on category
         String category = record.getCategory();
-        catImg.setImageResource(new CategoryHandler().setIcon(category));
+        catImg.setImageResource(new CategoryHelper().setIcon(category));
         catName.setText(category);
 
         //set expense or income image

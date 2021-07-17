@@ -16,6 +16,7 @@ import sg.edu.np.spendid.Dashboard.MainActivity;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Network.CurrencyAPI;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.Utils.Security.Cryptography;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private int SPLASH_SCREEN = 2500;
@@ -37,6 +38,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         //Fetch Data from API
         new CurrencyAPI(this, dbHandler).getData("sgd");
 
+        //initialise public and private keys
+        initKeyPair();
+
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
 
@@ -54,6 +58,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_SCREEN);
+
     }
 
     @Override
@@ -87,6 +92,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+    private void initKeyPair(){
+        Cryptography ctg = new Cryptography(SplashScreenActivity.this);
+        if (ctg.checkKeyPair()){
+            ctg.newKeyPair();
         }
     }
 }

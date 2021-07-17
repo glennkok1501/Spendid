@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Utils.CountryFlagsHandler;
+import sg.edu.np.spendid.Utils.Helpers.CountryFlagsHelper;
 import sg.edu.np.spendid.Wallets.AddWalletActivity;
 
 public class CurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyViewHolder>{
     String[] data;
-    private CountryFlagsHandler countryFlagsHandler = new CountryFlagsHandler();
+    private CountryFlagsHelper countryFlagsHelper = new CountryFlagsHelper();
 
     public CurrencyAdapter(String[] input){
         data = input;
@@ -26,7 +26,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyViewHold
     public void onBindViewHolder(SelectCurrencyViewHolder holder, int position){
         String[] split = data[position].split(";");
         holder.txt.setText(split[0]);
-        holder.img.setImageResource(countryFlagsHandler.setIcon(split[1]));
+        holder.img.setImageResource(countryFlagsHelper.setIcon(split[1]));
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

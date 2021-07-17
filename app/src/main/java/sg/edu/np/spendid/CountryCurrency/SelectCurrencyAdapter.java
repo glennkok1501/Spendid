@@ -9,13 +9,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Utils.CountryFlagsHandler;
+import sg.edu.np.spendid.Utils.Helpers.CountryFlagsHelper;
 
 public class SelectCurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyViewHolder> {
     String[] data;
     private Dialog dialog;
     private TextView textView;
-    private CountryFlagsHandler countryFlagsHandler = new CountryFlagsHandler();
+    private CountryFlagsHelper countryFlagsHelper = new CountryFlagsHelper();
 
     public SelectCurrencyAdapter(String[] input, Dialog dialog, TextView textView){
         data = input;
@@ -32,7 +32,7 @@ public class SelectCurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyVi
         String[] split = data[position].split(";");
         //set TextView of chosen currency
         holder.txt.setText(split[0]);
-        holder.img.setImageResource(countryFlagsHandler.setIcon(split[1]));
+        holder.img.setImageResource(countryFlagsHelper.setIcon(split[1]));
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -16,12 +16,12 @@ import java.util.Date;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Records.ViewTransactionActivity;
-import sg.edu.np.spendid.Utils.CategoryHandler;
+import sg.edu.np.spendid.Utils.Helpers.CategoryHelper;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHolder>{
     ArrayList<Record> transactions;
     private boolean showDate;
-    private CategoryHandler categoryHandler = new CategoryHandler();
+    private CategoryHelper categoryHelper = new CategoryHelper();
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public TransactionAdapter(ArrayList<Record> transactionList, boolean showDate) {
@@ -43,7 +43,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
         vh.amt.setText(df2.format(record.getAmount()));
         if (showDate){vh.date.setText(formatDate(record.getDateCreated()));}
         else{vh.date.setVisibility(View.INVISIBLE);}
-        vh.cat.setImageResource(categoryHandler.setIcon(record.getCategory()));
+        vh.cat.setImageResource(categoryHelper.setIcon(record.getCategory()));
         vh.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

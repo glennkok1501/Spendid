@@ -23,7 +23,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
-import sg.edu.np.spendid.Dialogs.AlertDialog;
+import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Records.Adapters.CatSliderAdapter;
 import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
 import sg.edu.np.spendid.Database.DBHandler;
@@ -236,7 +236,7 @@ public class EditRecordActivity extends AppCompatActivity {
 
     //initiate alert dialog for deletion of transaction
     private void deleteDialog(){
-        AlertDialog alert = new AlertDialog(this);
+        MyAlertDialog alert = new MyAlertDialog(this);
         alert.setTitle("Delete Transaction");
         alert.setBody("Are you sure you want to permanently delete this transaction?");
         alert.setPositive().setText("Delete");
