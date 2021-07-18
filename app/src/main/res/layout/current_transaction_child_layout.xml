@@ -1,72 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/curTransChild_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:showDividers="middle"
-    android:divider="?subtitleTextColor"
-    android:background="?backgroundColor"
-    android:orientation="vertical">
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="10dp">
 
-    <LinearLayout
-        android:id="@+id/curTransChild_linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="20dp"
-        android:orientation="horizontal">
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/curTransChildName_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/curTransChildName_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="Name" />
-
-            <TextView
-                android:id="@+id/curTransChildTime_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="?subtitleTextColor"
-                android:text="hh:MM:ss" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/curTransChildAmt_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:gravity="bottom|end"
             android:textSize="16sp"
-            android:text="0.00" />
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Name" />
 
-        <TextView
-            android:id="@+id/curTransChildCur_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:gravity="bottom|end"
-            android:textSize="12sp"
-            android:textColor="?subtitleTextColor"
-            android:text="CUR" />
+    <TextView
+        android:id="@+id/curTransChildTime_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="?subtitleTextColor"
+        app:layout_constraintTop_toBottomOf="@id/curTransChildName_textView"
+        app:layout_constraintStart_toStartOf="@id/curTransChildName_textView"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="hh:MM:ss" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            app:tint="?subtitleTextColor"
-            android:src="@drawable/ic_arrow_forward_24" />
+    <TextView
+        android:id="@+id/curTransChildAmt_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/curTransChildCur_textView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="20dp"
+        android:text="0.00" />
 
-    </LinearLayout>
-</RelativeLayout>
+    <TextView
+        android:id="@+id/curTransChildCur_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="12sp"
+        android:textColor="?subtitleTextColor"
+        app:layout_constraintEnd_toStartOf="@id/curTransChild_imageView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="15dp"
+        android:text="CUR" />
+
+    <ImageView
+        android:id="@+id/curTransChild_imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="?subtitleTextColor"
+        android:src="@drawable/ic_arrow_forward_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,16 +51,16 @@ import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.Wallets.WalletCurrencyActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<Wallet> walletList;
     private DBHandler dbHandler;
-    private TextView monthText, balance, income, expense, currency, manage, viewAll, noWallet, noCurTrans;
+    private TextView monthText, balance, income, expense, noWallet, noCurTrans;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
-    private final String PREF_NAME = "sharedPrefs";
     private FloatingActionButton fab, addWallet, addRecord;
     private Animation open, close, up, down;
-    private boolean fabClicked;
+    private boolean fabClicked, collapse_add;
     private DrawerLayout drawerLayout;
-    private boolean collapse_add;
+    private ViewPager2 viewPager;
+    private RecyclerView currentTransRV;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +71,17 @@ public class MainActivity extends AppCompatActivity {
         balance = findViewById(R.id.totalBalCost_textView);
         income = findViewById(R.id.totalBalIncCost_textView);
         expense = findViewById(R.id.totalBalExpCost_textView);
-        currency = findViewById(R.id.totalBalCur_textView);
+        TextView currency = findViewById(R.id.totalBalCur_textView);
         currency.setText(getString(R.string.baseCurrency));
         fab = findViewById(R.id.dashboard_fab);
         addRecord = findViewById(R.id.dashboardAddRecord_fab);
         addWallet = findViewById(R.id.dashboardAddWallet_fab);
-        manage = findViewById(R.id.manage_textView);
-        viewAll = findViewById(R.id.viewAll_textView);
+        TextView manage = findViewById(R.id.manage_textView);
+        TextView viewAll = findViewById(R.id.viewAll_textView);
         noWallet = findViewById(R.id.walletViewPageStatus_textView);
         noCurTrans = findViewById(R.id.curTransStatus_textView);
+        viewPager = findViewById(R.id.wallets_viewPager);
+        currentTransRV = findViewById(R.id.main_transHist_RV);
 
         //floating action button (fab) animations
         open = AnimationUtils.loadAnimation(this, R.anim.rotate_open_animation);
@@ -163,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //retrieve wallet array list and sort based on favourite
-        walletList = sortWallet(dbHandler.getWallets());
+        ArrayList<Wallet> walletList = sortWallet(dbHandler.getWallets());
 
         //check if wallet data is empty and show message
         if (walletList.size() == 0){
@@ -175,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Wallets view pager
-        ViewPager2 viewPager = findViewById(R.id.wallets_viewPager);
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, this, dbHandler);
         viewPager.setAdapter(walletSliderAdapter);
 
@@ -211,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
         else{
             noCurTrans.setVisibility(View.GONE);
         }
-        RecyclerView currentTransRV = findViewById(R.id.main_transHist_RV);
         CurrentTransAdapter myCurrentTransAdapter = new CurrentTransAdapter(curTransMap);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         currentTransRV.setLayoutManager(myLayoutManager);
@@ -273,15 +273,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ArrayList<Wallet> sortWallet(ArrayList<Wallet> walletList){
+        String PREF_NAME = "sharedPrefs";
         //retrieve preferred first wallet from shared prefs
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         int value = prefs.getInt("firstWallet",0);
         //insert preferred wallet to the first index
         for (int i = 0; i < walletList.size(); i++){
-            Wallet t = walletList.get(i);
-            if (t.getWalletId() == value){
+            Wallet tmpWallet = walletList.get(i);
+            if (tmpWallet.getWalletId() == value){
                 walletList.remove(i);
-                walletList.add(0, t);
+                walletList.add(0, tmpWallet);
                 break;
             }
         }

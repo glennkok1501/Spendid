@@ -1,50 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?colorPrimary"
-    android:padding="12dp"
-    android:gravity="center">
+    android:padding="12dp">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/mainToolbarMenu_imageView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="?selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        app:tint="?colorOnPrimary"
+        android:src="@drawable/ic_menu_32" />
 
-        <ImageView
-            android:id="@+id/mainToolbarMenu_imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            app:tint="?colorOnPrimary"
-            android:src="@drawable/ic_menu_32" />
+    <TextView
+        android:id="@+id/mainToolbarTitle_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Dashboard" />
 
-        <TextView
-            android:id="@+id/mainToolbarTitle_textView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textColor="?colorOnPrimary"
-            android:text="Dashboard" />
-
-        <ImageView
-            android:id="@+id/mainToolbarMore_imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_more_32"
-            app:tint="?colorOnPrimary" />
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/mainToolbarMore_imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_more_32"
+        app:tint="?colorOnPrimary" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

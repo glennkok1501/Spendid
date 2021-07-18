@@ -42,7 +42,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         initToolbar(); //set toolbar
 
         RecyclerView recyclerView = findViewById(R.id.cartItems_RV);
-        myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), empty ,this);
+        myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), empty ,this, dbHandler);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -51,7 +51,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CartItemDialog dialog = new CartItemDialog(ShoppingListActivity.this, false, myAdapter);
+                CartItemDialog dialog = new CartItemDialog(ShoppingListActivity.this, false, myAdapter, dbHandler);
                 dialog.setCartId(cartId);
                 dialog.show();
             }
@@ -134,7 +134,6 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     //delete all items in shopping list
     private void clearCart(){
-        Log.v("TAG", "ID: "+cartId);
         dbHandler.deleteCartItems(cartId);
         myAdapter.clear();
         Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
