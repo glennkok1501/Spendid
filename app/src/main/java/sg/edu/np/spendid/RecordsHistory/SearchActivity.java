@@ -20,8 +20,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -79,13 +77,13 @@ public class SearchActivity extends AppCompatActivity {
         optionRadios.add(dateR);
 
         dbHandler = new DBHandler(this, null,null, 1);
+        records = dbHandler.getAllRecords();
+        ta = new TransactionAdapter(records, true);
 
         initToolbar(); //set toolbar
         options.setVisibility(View.GONE); //hide advanced search options
-        try {
-            dateChosen.setMinDate(new SimpleDateFormat("dd/MM/yyyy").
-                    parse(dbHandler.getRecord(1).getDateCreated()).getTime());
-        } catch (ParseException e) {}
+        emptyRVText.setVisibility(View.GONE);
+        //limit DatePicker's max date
         dateChosen.setMaxDate(new Date().getTime());
         //search.requestFocus(); //start keyboard
 
@@ -118,7 +116,6 @@ public class SearchActivity extends AppCompatActivity {
                     }
                     searchString("", searchParams);
                 }
-                Log.v("TAG", searchParams.toString());
                 searchRV.setVisibility(View.VISIBLE);
             }
         });
@@ -130,7 +127,7 @@ public class SearchActivity extends AppCompatActivity {
                     if (searchParams.contains(r.getText().toString())) {
                         if (searchParams.size() == 1) {
                             Toast.makeText(SearchActivity.this,
-                                    "There must at least be 1 filter option chosen", Toast.LENGTH_SHORT).show();
+                                    "At least 1 filter option must be chosen", Toast.LENGTH_SHORT).show();
                         } else {
                             searchParams.remove(r.getText().toString());
                             r.setChecked(false);
@@ -139,6 +136,8 @@ public class SearchActivity extends AppCompatActivity {
                         searchParams.add(r.getText().toString());
                         r.setChecked(true);
                     }
+                    //search results are shown immediately when filter option is selected
+                    searchString(search.getText().toString(), searchParams);
                 }
             });
         }
@@ -159,7 +158,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 if (searchParams.size() == 1) {
                         Toast.makeText(SearchActivity.this,
-                                "There must at least be 1 filter option chosen", Toast.LENGTH_SHORT).show();
+                                "At least 1 filter option must be chosen", Toast.LENGTH_SHORT).show();
                 } else {
                     searchRV.setVisibility(View.VISIBLE);
                     finalDate.setVisibility(View.GONE);
@@ -167,7 +166,7 @@ public class SearchActivity extends AppCompatActivity {
                     saveDate.setVisibility(View.GONE);
                     searchParams.remove(dateR.getText().toString());
                     dateR.setChecked(false);
-                    searchString("", searchParams);
+                    searchString(search.getText().toString(), searchParams);
                 }
             }
         });
@@ -194,8 +193,8 @@ public class SearchActivity extends AppCompatActivity {
                 finalDate.setVisibility(View.VISIBLE);
                 dateChosen.setVisibility(View.GONE);
                 saveDate.setVisibility(View.GONE);
-                Log.v("TAG", dateChosen.getYear() + "-" + month + "-" + dateChosen.getDayOfMonth());
-                searchString(dateChosen.getYear() + "-" + month + "-" + dateChosen.getDayOfMonth(), searchParams);
+                searchString(search.getText().toString() +
+                        dateChosen.getYear() + "-" + month + "-" + dateChosen.getDayOfMonth(), searchParams);
             }
         });
 
@@ -217,18 +216,20 @@ public class SearchActivity extends AppCompatActivity {
                     searchString(search.getText().toString(), searchParams);
                     searchBtn.setImageResource(R.drawable.ic_clear_24);
                     searchBtn.setColorFilter(getResources().getColor(R.color.light_grey));
-                    searchBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            search.getText().clear();
-                        }
-                    });
+                    searchBtn.setClickable(true);
                 } else {
-                    searchString("", searchParams);
+                    searchString(s.toString(), searchParams);
                     searchBtn.setImageResource(R.drawable.ic_search_24);
                     searchBtn.setColorFilter(getResources().getColor(R.color.light_grey));
-                    searchBtn.setOnClickListener(null);
+                    searchBtn.setClickable(false);
                 }
+            }
+        });
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search.getText().clear();
             }
         });
     }
@@ -241,24 +242,17 @@ public class SearchActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         records = dbHandler.getAllRecords();
+        ta = new TransactionAdapter(records, true);
         //check if there are any transactions
         if (records.size() == 0) {
             emptyRVText.setText("No Transactions");
             emptyRVText.setVisibility(View.VISIBLE);
         }
-
-        ta = new TransactionAdapter(records, true);
         LinearLayoutManager lm = new LinearLayoutManager(SearchActivity.this);
         searchRV.setLayoutManager(lm);
         searchRV.setItemAnimator(new DefaultItemAnimator());
         searchRV.setAdapter(ta);
         ta.notifyDataSetChanged();
-        if (searchRV.getAdapter().getItemCount() == 0) {
-            emptyRVText.setText("No Transactions Found");
-            emptyRVText.setVisibility(View.VISIBLE);
-        } else {
-            emptyRVText.setVisibility(View.GONE);
-        }
         search.getText().clear();
     }
 
@@ -287,7 +281,9 @@ public class SearchActivity extends AppCompatActivity {
 
     private void searchString(String s, ArrayList<String> searchParams) {
         ArrayList<Record> out = new ArrayList<>();
-        String details;
+        //details holds the relevant information the users are searching for
+        //recordDate prevents users from searching for dates in the search bar to maintain consistency
+        String details, recordDate = "placeholder"; //"placeholder" is used instead of "" as "" returns all of the records
         boolean dateCheck = false;
         //Concatenating record details into a single string for all records, into a single list
         //depending on chosen filter options
@@ -311,16 +307,16 @@ public class SearchActivity extends AppCompatActivity {
                         details += r.getAmount() + " ";
                         break;
                     case "Date":
-                        details = r.getDateCreated() + " ";
+                        recordDate = r.getDateCreated();
                         dateCheck = true;
                         break;
                     default:
-                        Toast.makeText(SearchActivity.this, "Invalid Filter", Toast.LENGTH_SHORT);
+                        Toast.makeText(SearchActivity.this, "Invalid Filter", Toast.LENGTH_SHORT).show();
                 }
             }
-            if (details.toLowerCase().contains(s.toLowerCase())){
+            if (details.toLowerCase().contains(s.toLowerCase()) || s.contains(recordDate)) {
                 if (dateCheck) {
-                    if (details.contains(dateChosen.getYear() + "-" + month + "-" + date)) {
+                    if (recordDate.contains(dateChosen.getYear() + "-" + month + "-" + date)) {
                         out.add(r);
                     }
                 } else {
@@ -329,6 +325,17 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
         ta.filter(out);
+        //check if there are any transactions
+        if (out.size() == 0) {
+            if (s.length() == 0) {
+                emptyRVText.setText("No Transactions");
+            } else {
+                emptyRVText.setText("No Transactions Found");
+            }
+            emptyRVText.setVisibility(View.VISIBLE);
+        } else {
+            emptyRVText.setVisibility(View.GONE);
+        }
     }
 
     private void initToolbar(){

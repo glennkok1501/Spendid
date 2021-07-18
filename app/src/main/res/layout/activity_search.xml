@@ -11,76 +11,83 @@
 
     <include layout="@layout/page_toolbar"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/search_Record_editText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="9"
-                android:ems="10"
-                android:hint="Search..."
-                android:inputType="textPersonName"
-                android:textColorHint="?subtitleTextColor" />
-
-            <ImageView
-                android:id="@+id/search_Btn_imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:src="@drawable/ic_search_24"
-                app:tint="?subtitleTextColor" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/search_Advanced_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:drawablePadding="4dp"
-            android:text="Advanced Filter..."
-            android:textColor="@color/royal_blue"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_add_box_24"
-            app:drawableTint="@color/royal_blue" />
-
-        <LinearLayout
-            android:id="@+id/options_linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/filter_options" />
-
-        </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/noResults_textView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textAlignment="center"
-            android:text="Blank" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Blank"
+            android:textSize="18sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_recyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/search_Record_editText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="9"
+                    android:ems="10"
+                    android:hint="Search..."
+                    android:inputType="textPersonName"
+                    android:textColorHint="?subtitleTextColor" />
+
+                <ImageView
+                    android:id="@+id/search_Btn_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_search_24"
+                    app:tint="?subtitleTextColor" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/search_Advanced_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:drawablePadding="4dp"
+                android:text="Advanced Filter..."
+                android:textColor="@color/royal_blue"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_add_box_24"
+                app:drawableTint="@color/royal_blue" />
+
+            <LinearLayout
+                android:id="@+id/options_linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/filter_options" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>
