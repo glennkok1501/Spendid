@@ -65,7 +65,16 @@
             android:orientation="vertical">
 
             <include layout="@layout/filter_options" />
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/noResults_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:text="Blank" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recyclerView"

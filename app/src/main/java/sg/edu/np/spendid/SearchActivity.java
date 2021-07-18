@@ -1,14 +1,11 @@
 package sg.edu.np.spendid;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.solver.GoalRow;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,17 +23,16 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class SearchActivity extends AppCompatActivity {
     private ArrayList<String> searchParams = new ArrayList<>();
     private String[] defaultParams = new String[]{"Name", "Description", "Category"};
-    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     private ArrayList<RadioButton> optionRadios = new ArrayList<>();
     private ArrayList<Record> records;
+    private String date, month;
     private TransactionAdapter ta;
-    private TextView advanced, dateToSearch;
+    private TextView advanced, dateToSearch, emptyRVText;
     private EditText search;
     private ImageView searchBtn;
     private RadioButton nameR, descR, catR, walletR, amtR, dateR;
@@ -44,10 +40,9 @@ public class SearchActivity extends AppCompatActivity {
     private CardView finalDate;
     private Button saveDate;
     private LinearLayout options;
+    private RecyclerView searchRV;
     private DBHandler dbHandler;
 
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +50,7 @@ public class SearchActivity extends AppCompatActivity {
 
         //setting views
         advanced = findViewById(R.id.search_Advanced_textView);
+        emptyRVText = findViewById(R.id.noResults_textView);
         search = findViewById(R.id.search_Record_editText);
         searchBtn = findViewById(R.id.search_Btn_imageView);
         nameR = findViewById(R.id.radioName);
@@ -68,13 +64,14 @@ public class SearchActivity extends AppCompatActivity {
         dateChosen= findViewById(R.id.search_datePicker);
         saveDate = findViewById(R.id.saveDate_Btn);
         options = findViewById(R.id.options_linearLayout);
+        searchRV = findViewById(R.id.search_recyclerView);
 
         optionRadios.add(nameR);
         optionRadios.add(descR);
         optionRadios.add(catR);
         optionRadios.add(walletR);
         optionRadios.add(amtR);
-        //optionRadios.add(dateR);
+        optionRadios.add(dateR);
 
         dbHandler = new DBHandler(this, null,null, 1);
 
@@ -97,17 +94,27 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (options.getVisibility() == View.GONE) {
-                    nameR.setChecked(true);
-                    descR.setChecked(true);
-                    catR.setChecked(true);
+                    for (RadioButton r : optionRadios) {
+                        if (optionRadios.indexOf(r) < 3) {
+                            r.setChecked(true);
+                        } else {
+                            r.setChecked(false);
+                        }
+                    }
                     options.setVisibility(View.VISIBLE);
                     finalDate.setVisibility(View.GONE);
                     dateChosen.setVisibility(View.GONE);
                     saveDate.setVisibility(View.GONE);
                 } else {
                     options.setVisibility(View.GONE);
-                    searchParams.toArray(defaultParams);
+                    searchParams.clear();
+                    for (String s : defaultParams) {
+                        searchParams.add(s);
+                    }
+                    searchString("", searchParams);
                 }
+                Log.v("TAG", searchParams.toString());
+                searchRV.setVisibility(View.VISIBLE);
             }
         });
 
@@ -118,7 +125,7 @@ public class SearchActivity extends AppCompatActivity {
                     if (searchParams.contains(r.getText().toString())) {
                         if (searchParams.size() == 1) {
                             Toast.makeText(SearchActivity.this,
-                                    "There must at least be 1 filter option chosen", Toast.LENGTH_SHORT);
+                                    "There must at least be 1 filter option chosen", Toast.LENGTH_SHORT).show();
                         } else {
                             searchParams.remove(r.getText().toString());
                             r.setChecked(false);
@@ -136,6 +143,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (dateChosen.getVisibility() == View.GONE) {
                     if (finalDate.getVisibility() == View.GONE) {
+                        searchRV.setVisibility(View.GONE);
                         dateChosen.setVisibility(View.VISIBLE);
                         saveDate.setVisibility(View.VISIBLE);
                         searchParams.add(dateR.getText().toString());
@@ -146,13 +154,15 @@ public class SearchActivity extends AppCompatActivity {
 
                 if (searchParams.size() == 1) {
                         Toast.makeText(SearchActivity.this,
-                                "There must at least be 1 filter option chosen", Toast.LENGTH_SHORT);
+                                "There must at least be 1 filter option chosen", Toast.LENGTH_SHORT).show();
                 } else {
+                    searchRV.setVisibility(View.VISIBLE);
                     finalDate.setVisibility(View.GONE);
                     dateChosen.setVisibility(View.GONE);
                     saveDate.setVisibility(View.GONE);
                     searchParams.remove(dateR.getText().toString());
                     dateR.setChecked(false);
+                    searchString("", searchParams);
                 }
             }
         });
@@ -160,24 +170,27 @@ public class SearchActivity extends AppCompatActivity {
         finalDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchRV.setVisibility(View.GONE);
+                finalDate.setVisibility(View.GONE);
                 dateChosen.setVisibility(View.VISIBLE);
                 saveDate.setVisibility(View.VISIBLE);
-                finalDate.setVisibility(View.GONE);
             }
         });
 
         saveDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int month = dateChosen.getMonth() + 1;
-                dateToSearch.setText(dateChosen.getDayOfMonth() + "/" + month + "/" + dateChosen.getYear());
+                //format date and month to ensure format always matches DB format
+                date = formatDateMonth(dateChosen.getDayOfMonth());
+                month = formatDateMonth(dateChosen.getMonth() + 1);
+
+                dateToSearch.setText(dateChosen.getYear() + "-" + month + "-" + date);
+                searchRV.setVisibility(View.VISIBLE);
                 finalDate.setVisibility(View.VISIBLE);
                 dateChosen.setVisibility(View.GONE);
                 saveDate.setVisibility(View.GONE);
-                try {
-                    Log.v("TAG", String.valueOf(df.parse(dateToSearch.getText().toString())));
-                    searchString(String.valueOf(df.parse(dateToSearch.getText().toString())), searchParams);
-                } catch (ParseException e) {}
+                Log.v("TAG", dateChosen.getYear() + "-" + month + "-" + dateChosen.getDayOfMonth());
+                searchString(dateChosen.getYear() + "-" + month + "-" + dateChosen.getDayOfMonth(), searchParams);
             }
         });
 
@@ -223,13 +236,24 @@ public class SearchActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         records = dbHandler.getAllRecords();
-        RecyclerView searchRv = findViewById(R.id.search_recyclerView);
+        //check if there are any transactions
+        if (records.size() == 0) {
+            emptyRVText.setText("No Transactions");
+            emptyRVText.setVisibility(View.VISIBLE);
+        }
+
         ta = new TransactionAdapter(records, true);
         LinearLayoutManager lm = new LinearLayoutManager(SearchActivity.this);
-        searchRv.setLayoutManager(lm);
-        searchRv.setItemAnimator(new DefaultItemAnimator());
-        searchRv.setAdapter(ta);
+        searchRV.setLayoutManager(lm);
+        searchRV.setItemAnimator(new DefaultItemAnimator());
+        searchRV.setAdapter(ta);
         ta.notifyDataSetChanged();
+        if (searchRV.getAdapter().getItemCount() == 0) {
+            emptyRVText.setText("No Transactions Found");
+            emptyRVText.setVisibility(View.VISIBLE);
+        } else {
+            emptyRVText.setVisibility(View.GONE);
+        }
         search.getText().clear();
     }
 
@@ -248,9 +272,18 @@ public class SearchActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private String formatDateMonth(int toFormat) {
+        String formatted = String.valueOf(toFormat);
+        if (formatted.length() < 2) {
+        formatted = "0" + formatted;
+        }
+        return formatted;
+    }
+
     private void searchString(String s, ArrayList<String> searchParams) {
         ArrayList<Record> out = new ArrayList<>();
         String details;
+        boolean dateCheck = false;
         //Concatenating record details into a single string for all records, into a single list
         //depending on chosen filter options
         for (Record r : records) {
@@ -273,18 +306,22 @@ public class SearchActivity extends AppCompatActivity {
                         details += r.getAmount() + " ";
                         break;
                     case "Date":
-                        details += r.getDateCreated() + " ";
+                        details = r.getDateCreated() + " ";
+                        dateCheck = true;
                         break;
                     default:
                         Toast.makeText(SearchActivity.this, "Invalid Filter", Toast.LENGTH_SHORT);
                 }
-                Log.v("TAG", details);
             }
-            try {
-                if (details.toLowerCase().contains(s.toLowerCase() + df.parse(dateToSearch.getText().toString()))) {
+            if (details.toLowerCase().contains(s.toLowerCase())){
+                if (dateCheck) {
+                    if (details.contains(dateChosen.getYear() + "-" + month + "-" + date)) {
+                        out.add(r);
+                    }
+                } else {
                     out.add(r);
                 }
-            } catch (ParseException e) {}
+            }
         }
         ta.filter(out);
     }
