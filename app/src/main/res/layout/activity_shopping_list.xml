@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?backgroundColor"
-    tools:context=".ShoppingListActivity">
+    tools:context=".ShoppingList.ShoppingListActivity">
     <include layout="@layout/main_toolbar"/>
 
     <RelativeLayout

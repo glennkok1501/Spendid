@@ -15,98 +15,96 @@
         android:focusable="true"
         app:cardElevation="5dp"
         app:cardCornerRadius="15dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="5dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/cat_Record_imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 app:tint="?colorSecondary"
-                android:padding="5dp"
+                android:layout_margin="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:src="@drawable/ic_category_24" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/title_Record_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="9"
-                android:orientation="vertical">
+                android:text="Name"
+                android:layout_marginStart="15dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/cat_Record_imageView"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/title_Record_textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Name"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/time_Record_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00:00"
+                android:textColor="?subtitleTextColor"
+                app:layout_constraintStart_toStartOf="@id/title_Record_textView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_Record_textView"
+                android:textSize="12sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+            <TextView
+                android:id="@+id/date_Record_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dd MMMM yyyy"
+                android:gravity="bottom"
+                android:textColor="?subtitleTextColor"
+                app:layout_constraintStart_toEndOf="@id/time_Record_textView"
+                app:layout_constraintBottom_toBottomOf="@id/time_Record_textView"
+                app:layout_constraintTop_toTopOf="@id/time_Record_textView"
+                android:layout_marginStart="10dp"
+                android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/time_Record_textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="10"
-                        android:text="00:00:00"
-                        android:gravity="bottom"
-                        android:textColor="?subtitleTextColor"
-                        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/currency_Record_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SGD"
+                app:layout_constraintBottom_toBottomOf="@id/amount_Record_textView"
+                app:layout_constraintEnd_toStartOf="@id/amount_Record_textView"
+                android:layout_marginEnd="5dp"
+                android:textColor="?subtitleTextColor"
+                android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/date_Record_textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="38"
-                        android:text="dd MMMM yyyy"
-                        android:gravity="bottom"
-                        android:textColor="?subtitleTextColor"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/currency_Record_textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom|right"
-                        android:layout_weight="1"
-                        android:text="SGD"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/amount_Record_textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="5.00"
-                        android:gravity="bottom|right"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/amount_Record_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/edit_Record_imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_margin="15dp"
+                android:text="5.00"
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/edit_Record_imageView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:src="@drawable/ic_arrow_forward_24"
                 app:tint="?subtitleTextColor" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

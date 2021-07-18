@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?backgroundColor"
-    tools:context=".SearchActivity">
+    tools:context=".RecordsHistory.SearchActivity">
 
     <include layout="@layout/page_toolbar"/>
 

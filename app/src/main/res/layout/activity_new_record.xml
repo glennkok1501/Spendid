@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?backgroundColor"
-    tools:context=".AddRecordActivity">
+    tools:context=".Records.AddRecordActivity">
 
     <include layout="@layout/page_toolbar"/>
 
@@ -32,9 +32,7 @@
                     app:cardCornerRadius="50dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="30dp"
-
                     android:padding="10dp">
 
                     <LinearLayout
@@ -93,6 +91,7 @@
                     android:layout_height="match_parent"
                     app:startIconDrawable="@drawable/ic_title_24"
                     app:startIconTint="?colorOnPrimarySurface"
+                    android:layout_marginTop="20dp"
                     android:hint="Title"
                     app:counterEnabled="true"
                     app:counterMaxLength="15"
@@ -108,6 +107,7 @@
                     android:id="@+id/newRecordDes_layout"
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -127,6 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="?colorOnBackground"
+                    android:layout_marginTop="20dp"
                     app:cardElevation="10dp"
                     app:cardCornerRadius="10dp"
                     android:layout_marginRight="15dp"
@@ -170,7 +171,7 @@
                     app:cardElevation="10dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="50dp"
                     app:cardCornerRadius="15dp"
                     android:layout_width="match_parent"

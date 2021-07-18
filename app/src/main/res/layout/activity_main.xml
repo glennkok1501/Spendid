@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?backgroundColor"
     android:id="@+id/dashboard_drawer_layout"
-    tools:context=".MainActivity">
+    tools:context=".Dashboard.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,11 +56,12 @@
 
                         <TextView
                             android:id="@+id/totalBalCost_textView"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0.00"
                             android:textAlignment="center"
                             android:textSize="34sp"
+                            android:ems="20"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -109,13 +110,14 @@
 
                         <TextView
                             android:id="@+id/totalBalIncCost_textView"
-                            android:layout_width="wrap_content"
+                            android:layout_width="75dp"
                             android:layout_height="wrap_content"
                             android:text="0.00"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintStart_toEndOf="@id/income_icon"
                             app:layout_constraintTop_toBottomOf="@id/income_textView"
                             app:layout_constraintEnd_toStartOf="@id/totalBalVert_guideline"
+                            android:textAlignment="center"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -148,9 +150,10 @@
 
                         <TextView
                             android:id="@+id/totalBalExpCost_textView"
-                            android:layout_width="wrap_content"
+                            android:layout_width="75dp"
                             android:layout_height="wrap_content"
                             android:text="0.00"
+                            android:textAlignment="center"
                             app:layout_constraintStart_toEndOf="@id/totalBalVert_guideline"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/expense_textView"

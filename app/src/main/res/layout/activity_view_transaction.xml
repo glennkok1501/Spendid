@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?backgroundColor"
     android:orientation="vertical"
-    tools:context=".ViewTransactionActivity">
+    tools:context=".Records.ViewTransactionActivity">
 
     <include layout="@layout/page_toolbar"/>
 
@@ -33,9 +33,7 @@
                     android:layout_marginBottom="5dp"
                     app:cardBackgroundColor="?colorSecondary"
                     app:cardCornerRadius="50dp"
-                    app:cardElevation="50dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:cardElevation="50dp">
 
                     <ImageView
                         android:id="@+id/viewTransCatImg_imageView"

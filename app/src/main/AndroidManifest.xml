@@ -13,34 +13,45 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid">
-        <activity android:name=".ImportActivity">
+        <activity android:name=".DataTransfer.ImportActivity"></activity>
+        <activity android:name=".Friends.ViewFriendActivity" />
+        <activity android:name=".Friends.ProfileActivity" />
+        <activity android:name=".Friends.FriendScannerActivity" />
+        <activity android:name=".Friends.FriendsListActivity" />
+        <activity
+            android:name=".Friends.Utils.Capture"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true" />
+        <activity android:name=".DataTransfer.ImportExternalActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="file" />
                 <data android:scheme="content" />
                 <data android:mimeType="text/comma-separated-values" />
                 <data android:host="*" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ExportActivity" />
-        <activity android:name=".ExchangeRateActivity" />
-        <activity android:name=".ShoppingListMainActivity" />
-        <activity android:name=".ShoppingListActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".EditWalletActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".ViewTransactionActivity" />
-        <activity android:name=".WalletCurrencyActivity" />
-        <activity android:name=".AddWalletActivity" />
-        <activity android:name=".EditRecordActivity" />
-        <activity android:name=".TransactionHistoryActivity" />
-        <activity android:name=".ManageWalletActivity" />
-        <activity android:name=".SelectWalletActivity" />
-        <activity android:name=".AddRecordActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".Dashboard.MainActivity" />
+        <activity android:name=".DataTransfer.ExportActivity" />
+        <activity android:name=".ExchangeRates.ExchangeRateActivity" />
+        <activity android:name=".ShoppingList.ShoppingListMainActivity" />
+        <activity android:name=".ShoppingList.ShoppingListActivity" />
+        <activity android:name=".Misc.SettingsActivity" />
+        <activity android:name=".Misc.AboutActivity" />
+        <activity android:name=".Wallets.EditWalletActivity" />
+        <activity android:name=".RecordsHistory.SearchActivity" />
+        <activity android:name=".Records.ViewTransactionActivity" />
+        <activity android:name=".Wallets.WalletCurrencyActivity" />
+        <activity android:name=".Wallets.AddWalletActivity" />
+        <activity android:name=".Records.EditRecordActivity" />
+        <activity android:name=".RecordsHistory.TransactionHistoryActivity" />
+        <activity android:name=".Wallets.ManageWalletActivity" />
+        <activity android:name=".Wallets.SelectWalletActivity" />
+        <activity android:name=".Records.AddRecordActivity" />
+        <activity android:name=".Misc.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
