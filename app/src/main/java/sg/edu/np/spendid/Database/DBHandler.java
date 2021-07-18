@@ -584,7 +584,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public HashMap<String, ArrayList<Record>> getGroupedTransaction(String date) {
         HashMap<String, ArrayList<Record>> group = new HashMap<String, ArrayList<Record>>();
         String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
-                " WHERE r." + COLUMN_WALLET_DATECREATED + " = " + "\'" + date + "\' ORDER BY " + COLUMN_RECORD_TIMECREATED + " DESC";
+                " WHERE r." + COLUMN_WALLET_DATECREATED + " LIKE " + "\'" + date + "\' ORDER BY " + COLUMN_RECORD_TIMECREATED + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
