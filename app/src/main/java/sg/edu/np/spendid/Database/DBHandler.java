@@ -29,6 +29,15 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_WALLET_CURRENCY = "Currency";
     public static final String COLUMN_WALLET_DATECREATED = "DateCreated";
 
+    //Recurring Table Attributes
+    public static final String TABLE_RECURRING = "Recurring";
+    public static final String COLUMN_RECURRING_ID = "RecurringId";
+    public static final String COLUMN_RECURRING_NAME = "RecurringName";
+    public static final String COLUMN_RECURRING_DESCRIPTION = "RecurringDescription";
+    public static final String COLUMN_RECURRING_CURRENCY = "Currency";
+    public static final String COLUMN_RECURRING_DATECREATED = "DateCreated";
+    public static final String COLUMN_RECURRING_DATESTOPPED = "DateStopped";
+
     //Category Table Attributes
     public static final String TABLE_CATEGORY = "Category";
     public static final String COLUMN_CATEGORY_TITLE = "Title";
@@ -118,6 +127,13 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_FRIEND_NAME + " TEXT, " +
                 COLUMN_FRIEND_DATEADDED + " TEXT, " +
                 COLUMN_FRIEND_PUBLICKEY +" TEXT)";
+        String CREATE_RECURRING_TABLE = "CREATE TABLE " + TABLE_RECURRING +
+                " (" + COLUMN_RECURRING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_RECURRING_NAME + " TEXT, " +
+                COLUMN_RECURRING_DESCRIPTION + " TEXT, " +
+                COLUMN_RECURRING_CURRENCY + " TEXT, " +
+                COLUMN_RECURRING_DATECREATED + " TEXT, " +
+                COLUMN_RECURRING_DATESTOPPED + " TEXT)";
 
         db.execSQL(CREATE_WALLET_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
@@ -126,6 +142,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_CARTITEM_TABLE);
         db.execSQL(CREATE_CURRENCY_TABLE);
         db.execSQL(CREATE_FRIEND_TABLE);
+        db.execSQL(CREATE_RECURRING_TABLE);
         initCategories(db);
 
     }
@@ -139,6 +156,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CARTITEM);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURRENCY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FRIEND);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECURRING);
         onCreate(db);
     }
 

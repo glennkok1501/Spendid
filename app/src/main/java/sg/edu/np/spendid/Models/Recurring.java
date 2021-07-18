@@ -6,6 +6,7 @@ public class Recurring {
     private String recurringdescription;
     private String recurringcurrency;
     private String recurringstartDate;
+    private String recurringendDate;
 
     public int getRecurringId() { return recurringId; }
 
@@ -27,21 +28,27 @@ public class Recurring {
 
     public void setRecurringstartDate(String recurringstartDate) { this.recurringstartDate = recurringstartDate; }
 
+    public String getRecurringendDate() { return recurringendDate; }
+
+    public void setRecurringendDate(String recurringendDate) { this.recurringendDate = recurringendDate; }
+
     public Recurring() {
     }
 
-    public Recurring(String recurringname, String recurringdescription, String recurringcurrency, String recurringstartDate) {
+    public Recurring(String recurringname, String recurringdescription, String recurringcurrency, String recurringstartDate, String recurringendDate) {
         this.recurringname = recurringname;
         this.recurringdescription = recurringdescription;
         this.recurringcurrency = recurringcurrency;
         this.recurringstartDate = recurringstartDate;
+        this.recurringendDate = recurringendDate;
     }
 
-    public Recurring(int recurringId, String recurringname, String recurringdescription, String recurringcurrency, String recurringstartDate) {
+    public Recurring(int recurringId, String recurringname, String recurringdescription, String recurringcurrency, String recurringstartDate, String recurringendDate) {
         this.recurringId = recurringId;
         this.recurringname = recurringname;
         this.recurringdescription = recurringdescription;
         this.recurringcurrency = recurringcurrency;
         this.recurringstartDate = recurringstartDate;
+        this.recurringendDate = recurringendDate;
     }
 }

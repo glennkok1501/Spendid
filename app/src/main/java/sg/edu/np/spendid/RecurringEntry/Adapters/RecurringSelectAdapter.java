@@ -21,7 +21,7 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
     ArrayList<Recurring> data;
     private Context context;
     private DBHandler dbHandler;
-    private DecimalFormat df2 = new DecimalFormat("$0.00");
+    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public RecurringSelectAdapter(ArrayList<Recurring> input, Context context){
         data=input;
