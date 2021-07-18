@@ -29,7 +29,6 @@ public class CartItemDialog {
     private int cartId;
     private CartItemsAdapter adapter;
     private DBHandler dbHandler;
-    private Context context;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public void setCartItem(CartItem cartItem) {
@@ -40,11 +39,10 @@ public class CartItemDialog {
         this.cartId = cartId;
     }
 
-    public CartItemDialog(Context context, boolean editable, CartItemsAdapter adapter) {
-        this.context = context;
+    public CartItemDialog(Context context, boolean editable, CartItemsAdapter adapter, DBHandler dbHandler) {
         this.editable = editable;
         this.adapter = adapter;
-        dbHandler = new DBHandler(this.context, null, null, 1);
+        this.dbHandler = dbHandler;
 
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.add_cart_item_layout);

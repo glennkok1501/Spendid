@@ -13,37 +13,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:focusable="true">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:layout_height="match_parent"
+            android:padding="15dp">
 
             <ImageView
                 android:id="@+id/currentTrans_imageView"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:tint="?colorSecondary"
                 android:src="@drawable/ic_wallet_24" />
 
             <TextView
                 android:id="@+id/currentTransCat_textView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textAlignment="textStart"
-                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/currentTrans_imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="10dp"
                 android:text="Category"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -51,10 +52,12 @@
             <TextView
                 android:id="@+id/currentTransAmt_textView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/currentTransCur_textView"
+                android:layout_marginEnd="10dp"
                 android:text="0.00"
-                android:layout_weight="4"
-                android:textAlignment="textEnd"
                 android:textSize="16sp" />
 
             <TextView
@@ -62,12 +65,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="?subtitleTextColor"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="10dp"
                 android:text="Currency"
                 android:layout_weight="1"
                 android:textAlignment="textEnd"
                 android:textSize="10sp" />
 
-        </LinearLayout>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

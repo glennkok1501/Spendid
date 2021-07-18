@@ -23,11 +23,11 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
     private TextView empty;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public CartItemsAdapter(ArrayList<CartItem> input, TextView empty, Context context){
+    public CartItemsAdapter(ArrayList<CartItem> input, TextView empty, Context context, DBHandler dbHandler){
         data = input;
         this.context = context;
         this.empty = empty;
-        dbHandler = new DBHandler(this.context, null, null, 1);
+        this.dbHandler = dbHandler;
         checkEmpty();
     }
 
@@ -44,7 +44,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CartItemDialog dialog = new CartItemDialog(v.getContext(), true, CartItemsAdapter.this);
+                CartItemDialog dialog = new CartItemDialog(v.getContext(), true, CartItemsAdapter.this, dbHandler);
                 dialog.setCartItem(cartItem);
                 dialog.show();
             }

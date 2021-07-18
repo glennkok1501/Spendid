@@ -27,10 +27,10 @@ public class AddShoppingCartDialog {
     private Dialog dialog;
     private ShoppingListAdapter shoppingListAdapter;
 
-    public AddShoppingCartDialog(Context context, ShoppingListAdapter shoppingListAdapter) {
+    public AddShoppingCartDialog(Context context, ShoppingListAdapter shoppingListAdapter, DBHandler dbHandler) {
         this.context = context;
         this.shoppingListAdapter = shoppingListAdapter;
-        dbHandler = new DBHandler(context, null, null, 1);
+        this.dbHandler = dbHandler;
 
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.add_shopping_cart_layout);

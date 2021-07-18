@@ -110,33 +110,6 @@ public class ExportActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //Open file picker
-//        ActivityResultLauncher<String>getFile = registerForActivityResult(
-//                new ActivityResultContracts.GetContent(),
-//                new ActivityResultCallback<Uri>() {
-//                    @Override
-//                    public void onActivityResult(Uri result) {
-//                        //import the file if result of file is chosen
-//                        if (result != null && wallet != null){
-//                            try{
-//                                new ImportCSV(ExportActivity.this, result, wallet, dbHandler).run();
-//                            }
-//                            catch (Exception e) {
-//                                e.printStackTrace();
-//                                Toast.makeText(getApplicationContext(), "Import failed: file corrupted", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    }
-//                });
-//
-//        Button importButton = findViewById(R.id.export_importData);
-//        importButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getFile.launch("text/comma-separated-values"); //initiate filer picker with any file type
-//            }
-//        });
     }
 
     @Override

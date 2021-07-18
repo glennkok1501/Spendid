@@ -38,7 +38,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         addCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddShoppingCartDialog dialog = new AddShoppingCartDialog(ShoppingListMainActivity.this, myAdapter);
+                AddShoppingCartDialog dialog = new AddShoppingCartDialog(ShoppingListMainActivity.this, myAdapter, dbHandler);
                 dialog.show();
             }
         });
