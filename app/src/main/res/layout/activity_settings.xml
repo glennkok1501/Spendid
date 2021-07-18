@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?backgroundColor"
-    tools:context=".SettingsActivity">
+    android:orientation="vertical"
+    tools:context=".Misc.SettingsActivity">
+
+    <include layout="@layout/page_toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,8 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <include layout="@layout/page_toolbar"/>
-
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/settings_nightMode_switch"
                 android:layout_width="match_parent"
@@ -27,6 +28,73 @@
                 android:textSize="16sp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"/>
+
+            <TextView
+                android:id="@+id/settings_export_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_arrow_forward_24"
+                android:drawableTint="?colorOnPrimarySurface"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="16sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Export Wallet"/>
+
+
+            <TextView
+                android:id="@+id/settings_import_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_arrow_forward_24"
+                android:drawableTint="?colorOnPrimarySurface"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="16sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Import Wallet"/>
+
+            <TextView
+                android:id="@+id/settings_dailyLimit_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_arrow_forward_24"
+                android:drawableTint="?colorOnPrimarySurface"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="16sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Daily Limit"/>
+
+            <TextView
+                android:id="@+id/settings_clearAll_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_arrow_forward_24"
+                android:drawableTint="?colorOnPrimarySurface"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="16sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Clear All"/>
+
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+
+</LinearLayout>

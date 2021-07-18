@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?backgroundColor"
-    tools:context=".ShoppingListMainActivity">
+    android:orientation="vertical"
+    tools:context=".ShoppingList.ShoppingListMainActivity">
 
-    <LinearLayout
+    <include layout="@layout/page_toolbar"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <include layout="@layout/page_toolbar"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/shoppingListEmpty_textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="You have no shopping list" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shoppingListMain_RV"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/shoppingListMain_fab"
         android:layout_width="wrap_content"
@@ -30,4 +40,7 @@
         app:backgroundTint="?colorAccent"
         android:src="@drawable/ic_add_24"
         app:tint="?colorOnPrimary" />
-</RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

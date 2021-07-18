@@ -1,230 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?backgroundColor"
-    tools:context=".ExchangeRateActivity">
+    android:orientation="vertical"
+    tools:context=".ExchangeRates.ExchangeRateActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <include layout="@layout/page_toolbar"/>
+
+    <ScrollView
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_width="match_parent">
 
-        <include layout="@layout/page_toolbar"/>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?backgroundColor"
-            tools:context=".ExchangeRateActivity">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="From"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/exchangeRateSelFrom_cardView"
-                app:layout_constraintEnd_toEndOf="@+id/exchangeRateSelFrom_cardView"
-                app:layout_constraintStart_toStartOf="@+id/exchangeRateSelFrom_cardView" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="To"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/exchangeRateSelTo_cardView"
-                app:layout_constraintEnd_toEndOf="@+id/exchangeRateSelTo_cardView"
-                app:layout_constraintStart_toStartOf="@+id/exchangeRateSelTo_cardView" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/exchangeRateSelFrom_cardView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="?colorOnBackground"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/exchangeRateConvert_fab"
-                app:layout_constraintEnd_toStartOf="@+id/exchangeRateConvert_fab"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/exchangeRateConvert_fab">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?backgroundColor">
 
                 <TextView
-                    android:id="@+id/exchangeRateSelFrom_textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Select"
-                    android:textSize="16sp"
-                    app:drawableEndCompat="@drawable/ic_arrow_down_24"
-                    app:drawableTint="?subtitleTextColor" />
-
-            </androidx.cardview.widget.CardView>
-
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/exchangeRateConvert_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:rotation="90"
-                android:src="@drawable/ic_loop_24"
-                app:backgroundTint="?colorSecondary"
-                app:cardElevation="5dp"
-                android:layout_marginTop="50dp"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/exchangeRateSelTo_cardView"
-                app:layout_constraintStart_toEndOf="@+id/exchangeRateSelFrom_cardView"
-                app:tint="?colorOnSecondary" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/exchangeRateSelTo_cardView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="?colorOnBackground"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="5dp"
-                app:layout_constraintBottom_toBottomOf="@+id/exchangeRateConvert_fab"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/exchangeRateConvert_fab"
-                app:layout_constraintTop_toTopOf="@+id/exchangeRateConvert_fab">
-
-                <TextView
-                    android:id="@+id/exchangeRateSelTo_textView"
+                    android:id="@+id/exchangeRateTo_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Select"
+                    android:layout_weight="1"
+                    android:text="From"
+                    android:textAlignment="center"
                     android:textSize="16sp"
-                    app:drawableEndCompat="@drawable/ic_arrow_down_24"
-                    app:drawableTint="?subtitleTextColor"
-                    tools:layout_editor_absoluteX="201dp"
-                    tools:layout_editor_absoluteY="224dp" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/exchangeRateSelFrom_cardView"
+                    app:layout_constraintEnd_toEndOf="@+id/exchangeRateSelFrom_cardView"
+                    app:layout_constraintStart_toStartOf="@+id/exchangeRateSelFrom_cardView" />
 
-            </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/exchangeRateFrom_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="To"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/exchangeRateSelTo_cardView"
+                    app:layout_constraintEnd_toEndOf="@+id/exchangeRateSelTo_cardView"
+                    app:layout_constraintStart_toStartOf="@+id/exchangeRateSelTo_cardView" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/exchangeRateSelFrom_cardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="?colorOnBackground"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/exchangeRateConvert_fab"
+                    app:layout_constraintEnd_toStartOf="@+id/exchangeRateConvert_fab"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/exchangeRateConvert_fab">
+
+                    <TextView
+                        android:id="@+id/exchangeRateSelFrom_textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Select"
+                        android:textSize="16sp"
+                        app:drawableEndCompat="@drawable/ic_arrow_down_24"
+                        app:drawableTint="?subtitleTextColor" />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/exchangeRateConvert_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:rotation="90"
+                    android:src="@drawable/ic_loop_24"
+                    app:backgroundTint="?colorSecondary"
+                    app:cardElevation="5dp"
+                    android:layout_marginTop="50dp"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/exchangeRateSelTo_cardView"
+                    app:layout_constraintStart_toEndOf="@+id/exchangeRateSelFrom_cardView"
+                    app:tint="?colorOnSecondary" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/exchangeRateSelTo_cardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="?colorOnBackground"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/exchangeRateConvert_fab"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/exchangeRateConvert_fab"
+                    app:layout_constraintTop_toTopOf="@+id/exchangeRateConvert_fab">
+
+                    <TextView
+                        android:id="@+id/exchangeRateSelTo_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Select"
+                        android:textSize="16sp"
+                        app:drawableEndCompat="@drawable/ic_arrow_down_24"
+                        app:drawableTint="?subtitleTextColor"
+                        tools:layout_editor_absoluteX="201dp"
+                        tools:layout_editor_absoluteY="224dp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/exchangeRateAmt_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="?colorOnBackground"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="10dp"
+                    android:layout_margin="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/exchangeRateConvert_fab">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Amount"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="9"
+                                android:orientation="vertical">
+
+                                <EditText
+                                    android:id="@+id/exchangeRateAmtFrom_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:hint="0.00"
+                                    android:inputType="numberDecimal"
+                                    android:textAlignment="center"
+                                    android:textColorHint="?subtitleTextColor"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/exchangeRateAmtTo_textView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text="0.00"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/exchangeRateCurFrom_textView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/exchangeRateCurTo_textView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/exchangeRateDate_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="?subtitleTextColor"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?subtitleTextColor"
+                            android:textSize="12sp"
+                            android:textStyle="italic"
+                            android:textAlignment="center"
+                            android:text="@string/currency_api_attribute" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:text="Conversion Rate in SGD" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/exchangeRateAmt_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="?colorOnBackground"
                 app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                android:layout_margin="40dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/exchangeRateConvert_fab">
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="5dp"
+                app:cardElevation="10dp">
 
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:padding="10dp"
+                    android:id="@+id/exchangeRateSgd_RV"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Amount"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="9"
-                            android:orientation="vertical">
-
-                            <EditText
-                                android:id="@+id/exchangeRateAmtFrom_editText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:hint="0.00"
-                                android:inputType="numberDecimal"
-                                android:textAlignment="center"
-                                android:textColorHint="?subtitleTextColor"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/exchangeRateAmtTo_textView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="center"
-                                android:text="0.00"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/exchangeRateCurFrom_textView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=""
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/exchangeRateCurTo_textView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=""
-                                android:textSize="16sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/exchangeRateDate_textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textColor="?subtitleTextColor"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
+                    android:layout_height="250dp"/>
 
             </androidx.cardview.widget.CardView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:textColor="?subtitleTextColor"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                android:text="@string/flags_icon_attribute" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+
+</LinearLayout>
 
 

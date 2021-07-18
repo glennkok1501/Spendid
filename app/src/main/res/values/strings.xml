@@ -43,4 +43,6 @@
         <item>Uae Dirham;aed</item>
         <item>United States Dollar;usd</item>
     </string-array>
+    <string name="currency_api_attribute">By fawazahmed0 from github.com/fawazahmed0/currency-api</string>
+    <string name="flags_icon_attribute">Icon made by Freepik from www.flaticon.com</string>
 </resources>

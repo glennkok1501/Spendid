@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/countryCurrenciesLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,22 +8,33 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:showDividers="end"
-    android:divider="?subtitleTextColor"
-    tools:context=".CurrencyAdapter">
+    android:padding="20dp"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:divider="?subtitleTextColor">
+
+    <ImageView
+        android:id="@+id/countryCurrenciesFlag"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/countryCurrencies"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?backgroundColor"
-        android:clickable="true"
-        android:focusable="true"
+        app:layout_constraintStart_toEndOf="@id/countryCurrenciesFlag"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="16sp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingStart="35dp"
-        android:paddingEnd="20dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintHorizontal_weight="0.8"
         android:text="Country" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

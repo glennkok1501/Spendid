@@ -16,36 +16,29 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
+            app:srcCompat="@drawable/ic_spendid_256" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textSize="30sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:layout_marginTop="10dp"
             android:paddingBottom="15dp"
             android:text="Spendid" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="16dp"
-        android:background="?colorPrimary" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -104,35 +97,6 @@
                     android:layout_marginStart="20dp"
                     android:textColor="@color/white"
                     android:text="Transaction History" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/navbar_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_category_24"
-                    android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:layout_gravity="center_horizontal"
-                    app:tint="@color/white" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="9"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="20dp"
-                    android:textColor="@color/white"
-                    android:text="Categories" />
             </LinearLayout>
 
             <LinearLayout
@@ -223,7 +187,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/navbar_subs"
+                android:id="@+id/navbar_recurring"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -235,7 +199,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_subscriptions_24"
+                    android:src="@drawable/ic_repeat_24"
                     android:layout_weight="1"
                     android:layout_marginStart="20dp"
                     android:layout_gravity="center_horizontal"
@@ -248,7 +212,65 @@
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/white"
-                    android:text="Subscriptions" />
+                    android:text="Recurring Amount" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navbar_planner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_calendar_today_24"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center_horizontal"
+                    app:tint="@color/white" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/white"
+                    android:text="My Planner" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navbar_friendsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_people_24"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center_horizontal"
+                    app:tint="@color/white" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/white"
+                    android:text="Friends List" />
             </LinearLayout>
 
             <View

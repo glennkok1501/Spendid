@@ -7,20 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?backgroundColor"
-    tools:context=".TransactionHistoryActivity">
+    tools:context=".RecordsHistory.SearchActivity">
 
     <include layout="@layout/page_toolbar"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".SearchActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -54,5 +48,4 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
 
-    </RelativeLayout>
 </LinearLayout>

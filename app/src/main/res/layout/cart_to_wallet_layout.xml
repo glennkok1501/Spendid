@@ -87,13 +87,19 @@
                             android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <Spinner
-                        android:id="@+id/cartToRecordWallet_spinner"
-                        android:maxLines="1"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:layout_marginStart="20dp" />
+                        android:layout_height="match_parent"
+                        app:cardBackgroundColor="?colorOnBackground"
+                        app:cardCornerRadius="15dp"
+                        android:layout_margin="20dp">
+                        <Spinner
+                            android:id="@+id/cartToRecordWallet_spinner"
+                            android:maxLines="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp" />
+                    </androidx.cardview.widget.CardView>
 
                     <Button
                         android:id="@+id/cartToRecord_btn"

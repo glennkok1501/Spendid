@@ -6,14 +6,23 @@
     android:background="?backgroundColor"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Wallets.ManageWalletActivity">
 
     <include layout="@layout/page_toolbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ManageWalletActivity">
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/manageWallet_empty_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp"
+            android:text="You have no wallets" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,9 +33,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginBottom="15dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
                 android:background="@color/white"
                 app:cardBackgroundColor="?colorOnBackground"
                 app:cardElevation="25dp"
@@ -62,8 +71,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/manageWallet_RV"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="20dp" />
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

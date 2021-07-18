@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?backgroundColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Records.ViewTransactionActivity">
 
     <include layout="@layout/page_toolbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ViewTransactionActivity">
+        android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -33,9 +33,7 @@
                     android:layout_marginBottom="5dp"
                     app:cardBackgroundColor="?colorSecondary"
                     app:cardCornerRadius="50dp"
-                    app:cardElevation="50dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:cardElevation="50dp">
 
                     <ImageView
                         android:id="@+id/viewTransCatImg_imageView"
@@ -138,6 +136,20 @@
                     android:textAlignment="center"
                     android:textColor="?subtitleTextColor"
                     android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/viewTransImage_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="center"
+                    app:drawableTint="?colorOnPrimarySurface"
+                    android:text="View Image"
+                    android:textSize="16sp"
+                    android:textColor="?subtitleTextColor"
+                    android:drawablePadding="5dp"
+                    app:drawableStartCompat="@drawable/ic_attachment_24" />
 
                 <TextView
                     android:layout_width="fill_parent"

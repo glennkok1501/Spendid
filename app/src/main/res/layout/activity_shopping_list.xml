@@ -7,15 +7,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?backgroundColor"
-    tools:context=".ShoppingListActivity">
+    tools:context=".ShoppingList.ShoppingListActivity">
     <include layout="@layout/main_toolbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/cartItemsEmpty_textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="You have no items" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/shopList_RV"
+            android:id="@+id/cartItems_RV"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
