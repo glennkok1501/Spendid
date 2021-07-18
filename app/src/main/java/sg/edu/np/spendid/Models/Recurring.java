@@ -2,53 +2,99 @@ package sg.edu.np.spendid.Models;
 
 public class Recurring {
     private int recurringId;
-    private String recurringname;
+    private String recurringtitle;
     private String recurringdescription;
-    private String recurringcurrency;
+    private double amount;
+    private String category;
     private String recurringstartDate;
     private String recurringendDate;
+    private int walletId;
 
-    public int getRecurringId() { return recurringId; }
+    public int getRecurringId() {
+        return recurringId;
+    }
 
-    public void setRecurringId(int recurringId) { this.recurringId = recurringId; }
+    public void setRecurringId(int recurringId) {
+        this.recurringId = recurringId;
+    }
 
-    public String getRecurringname() { return recurringname; }
+    public String getRecurringtitle() {
+        return recurringtitle;
+    }
 
-    public void setRecurringname(String recurringname) { this.recurringname = recurringname; }
+    public void setRecurringtitle(String recurringtitle) {
+        this.recurringtitle = recurringtitle;
+    }
 
-    public String getRecurringdescription() { return recurringdescription; }
+    public String getRecurringdescription() {
+        return recurringdescription;
+    }
 
-    public void setRecurringdescription(String recurringdescription) { this.recurringdescription = recurringdescription; }
+    public void setRecurringdescription(String recurringdescription) {
+        this.recurringdescription = recurringdescription;
+    }
 
-    public String getRecurringcurrency() { return recurringcurrency; }
+    public double getAmount() {
+        return amount;
+    }
 
-    public void setRecurringcurrency(String recurringcurrency) { this.recurringcurrency = recurringcurrency; }
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
-    public String getRecurringstartDate() { return recurringstartDate; }
+    public String getCategory() {
+        return category;
+    }
 
-    public void setRecurringstartDate(String recurringstartDate) { this.recurringstartDate = recurringstartDate; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-    public String getRecurringendDate() { return recurringendDate; }
+    public String getRecurringstartDate() {
+        return recurringstartDate;
+    }
 
-    public void setRecurringendDate(String recurringendDate) { this.recurringendDate = recurringendDate; }
+    public void setRecurringstartDate(String recurringstartDate) {
+        this.recurringstartDate = recurringstartDate;
+    }
+
+    public String getRecurringendDate() {
+        return recurringendDate;
+    }
+
+    public void setRecurringendDate(String recurringendDate) {
+        this.recurringendDate = recurringendDate;
+    }
+
+    public int getWalletId() {
+        return walletId;
+    }
+
+    public void setWalletId(int walletId) {
+        this.walletId = walletId;
+    }
 
     public Recurring() {
     }
 
-    public Recurring(String recurringname, String recurringdescription, String recurringcurrency, String recurringstartDate, String recurringendDate) {
-        this.recurringname = recurringname;
+    public Recurring(String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, int walletId) {
+        this.recurringtitle = recurringtitle;
         this.recurringdescription = recurringdescription;
-        this.recurringcurrency = recurringcurrency;
+        this.amount = amount;
+        this.category = category;
         this.recurringstartDate = recurringstartDate;
         this.recurringendDate = recurringendDate;
+        this.walletId = walletId;
     }
 
-    public Recurring(int recurringId, String recurringname, String recurringdescription, String recurringcurrency, String recurringstartDate, String recurringendDate) {
+    public Recurring(int recurringId, String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, int walletId) {
         this.recurringId = recurringId;
-        this.recurringname = recurringname;
+        this.recurringtitle = recurringtitle;
         this.recurringdescription = recurringdescription;
-        this.recurringcurrency = recurringcurrency;
+        this.amount = amount;
+        this.category = category;
         this.recurringstartDate = recurringstartDate;
         this.recurringendDate = recurringendDate;
+        this.walletId = walletId;
     }
 }

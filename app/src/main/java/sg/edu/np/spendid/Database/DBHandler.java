@@ -14,6 +14,7 @@ import sg.edu.np.spendid.Models.Category;
 import sg.edu.np.spendid.Models.Currency;
 import sg.edu.np.spendid.Models.Friend;
 import sg.edu.np.spendid.Models.Record;
+import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.Models.ShoppingCart;
 import sg.edu.np.spendid.Models.Wallet;
 
@@ -32,9 +33,10 @@ public class DBHandler extends SQLiteOpenHelper {
     //Recurring Table Attributes
     public static final String TABLE_RECURRING = "Recurring";
     public static final String COLUMN_RECURRING_ID = "RecurringId";
-    public static final String COLUMN_RECURRING_NAME = "RecurringName";
+    public static final String COLUMN_RECURRING_TITLE = "RecurringName";
     public static final String COLUMN_RECURRING_DESCRIPTION = "RecurringDescription";
-    public static final String COLUMN_RECURRING_CURRENCY = "Currency";
+    public static final String COLUMN_RECURRING_AMOUNT = "RecurringAmount";
+    public static final String COLUMN_RECURRING_CATEGORY = "RecurringCategory";
     public static final String COLUMN_RECURRING_DATECREATED = "DateCreated";
     public static final String COLUMN_RECURRING_DATESTOPPED = "DateStopped";
 
@@ -103,21 +105,21 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_RECORD_CATEGORY + " TEXT, " +
                 COLUMN_RECORD_DATECREATED + " TEXT, " +
                 COLUMN_RECORD_TIMECREATED + " TEXT, " +
-                COLUMN_RECORD_IMAGE+ " BLOB, " +
+                COLUMN_RECORD_IMAGE + " BLOB, " +
                 COLUMN_WALLET_ID + " INTEGER," +
                 "FOREIGN KEY (" + COLUMN_WALLET_ID + ") REFERENCES " + TABLE_WALLET + "(" + COLUMN_WALLET_ID + "), " +
                 "FOREIGN KEY (" + COLUMN_RECORD_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + COLUMN_CATEGORY_TITLE + "))";
         String CREATE_CART_TABLE = "CREATE TABLE " + TABLE_CART +
                 " (" + COLUMN_CART_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_CART_NAME + " TEXT, "+
-                COLUMN_CART_DATECREATED+" TEXT)";
+                COLUMN_CART_NAME + " TEXT, " +
+                COLUMN_CART_DATECREATED + " TEXT)";
         String CREATE_CARTITEM_TABLE = "CREATE TABLE " + TABLE_CARTITEM +
                 " (" + COLUMN_CARTITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_CARTITEM_NAME + " TEXT, "+
-                COLUMN_CARTITEM_AMOUNT + " REAL, "+
-                COLUMN_CARTITEM_CHECK+" INTEGER, "+
-                COLUMN_CART_ID+" INTEGER, "+
-                "FOREIGN KEY ("+COLUMN_CART_ID+") REFERENCES "+TABLE_CART+" ("+COLUMN_CART_ID+"))";
+                COLUMN_CARTITEM_NAME + " TEXT, " +
+                COLUMN_CARTITEM_AMOUNT + " REAL, " +
+                COLUMN_CARTITEM_CHECK + " INTEGER, " +
+                COLUMN_CART_ID + " INTEGER, " +
+                "FOREIGN KEY (" + COLUMN_CART_ID + ") REFERENCES " + TABLE_CART + " (" + COLUMN_CART_ID + "))";
         String CREATE_CURRENCY_TABLE = "CREATE TABLE " + TABLE_CURRENCY +
                 " (" + COLUMN_CURRENCY_FOREIGNCURRENCY + " TEXT PRIMARY KEY, " +
                 COLUMN_CURRENCY_RATE + " REAL, " +
@@ -126,14 +128,18 @@ public class DBHandler extends SQLiteOpenHelper {
                 " (" + COLUMN_FRIEND_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_FRIEND_NAME + " TEXT, " +
                 COLUMN_FRIEND_DATEADDED + " TEXT, " +
-                COLUMN_FRIEND_PUBLICKEY +" TEXT)";
+                COLUMN_FRIEND_PUBLICKEY + " TEXT)";
         String CREATE_RECURRING_TABLE = "CREATE TABLE " + TABLE_RECURRING +
                 " (" + COLUMN_RECURRING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_RECURRING_NAME + " TEXT, " +
+                COLUMN_RECURRING_TITLE + " TEXT, " +
                 COLUMN_RECURRING_DESCRIPTION + " TEXT, " +
-                COLUMN_RECURRING_CURRENCY + " TEXT, " +
+                COLUMN_RECURRING_AMOUNT + " TEXT, " +
+                COLUMN_RECURRING_CATEGORY + " TEXT, " +
                 COLUMN_RECURRING_DATECREATED + " TEXT, " +
-                COLUMN_RECURRING_DATESTOPPED + " TEXT)";
+                COLUMN_RECURRING_DATESTOPPED + " TEXT, " +
+                COLUMN_WALLET_ID + " INTEGER," +
+                "FOREIGN KEY (" + COLUMN_WALLET_ID + ") REFERENCES " + TABLE_WALLET + "(" + COLUMN_WALLET_ID + "), " +
+                "FOREIGN KEY (" + COLUMN_RECURRING_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + COLUMN_CATEGORY_TITLE + "))";
 
         db.execSQL(CREATE_WALLET_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
@@ -160,25 +166,25 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    private void initCategories(SQLiteDatabase db){
-        String[] queries = new String[] {
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Shopping\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Food & Drinks\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Entertainment\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Leisure\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Transport\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Housing\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Vehicle\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Income\', 0)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Salary\', 0)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Bills\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Rental\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Education\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Healthcare\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Fitness\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Debt\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Stocks\', 1)",
-                "INSERT INTO "+TABLE_CATEGORY+" VALUES (\'Others\', 1)"
+    private void initCategories(SQLiteDatabase db) {
+        String[] queries = new String[]{
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Shopping\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Food & Drinks\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Entertainment\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Leisure\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Transport\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Housing\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Vehicle\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Income\', 0)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Salary\', 0)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Bills\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Rental\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Education\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Healthcare\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Fitness\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Debt\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Stocks\', 1)",
+                "INSERT INTO " + TABLE_CATEGORY + " VALUES (\'Others\', 1)"
         };
         for (String query : queries) {
             db.execSQL(query);
@@ -224,11 +230,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //returns the balance of a wallet retrieved from the respective records from the wallet - Glenn.
     public double getWalletTotal(int id) {
-        String query = "SELECT r."+COLUMN_RECORD_AMOUNT+", c."+COLUMN_CATEGORY_EXPENSE+" " +
+        String query = "SELECT r." + COLUMN_RECORD_AMOUNT + ", c." + COLUMN_CATEGORY_EXPENSE + " " +
                 "FROM " + TABLE_RECORD + " " +
                 "r INNER JOIN " + TABLE_CATEGORY + " " +
                 "c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " " +
-                "WHERE r." + COLUMN_WALLET_ID + " = "+id;
+                "WHERE r." + COLUMN_WALLET_ID + " = " + id;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         double income = 0;
@@ -309,10 +315,10 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<Record> getWalletRecords(int wId) {
         ArrayList<Record> recordList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_WALLET_ID + " = " + wId
-                + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "+ COLUMN_RECORD_TIMECREATED + " DESC";
+                + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, " + COLUMN_RECORD_TIMECREATED + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             int id = cursor.getInt(0);
             String title = cursor.getString(1);
             String des = cursor.getString(2);
@@ -340,7 +346,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             String title = cursor.getString(0);
-            boolean exp = cursor.getInt(1)==1;
+            boolean exp = cursor.getInt(1) == 1;
             Category cat = new Category(title, exp);
             catList.add(cat);
         }
@@ -350,15 +356,14 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //check if category is expense or income
-    public boolean catIsExpense(String c){
-        String query = "SELECT * FROM "+TABLE_CATEGORY+" WHERE "+COLUMN_CATEGORY_TITLE+" = \'"+c+"\'";
+    public boolean catIsExpense(String c) {
+        String query = "SELECT * FROM " + TABLE_CATEGORY + " WHERE " + COLUMN_CATEGORY_TITLE + " = \'" + c + "\'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         boolean isExpense;
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             isExpense = cursor.getInt(1) == 1;
-        }
-        else{
+        } else {
             isExpense = false;
         }
         cursor.close();
@@ -386,11 +391,11 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //Add records in bulk
-    public void addRangeRecord(ArrayList<Record> recordArrayList){
+    public void addRangeRecord(ArrayList<Record> recordArrayList) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
-        try{
-            for (Record record : recordArrayList){
+        try {
+            for (Record record : recordArrayList) {
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_RECORD_TITLE, record.getTitle());
                 values.put(COLUMN_RECORD_DESCRIPTION, record.getDescription());
@@ -403,8 +408,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 db.insert(TABLE_RECORD, null, values);
             }
             db.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             db.endTransaction();
         }
         db.close();
@@ -526,7 +530,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //returns the total balance of all overall records and wallets combined
     public double getTotalBalance() {
-        String query = "SELECT r."+COLUMN_RECORD_AMOUNT+", c."+COLUMN_CATEGORY_EXPENSE+" "+
+        String query = "SELECT r." + COLUMN_RECORD_AMOUNT + ", c." + COLUMN_CATEGORY_EXPENSE + " " +
                 "FROM " + TABLE_RECORD + " " +
                 "r INNER JOIN " + TABLE_CATEGORY + " c " +
                 "ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY;
@@ -549,11 +553,11 @@ public class DBHandler extends SQLiteOpenHelper {
     //returns the income, expense and balance of all the wallets combined
     public HashMap<String, Double> getBalance(String yyyy, String MM) {
         HashMap<String, Double> bal = new HashMap<String, Double>();
-        String query = "SELECT r."+COLUMN_RECORD_AMOUNT+", c."+COLUMN_CATEGORY_EXPENSE+" "+
+        String query = "SELECT r." + COLUMN_RECORD_AMOUNT + ", c." + COLUMN_CATEGORY_EXPENSE + " " +
                 "FROM " + TABLE_RECORD + " " +
                 "r INNER JOIN " + TABLE_CATEGORY + " c " +
-                "ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY+" " +
-                "WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \'"+yyyy+"-"+MM+"-%\'";
+                "ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " " +
+                "WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \'" + yyyy + "-" + MM + "-%\'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         double income = 0;
@@ -605,7 +609,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //Shopping List Methods
 
     //returns an array of shopping carts
-    public ArrayList<ShoppingCart> getShoppingCarts(){
+    public ArrayList<ShoppingCart> getShoppingCarts() {
         ArrayList<ShoppingCart> cartList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_CART;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -622,7 +626,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return cartList;
     }
 
-    public void addShoppingCart(ShoppingCart s){
+    public void addShoppingCart(ShoppingCart s) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_CART_NAME, s.getName());
         values.put(COLUMN_CART_DATECREATED, s.getDateCreated());
@@ -631,7 +635,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public boolean deleteShoppingCart(int cartId){
+    public boolean deleteShoppingCart(int cartId) {
         String query = "SELECT * FROM " + TABLE_CART + " WHERE " + COLUMN_CART_ID + " = " + cartId;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -650,9 +654,9 @@ public class DBHandler extends SQLiteOpenHelper {
     //Cart items Methods
 
     //returns an array of shopping cart items
-    public ArrayList<CartItem> getCartItems(int cartId){
+    public ArrayList<CartItem> getCartItems(int cartId) {
         ArrayList<CartItem> itemsList = new ArrayList<>();
-        String query = "SELECT * FROM "+TABLE_CARTITEM+" WHERE "+COLUMN_CART_ID+" = "+cartId;
+        String query = "SELECT * FROM " + TABLE_CARTITEM + " WHERE " + COLUMN_CART_ID + " = " + cartId;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
@@ -668,7 +672,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return itemsList;
     }
 
-    public void addCartItem(CartItem c){
+    public void addCartItem(CartItem c) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_CARTITEM_NAME, c.getName());
         values.put(COLUMN_CARTITEM_AMOUNT, c.getAmount());
@@ -679,7 +683,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public boolean deleteCartItem(int itemId){
+    public boolean deleteCartItem(int itemId) {
         String query = "SELECT * FROM " + TABLE_CARTITEM + " WHERE " + COLUMN_CARTITEM_ID + " = " + itemId;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -706,11 +710,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteCartItems(int cartId){
+    public void deleteCartItems(int cartId) {
         String query = "SELECT * FROM " + TABLE_CARTITEM;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             db.delete(TABLE_CARTITEM, COLUMN_CART_ID + "= ?", new String[]{String.valueOf(cartId)});
         }
         cursor.close();
@@ -720,9 +724,9 @@ public class DBHandler extends SQLiteOpenHelper {
     //Currency Methods
 
     //returns an array of currencies
-    public void addCurrencies(ArrayList<Currency> currencyList){
+    public void addCurrencies(ArrayList<Currency> currencyList) {
         SQLiteDatabase db = this.getWritableDatabase();
-        for (Currency c : currencyList){
+        for (Currency c : currencyList) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_CURRENCY_FOREIGNCURRENCY, c.getForeign());
             values.put(COLUMN_CURRENCY_RATE, c.getRate());
@@ -732,18 +736,17 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Currency getCurrency(String c){
-        String query = "SELECT * FROM " + TABLE_CURRENCY + " WHERE " + COLUMN_CURRENCY_FOREIGNCURRENCY + " = " + "\'"+c+"\'";
+    public Currency getCurrency(String c) {
+        String query = "SELECT * FROM " + TABLE_CURRENCY + " WHERE " + COLUMN_CURRENCY_FOREIGNCURRENCY + " = " + "\'" + c + "\'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Currency currency = new Currency();
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             currency.setForeign(cursor.getString(0));
             currency.setRate(cursor.getDouble(1));
             currency.setDate(cursor.getString(2));
-        }
-        else{
+        } else {
             currency = null;
         }
         cursor.close();
@@ -752,9 +755,9 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //update all currencies in database based on currencyList
-    public void updateCurrencies(ArrayList<Currency> currencyList){
+    public void updateCurrencies(ArrayList<Currency> currencyList) {
         SQLiteDatabase db = this.getWritableDatabase();
-        for (Currency c : currencyList){
+        for (Currency c : currencyList) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_CURRENCY_RATE, c.getRate());
             values.put(COLUMN_CURRENCY_DATE, c.getDate());
@@ -764,7 +767,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //returns an array of all currencies
-    public ArrayList<Currency> getCurrencies(){
+    public ArrayList<Currency> getCurrencies() {
         ArrayList<Currency> currencyArrayList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_CURRENCY;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -773,7 +776,7 @@ public class DBHandler extends SQLiteOpenHelper {
             String foreign = cursor.getString(0);
             double rate = cursor.getDouble(1);
             String date = cursor.getString(2);
-            currencyArrayList.add(new Currency(foreign,rate,date));
+            currencyArrayList.add(new Currency(foreign, rate, date));
         }
         cursor.close();
         db.close();
@@ -782,7 +785,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //Friends List
     public ArrayList<Friend> getFriends() {
-        String query = "SELECT * FROM " + TABLE_FRIEND + " ORDER BY "+COLUMN_FRIEND_NAME+" DESC";
+        String query = "SELECT * FROM " + TABLE_FRIEND + " ORDER BY " + COLUMN_FRIEND_NAME + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Friend> friendsList = new ArrayList<>();
         Cursor cursor = db.rawQuery(query, null);
@@ -799,23 +802,22 @@ public class DBHandler extends SQLiteOpenHelper {
         return friendsList;
     }
 
-    public Friend getFriend(int friendId){
-        String query = "SELECT * FROM " + TABLE_FRIEND + " WHERE "+COLUMN_FRIEND_ID+" = \'"+friendId+"\'";
+    public Friend getFriend(int friendId) {
+        String query = "SELECT * FROM " + TABLE_FRIEND + " WHERE " + COLUMN_FRIEND_ID + " = \'" + friendId + "\'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Friend friend = new Friend();
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             friend.setFriendId(cursor.getInt(0));
             friend.setName(cursor.getString(1));
             friend.setDateAdded(cursor.getString(2));
             friend.setPublicKey(cursor.getString(3));
-        }
-        else{
+        } else {
             friend = null;
         }
         cursor.close();
         db.close();
-        return  friend;
+        return friend;
     }
 
     public boolean deleteFriend(int friendId) {
@@ -834,7 +836,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return deleted;
     }
 
-    public void addFriend(Friend friend){
+    public void addFriend(Friend friend) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_FRIEND_NAME, friend.getName());
         values.put(COLUMN_FRIEND_DATEADDED, friend.getDateAdded());
@@ -843,6 +845,46 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_FRIEND, null, values);
         db.close();
     }
+
+    public void addRecurring(Recurring r) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RECURRING_TITLE, r.getRecurringtitle());
+        values.put(COLUMN_RECURRING_DESCRIPTION, r.getRecurringdescription());
+        values.put(COLUMN_RECURRING_AMOUNT, r.getAmount());
+        values.put(COLUMN_RECURRING_CATEGORY, r.getCategory());
+        values.put(COLUMN_RECURRING_DATECREATED, r.getRecurringstartDate());
+        values.put(COLUMN_RECURRING_DATESTOPPED, r.getRecurringendDate());
+        values.put(COLUMN_WALLET_ID, r.getWalletId());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_RECURRING, null, values);
+        db.close();
+    }
+
+    public ArrayList<Recurring> getAllRecurring() {
+        ArrayList<Recurring> recurringList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_RECURRING + " ORDER BY " + COLUMN_RECURRING_DATECREATED + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String dateStopped = cursor.getString(6);
+            int walletId = cursor.getInt(7);
+            Recurring recurring = new Recurring(id, title, des, amt, cat, dateCreated, dateStopped, walletId);
+            recurringList.add(recurring);
+        }
+        cursor.close();
+        db.close();
+        return recurringList;
+    }
+
+//    public Recurring getRecurring(int rId) {
+//        String query = "SELECT * FROM " + TABLE_RECURRING + " WHERE " + COLUMN_RECURRING_ID + " = " + rId;
+//    }
 
 }
 
