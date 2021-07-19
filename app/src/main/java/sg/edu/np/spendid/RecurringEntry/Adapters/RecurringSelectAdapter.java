@@ -3,6 +3,7 @@ package sg.edu.np.spendid.RecurringEntry.Adapters;
 import android.content.Context;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.RecurringEntry.EditRecurringEntry;
 import sg.edu.np.spendid.RecurringEntry.ManageRecurringDialog;
 
 
@@ -42,13 +44,9 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ManageRecurringDialog.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("recurId", r.getRecurringId());
-                bundle.putString("recurName", r.getRecurringtitle());
-                intent.putExtras(bundle);
+                Intent intent = new Intent(v.getContext(), EditRecurringEntry.class);
+                intent.putExtra("recurID", r.getRecurringId());
                 v.getContext().startActivity(intent);
-
             }
         });
 

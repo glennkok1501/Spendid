@@ -878,7 +878,7 @@ public class DBHandler extends SQLiteOpenHelper {
             String dateStopped = cursor.getString(6);
             String lastUpdated = cursor.getString(7);
             int walletId = cursor.getInt(8);
-            Recurring recurring = new Recurring(id, title, des, amt, cat, dateCreated, dateStopped, walletId, lastUpdated);
+            Recurring recurring = new Recurring(id, title, des, amt, cat, dateCreated, dateStopped, lastUpdated, walletId);
             recurringList.add(recurring);
         }
         cursor.close();
@@ -894,13 +894,13 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             recurring.setRecurringId(cursor.getInt(0));
             recurring.setRecurringtitle(cursor.getString(1));
-            recurring.setRecurringdescription(cursor.getString(0));
-            recurring.setAmount(cursor.getDouble(0));
-            recurring.setCategory(cursor.getString(0));
-            recurring.setRecurringstartDate(cursor.getString(0));
-            recurring.setRecurringendDate(cursor.getString(0));
-            recurring.setWalletId(cursor.getInt(0));
-            recurring.setLastUpdated(cursor.getString(0));
+            recurring.setRecurringdescription(cursor.getString(2));
+            recurring.setAmount(cursor.getDouble(3));
+            recurring.setCategory(cursor.getString(4));
+            recurring.setRecurringstartDate(cursor.getString(5));
+            recurring.setRecurringendDate(cursor.getString(6));
+            recurring.setWalletId(cursor.getInt(7));
+            recurring.setLastUpdated(cursor.getString(8));
         } else {
             recurring = null;
         }
@@ -908,6 +908,43 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return recurring;
     }
+    public void UpdateRecurring(Recurring r){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RECURRING_TITLE, r.getRecurringtitle());
+        values.put(COLUMN_RECURRING_DESCRIPTION, r.getRecurringdescription());
+        values.put(COLUMN_RECURRING_AMOUNT, r.getAmount());
+        values.put(COLUMN_RECURRING_CATEGORY, r.getCategory());
+        values.put(COLUMN_RECURRING_DATECREATED, r.getRecurringstartDate());
+        values.put(COLUMN_RECURRING_DATESTOPPED, r.getRecurringendDate());
+        values.put(COLUMN_RECURRING_LASTUPDATED, r.getLastUpdated());
+        values.put(COLUMN_WALLET_ID, r.getWalletId());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_RECURRING, values, COLUMN_RECURRING_ID + " =?", new String[]{String.valueOf(r.getRecurringId())});
+        db.close();
+    }
+
+    public boolean deleteRecurring(int rId){
+        String query = "SELECT * FROM " + TABLE_RECURRING + " WHERE " + COLUMN_RECURRING_ID + " = " + rId;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean deleted;
+
+        if (cursor.moveToFirst()){
+            db.delete(TABLE_RECURRING, COLUMN_RECURRING_ID + "= ?", new String[]{String.valueOf(rId)});
+            deleted = true;
+        }
+        else{
+            deleted = false;
+        }
+        cursor.close();
+        db.close();
+        return deleted;
+    }
+
+
+    //public void deleteRecurring()
+
+
 }
 //    for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 //        int id = cursor.getInt(0);

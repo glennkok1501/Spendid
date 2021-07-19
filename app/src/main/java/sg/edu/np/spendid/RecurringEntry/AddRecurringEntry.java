@@ -86,6 +86,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
                 sg.edu.np.spendid.RecurringEntry.DatePicker mDatePickerDialogFragment;
                 mDatePickerDialogFragment = new sg.edu.np.spendid.RecurringEntry.DatePicker();
                 mDatePickerDialogFragment.show(getSupportFragmentManager(), "Pick Date");
+
             }
         });
 
@@ -123,7 +124,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
 
                 //create transaction if record is valid
                 if (validRecord()) {
-                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, Date, null,wallet.getWalletId(), null));
+                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, Date, null, null, wallet.getWalletId()));
                     Toast.makeText(getApplicationContext(), "Recurring Entry added", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
