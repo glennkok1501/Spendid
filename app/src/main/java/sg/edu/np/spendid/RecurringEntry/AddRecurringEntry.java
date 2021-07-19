@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,10 +23,15 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
@@ -86,9 +92,10 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
                 sg.edu.np.spendid.RecurringEntry.DatePicker mDatePickerDialogFragment;
                 mDatePickerDialogFragment = new sg.edu.np.spendid.RecurringEntry.DatePicker();
                 mDatePickerDialogFragment.show(getSupportFragmentManager(), "Pick Date");
-
             }
         });
+
+
 
         Spinner spinner = findViewById(R.id.recurring_wallet_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, walletList);
@@ -120,11 +127,12 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
                 String des_txt = description.getText().toString(); //get description
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
-                String Date = checkDate();
+                String date = checkDate();
+
 
                 //create transaction if record is valid
                 if (validRecord()) {
-                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, Date, null, null, wallet.getWalletId()));
+                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, null, wallet.getWalletId()));
                     Toast.makeText(getApplicationContext(), "Recurring Entry added", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -154,7 +162,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         mCalender.set(Calendar.YEAR, year);
         mCalender.set(Calendar.MONTH, month);
         mCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalender.getTime());
+        String selectedDate = DateFormat.getDateInstance().format(mCalender.getTime());
         selectDate.setText(selectedDate);
     }
 
@@ -216,12 +224,20 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
 
     private String checkDate(){
         String date = selectDate.getText().toString();
-        if (date == null){
+
+        if (date == "Click here to choose a date"){
             return null;
         }
         else{
             checkValues.put("date", true);
+            Log.v("TESTTEST", date);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date1 = simpleDateFormat.format(date);
+            Date date2 = format.parse();
+            Log.v("TESTTEST", date1);
             return date;
+
+
         }
     }
 
@@ -232,6 +248,19 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         m.put("category", false);
         m.put("date", false);
         return m;
+    }
+
+    private String formatDate(String d){
+        String dateFormat;
+        try{
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(d);
+            dateFormat = new SimpleDateFormat("dd MMMM yyyy").format(date);
+
+        }
+        catch (ParseException e) {
+            dateFormat = d;
+        }
+        return dateFormat;
     }
 
 }
