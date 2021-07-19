@@ -3,9 +3,12 @@ package sg.edu.np.spendid.Friends;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -39,6 +42,7 @@ import sg.edu.np.spendid.Friends.Utils.TransferKeyPair;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.ShoppingList.AddCartToRecord;
 import sg.edu.np.spendid.ShoppingList.ShoppingListActivity;
+import sg.edu.np.spendid.Utils.RequestPermission;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -126,6 +130,42 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private String sendKeyText(){
         return String.format("Hi, %s here, this is my code:\n%s", prefs.getString(USERNAME, DEFAULT_NAME), prefs.getString(PUBLIC_KEY, null));
     }
@@ -176,19 +216,23 @@ public class ProfileActivity extends AppCompatActivity {
                                 newKeyPair();
                                 break;
                             case "Export Keys":
-                                Toast.makeText(getApplicationContext(), "Exporting Keys...", Toast.LENGTH_SHORT).show();
-                                try {
-                                    TransferKeyPair transfer = new TransferKeyPair(ProfileActivity.this);
-                                    transfer.setPublicKey(prefs.getString(PUBLIC_KEY, ""));
-                                    transfer.setPrivateKey(prefs.getString(PRIVATE_KEY, ""));
-                                    transfer.Export();
-                                } catch (Exception e) {
-                                    Toast.makeText(ProfileActivity.this, "Unable to Export", Toast.LENGTH_SHORT).show();
-                                    e.printStackTrace();
+                                if (new RequestPermission(ProfileActivity.this).checkPermission()) {
+                                    Toast.makeText(getApplicationContext(), "Exporting Keys...", Toast.LENGTH_SHORT).show();
+                                    try {
+                                        TransferKeyPair transfer = new TransferKeyPair(ProfileActivity.this);
+                                        transfer.setPublicKey(prefs.getString(PUBLIC_KEY, ""));
+                                        transfer.setPrivateKey(prefs.getString(PRIVATE_KEY, ""));
+                                        transfer.Export();
+                                    } catch (Exception e) {
+                                        Toast.makeText(ProfileActivity.this, "Unable to Export", Toast.LENGTH_SHORT).show();
+                                        e.printStackTrace();
+                                    }
                                 }
                                 break;
                             case "Import Keys":
-                                importDialog();
+                                if (new RequestPermission(ProfileActivity.this).checkPermission()){
+                                    importDialog();
+                                }
                                 break;
                             default:
                                 Toast.makeText(getApplicationContext(), "Unknown Page", Toast.LENGTH_SHORT).show();

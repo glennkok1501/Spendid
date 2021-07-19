@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.Utils.RequestPermission;
 
 public class ImageViewDialog {
     private Context context;
@@ -47,11 +48,13 @@ public class ImageViewDialog {
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    download();
-                } catch (Exception e) {
-                    Toast.makeText(context, "Unable to download image", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                if (new RequestPermission(context).checkPermission()){
+                    try {
+                        download();
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Unable to download image", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
                 }
             }
         });

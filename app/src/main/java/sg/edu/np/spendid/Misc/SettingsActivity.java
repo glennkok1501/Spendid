@@ -1,10 +1,12 @@
 package sg.edu.np.spendid.Misc;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -22,6 +24,7 @@ import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.Utils.RequestPermission;
 
 public class SettingsActivity extends AppCompatActivity {
     private final String PREF_NAME = "sharedPrefs";
@@ -46,8 +49,12 @@ public class SettingsActivity extends AppCompatActivity {
         exportTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, ExportActivity.class);
-                startActivity(intent);
+                if (new RequestPermission(SettingsActivity.this).checkPermission()){
+                    startActivity(new Intent(SettingsActivity.this, ExportActivity.class));
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), R.string.no_permission, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -55,8 +62,12 @@ public class SettingsActivity extends AppCompatActivity {
         importTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, ImportActivity.class);
-                startActivity(intent);
+                if (new RequestPermission(SettingsActivity.this).checkPermission()){
+                    startActivity(new Intent(SettingsActivity.this, ImportActivity.class));
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), R.string.no_permission, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -94,6 +105,17 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void toggleNightMode(boolean isChecked){
