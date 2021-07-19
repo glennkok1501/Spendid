@@ -39,6 +39,7 @@ import sg.edu.np.spendid.Misc.AboutActivity;
 import sg.edu.np.spendid.Dashboard.Adapters.CurrentTrans.CurrentTransAdapter;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.ExchangeRates.ExchangeRateActivity;
+import sg.edu.np.spendid.RecurringEntry.RecurringEntryPage;
 import sg.edu.np.spendid.Wallets.ManageWalletActivity;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
@@ -329,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
     //navigation drawer
     private void initDrawer(){
         LinearLayout manageWallet, transHist, currencyRates,
-                shoppingList, settings, about, search, add,
+                shoppingList, recurringEntry, settings, about, search, add,
                 additional, addWallet, addRecord, friendsList;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
 
@@ -348,6 +349,9 @@ public class MainActivity extends AppCompatActivity {
 
         shoppingList = findViewById(R.id.navbar_shoppingList);
         setButton(shoppingList, ShoppingListMainActivity.class);
+
+        recurringEntry = findViewById(R.id.navbar_recurring);
+        setButton(recurringEntry, RecurringEntryPage.class);
 
         about = findViewById(R.id.navbar_about);
         setButton(about, AboutActivity.class);

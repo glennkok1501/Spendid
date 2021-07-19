@@ -35,6 +35,15 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
     }
     public void onBindViewHolder(RecurringSelectViewHolder holder, int position){
         Recurring r = data.get(position);
+        holder.name.setText(r.getRecurringtitle());
+        holder.amount.setText(df2.format(r.getAmount()) + "SGD");
+        holder.date.setText("Date Started: "+ r.getRecurringstartDate());
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent =
+            }
+        });
 
     }
     public int getItemCount(){return data.size();}

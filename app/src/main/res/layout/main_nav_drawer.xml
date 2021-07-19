@@ -212,7 +212,7 @@
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/white"
-                    android:text="Recurring Amount" />
+                    android:text="Recurring Entry" />
             </LinearLayout>
 
             <LinearLayout
