@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.RecurringEntry.ManageRecurringDialog;
 
 
 public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelectViewHolder>{
@@ -36,12 +37,18 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
     public void onBindViewHolder(RecurringSelectViewHolder holder, int position){
         Recurring r = data.get(position);
         holder.name.setText(r.getRecurringtitle());
-        holder.amount.setText(df2.format(r.getAmount()) + "SGD");
+        holder.amount.setText(df2.format(r.getAmount()));
         holder.date.setText("Date Started: "+ r.getRecurringstartDate());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent =
+                Intent intent = new Intent(v.getContext(), ManageRecurringDialog.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("recurId", r.getRecurringId());
+                bundle.putString("recurName", r.getRecurringtitle());
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
+
             }
         });
 

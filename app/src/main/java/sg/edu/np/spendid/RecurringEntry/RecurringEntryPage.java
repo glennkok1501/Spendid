@@ -1,6 +1,9 @@
 package sg.edu.np.spendid.RecurringEntry;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +15,20 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+import sg.edu.np.spendid.Database.DBHandler;
+import sg.edu.np.spendid.Models.Recurring;
+import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.RecurringEntry.Adapters.RecurringSelectAdapter;
 
 public class RecurringEntryPage extends AppCompatActivity {
     private Animation open, close, up, down;
-    private FloatingActionButton fab, addRecurring;
-    private boolean fabClicked, collapse_add;
+    private FloatingActionButton AddRecurringFab;
+    private DBHandler dbHandler;
+    private TextView emptyRecurring;
 
 
     @Override
@@ -25,17 +36,17 @@ public class RecurringEntryPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recurring_entry_page);
 
-        fab = findViewById(R.id.RecurringMain_fab);
-        addRecurring = findViewById(R.id.RecurringAddEntry_fab);
-
+        AddRecurringFab = findViewById(R.id.RecurringAddEntry_fab);
+        dbHandler = new DBHandler(this, null, null, 1);
+        emptyRecurring = findViewById(R.id.showRecurring_empty_textView);
         open = AnimationUtils.loadAnimation(this, R.anim.rotate_open_animation);
         close = AnimationUtils.loadAnimation(this, R.anim.rotate_close_animation);
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
         down = AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_animation);
-        hideHiddenFab(); //Init hidden buttons
+
         initToolbar(); //set toolbar
 
-        addRecurring.setOnClickListener(new View.OnClickListener() {
+        AddRecurringFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecurringEntryPage.this, AddRecurringEntry.class);
@@ -43,26 +54,7 @@ public class RecurringEntryPage extends AppCompatActivity {
             }
         });
 
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabClicked = !fabClicked;
-                if (fabClicked){
-                    addRecurring.startAnimation(up);
-                    fab.startAnimation(open);
-                    showHiddenFab();
-                }
-                else{
-                    addRecurring.startAnimation(down);
-                    fab.startAnimation(close);
-                    hideHiddenFab();
-                }
-            }
-        });
-
     }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -79,14 +71,19 @@ public class RecurringEntryPage extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        resetFab();
-    }
+    protected void onPause() { super.onPause(); }
 
     @Override
     protected void onResume() {
         super.onResume();
+        RecyclerView showRecurringRV = findViewById(R.id.show_recurring_RV);
+        ArrayList<Recurring> recurringArrayList = dbHandler.getAllRecurring();
+        checkEmpty(recurringArrayList);
+        RecurringSelectAdapter recurringSelectAdapter = new RecurringSelectAdapter(recurringArrayList, this);
+        LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
+        showRecurringRV.setLayoutManager(myLayoutManager);
+        showRecurringRV.setItemAnimator(new DefaultItemAnimator());
+        showRecurringRV.setAdapter(recurringSelectAdapter);
     }
 
     private void initToolbar(){
@@ -102,23 +99,13 @@ public class RecurringEntryPage extends AppCompatActivity {
         });
     }
 
-    private void showHiddenFab(){
-        addRecurring.setVisibility(View.VISIBLE);
-        addRecurring.setClickable(true);
-    }
-
-    private void hideHiddenFab(){
-        addRecurring.setVisibility(View.INVISIBLE);
-        addRecurring.setClickable(false);
-    }
-
-    private void resetFab(){
-        //hide fab if hidden fab shown (used for onPause)
-        if (fabClicked){
-            addRecurring.startAnimation(down);
-            fab.startAnimation(close);
-            hideHiddenFab();
-            fabClicked = !fabClicked;
+    private void checkEmpty(ArrayList<Recurring> recurringArrayList){
+        if (recurringArrayList.size() > 0){
+            emptyRecurring.setVisibility(View.GONE);
+        }
+        else{
+            emptyRecurring.setVisibility(View.VISIBLE);
+            emptyRecurring.setText("You have no Recurring Entries");
         }
     }
 }

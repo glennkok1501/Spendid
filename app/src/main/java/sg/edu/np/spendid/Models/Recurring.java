@@ -9,6 +9,7 @@ public class Recurring {
     private String recurringstartDate;
     private String recurringendDate;
     private int walletId;
+    private String LastUpdated;
 
     public int getRecurringId() {
         return recurringId;
@@ -30,9 +31,11 @@ public class Recurring {
         return recurringdescription;
     }
 
-    public void setRecurringdescription(String recurringdescription) {
-        this.recurringdescription = recurringdescription;
-    }
+    public void setRecurringdescription(String recurringdescription) { this.recurringdescription = recurringdescription; }
+
+    public String getLastUpdated() { return LastUpdated; }
+
+    public void setLastUpdated(String lastUpdated) { this.LastUpdated = lastUpdated; }
 
     public double getAmount() {
         return amount;
@@ -54,17 +57,13 @@ public class Recurring {
         return recurringstartDate;
     }
 
-    public void setRecurringstartDate(String recurringstartDate) {
-        this.recurringstartDate = recurringstartDate;
-    }
+    public void setRecurringstartDate(String recurringstartDate) { this.recurringstartDate = recurringstartDate; }
 
     public String getRecurringendDate() {
         return recurringendDate;
     }
 
-    public void setRecurringendDate(String recurringendDate) {
-        this.recurringendDate = recurringendDate;
-    }
+    public void setRecurringendDate(String recurringendDate) { this.recurringendDate = recurringendDate; }
 
     public int getWalletId() {
         return walletId;
@@ -77,17 +76,7 @@ public class Recurring {
     public Recurring() {
     }
 
-    public Recurring(String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, int walletId) {
-        this.recurringtitle = recurringtitle;
-        this.recurringdescription = recurringdescription;
-        this.amount = amount;
-        this.category = category;
-        this.recurringstartDate = recurringstartDate;
-        this.recurringendDate = recurringendDate;
-        this.walletId = walletId;
-    }
-
-    public Recurring(int recurringId, String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, int walletId) {
+    public Recurring(int recurringId, String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, int walletId, String lastUpdated) {
         this.recurringId = recurringId;
         this.recurringtitle = recurringtitle;
         this.recurringdescription = recurringdescription;
@@ -96,5 +85,17 @@ public class Recurring {
         this.recurringstartDate = recurringstartDate;
         this.recurringendDate = recurringendDate;
         this.walletId = walletId;
+        this.LastUpdated = lastUpdated;
+    }
+
+    public Recurring(String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, int walletId, String lastUpdated) {
+        this.recurringtitle = recurringtitle;
+        this.recurringdescription = recurringdescription;
+        this.amount = amount;
+        this.category = category;
+        this.recurringstartDate = recurringstartDate;
+        this.recurringendDate = recurringendDate;
+        this.walletId = walletId;
+        this.LastUpdated = lastUpdated;
     }
 }
