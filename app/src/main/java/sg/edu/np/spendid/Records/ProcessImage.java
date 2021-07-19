@@ -22,11 +22,19 @@ public class ProcessImage {
     }
 
     public byte[] render(Uri uri) throws Exception {
+        //get file path from Uri
         InputStream iStream = context.getContentResolver().openInputStream(uri);
+
         int maxSize = 5248000; //5Mb
+
+        //convert Uri to bytes
         byte[] imageBytes = getBytes(iStream);
         byte[] imageData;
+
+        //check if image size exceeded
         if (imageBytes.length < maxSize){
+
+            //compress image
             imageData = compressImg(imageBytes);
         }
         else{
@@ -43,6 +51,7 @@ public class ProcessImage {
         return out.toByteArray();
     }
 
+    //read bytes from Uri and return byte array
     private byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;

@@ -76,8 +76,8 @@ import sg.edu.np.spendid.Models.Wallet;
             des.setText(des_text);
         }
 
+        //set display for attachment
         loadImage(viewImage);
-
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +125,7 @@ import sg.edu.np.spendid.Models.Wallet;
         }
     }
 
+    //check if record has image
     private void loadImage(TextView viewImage){
         if (record.getImage() != null){
             viewImage.setOnClickListener(new View.OnClickListener() {

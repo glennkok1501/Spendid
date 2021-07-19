@@ -39,7 +39,7 @@ public class ImportExternalActivity extends AppCompatActivity {
         Button cancelBtn = findViewById(R.id.import_cancel_btn);
         Button importBtn = findViewById(R.id.import_btn);
 
-        uri = getImportIntent();
+        uri = getImportIntent(); //get Uri of file
         dbHandler = new DBHandler(this, null, null, 1);
         walletArrayList = dbHandler.getWallets();
         String[] walletList = getWalletList();
@@ -50,8 +50,13 @@ public class ImportExternalActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        //check if user has wallets
         if (walletArrayList.size() > 0){
+
+            //get wallet object based on selected index
             wallet = walletArrayList.get(spinner.getSelectedItemPosition());
+
+            //reassign selected wallet when spinner index change
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -68,6 +73,7 @@ public class ImportExternalActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
         }
 
+        //encryption is enabled
         SwitchMaterial encryptSwitch = findViewById(R.id.import_encrypt_switch);
         encryptSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -82,6 +88,7 @@ public class ImportExternalActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (uri != null && wallet != null){
                     try{
+                        //insert records from csv files
                         new ImportCSV(ImportExternalActivity.this, uri, wallet, dbHandler).run(encrypted);
                         finish();
                     }
@@ -99,11 +106,9 @@ public class ImportExternalActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
     }
 
+    //check if Uri is valid
     private Uri getImportIntent() {
         Uri uri = getIntent().getData();
         if (uri == null) {

@@ -33,7 +33,10 @@ public class ViewImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_image);
 
+        //get record id
         Intent intent = getIntent();
+
+        //get bytes of image
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
         imageBytes = dbHandler.getRecordImage(intent.getIntExtra("recordId", 0));
 
@@ -52,10 +55,13 @@ public class ViewImageActivity extends AppCompatActivity {
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //check permission to download
                 if (new RequestPermission(ViewImageActivity.this).checkPermission()){
                     try {
                         download();
-                    } catch (Exception e) {
+                    }
+                    //error handling
+                    catch (Exception e) {
                         Toast.makeText(ViewImageActivity.this, "Unable to download image", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
@@ -79,6 +85,7 @@ public class ViewImageActivity extends AppCompatActivity {
         image.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
     }
 
+    //write file to downloads folder
     private void download() throws Exception {
         Toast.makeText(ViewImageActivity.this, "Downloading...", Toast.LENGTH_SHORT).show();
         String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".jpg";

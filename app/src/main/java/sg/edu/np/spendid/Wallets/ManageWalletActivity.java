@@ -56,7 +56,7 @@ public class ManageWalletActivity extends AppCompatActivity {
         bal.setText(df2.format(dbHandler.getTotalBalance()));
         ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
         checkEmpty(walletArrayList);
-        WalletManageAdapter myAdapter = new WalletManageAdapter(walletArrayList, this);
+        WalletManageAdapter myAdapter = new WalletManageAdapter(walletArrayList, this, dbHandler);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

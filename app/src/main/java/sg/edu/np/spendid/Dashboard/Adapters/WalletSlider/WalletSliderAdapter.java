@@ -19,14 +19,12 @@ import sg.edu.np.spendid.R;
 
 public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderViewHolder> {
     ArrayList<Wallet> data;
-    private Context context;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
     private DBHandler dbHandler;
 
 
-    public WalletSliderAdapter(ArrayList<Wallet> input, Context context, DBHandler dbHandler){
+    public WalletSliderAdapter(ArrayList<Wallet> input, DBHandler dbHandler){
         data = input;
-        this.context = context;
         this.dbHandler = dbHandler;
     }
 
@@ -44,7 +42,7 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderViewHo
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), wallet, false);
+                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), wallet, false, dbHandler);
                 dialog.show();
             }
         });

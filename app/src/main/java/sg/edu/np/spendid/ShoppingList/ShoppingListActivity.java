@@ -42,7 +42,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         initToolbar(); //set toolbar
 
         RecyclerView recyclerView = findViewById(R.id.cartItems_RV);
-        myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), empty ,this, dbHandler);
+        myAdapter = new CartItemsAdapter(dbHandler.getCartItems(cartId), empty, dbHandler);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -118,7 +118,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                                 finish();
                                 break;
                             case "Add to Transaction":
-                                AddCartToRecord addCartToRecord = new AddCartToRecord(ShoppingListActivity.this, cartId);
+                                AddCartToRecord addCartToRecord = new AddCartToRecord(ShoppingListActivity.this, cartId, dbHandler);
                                 addCartToRecord.add();
                                 break;
                             default:

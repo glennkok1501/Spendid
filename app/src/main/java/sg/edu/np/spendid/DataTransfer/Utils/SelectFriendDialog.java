@@ -38,9 +38,12 @@ public class SelectFriendDialog {
     public SelectFriendDialog (Context context, ArrayList<Friend> friendsList) {
         this.context = context;
         this.friendsList = friendsList;
+        this.selected = null;
+
+        //Insert user into friends list
         SharedPreferences prefs = context.getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         this.friendsList.add(0, new Friend("Myself", currentDate(), prefs.getString(PUBLIC_KEY, null)));
-        this.selected = null;
+
         dialog = new Dialog(this.context);
         dialog.setContentView(R.layout.select_friend_dialog);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

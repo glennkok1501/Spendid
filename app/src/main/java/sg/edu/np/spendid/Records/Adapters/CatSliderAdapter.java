@@ -35,6 +35,8 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderViewHolder> 
     public void onBindViewHolder(CatSliderViewHolder holder, int position){
         Category category = data.get(position);
         holder.image.setImageResource(categoryHelper.setIcon(category.getTitle()));
+
+        //update selected category
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +45,8 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderViewHolder> 
                 notifyDataSetChanged();
             }
         });
+
+        //change color
         if (selectedPos == position){
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.denim));
         }

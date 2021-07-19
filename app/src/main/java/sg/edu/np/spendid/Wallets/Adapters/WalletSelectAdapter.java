@@ -21,14 +21,12 @@ import sg.edu.np.spendid.Records.AddRecordActivity;
 
 public class WalletSelectAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
     ArrayList<Wallet> data;
-    private Context context;
     private DBHandler dbHandler;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public WalletSelectAdapter(ArrayList<Wallet> input, Context context){
+    public WalletSelectAdapter(ArrayList<Wallet> input, DBHandler dbHandler){
         data = input;
-        this.context = context;
-        dbHandler = new DBHandler(this.context, null, null, 1);
+        this.dbHandler = dbHandler;
 
     }
 

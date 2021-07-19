@@ -18,11 +18,13 @@ import sg.edu.np.spendid.R;
 public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
     ArrayList<Wallet> data;
     private Context context;
+    private DBHandler dbHandler;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public WalletManageAdapter(ArrayList<Wallet> input, Context context){
+    public WalletManageAdapter(ArrayList<Wallet> input, Context context, DBHandler dbHandler){
         data = input;
         this.context = context;
+        this.dbHandler = dbHandler;
     }
 
     public WalletSelectViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -31,7 +33,6 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
     }
 
     public void onBindViewHolder(WalletSelectViewHolder holder, int position){
-        DBHandler dbHandler = new DBHandler(context, null, null, 1);
         String baseCurrency = context.getString(R.string.baseCurrency);
         Wallet wallet = data.get(position);
         holder.name.setText(wallet.getName());
@@ -40,7 +41,7 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), wallet, true);
+                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), wallet, true, dbHandler);
                 dialog.show();
             }
         });

@@ -16,7 +16,7 @@ public class ExportRecordHelper {
 
     public StringBuilder ToCSV(){
         StringBuilder data = new StringBuilder(); //initiate string builder to store data
-        CryptographyBase64 b64 = new CryptographyBase64();
+        CryptographyBase64 b64 = new CryptographyBase64(); //used Base64 for encoding images
 
         //iterate through records array list and add to string builder
         for (Record r : records){

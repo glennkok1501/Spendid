@@ -27,19 +27,22 @@ public class ViewFriendActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_friend);
-        initToolbar();
-        dbHandler = new DBHandler(this, null, null, 1);
-
-        Intent intent = getIntent();
-        friend = dbHandler.getFriend(intent.getIntExtra("friendId", 0));
-
         ImageView qrcode = findViewById(R.id.profileView_qrcode_imageView);
         TextView shareCode = findViewById(R.id.profileView_key_textView);
         TextView friendName = findViewById(R.id.profileView_name_textView);
         TextView dateAdded = findViewById(R.id.profileView_date_textView);
+        initToolbar();
+        dbHandler = new DBHandler(this, null, null, 1);
 
+        Intent intent = getIntent();
+
+        //get friend object
+        friend = dbHandler.getFriend(intent.getIntExtra("friendId", 0));
+
+        //generate friend qr code
         new GenerateQRCode(this, qrcode).run(friend.getName()+";"+friend.getPublicKey());
 
+        //set values
         friendName.setText(friend.getName());
         dateAdded.setText(friend.getDateAdded());
 
@@ -49,7 +52,6 @@ public class ViewFriendActivity extends AppCompatActivity {
                 new ShareText(ViewFriendActivity.this).start("Spendid Key", setShareText());
             }
         });
-
     }
 
     private String setShareText(){

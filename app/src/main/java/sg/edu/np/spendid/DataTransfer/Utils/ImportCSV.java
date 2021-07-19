@@ -39,8 +39,11 @@ public class ImportCSV {
 
         //initiate empty array list to store records retrieved
         ArrayList<Record> newRecords = new ArrayList<>();
+
+        //initiate base64 for decoding
         CryptographyBase64 b64 = new CryptographyBase64();
 
+        //check if file is encrypted
         if (encrypted){
             //read encrypted file
             String line;
@@ -51,8 +54,13 @@ public class ImportCSV {
             //decrypt message and add transactions to database
             String decrypted = new Cryptography(context).Decrypt(encryptedMessage.toString());
             for (String dataLine : decrypted.split("\n")){
-                String[] data = dataLine.split(delimiter); //separate data by delimiter
+
+                //separate data by delimiter
+                String[] data = dataLine.split(delimiter);
+
+                //decode images if not null
                 byte[] decodedImg = (!data[6].equals("null")) ? b64.b64ToBytes(data[6]) : null;
+
                 //add record to arrayList
                 newRecords.add(new Record(data[0], data[1],Double.parseDouble(data[2]), data[3], data[4],data[5], decodedImg, wallet.getWalletId()));
             }
@@ -63,6 +71,7 @@ public class ImportCSV {
             while ((line = reader.readLine()) != null ){
                 String[] data = line.split(delimiter); //separate data by delimiter
 
+                //decode images if not null
                 byte[] decodedImg = (!data[6].equals("null")) ? b64.b64ToBytes(data[6]) : null;
 
                 //add record to arrayList

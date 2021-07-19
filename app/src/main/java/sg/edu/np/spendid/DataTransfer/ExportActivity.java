@@ -1,7 +1,6 @@
 package sg.edu.np.spendid.DataTransfer;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -70,9 +69,13 @@ public class ExportActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        //get wallet object on first selected choice based on name
+        //check if user has wallets
         if (walletArrayList.size() > 0){
+
+            //get wallet object based on selected index
             wallet = walletArrayList.get(spinner.getSelectedItemPosition());
+
+            //reassign selected wallet when spinner index change
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -89,12 +92,14 @@ public class ExportActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
         }
 
+        //enable encryption
         SwitchMaterial encryptSwitch = findViewById(R.id.export_encrypt_switch);
         encryptSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 encryptFile = isChecked;
                 if (isChecked){
+                    //choose public key to encrypt
                     sendToDialog.show();
                 }
             }
@@ -140,17 +145,6 @@ public class ExportActivity extends AppCompatActivity {
         this.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     //create a string array of wallet names for spinner to use
     private String[] getWalletList(){
         String[] walletList = new String[walletArrayList.size()];
@@ -163,11 +157,15 @@ public class ExportActivity extends AppCompatActivity {
     private void exportRecords (ArrayList<Record> records){
         String filename = "spendid_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".csv";
         try {
+            //convert records array to csv format
             StringBuilder builderData = new ExportRecordHelper(records).ToCSV();
+
+            //encrypt data if encryption is needed
             String data = (encryptFile && sendToDialog.getSelected() != null) ?
                     new Cryptography(ExportActivity.this).Encrypt(builderData.toString(), sendToDialog.getSelected().getPublicKey())
                     : builderData.toString();
-            //write the file with string builder contents
+
+            //write the file with string contents
             FileOutputStream out = openFileOutput(filename, Context.MODE_PRIVATE);
             File fileLocation = new File(getFilesDir(), filename);
             out.write(data.getBytes());
@@ -179,7 +177,7 @@ public class ExportActivity extends AppCompatActivity {
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            fileIntent.setType("text/comma-separated-values");
+            fileIntent.setType("text/comma-separated-values"); //only allow CSV files
             fileIntent.putExtra(Intent.EXTRA_SUBJECT, filename);
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
             Intent chooser = Intent.createChooser(fileIntent, "Spendid_backup");

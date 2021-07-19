@@ -50,7 +50,7 @@ public class ExchangeRatesAdapter extends RecyclerView.Adapter<ExchangeRatesView
             }
         }
         //remove and insert to first if found
-        if (index > 0 && currency != null){
+        if (index != -1 && currency != null){
             data.remove(index);
             data.add(0, currency);
         }

@@ -96,13 +96,20 @@ public class AddRecordActivity extends AppCompatActivity {
                         //import the file if result of file is chosen
                         if (result != null){
                             try {
+                                //get image bytes
                                 imageData = new ProcessImage(AddRecordActivity.this).render(result);
+
+                                //validate image
                                 if (imageData != null){
+
+                                    //set image and change message
                                     selImage.setText("Image Attached");
                                     imageStatus.setImageResource(R.drawable.ic_clear_24);
                                     removeImg(imageStatus, selImage);
                                 }
-                            } catch (Exception e) {
+                            }
+                            //error handling
+                            catch (Exception e) {
                                 e.printStackTrace();
                                 Toast.makeText(getApplicationContext(), "Unable to save image", Toast.LENGTH_SHORT).show();
                             }
@@ -114,7 +121,7 @@ public class AddRecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (new RequestPermission(AddRecordActivity.this).checkPermission()){
-                    getFile.launch("image/*"); //initiate filer picker with any file type
+                    getFile.launch("image/*"); //initiate file picker with CSV format
                 }
             }
         });
@@ -187,7 +194,7 @@ public class AddRecordActivity extends AppCompatActivity {
     //prompt currency exchange dialog if wallet currency is not in SGD
     private void promptConversion(){
         if (!walletCurrency.equals(baseCurrency)){
-            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, walletCurrency.toLowerCase());
+            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, walletCurrency.toLowerCase(), dbHandler);
             currencyConvertDialog.setAmt(amt);
             currencyConvertDialog.show();
         }
@@ -255,6 +262,7 @@ public class AddRecordActivity extends AppCompatActivity {
         return valid;
     }
 
+    //remove selected image and change message
     private void removeImg(ImageView image, TextView text){
         image.setOnClickListener(new View.OnClickListener() {
             @Override

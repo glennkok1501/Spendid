@@ -19,33 +19,31 @@ public class GenerateQRCode {
     public GenerateQRCode(Context context, ImageView imageView) {
         this.context = context;
         this.imageView = imageView;
-
     }
 
     public void run(String text){
 
+        //get window size
         WindowManager manager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
 
         // initializing a variable for default display.
         Display display = manager.getDefaultDisplay();
 
-        // creating a variable for point which
-        // is to be displayed in QR Code.
+        // creating a variable for point which is to be displayed in QR Code.
         Point point = new Point();
         display.getSize(point);
 
         // getting width
         int width = point.x;
 
-        // generating dimension from width and height.
+        // generating dimension for 4/5.
         int dimen = (width / 5)*4;
 
         QRGEncoder qrgEncoder = new QRGEncoder(text, null, QRGContents.Type.TEXT, dimen);
         try {
-            // getting our qrcode in the form of bitmap.
+            // getting qrcode in the form of bitmap.
             Bitmap bitmap = qrgEncoder.encodeAsBitmap();
-            // the bitmap is set inside our image
-            // view using .setimagebitmap method.
+            // set bitmap to imageview
             imageView.setImageBitmap(bitmap);
         } catch (Exception e) {
             // this method is called for
