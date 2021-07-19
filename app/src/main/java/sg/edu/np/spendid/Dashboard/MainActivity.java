@@ -39,6 +39,7 @@ import sg.edu.np.spendid.Misc.AboutActivity;
 import sg.edu.np.spendid.Dashboard.Adapters.CurrentTrans.CurrentTransAdapter;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.ExchangeRates.ExchangeRateActivity;
+import sg.edu.np.spendid.Models.SeedData;
 import sg.edu.np.spendid.Statistics.StatisticsActivity;
 import sg.edu.np.spendid.Wallets.ManageWalletActivity;
 import sg.edu.np.spendid.R;
@@ -94,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
         initDrawer(); //Drawer and Navbar;
 
         //Seed Data
-//        if (dbHandler.getWallets().size() == 0){
-//            SeedData seedData = new SeedData(this);
-//            seedData.initDatabase();
-//        }
+        if (dbHandler.getWallets().size() == 0){
+            SeedData seedData = new SeedData(this);
+            seedData.initDatabase();
+        }
 
 
         manage.setOnClickListener(new View.OnClickListener() {

@@ -100,10 +100,16 @@ public class FriendScannerActivity extends AppCompatActivity {
         );
         //get receivers public key
         if (intentResult.getContents() != null){
-            disableKey();
-            String[] received = intentResult.getContents().split(";");
-            key.setText(received[1]);
-            name_editText.setText(received[0]);
+            try{
+                disableKey();
+                String[] received = intentResult.getContents().split(";");
+                key.setText(received[1]);
+                name_editText.setText(received[0]);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
             editKey.setChecked(true);
