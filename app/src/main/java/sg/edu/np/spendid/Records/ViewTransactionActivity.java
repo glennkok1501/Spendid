@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -114,17 +115,6 @@ import sg.edu.np.spendid.Models.Wallet;
         super.onDestroy();
     }
 
-   @Override
-   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-           Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-       }
-       else{
-           Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
-       }
-   }
-
     private void checkExpense(boolean isExpense, ImageView walletExpense){
         //check if record is an expense or income to change image accordingly
         if (isExpense){
@@ -140,7 +130,9 @@ import sg.edu.np.spendid.Models.Wallet;
             viewImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new ImageViewDialog(ViewTransactionActivity.this, record.getImage()).show();
+                    Intent intent = new Intent(ViewTransactionActivity.this, ViewImageActivity.class);
+                    intent.putExtra("recordId", record.getId());
+                    startActivity(intent);
                 }
             });
         }
