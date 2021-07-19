@@ -446,6 +446,31 @@ public class DBHandler extends SQLiteOpenHelper {
         return recordList;
     }
 
+    //returns an array of all records
+    public ArrayList<Record> getMonthRecords(String yyyy, String MM) {
+        ArrayList<Record> recordList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE "+ COLUMN_RECORD_DATECREATED + " LIKE "+ "\'"+yyyy+"-"+MM+"-"+"%\'"+" ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "
+                + COLUMN_RECORD_TIMECREATED + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String des = cursor.getString(2);
+            double amt = cursor.getDouble(3);
+            String cat = cursor.getString(4);
+            String dateCreated = cursor.getString(5);
+            String timeCreated = cursor.getString(6);
+            byte[] image = cursor.getBlob(7);
+            int walletId = cursor.getInt(8);
+            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, image, walletId);
+            recordList.add(record);
+        }
+        cursor.close();
+        db.close();
+        return recordList;
+    }
+
     //get a specific record by recordId
     public Record getRecord(int rId) {
         String query = "SELECT * FROM " + TABLE_RECORD + " WHERE " + COLUMN_RECORD_ID + " = " + rId;
@@ -559,7 +584,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public HashMap<String, ArrayList<Record>> getGroupedTransaction(String date) {
         HashMap<String, ArrayList<Record>> group = new HashMap<String, ArrayList<Record>>();
         String query = "SELECT * FROM " + TABLE_RECORD + " r INNER JOIN " + TABLE_CATEGORY + " c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY +
-                " WHERE r." + COLUMN_WALLET_DATECREATED + " = " + "\'" + date + "\' ORDER BY " + COLUMN_RECORD_TIMECREATED + " DESC";
+                " WHERE r." + COLUMN_WALLET_DATECREATED + " LIKE " + "\'" + date + "\' ORDER BY " + COLUMN_RECORD_TIMECREATED + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {

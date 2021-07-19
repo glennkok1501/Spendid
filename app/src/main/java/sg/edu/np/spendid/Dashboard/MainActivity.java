@@ -39,6 +39,7 @@ import sg.edu.np.spendid.Misc.AboutActivity;
 import sg.edu.np.spendid.Dashboard.Adapters.CurrentTrans.CurrentTransAdapter;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.ExchangeRates.ExchangeRateActivity;
+import sg.edu.np.spendid.Statistics.StatisticsActivity;
 import sg.edu.np.spendid.Wallets.ManageWalletActivity;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
@@ -330,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
     private void initDrawer(){
         LinearLayout manageWallet, transHist, currencyRates,
                 shoppingList, settings, about, search, add,
-                additional, addWallet, addRecord, friendsList;
+                additional, addWallet, addRecord, stats, friendsList;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
 
         //set re-directions to activities
@@ -354,6 +355,9 @@ public class MainActivity extends AppCompatActivity {
 
         settings = findViewById(R.id.navbar_settings);
         setButton(settings, SettingsActivity.class);
+
+        stats = findViewById(R.id.navbar_stats);
+        setButton(stats, StatisticsActivity.class);
 
         friendsList = findViewById(R.id.navbar_friendsList);
         setButton(friendsList, FriendsListActivity.class);
