@@ -13,9 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid">
-        <activity android:name=".Statistics.StatisticsActivity">
-
-        </activity>
+        <activity android:name=".Statistics.StatisticsActivity"/>
         <activity android:name=".DataTransfer.ImportActivity" />
         <activity android:name=".Friends.ViewFriendActivity" />
         <activity android:name=".Friends.ProfileActivity" />
