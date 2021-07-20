@@ -22,6 +22,7 @@ public class RequestPermission {
         activity = (Activity) context;
     }
 
+    //check if app has permission to read files
     public boolean checkPermission(){
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){

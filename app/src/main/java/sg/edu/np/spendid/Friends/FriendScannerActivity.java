@@ -101,12 +101,17 @@ public class FriendScannerActivity extends AppCompatActivity {
         //get receivers public key
         if (intentResult.getContents() != null){
             try{
+                //lock edit text if key found
                 disableKey();
+                //split contents by name and public key
                 String[] received = intentResult.getContents().split(";");
+
+                //set values
                 key.setText(received[1]);
                 name_editText.setText(received[0]);
             }
             catch (Exception e){
+                //error handling
                 e.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_SHORT).show();
             }
@@ -117,6 +122,7 @@ public class FriendScannerActivity extends AppCompatActivity {
         }
     }
 
+    //get current date
     private String currentDate(){
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

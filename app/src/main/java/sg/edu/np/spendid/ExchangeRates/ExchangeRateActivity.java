@@ -104,11 +104,11 @@ public class ExchangeRateActivity extends AppCompatActivity {
     }
 
     //prompt dialog to select currency
-    private void setSelection(CardView c, TextView t){
+    private void setSelection(CardView c, TextView textView){
         c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectCountryDialog dialog = new SelectCountryDialog(ExchangeRateActivity.this, getResources().getStringArray(R.array.countries), t);
+                SelectCountryDialog dialog = new SelectCountryDialog(ExchangeRateActivity.this, getResources().getStringArray(R.array.countries), textView);
                 dialog.show();
             }
         });

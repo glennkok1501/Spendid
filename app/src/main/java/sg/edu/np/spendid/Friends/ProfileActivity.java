@@ -47,11 +47,7 @@ import sg.edu.np.spendid.Utils.Security.Cryptography;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private ImageView qrcode;
-    private Button saveName;
-    private TextView keyText;
     private EditText username;
-    private final String PREF_NAME = "sharedPrefs";
     private final String PUBLIC_KEY = "publicKey";
     private final String PRIVATE_KEY = "privateKey";
     private final String DEFAULT_NAME = "Spendid User";
@@ -64,18 +60,23 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        qrcode = findViewById(R.id.profile_qrcode_imageView);
+        ImageView qrcode = findViewById(R.id.profile_qrcode_imageView);
         username = findViewById(R.id.profile_username_editText);
-        keyText = findViewById(R.id.profile_key_textView);
+        TextView keyText = findViewById(R.id.profile_key_textView);
+        String PREF_NAME = "sharedPrefs";
         prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        saveName = findViewById(R.id.profile_username_button);
+        Button saveName = findViewById(R.id.profile_username_button);
         TextInputLayout layout = findViewById(R.id.profile_username_layout);
+
+        //initialize QR code
         genQRCode = new GenerateQRCode(this, qrcode);
 
+        //initialize toolbar
         initToolbar();
 
         genQRCode.run(getQRCodeText());
 
+        //get name from shared prefs
         getName();
 
         keyText.setOnClickListener(new View.OnClickListener() {
@@ -85,16 +86,23 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        //edit name and save to shared prefs
         saveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = username.getText().toString();
+
+                //check for valid name
                 if (validName(name)){
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString(USERNAME, name);
                     editor.apply();
+
+                    //regenerate qr code with new name
                     genQRCode.run(getQRCodeText());
                     Toast.makeText(getApplicationContext(), "Saved name", Toast.LENGTH_SHORT).show();
+
+                    //remove error on layout
                     layout.setError(null);
                 }
                 else{
@@ -104,6 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        //open file picker
         getFile = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
@@ -117,6 +126,8 @@ public class ProfileActivity extends AppCompatActivity {
                                 new Cryptography(ProfileActivity.this).importKeyPair(
                                                 keyPairObj.getString(PUBLIC_KEY),
                                                 keyPairObj.getString(PRIVATE_KEY));
+
+                                //regenerate qr code
                                 genQRCode.run(getQRCodeText());
                                 Toast.makeText(getApplicationContext(), "Import Successful", Toast.LENGTH_SHORT).show();
 
@@ -213,24 +224,32 @@ public class ProfileActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getTitle().toString()){
                             case "New Key":
+                                //generate new key pair
                                 newKeyPair();
                                 break;
                             case "Export Keys":
+                                //check for permission
                                 if (new RequestPermission(ProfileActivity.this).checkPermission()) {
                                     Toast.makeText(getApplicationContext(), "Exporting Keys...", Toast.LENGTH_SHORT).show();
+
                                     try {
+                                        //export public and private key to JSON file
                                         TransferKeyPair transfer = new TransferKeyPair(ProfileActivity.this);
                                         transfer.setPublicKey(prefs.getString(PUBLIC_KEY, ""));
                                         transfer.setPrivateKey(prefs.getString(PRIVATE_KEY, ""));
                                         transfer.Export();
-                                    } catch (Exception e) {
+                                    }
+                                    //error handling
+                                    catch (Exception e) {
                                         Toast.makeText(ProfileActivity.this, "Unable to Export", Toast.LENGTH_SHORT).show();
                                         e.printStackTrace();
                                     }
                                 }
                                 break;
                             case "Import Keys":
+                                //check for permission
                                 if (new RequestPermission(ProfileActivity.this).checkPermission()){
+                                    //warning for importing keys
                                     importDialog();
                                 }
                                 break;
@@ -284,14 +303,18 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.setPositive().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFile.launch("application/json");
+                //open file picker
+                getFile.launch("application/json"); //only accept JSON file
                 dialog.dismiss();
+
+                //regenerate qr code
                 genQRCode.run(getQRCodeText());
             }
         });
         dialog.show();
     }
 
+    //format qrcode text with name and public key
     private String getQRCodeText(){
         String key = prefs.getString(PUBLIC_KEY, null);
         String name = prefs.getString(USERNAME, DEFAULT_NAME);

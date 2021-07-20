@@ -20,16 +20,14 @@ import sg.edu.np.spendid.ShoppingList.ShoppingListActivity;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHolder>{
     ArrayList<ShoppingCart> data;
-    private Context context;
     private DBHandler dbHandler;
     private TextView empty;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public ShoppingListAdapter(ArrayList<ShoppingCart> input, TextView empty, Context context){
+    public ShoppingListAdapter(ArrayList<ShoppingCart> input, TextView empty, DBHandler dbHandler){
         data = input;
-        this.context = context;
         this.empty = empty;
-        dbHandler = new DBHandler(this.context, null, null, 1);
+        this.dbHandler = dbHandler;
         checkEmpty();
     }
 

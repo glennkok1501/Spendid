@@ -15,6 +15,7 @@ public class CryptographyRSA {
 
     public CryptographyRSA(){}
 
+    //generate public key and private key
     public KeyPair GenerateKeyPair(){
         try{
             KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
@@ -27,6 +28,7 @@ public class CryptographyRSA {
         }
     }
 
+    //convert bytes to public key
     public PublicKey setPublicKey(byte[] bytes) {
         try{
             return KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(bytes));
@@ -37,6 +39,7 @@ public class CryptographyRSA {
         }
     }
 
+    //convert bytes to private key
     public PrivateKey setPrivateKey(byte[] bytes) {
         try{
             return KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(bytes));
@@ -47,6 +50,7 @@ public class CryptographyRSA {
         }
     }
 
+    //encrypt with public key
     public byte[] Encrypt(byte[] secretKey, PublicKey key){
         try{
             Cipher encryptCipher = Cipher.getInstance("RSA");
@@ -60,6 +64,7 @@ public class CryptographyRSA {
         }
     }
 
+    //decrypt with private key
     public byte[] Decrypt(byte[] encryptedSecretKey, PrivateKey key){
         try{
             Cipher decryptCipher = Cipher.getInstance("RSA");

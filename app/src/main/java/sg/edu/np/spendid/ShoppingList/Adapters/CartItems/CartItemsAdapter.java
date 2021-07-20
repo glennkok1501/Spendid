@@ -18,14 +18,12 @@ import sg.edu.np.spendid.R;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> {
     ArrayList<CartItem> data;
-    private Context context;
     private DBHandler dbHandler;
     private TextView empty;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public CartItemsAdapter(ArrayList<CartItem> input, TextView empty, Context context, DBHandler dbHandler){
+    public CartItemsAdapter(ArrayList<CartItem> input, TextView empty, DBHandler dbHandler){
         data = input;
-        this.context = context;
         this.empty = empty;
         this.dbHandler = dbHandler;
         checkEmpty();
@@ -41,6 +39,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         holder.name.setText(cartItem.getName());
         holder.amt.setText(df2.format(cartItem.getAmount()));
         holder.check.setChecked(cartItem.isCheck());
+
+        //show dialog when item clicked
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +49,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
                 dialog.show();
             }
         });
+
+        //change checked value of item
         holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -62,12 +64,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         return data.size();
     }
 
+
+    //update data set
     public void update(ArrayList<CartItem> updatedData){
         data = updatedData;
         notifyDataSetChanged();
         checkEmpty();
     }
 
+    //change specific item in data set
     public void edit(CartItem c, CartItem newC){
         int pos = data.indexOf(c);
         data.remove(pos);
@@ -75,6 +80,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         notifyItemChanged(pos);
     }
 
+    //delete item in data set
     public void delete(CartItem c){
         int pos = data.indexOf(c);
         data.remove(c);
@@ -82,6 +88,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         checkEmpty();
     }
 
+    //remove all items
     public void clear(){
         int size = data.size();
         data.clear();

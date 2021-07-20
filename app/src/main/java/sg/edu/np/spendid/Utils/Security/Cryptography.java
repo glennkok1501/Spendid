@@ -13,6 +13,8 @@ import javax.crypto.SecretKey;
 
 import static android.content.Context.MODE_PRIVATE;
 
+//provide encryption and decryption of files
+
 public class Cryptography {
     private Context context;
 
@@ -29,11 +31,12 @@ public class Cryptography {
     public Cryptography(Context context) {
         this.context = context;
 
+        //initialize cryptography algorithms
         prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        aes = new CryptographyAES();
-        rsa = new CryptographyRSA();
-        sha = new CryptographySHA256();
-        b64 = new CryptographyBase64();
+        aes = new CryptographyAES(); //AES256
+        rsa = new CryptographyRSA(); //RSA 2048
+        sha = new CryptographySHA256(); //SHA256
+        b64 = new CryptographyBase64(); //Base64 encoding
     }
 
     public String Encrypt(String message, String PUBLIC_KEY) throws Exception {
@@ -72,10 +75,12 @@ public class Cryptography {
         }
     }
 
+    //check shared prefs for key pair
     public boolean checkKeyPair(){
         return (prefs.getString(PUBLIC_KEY, null) == null || prefs.getString(PRIVATE_KEY, null) == null);
     }
 
+    //generate new kay pair
     public void newKeyPair() {
         KeyPair keyPair = new CryptographyRSA().GenerateKeyPair();
         SharedPreferences.Editor editor = prefs.edit();
@@ -84,6 +89,7 @@ public class Cryptography {
         editor.apply();
     }
 
+    //save key pair
     public void importKeyPair(String publicKey, String privateKey){
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PUBLIC_KEY, publicKey);

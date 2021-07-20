@@ -36,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null, null, 1);
         initToolbar(); //set toolbar
 
+        //night mode
         SwitchMaterial nightModeSw = findViewById(R.id.settings_nightMode_switch);
         nightModeSw.setChecked(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("nightMode", false));
         nightModeSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -45,6 +46,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        //export activity
         TextView exportTextView = findViewById(R.id.settings_export_textView);
         exportTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        //import activity
         TextView importTextView = findViewById(R.id.settings_import_textView);
         importTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        //clear all records and wallets
         TextView clearAllTextView = findViewById(R.id.settings_clearAll_textView);
         clearAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +173,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void clearAllData(){
         ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
         try{
+            //remove all records and wallets
             for (Wallet wallet : walletArrayList){
                 int walletId = wallet.getWalletId();
                 dbHandler.deleteWalletRecords(walletId);

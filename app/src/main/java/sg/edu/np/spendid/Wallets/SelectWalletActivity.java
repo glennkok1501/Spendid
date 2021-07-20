@@ -44,7 +44,7 @@ public class SelectWalletActivity extends AppCompatActivity {
         RecyclerView selWalletRV = findViewById(R.id.sel_wallet_RV);
         ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
         checkEmpty(walletArrayList);
-        WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(walletArrayList, this);
+        WalletSelectAdapter walletSelectAdapter = new WalletSelectAdapter(walletArrayList, dbHandler);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         selWalletRV.setLayoutManager(myLayoutManager);
         selWalletRV.setItemAnimator(new DefaultItemAnimator());

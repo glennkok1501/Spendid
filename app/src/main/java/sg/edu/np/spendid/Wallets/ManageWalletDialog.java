@@ -29,17 +29,18 @@ public class ManageWalletDialog {
     private Context context;
     private Wallet wallet;
     private boolean selectFav;
+    private DBHandler dbHandler;
     private final String PREF_NAME = "sharedPrefs";
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public ManageWalletDialog(Context context, Wallet wallet, boolean selectFav) {
+    public ManageWalletDialog(Context context, Wallet wallet, boolean selectFav, DBHandler dbHandler) {
         this.context = context;
         this.wallet = wallet;
         this.selectFav = selectFav;
+        this.dbHandler = dbHandler;
     }
 
     public void show() {
-        DBHandler dbHandler = new DBHandler(context, null, null, 1);
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.manage_view_wallet_layout);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

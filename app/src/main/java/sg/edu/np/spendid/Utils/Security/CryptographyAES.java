@@ -11,6 +11,7 @@ public class CryptographyAES {
 
     public CryptographyAES() { }
 
+    //generate secret key
     public SecretKey GenerateKey(){
         try {
             keyGenerator = KeyGenerator.getInstance("AES");
@@ -23,6 +24,7 @@ public class CryptographyAES {
         }
     }
 
+    //encrypt message with secret key
     public byte[] Encrypt(byte[] plaintext, SecretKey key){
         try{
             Cipher cipher = Cipher.getInstance("AES");
@@ -38,6 +40,7 @@ public class CryptographyAES {
 
     }
 
+    //decrypt message with secret key
     public byte[] Decrypt(byte[] cipherText, SecretKey key) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
@@ -50,6 +53,7 @@ public class CryptographyAES {
         return null;
     }
 
+    //convert bytes to secret key
     public SecretKey setSecretKey(byte[] bytes){
         return new SecretKeySpec(bytes, "AES");
     }

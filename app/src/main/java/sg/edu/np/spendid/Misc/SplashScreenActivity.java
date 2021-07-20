@@ -19,7 +19,7 @@ import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
 
 public class SplashScreenActivity extends AppCompatActivity {
-    private int SPLASH_SCREEN = 2500;
+    private int SPLASH_SCREEN = 2000;
     private Animation topAnim, bottomAnim;
     private ImageView image;
     private TextView txt;
@@ -30,6 +30,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
+        image = findViewById(R.id.AppIconLogo);
+        txt = findViewById(R.id.AppIconName);
         dbHandler = new DBHandler(this, null, null, 1);
 
         //check for night mode
@@ -41,20 +43,16 @@ public class SplashScreenActivity extends AppCompatActivity {
         //initialise public and private keys
         initKeyPair();
 
+        //animation
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
-
-        image = findViewById(R.id.AppIconLogo);
-        txt = findViewById(R.id.AppIconName);
-
         image.setAnimation(topAnim);
         txt.setAnimation(bottomAnim);
 
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run(){
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                 finish();
             }
         }, SPLASH_SCREEN);
@@ -86,6 +84,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //check for night mode settings
     private void toggleNightMode(){
         if (getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("nightMode", false)){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -95,6 +94,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
+    //generate new key pair if not found
     private void initKeyPair(){
         Cryptography ctg = new Cryptography(SplashScreenActivity.this);
         if (ctg.checkKeyPair()){

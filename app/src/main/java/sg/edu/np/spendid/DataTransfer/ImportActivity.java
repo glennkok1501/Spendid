@@ -51,9 +51,13 @@ public class ImportActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        //get wallet object on first selected choice based on name
+        //check if user has wallets
         if (walletArrayList.size() > 0){
+
+            //get wallet object based on selected index
             wallet = walletArrayList.get(spinner.getSelectedItemPosition());
+
+            //reassign selected wallet when spinner index change
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -70,6 +74,7 @@ public class ImportActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
         }
 
+        //encryption is enabled
         SwitchMaterial encryptSwitch = findViewById(R.id.import_encrypt_switch);
         encryptSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -87,6 +92,7 @@ public class ImportActivity extends AppCompatActivity {
                         //import the file if result of file is chosen
                         if (result != null && wallet != null){
                             try{
+                                //insert records from csv files
                                 new ImportCSV(ImportActivity.this, result, wallet, dbHandler).run(encrypted);
                             }
                             catch (Exception e) {
@@ -102,7 +108,7 @@ public class ImportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (wallet != null){
-                    getFile.launch("text/comma-separated-values"); //initiate filer picker with any file type
+                    getFile.launch("text/comma-separated-values"); //initiate file picker with CSV format
                 }
             }
         });

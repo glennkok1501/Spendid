@@ -2,6 +2,7 @@ package sg.edu.np.spendid.Utils.Helpers;
 
 import sg.edu.np.spendid.R;
 
+//match currency code to flags icon
 public class CountryFlagsHelper {
 
     public CountryFlagsHelper() {

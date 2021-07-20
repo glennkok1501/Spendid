@@ -41,9 +41,12 @@ public class TransferKeyPair {
         this.context = context;
     }
 
+    //download key as JSON file
     public void Export() throws Exception {
         Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show();
         String filename = "spendid_keypair_"+new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(Calendar.getInstance().getTime())+".json";
+
+        //save file to downloads folder
         File fileLocation = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(), filename);
         FileOutputStream out = new FileOutputStream(fileLocation);
         out.write(keyPairToJsonString().getBytes());
@@ -51,7 +54,7 @@ public class TransferKeyPair {
         Toast.makeText(context, "Downloaded: "+fileLocation, Toast.LENGTH_SHORT).show();
     }
 
-
+    //convert to JSON format
     private String keyPairToJsonString() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put(PUBLIC_KEY, publicKey);
@@ -59,14 +62,12 @@ public class TransferKeyPair {
         return obj.toString();
     }
 
+    //retrieve JSON file and convert to JSON object
     public JSONObject Import(Uri uri) throws Exception{
-        HashMap<String, String> keyPairMap = new HashMap<>();
-
         InputStream inputStream = context.getContentResolver().openInputStream(uri);
 
         //read file
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
         StringBuilder jsonStr = new StringBuilder();
         String line;
         while ((line=reader.readLine())!=null){

@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //initialize variable
         dbHandler = new DBHandler(this, null, null, 1);
         monthText = findViewById(R.id.totalBalMonth_textView);
         balance = findViewById(R.id.totalBalCost_textView);
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         initToolbar(); //set toolbar
         initDrawer(); //Drawer and Navbar;
 
-        //Seed Data
+        //initialize Seed Data
         if (dbHandler.getWallets().size() == 0){
             SeedData seedData = new SeedData(this);
             seedData.initDatabase();
@@ -104,32 +106,28 @@ public class MainActivity extends AppCompatActivity {
         manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ManageWalletActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, ManageWalletActivity.class));
             }
         });
 
         viewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TransactionHistoryActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, TransactionHistoryActivity.class));
             }
         });
 
         addRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, SelectWalletActivity.class));
             }
         });
 
         addWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, WalletCurrencyActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, WalletCurrencyActivity.class));
             }
         });
 
@@ -138,12 +136,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fabClicked = !fabClicked;
+
+                //show hidden buttons
                 if (fabClicked){
                     addWallet.startAnimation(up);
                     addRecord.startAnimation(up);
                     fab.startAnimation(open);
                     showHiddenFab();
                 }
+
+                //Hide hidden buttons
                 else{
                     addWallet.startAnimation(down);
                     addRecord.startAnimation(down);
@@ -159,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         //get total balance for the month with income and expenses
         String[] splitDate = currentDate().split("-");
+
+        //get a hashmap consisting of income, expense and balance based on date
         HashMap<String, Double> bal = dbHandler.getBalance(splitDate[0], splitDate[1]);
         monthText.setText(currentMonth()+" Balance");
         balance.setText(df2.format(bal.get("balance")));
@@ -179,11 +183,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Wallets view pager
-        WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, this, dbHandler);
+        WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, dbHandler);
         viewPager.setAdapter(walletSliderAdapter);
 
         //view pager indicators
         LinearLayout indicators = findViewById(R.id.walletsIndicators_linearLayout);
+
+        //create textview array to store dots based on no. of wallets
         TextView[] dots = new TextView[walletList.size()];
         viewPagerIndicators(dots, indicators);
         //change color depending on which page
@@ -203,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Current Transactions
+        //get transaction for the day grouped by category
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
 
         //check if there are any transactions today and show message if empty
@@ -243,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //hide navigation drawer
     private void closeDrawer(){
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -293,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
 
     //create view pager indicators
     private void viewPagerIndicators(TextView[] d, LinearLayout l){
-        l.removeAllViews();
+        l.removeAllViews(); //reset textview array
         //add new TextView with bullet points into linear layout depending on viewpager size
         for (int i = 0; i < d.length; i++){
             d[i] = new TextView(this);

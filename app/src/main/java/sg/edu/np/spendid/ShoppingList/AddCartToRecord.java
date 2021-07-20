@@ -32,7 +32,7 @@ import sg.edu.np.spendid.Models.Wallet;
 
 public class AddCartToRecord {
     private Context context;
-    private String des;
+    private StringBuilder des;
     private Wallet wallet;
     private ArrayList<CartItem> cartItems;
     private DBHandler dbHandler;
@@ -43,17 +43,18 @@ public class AddCartToRecord {
     private Dialog dialog;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public AddCartToRecord(Context context, int cartId) {
+    public AddCartToRecord(Context context, int cartId, DBHandler dbHandler) {
         this.context = context;
-        des = "";
-        dbHandler = new DBHandler(context, null, null, 1);
+        this.dbHandler = dbHandler;
+
+        //initialize description
+        des = new StringBuilder();
 
         //Get an array list of cart items based on the cart Id
         cartItems = dbHandler.getCartItems(cartId);
 
         //Get all wallets
         walletArrayList = dbHandler.getWallets();
-
         walletList = getWalletList();
     }
 
@@ -77,13 +78,19 @@ public class AddCartToRecord {
 
         //get wallet object on first selected choice based on name
         if (walletArrayList.size() > 0){
+
+            //get wallet object based on selected index
             wallet = walletArrayList.get(spinner.getSelectedItemPosition());
-            checkCurrency(); //check if wallet is not SGD then prompt for exchange
+
+            //check if wallet is not SGD then prompt for exchange
+            checkCurrency();
+
+            //reassign selected wallet when spinner index change
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    wallet = walletArrayList.get(spinner.getSelectedItemPosition());
                     checkCurrency();
+                    wallet = walletArrayList.get(spinner.getSelectedItemPosition());
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parentView) {
@@ -102,18 +109,16 @@ public class AddCartToRecord {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wallet != null){
-                    Record r = createRecordFromCart();
-                    //insert record if valid
-                    if (r != null){
-                        dbHandler.addRecord(r);
-                        Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
+                Record r = createRecordFromCart();
+                //insert record if valid
+                if (r != null){
+                    dbHandler.addRecord(r);
+                    Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+
                 }
             }
         });
-
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,18 +143,18 @@ public class AddCartToRecord {
         Resources res = context.getResources();
         for (CartItem c : cartItems){
             //add cart item into description with amount
-            des += String.format("%s %s (%s %s)", Html.fromHtml(res.getString(R.string.dot)), c.getName(), df2.format(c.getAmount()), wallet.getCurrency());
+            des.append(String.format("%s %s (%s %s)", Html.fromHtml(res.getString(R.string.dot)), c.getName(), df2.format(c.getAmount()), wallet.getCurrency()));
 
             //check if item is bought
             if (c.isCheck()){
-                des += String.format("%s\n", Html.fromHtml(res.getString(R.string.tick)));
+                des.append(String.format("%s\n", Html.fromHtml(res.getString(R.string.tick))));
                 amount += c.getAmount();
             }
             //item not bought
             else{
-                des += String.format("%s\n", Html.fromHtml(res.getString(R.string.cross)));
+                des.append(String.format("%s\n", Html.fromHtml(res.getString(R.string.cross))));
             }
-            des+="\n";
+            des.append("\n");
         }
         amt.setText(df2.format(amount));
     }
@@ -157,7 +162,7 @@ public class AddCartToRecord {
     //prompt currency exchange dialog if wallet currency is not in SGD
     private void checkCurrency(){
         if (!wallet.getCurrency().equals(context.getString(R.string.baseCurrency))){
-            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(context, wallet.getCurrency().toLowerCase());
+            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(context, wallet.getCurrency().toLowerCase(), dbHandler);
             currencyConvertDialog.setAmt(amt);
             currencyConvertDialog.setForFixedAmt(amount);
             currencyConvertDialog.show();
@@ -173,6 +178,9 @@ public class AddCartToRecord {
             editLayout.setError("Invalid Name");
             return null;
         }
+        else if (wallet == null){
+            return null;
+        }
         else{
             Calendar currentTime = Calendar.getInstance();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -184,7 +192,7 @@ public class AddCartToRecord {
             if (a.length() == 0){
                 a = "0";
             }
-            return new Record(title, des, Double.parseDouble(a), "Shopping", date, time, null,  wallet.getWalletId());
+            return new Record(title, des.toString(), Double.parseDouble(a), "Shopping", date, time, null,  wallet.getWalletId());
         }
     }
 }

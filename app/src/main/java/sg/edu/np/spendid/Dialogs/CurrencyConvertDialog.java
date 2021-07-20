@@ -35,15 +35,15 @@ public class CurrencyConvertDialog {
         this.forFixedAmt = forFixedAmt;
     }
 
-    public CurrencyConvertDialog(Context context, String foreign) {
+    public CurrencyConvertDialog(Context context, String foreign, DBHandler dbHandler) {
         this.context = context;
-        forFixedAmt = 0;
         this.foreign = foreign;
+        this.dbHandler = dbHandler;
+        forFixedAmt = 0;
         baseCurrency = context.getString(R.string.baseCurrency);
     }
 
     public void show(){
-        dbHandler = new DBHandler(context, null,null,1);
         currency = dbHandler.getCurrency(foreign);
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.currency_exchange_layout);
