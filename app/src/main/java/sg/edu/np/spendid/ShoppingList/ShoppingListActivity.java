@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -83,9 +82,9 @@ public class ShoppingListActivity extends AppCompatActivity {
     }
 
     private void initToolbar(){
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView more = findViewById(R.id.mainToolbarMore_imageView);
+        TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView more = findViewById(R.id.toolbarBtn_imageView2);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         activityTitle.setText("Shopping Cart");
         backArrow.setOnClickListener(new View.OnClickListener() {

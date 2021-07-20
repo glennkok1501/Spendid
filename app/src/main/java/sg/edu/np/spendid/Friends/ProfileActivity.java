@@ -6,20 +6,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.util.Log;
-import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,17 +24,11 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONObject;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
-import sg.edu.np.spendid.DataTransfer.ImportActivity;
-import sg.edu.np.spendid.DataTransfer.Utils.ImportCSV;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Friends.Utils.GenerateQRCode;
 import sg.edu.np.spendid.Friends.Utils.ShareText;
 import sg.edu.np.spendid.Friends.Utils.TransferKeyPair;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.ShoppingList.AddCartToRecord;
-import sg.edu.np.spendid.ShoppingList.ShoppingListActivity;
 import sg.edu.np.spendid.Utils.RequestPermission;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
 
@@ -196,9 +183,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initToolbar(){
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView more = findViewById(R.id.mainToolbarMore_imageView);
+        TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView more = findViewById(R.id.toolbarBtn_imageView2);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         activityTitle.setText("Profile");
         backArrow.setOnClickListener(new View.OnClickListener() {

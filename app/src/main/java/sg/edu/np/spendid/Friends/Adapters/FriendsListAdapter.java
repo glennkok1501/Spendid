@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +18,12 @@ import sg.edu.np.spendid.R;
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListViewHolder> {
 
     ArrayList<Friend> data;
+    private TextView emptyText;
 
-    public FriendsListAdapter(ArrayList<Friend> input){
+    public FriendsListAdapter(ArrayList<Friend> input, TextView emptyText){
         data = input;
+        this.emptyText = emptyText;
+        checkEmpty();
     }
 
     public FriendsListViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -44,5 +48,15 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListViewHold
 
     public int getItemCount(){
         return data.size();
+    }
+
+    private void checkEmpty(){
+        if (data.size() == 0){
+            emptyText.setVisibility(View.VISIBLE);
+            emptyText.setText("Your friends list is empty");
+        }
+        else{
+            emptyText.setVisibility(View.GONE);
+        }
     }
 }

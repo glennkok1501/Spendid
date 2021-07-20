@@ -9,7 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Records.EditRecordActivity">
 
-    <include layout="@layout/main_toolbar"/>
+    <include layout="@layout/toolbar_2btn"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

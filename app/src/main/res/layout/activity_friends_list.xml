@@ -8,12 +8,39 @@
     android:orientation="vertical"
     tools:context=".Friends.FriendsListActivity">
 
-  <include layout="@layout/main_toolbar"/>
+  <include layout="@layout/page_toolbar"/>
 
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/friendsList_RV"
+  <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content" />
+      android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friendsList_RV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/friendsList_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="?colorAccent"
+        android:src="@drawable/ic_qr_code_24"
+        app:tint="?colorOnPrimary" />
+
+    <TextView
+        android:id="@+id/friendsList_empty_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="18sp"
+        android:text="Your friends list is empty"/>
+  </RelativeLayout>
 
 
 </LinearLayout>
