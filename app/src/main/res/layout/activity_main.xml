@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/main_toolbar" />
+        <include layout="@layout/toolbar_2btn" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -234,7 +234,7 @@
                     android:layout_marginStart="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/wallets_viewPager"
-                    app:drawableStartCompat="@drawable/ic_history_24"
+                    app:drawableStartCompat="@drawable/ic_today_24"
                     app:drawableTint="?colorPrimary" />
 
                 <TextView

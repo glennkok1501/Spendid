@@ -324,15 +324,17 @@ public class MainActivity extends AppCompatActivity {
 
     //Toolbar
     private void initToolbar(){
-        ImageView menuBtn = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
-        menuBtn.setOnClickListener(new View.OnClickListener() {
+        TextView title = findViewById(R.id.toolbarTitle_textView);
+        ImageView btn1 = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView btn2 = findViewById(R.id.toolbarBtn_imageView2);
+        title.setText("Dashboard");
+        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-        initPopupMenu(moreBtn);
+        initPopupMenu(btn2);
     }
 
     //navigation drawer

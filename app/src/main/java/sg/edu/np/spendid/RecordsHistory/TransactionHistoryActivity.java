@@ -81,9 +81,9 @@ public class TransactionHistoryActivity extends AppCompatActivity {
 
     private void initToolbar(){
         //Tool bar
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView search = findViewById(R.id.mainToolbarMore_imageView);
+        TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView search = findViewById(R.id.toolbarBtn_imageView2);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         search.setImageResource(R.drawable.ic_search_32);
         activityTitle.setText("Transaction History");

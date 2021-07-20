@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".Friends.ViewFriendActivity">
 
-    <include layout="@layout/main_toolbar"/>
+    <include layout="@layout/toolbar_2btn"/>
 
     <ScrollView
         android:layout_width="match_parent"

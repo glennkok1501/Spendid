@@ -9,7 +9,7 @@
     android:background="?backgroundColor"
     tools:context=".RecordsHistory.TransactionHistoryActivity">
 
-    <include layout="@layout/main_toolbar"/>
+    <include layout="@layout/toolbar_2btn"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

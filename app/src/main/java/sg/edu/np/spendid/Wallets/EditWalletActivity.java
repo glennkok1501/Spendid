@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
-
 import sg.edu.np.spendid.Dashboard.MainActivity;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
@@ -135,9 +133,9 @@ public class EditWalletActivity extends AppCompatActivity {
 
     private void initToolbar(){
         //Tool bar
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView trash = findViewById(R.id.mainToolbarMore_imageView);
+        TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView trash = findViewById(R.id.toolbarBtn_imageView2);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         trash.setImageResource(R.drawable.ic_delete_32);
         activityTitle.setText("Edit Wallet");

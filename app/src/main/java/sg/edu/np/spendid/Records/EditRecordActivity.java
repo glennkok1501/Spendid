@@ -319,9 +319,9 @@ public class EditRecordActivity extends AppCompatActivity {
 
     private void initToolbar(){
         //Tool bar
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView trash = findViewById(R.id.mainToolbarMore_imageView);
+        TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView trash = findViewById(R.id.toolbarBtn_imageView2);
         backArrow.setImageResource(R.drawable.ic_clear_32);
         trash.setImageResource(R.drawable.ic_delete_32);
         activityTitle.setText("Edit Transaction");

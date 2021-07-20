@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Friends.Utils.GenerateQRCode;
@@ -93,9 +91,9 @@ public class ViewFriendActivity extends AppCompatActivity {
 
     private void initToolbar(){
         //Tool bar
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        ImageView trash = findViewById(R.id.mainToolbarMore_imageView);
+        TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView trash = findViewById(R.id.toolbarBtn_imageView2);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         trash.setImageResource(R.drawable.ic_delete_32);
         activityTitle.setText("Friend");
