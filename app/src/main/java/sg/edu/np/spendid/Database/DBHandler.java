@@ -528,6 +528,21 @@ public class DBHandler extends SQLiteOpenHelper {
         return deleted;
     }
 
+    public byte[] getRecordImage(int recordId){
+        String query = "SELECT "+COLUMN_RECORD_IMAGE+" FROM " + TABLE_RECORD + " WHERE " + COLUMN_RECORD_ID + " = " + recordId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        byte[] imageBytes;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            imageBytes = cursor.getBlob(0);
+        } else {
+            imageBytes = null;
+        }
+        cursor.close();
+        db.close();
+        return imageBytes;
+    }
+
 
     //Statistics Methods
 
