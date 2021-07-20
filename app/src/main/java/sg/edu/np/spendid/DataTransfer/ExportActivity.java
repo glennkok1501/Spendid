@@ -140,6 +140,17 @@ public class ExportActivity extends AppCompatActivity {
         this.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //create a string array of wallet names for spinner to use
     private String[] getWalletList(){
         String[] walletList = new String[walletArrayList.size()];

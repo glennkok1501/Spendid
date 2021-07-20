@@ -45,4 +45,6 @@
     </string-array>
     <string name="currency_api_attribute">By fawazahmed0 from github.com/fawazahmed0/currency-api</string>
     <string name="flags_icon_attribute">Icon made by Freepik from www.flaticon.com</string>
+
+    <string name="no_permission">No permission to access media</string>
 </resources>

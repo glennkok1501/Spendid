@@ -3,12 +3,14 @@ package sg.edu.np.spendid.Records;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +32,7 @@ import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.Models.Wallet;
+import sg.edu.np.spendid.Utils.RequestPermission;
 
 //edit and delete transaction
 public class EditRecordActivity extends AppCompatActivity {
@@ -113,7 +116,9 @@ public class EditRecordActivity extends AppCompatActivity {
         selImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFile.launch("image/*"); //initiate filer picker with any file type
+                if (new RequestPermission(EditRecordActivity.this).checkPermission()){
+                    getFile.launch("image/*"); //initiate filer picker with any file type
+                }
             }
         });
 
@@ -161,6 +166,17 @@ public class EditRecordActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //prompt currency exchange dialog if wallet currency is not in SGD
