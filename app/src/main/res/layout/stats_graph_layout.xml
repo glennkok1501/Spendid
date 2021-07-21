@@ -40,14 +40,17 @@
                 app:layout_constraintBottom_toTopOf="@id/stats_graph_textView"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_margin="10dp"
+                android:layout_marginBottom="20dp"
                 android:text="Statistics" />
 
             <LinearLayout
                 android:id="@+id/stats_graph_linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@id/stats_graph_textView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
