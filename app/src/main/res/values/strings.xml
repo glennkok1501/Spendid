@@ -6,6 +6,12 @@
 
     <string name="baseCurrency">SGD</string>
 
+    <string-array name="statistics_graph_label">
+        <item>Savings Overview</item>
+        <item>Earnings Overview</item>
+        <item>Spendings Overview</item>
+    </string-array>
+
     <string-array name="countries">
         <item>Australian Dollar;aud</item>
         <item>Brazilian Real;brl</item>

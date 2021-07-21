@@ -2,6 +2,7 @@ package sg.edu.np.spendid.Statistics;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,55 +11,50 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import sg.edu.np.spendid.R;
 
 public class Charts {
     private Context context;
-    private LinearLayout numChart;
-    private LinearLayout posChart;
-    private LinearLayout negChart;
+    private LinearLayout chart;
     private LinearLayout monthsChart;
-    private final DecimalFormat df2 = new DecimalFormat("#0.00");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("MMM");
 
-    public Charts(Context context, LinearLayout numChart, LinearLayout posChart, LinearLayout negChart, LinearLayout monthsChart) {
+    public Charts(Context context, LinearLayout chart, LinearLayout monthsChart) {
         this.context = context;
-        this.numChart = numChart;
-        this.posChart = posChart;
-        this.negChart = negChart;
+        this.chart = chart;
         this.monthsChart = monthsChart;
-
     }
 
-    public void init(double[] data, String[] months){
+    public void init(double[] data, Date[] months){
         double highest = getMax(data);
-        double lowest = getMin(data);
         for (int i = 0; i < data.length; i++) {
+            LinearLayout bar = getBarLayout();
             if (data[i] > 0) {
-                LinearLayout posBar = getBarLayout(true);
-                posBar.addView(setBarData(convertPercent(data[i], highest), posBar));
-                posChart.addView(posBar);
-                negChart.addView(setSpace());
-            }
-            else if (data[i] < 0) {
-                LinearLayout negBar = getBarLayout(false);
-                negBar.addView(setBarData(convertPercent(data[i]*-1, lowest*-1), negBar));
-                negChart.addView(negBar);
-                posChart.addView(setSpace());
+                bar.addView(setBarData(convertPercent(data[i], highest), bar));
             }
             else{
-                posChart.addView(setSpace());
-                negChart.addView(setSpace());
+                bar.addView(emptyBar(100, bar));
             }
-            monthsChart.addView(getText(months[i]));
-            numChart.addView(getText(df2.format(data[i])));
+            final double amt = data[i];
+            final Date date = months[i];
+            bar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new AmountDialog(context).show(amt, date);
+                }
+            });
+            chart.addView(bar);
+            monthsChart.addView(getMonth(amt, date));
         }
-
     }
 
-    private View getText(String text){
+    private View getMonth(double amt, Date date){
+
         TextView monthText = new TextView(context);
-        monthText.setText(text);
+        monthText.setText(sdf.format(date));
         LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -67,10 +63,18 @@ public class Charts {
         monthText.setGravity(Gravity.CENTER);
         monthText.setLayoutParams(textParams);
         monthText.setTextSize(14);
+
+        monthText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AmountDialog(context).show(amt, date);
+            }
+        });
+
         return monthText;
     }
 
-    private LinearLayout getBarLayout(boolean gravityBottom){
+    private LinearLayout getBarLayout(){
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams parentParams = new LinearLayout.LayoutParams(
@@ -79,23 +83,9 @@ public class Charts {
                 1);
         parentParams.setMarginStart(20);
         parentParams.setMarginEnd(20);
-        if (gravityBottom){
-            parentParams.gravity = Gravity.BOTTOM;
-        }
+        parentParams.gravity = Gravity.BOTTOM;
         linearLayout.setLayoutParams(parentParams);
         return linearLayout;
-    }
-
-    private Space setSpace(){
-        Space space = new Space(context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1);
-        params.setMarginStart(20);
-        params.setMarginEnd(20);
-        space.setLayoutParams(params);
-        return space;
     }
 
     private View setBarData(int height, LinearLayout linearLayout){
@@ -103,7 +93,17 @@ public class Charts {
         linearLayout.setBackgroundColor(context.getResources().getColor(R.color.fire_bush));
         LinearLayout.LayoutParams childParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                height*2,
+                height*3,
+                1);
+        view.setLayoutParams(childParams);
+        return view;
+    }
+
+    private View emptyBar(int height, LinearLayout linearLayout){
+        View view = new View(context);
+        LinearLayout.LayoutParams childParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                height*3,
                 1);
         view.setLayoutParams(childParams);
         return view;
@@ -117,16 +117,6 @@ public class Charts {
             }
         }
         return max;
-    }
-
-    private double getMin(double[] nums){
-        double min = nums[0];
-        for (double num : nums){
-            if (num < min){
-                min = num;
-            }
-        }
-        return min;
     }
 
     private int convertPercent(double num, double max){
