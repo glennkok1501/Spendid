@@ -16,6 +16,6 @@ public class CatViewHolder extends RecyclerView.ViewHolder {
         super(item);
         image = item.findViewById(R.id.stats_cat_imageView);
         catName = item.findViewById(R.id.stats_cat_title);
-        percent = item.findViewById(R.id.stats_cat_percent);
+        percent = item.findViewById(R.id.stats_cat_amt);
     }
 }

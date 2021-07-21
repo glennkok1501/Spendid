@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import sg.edu.np.spendid.Dashboard.Adapters.WalletSlider.WalletSliderAdapter;
@@ -54,7 +55,7 @@ public class StatisticsActivity extends AppCompatActivity {
         int range = 6; //indicates number of months back, 6 would be last 6 months
 
         //get array of months
-        String[] monthsRange = getLastMonths(range);
+        Date[] monthsRange = getLastMonths(range);
 
         //get array of data
         ArrayList<double[]> input = new ArrayList<>();
@@ -83,15 +84,24 @@ public class StatisticsActivity extends AppCompatActivity {
         categoryExpenseRV.setLayoutManager(expenseLayoutManager);
         categoryExpenseRV.setItemAnimator(new DefaultItemAnimator());
         categoryExpenseRV.setAdapter(catExpenseAdapter);
+
+        TextView viewAllCats = findViewById(R.id.stats_viewCat_textView);
+        viewAllCats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StatisticsActivity.this, StatisticsAllCatActivity.class);
+                intent.putExtra("data", expenseCat);
+                startActivity(intent);
+            }
+        });
     }
 
-    private String[] getLastMonths(int range){
-        String[] monthsRange = new String[range];
-        SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+    private Date[] getLastMonths(int range){
+        Date[] monthsRange = new Date[range];
         for (int i = 0; i < range; i++){
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.MONTH, -i);
-            monthsRange[(range-1)-i] = monthFormat.format(cal.getTime());
+            monthsRange[(range-1)-i] = cal.getTime();
         }
         return monthsRange;
     }

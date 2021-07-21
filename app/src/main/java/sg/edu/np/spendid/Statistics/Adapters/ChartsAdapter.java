@@ -12,17 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Statistics.Charts;
 
 public class ChartsAdapter extends RecyclerView.Adapter<ChartsViewHolder> {
 
     Context context;
-    String[] months;
+    Date[] months;
     ArrayList<double[]> data;
     String[] types;
 
-    public ChartsAdapter(Context context, ArrayList<double[]> data, String[] months){
+    public ChartsAdapter(Context context, ArrayList<double[]> data, Date[] months){
         this.months = months;
         this.data = data;
         this.context = context;
