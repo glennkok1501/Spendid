@@ -1,4 +1,4 @@
-package sg.edu.np.spendid.Statistics;
+package sg.edu.np.spendid.Statistics.Adapters;
 
 import android.view.View;
 import android.widget.ImageView;

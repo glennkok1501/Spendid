@@ -1,4 +1,4 @@
-package sg.edu.np.spendid.Statistics;
+package sg.edu.np.spendid.Statistics.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +17,11 @@ public class CatAdapter extends RecyclerView.Adapter<CatViewHolder> {
     HashMap<String, Double> data;
     private CategoryHelper categoryHandler = new CategoryHelper();
     private ArrayList<String> cats;
-    private DecimalFormat df1 = new DecimalFormat("#0.0");
+    private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public CatAdapter(HashMap<String, Double> input) {
         data = input;
-        cats = new ArrayList<>(data.keySet());
+        cats = sort(input);
     }
 
     public CatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,15 +31,32 @@ public class CatAdapter extends RecyclerView.Adapter<CatViewHolder> {
 
     public void onBindViewHolder(CatViewHolder vh, int pos) {
         String cat = cats.get(pos);
-        double percent = data.get(cat);
+        double amount = data.get(cat);
         vh.image.setImageResource(categoryHandler.setIcon(cat));
         vh.catName.setText(cat);
-        vh.percent.setText(df1.format(percent)+"%");
-
+        vh.percent.setText(df2.format(amount));
     }
 
     public int getItemCount(){
-        return data.size();
+        return Math.min(cats.size(), 5);
+    }
+
+    private ArrayList<String> sort(HashMap<String, Double> input){
+        ArrayList<String> sortedCats = new ArrayList<>(input.keySet());
+        int n = sortedCats.size();
+        String temp;
+        for(int i = 0; i < n; i++){
+            for(int j = 1; j < (n-i); j++){
+                if(input.get(sortedCats.get(j-1)) < input.get(sortedCats.get(j))){
+                    //swap elements
+                    temp = sortedCats.get(j-1);
+                    sortedCats.remove(j-1);
+                    sortedCats.add(j, temp);
+                }
+
+            }
+        }
+        return sortedCats;
     }
 
 }
