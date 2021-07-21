@@ -25,19 +25,23 @@ public class StatisticsAllCatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_statistics_all_cat);
 
         initToolbar();
-
+        RecyclerView categoryExpenseRV = findViewById(R.id.stats_all_cats_RV);
+        TextView expenseEmpty = findViewById(R.id.stats_allExpenseEmpty_textView);
         Intent intent = getIntent();
         HashMap<String, Double> expenseCat = (HashMap<String, Double>) intent.getSerializableExtra("data");
 
         if (expenseCat.size() > 0){
+            expenseEmpty.setVisibility(View.GONE);
             double highest = getTotal(expenseCat);
             //stats_all_cats_RV
-            RecyclerView categoryExpenseRV = findViewById(R.id.stats_all_cats_RV);
             CatProgressAdapter catProgressAdapter = new CatProgressAdapter(expenseCat, highest);
             LinearLayoutManager expenseLayoutManager = new LinearLayoutManager(this);
             categoryExpenseRV.setLayoutManager(expenseLayoutManager);
             categoryExpenseRV.setItemAnimator(new DefaultItemAnimator());
             categoryExpenseRV.setAdapter(catProgressAdapter);
+        }
+        else{
+            expenseEmpty.setText("You have no expenses");
         }
 
     }

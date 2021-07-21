@@ -45,6 +45,8 @@ public class StatisticsActivity extends AppCompatActivity {
 
         initToolbar();
 
+        RecyclerView categoryExpenseRV = findViewById(R.id.stats_expense_RV);
+        TextView emptyExpense = findViewById(R.id.stats_expenseEmpty_textView);
         dbHandler = new DBHandler(this, null, null, 1);
         currentMonth = Calendar.getInstance();
         cats = dbHandler.getCategories();
@@ -76,14 +78,18 @@ public class StatisticsActivity extends AppCompatActivity {
 
         HashMap<String, ArrayList<Record>> catMonthData = dbHandler.getGroupedTransaction(new SimpleDateFormat("yyyy-MM").format(currentMonth.getTime())+"-%");
 
-
         HashMap<String, Double> expenseCat = catData(catMonthData);
-        RecyclerView categoryExpenseRV = findViewById(R.id.stats_expense_RV);
-        CatAdapter catExpenseAdapter = new CatAdapter(expenseCat);
-        LinearLayoutManager expenseLayoutManager = new LinearLayoutManager(this);
-        categoryExpenseRV.setLayoutManager(expenseLayoutManager);
-        categoryExpenseRV.setItemAnimator(new DefaultItemAnimator());
-        categoryExpenseRV.setAdapter(catExpenseAdapter);
+        if (expenseCat.size() == 0){
+            emptyExpense.setText("You have no expense");
+        }
+        else{
+            emptyExpense.setVisibility(View.GONE);
+            CatAdapter catExpenseAdapter = new CatAdapter(expenseCat);
+            LinearLayoutManager expenseLayoutManager = new LinearLayoutManager(this);
+            categoryExpenseRV.setLayoutManager(expenseLayoutManager);
+            categoryExpenseRV.setItemAnimator(new DefaultItemAnimator());
+            categoryExpenseRV.setAdapter(catExpenseAdapter);
+        }
 
         TextView viewAllCats = findViewById(R.id.stats_viewCat_textView);
         viewAllCats.setOnClickListener(new View.OnClickListener() {
