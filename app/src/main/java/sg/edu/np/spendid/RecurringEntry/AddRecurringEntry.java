@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,12 +44,11 @@ import sg.edu.np.spendid.RecurringEntry.Adapters.RecurCatSliderAdapter;
 
 public class AddRecurringEntry extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private DBHandler dbHandler;
-    private TextView selectedCat, selectWallet, recurringCur;
+    private TextView selectedCat, recurringCur;
     private EditText title, description, amt;
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String walletCurrency;
     private String baseCurrency;
     TextView selectDate;
     private Wallet wallet;
@@ -127,12 +127,19 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
                 String des_txt = description.getText().toString(); //get description
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
-                String date = checkDate();
+                String date = null;
+                try {
+                    date = checkDate();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
 
                 //create transaction if record is valid
                 if (validRecord()) {
-                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, null, wallet.getWalletId()));
+                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date, wallet.getWalletId()));
+                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, currentTime(), null, wallet.getWalletId()));
+                    Log.v("TESTTEST", "" + wallet.getWalletId());
                     Toast.makeText(getApplicationContext(), "Recurring Entry added", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -222,20 +229,15 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         return valid;
     }
 
-    private String checkDate(){
+    private String checkDate() throws ParseException {
         String date = selectDate.getText().toString();
 
-        if (date == "Click here to choose a date"){
+        if (date.equals("Click here to choose a date")){
             return null;
         }
         else{
             checkValues.put("date", true);
-            Log.v("TESTTEST", date);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String date1 = simpleDateFormat.format(date);
-            Date date2 = format.parse();
-            Log.v("TESTTEST", date1);
-            return date;
+            return formatDate(date);
 
 
         }
@@ -250,18 +252,21 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         return m;
     }
 
-    private String formatDate(String d){
-        String dateFormat;
-        try{
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(d);
-            dateFormat = new SimpleDateFormat("dd MMMM yyyy").format(date);
 
-        }
-        catch (ParseException e) {
-            dateFormat = d;
-        }
-        return dateFormat;
+    private String formatDate(String d) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat initialFormat = new SimpleDateFormat("MMM d, yyyy");
+        Date date = initialFormat.parse(d);
+        //MMM d, yyyy
+        return dateFormat.format(date);
     }
+
+    public String currentTime(){
+        Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        return dateFormat.format(currentTime.getTime());
+    }
+
 
 }
 

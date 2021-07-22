@@ -26,10 +26,10 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
     private DBHandler dbHandler;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public RecurringSelectAdapter(ArrayList<Recurring> input, Context context){
+    public RecurringSelectAdapter(ArrayList<Recurring> input, Context context, DBHandler dbHandler){
         data=input;
         this.context = context;
-        dbHandler = new DBHandler(this.context, null, null, 1);
+        this.dbHandler = dbHandler;
     }
 
     public RecurringSelectViewHolder onCreateViewHolder(ViewGroup parent, int viewType){

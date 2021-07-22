@@ -899,8 +899,8 @@ public class DBHandler extends SQLiteOpenHelper {
             recurring.setCategory(cursor.getString(4));
             recurring.setRecurringstartDate(cursor.getString(5));
             recurring.setRecurringendDate(cursor.getString(6));
-            recurring.setWalletId(cursor.getInt(7));
-            recurring.setLastUpdated(cursor.getString(8));
+            recurring.setLastUpdated(cursor.getString(7));
+            recurring.setWalletId(cursor.getInt(8));
         } else {
             recurring = null;
         }

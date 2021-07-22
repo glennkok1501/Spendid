@@ -79,7 +79,7 @@ public class RecurringEntryPage extends AppCompatActivity {
         RecyclerView showRecurringRV = findViewById(R.id.show_recurring_RV);
         ArrayList<Recurring> recurringArrayList = dbHandler.getAllRecurring();
         checkEmpty(recurringArrayList);
-        RecurringSelectAdapter recurringSelectAdapter = new RecurringSelectAdapter(recurringArrayList, this);
+        RecurringSelectAdapter recurringSelectAdapter = new RecurringSelectAdapter(recurringArrayList, this, dbHandler);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         showRecurringRV.setLayoutManager(myLayoutManager);
         showRecurringRV.setItemAnimator(new DefaultItemAnimator());
