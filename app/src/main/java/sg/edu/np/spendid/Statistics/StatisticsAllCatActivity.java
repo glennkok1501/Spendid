@@ -27,9 +27,14 @@ public class StatisticsAllCatActivity extends AppCompatActivity {
         initToolbar();
         RecyclerView categoryExpenseRV = findViewById(R.id.stats_all_cats_RV);
         TextView expenseEmpty = findViewById(R.id.stats_allExpenseEmpty_textView);
+
+        //get category expense data from intent
         Intent intent = getIntent();
+
+        //use serializable to get hashmap
         HashMap<String, Double> expenseCat = (HashMap<String, Double>) intent.getSerializableExtra("data");
 
+        //check if data is empty
         if (expenseCat.size() > 0){
             expenseEmpty.setVisibility(View.GONE);
             double highest = getTotal(expenseCat);
@@ -46,8 +51,13 @@ public class StatisticsAllCatActivity extends AppCompatActivity {
 
     }
 
+    //calculate total value
     private double getTotal(HashMap<String, Double> map){
+
+        //placeholder value
         double total = 0.0;
+
+        //iterate through hashmap
         for (String cat : map.keySet()){
             total += map.get(cat);
         }

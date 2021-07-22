@@ -27,7 +27,7 @@ import sg.edu.np.spendid.ShoppingList.Adapters.ShoppingLists.ShoppingListAdapter
 public class AmountDialog {
     private Context context;
     private Dialog dialog;
-    private final SimpleDateFormat sdf = new SimpleDateFormat("d MMMM yyyy");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy");
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public AmountDialog(Context context) {
