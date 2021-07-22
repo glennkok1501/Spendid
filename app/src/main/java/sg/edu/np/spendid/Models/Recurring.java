@@ -10,6 +10,7 @@ public class Recurring {
     private String recurringendDate;
     private int walletId;
     private String LastUpdated;
+    private String Frequency;
 
     public int getRecurringId() {
         return recurringId;
@@ -73,12 +74,14 @@ public class Recurring {
         this.walletId = walletId;
     }
 
+    public String getFrequency() { return Frequency; }
 
+    public void setFrequency(String frequency) { Frequency = frequency; }
 
     public Recurring() {
     }
 
-    public Recurring(int recurringId, String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, String lastUpdated, int walletId) {
+    public Recurring(int recurringId, String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, String lastUpdated, int walletId, String Frequency) {
         this.recurringId = recurringId;
         this.recurringtitle = recurringtitle;
         this.recurringdescription = recurringdescription;
@@ -88,9 +91,10 @@ public class Recurring {
         this.recurringendDate = recurringendDate;
         this.LastUpdated = lastUpdated;
         this.walletId = walletId;
+        this.Frequency = Frequency;
     }
 
-    public Recurring(String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, String lastUpdated, int walletId) {
+    public Recurring(String recurringtitle, String recurringdescription, double amount, String category, String recurringstartDate, String recurringendDate, String lastUpdated, int walletId, String Frequency) {
         this.recurringtitle = recurringtitle;
         this.recurringdescription = recurringdescription;
         this.amount = amount;
@@ -99,5 +103,6 @@ public class Recurring {
         this.recurringendDate = recurringendDate;
         this.LastUpdated = lastUpdated;
         this.walletId = walletId;
+        this.Frequency = Frequency;
     }
 }

@@ -12,6 +12,12 @@
         <item>Spendings Overview</item>
     </string-array>
 
+    <string-array name="frequency">
+        <item>Daily</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
     <string-array name="countries">
         <item>Australian Dollar;aud</item>
         <item>Brazilian Real;brl</item>

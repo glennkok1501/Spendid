@@ -12,16 +12,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.Models.Wallet;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import sg.edu.np.spendid.RecurringEntry.Adapters.RecurringSelectAdapter;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.RecurringEntry.Adapters.RecurringSelectAdapter;
 
 public class RecurringEntryPage extends AppCompatActivity {
     private Animation open, close, up, down;
@@ -38,7 +39,6 @@ public class RecurringEntryPage extends AppCompatActivity {
         AddRecurringFab = findViewById(R.id.RecurringAddEntry_fab);
         dbHandler = new DBHandler(this, null, null, 1);
         emptyRecurring = findViewById(R.id.showRecurring_empty_textView);
-
         open = AnimationUtils.loadAnimation(this, R.anim.rotate_open_animation);
         close = AnimationUtils.loadAnimation(this, R.anim.rotate_close_animation);
         up = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_animation);
@@ -53,8 +53,8 @@ public class RecurringEntryPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -79,7 +79,7 @@ public class RecurringEntryPage extends AppCompatActivity {
         RecyclerView showRecurringRV = findViewById(R.id.show_recurring_RV);
         ArrayList<Recurring> recurringArrayList = dbHandler.getAllRecurring();
         checkEmpty(recurringArrayList);
-        RecurringSelectAdapter recurringSelectAdapter = new RecurringSelectAdapter(recurringArrayList, this);
+        RecurringSelectAdapter recurringSelectAdapter = new RecurringSelectAdapter(recurringArrayList, this, dbHandler);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         showRecurringRV.setLayoutManager(myLayoutManager);
         showRecurringRV.setItemAnimator(new DefaultItemAnimator());
@@ -99,10 +99,11 @@ public class RecurringEntryPage extends AppCompatActivity {
         });
     }
 
-    private void checkEmpty(ArrayList<Recurring> recurringArrayList) {
-        if (recurringArrayList.size() > 0) {
+    private void checkEmpty(ArrayList<Recurring> recurringArrayList){
+        if (recurringArrayList.size() > 0){
             emptyRecurring.setVisibility(View.GONE);
-        } else {
+        }
+        else{
             emptyRecurring.setVisibility(View.VISIBLE);
             emptyRecurring.setText("You have no Recurring Entries");
         }

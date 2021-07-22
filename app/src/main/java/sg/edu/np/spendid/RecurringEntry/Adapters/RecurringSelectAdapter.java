@@ -3,6 +3,7 @@ package sg.edu.np.spendid.RecurringEntry.Adapters;
 import android.content.Context;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.RecurringEntry.ManageRecurringDialog;
 import sg.edu.np.spendid.RecurringEntry.EditRecurringEntry;
+import sg.edu.np.spendid.RecurringEntry.ManageRecurringDialog;
 
 
 public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelectViewHolder>{
@@ -25,10 +26,10 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
     private DBHandler dbHandler;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public RecurringSelectAdapter(ArrayList<Recurring> input, Context context){
+    public RecurringSelectAdapter(ArrayList<Recurring> input, Context context, DBHandler dbHandler){
         data=input;
         this.context = context;
-        dbHandler = new DBHandler(this.context, null, null, 1);
+        this.dbHandler = dbHandler;
     }
 
     public RecurringSelectViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -40,6 +41,7 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
         holder.name.setText(r.getRecurringtitle());
         holder.amount.setText(df2.format(r.getAmount()));
         holder.date.setText("Date Started: "+ r.getRecurringstartDate());
+        holder.frequency.setText("Frequency: " + r.getFrequency());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
