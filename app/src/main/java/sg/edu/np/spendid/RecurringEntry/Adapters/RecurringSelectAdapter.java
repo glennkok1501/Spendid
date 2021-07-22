@@ -42,7 +42,7 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
         holder.amount.setText(df2.format(r.getAmount()));
         holder.date.setText("Date Started: "+ r.getRecurringstartDate());
         holder.frequency.setText("Frequency: " + r.getFrequency());
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EditRecurringEntry.class);

@@ -10,7 +10,6 @@ import sg.edu.np.spendid.R;
 
 public class RecurringSelectViewHolder extends RecyclerView.ViewHolder {
     TextView name, amount, date, frequency;
-    CardView cardView;
 
     public RecurringSelectViewHolder(View itemView){
         super(itemView);
@@ -18,6 +17,5 @@ public class RecurringSelectViewHolder extends RecyclerView.ViewHolder {
         amount = itemView.findViewById(R.id.sel_recurringAmt_textView);
         date = itemView.findViewById(R.id.sel_recurringDate_textView);
         frequency = itemView.findViewById(R.id.sel_recurringFrequency_textView);
-        cardView = itemView.findViewById(R.id.sel_recurring_cardView);
     }
 }
