@@ -29,7 +29,8 @@ import sg.edu.np.spendid.Friends.Utils.GenerateQRCode;
 import sg.edu.np.spendid.Friends.Utils.ShareText;
 import sg.edu.np.spendid.Friends.Utils.TransferKeyPair;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Utils.RequestPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestWritePermission;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -216,7 +217,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 break;
                             case "Export Keys":
                                 //check for permission
-                                if (new RequestPermission(ProfileActivity.this).checkPermission()) {
+                                if (new RequestWritePermission(ProfileActivity.this).checkPermission()) {
                                     Toast.makeText(getApplicationContext(), "Exporting Keys...", Toast.LENGTH_SHORT).show();
 
                                     try {
@@ -235,7 +236,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 break;
                             case "Import Keys":
                                 //check for permission
-                                if (new RequestPermission(ProfileActivity.this).checkPermission()){
+                                if (new RequestReadPermission(ProfileActivity.this).checkPermission()){
                                     //warning for importing keys
                                     importDialog();
                                 }

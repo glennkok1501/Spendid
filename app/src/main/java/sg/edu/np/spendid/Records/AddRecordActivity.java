@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -34,7 +33,7 @@ import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
-import sg.edu.np.spendid.Utils.RequestPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
 
 //Create transaction
 
@@ -120,7 +119,7 @@ public class AddRecordActivity extends AppCompatActivity {
         selImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new RequestPermission(AddRecordActivity.this).checkPermission()){
+                if (new RequestReadPermission(AddRecordActivity.this).checkPermission()){
                     getFile.launch("image/*"); //initiate file picker with CSV format
                 }
             }
