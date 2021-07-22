@@ -73,11 +73,12 @@ public class DailyLimitActivity extends AppCompatActivity {
         View[] dViews = new View[] {dLimitText, dAmtEdit, dSpinner, dNotif, dNotifyAt};
 
         //setting attributes to how they were when last saved
-        dSwitch.setChecked((getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Daily Limit", false)));
-        dAmtEdit.setText(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getString("Limit Amount", "50"));
-        dSpinner.setSelection(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getInt("Notify At", 8));
-        dNotif.setChecked(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Notify", true));
-        toggleLimit(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Daily Limit", false), tVList, dViews);
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        dSwitch.setChecked(prefs.getBoolean("Daily Limit", false));
+        dAmtEdit.setText(String.valueOf(prefs.getInt("Limit Amount", 50)));
+        dSpinner.setSelection(prefs.getInt("Notify At", 8));
+//        dNotif.setChecked(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Notify", true));
+        toggleLimit(prefs.getBoolean("Daily Limit", false), tVList, dViews);
 
         dSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -95,22 +96,22 @@ public class DailyLimitActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                editor.putString("Limit Amount", dAmtEdit.getText().toString());
+                editor.putInt("Limit Amount", Integer.parseInt(dAmtEdit.getText().toString()));
                 editor.apply();
             }
         });
 
-        dNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    editor.putBoolean("Notify", true);
-                } else {
-                    editor.putBoolean("Notify", false);
-                }
-                editor.apply();
-            }
-        });
+//        dNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    editor.putBoolean("Notify", true);
+//                } else {
+//                    editor.putBoolean("Notify", false);
+//                }
+//                editor.apply();
+//            }
+//        });
 
         dSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

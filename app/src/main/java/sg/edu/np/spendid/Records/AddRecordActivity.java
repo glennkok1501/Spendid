@@ -58,7 +58,6 @@ public class AddRecordActivity extends AppCompatActivity {
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private Spinner selectWallet;
     private String baseCurrency;
-    private boolean result;
     private byte[] imageData;
 
     private final String PREF_NAME = "sharedPrefs";
@@ -167,20 +166,13 @@ public class AddRecordActivity extends AppCompatActivity {
 
                 //create transaction if record is valid
                 if (validRecord()) {
-                    LimitNotification notification = new LimitNotification(AddRecordActivity.this, dbHandler, amount);
-                    if (notification.isNotifyOn()) {
-                        notification.exceedMessage();
-                        if (notification.isResult()) {
-                            dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId()));
-                            Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Toast.makeText(AddRecordActivity.this, "Resist the urge!", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId()));
-                        Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
-                        finish();
+                    Record record = new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId());
+                    LimitNotification limit = new LimitNotification(getApplicationContext(), dbHandler, amount);
+                    if (limit.checkExceed()){
+                        notifyLimit(record);
+                    }
+                    else{
+                        addRecord(record);
                     }
                 }
                 else{
@@ -307,6 +299,34 @@ public class AddRecordActivity extends AppCompatActivity {
                 image.setImageResource(R.drawable.ic_image_24);
             }
         });
+    }
+
+    private void notifyLimit(Record record){
+        MyAlertDialog dialog = new MyAlertDialog(AddRecordActivity.this);
+        dialog.setTitle("Limit Exceeded");
+        dialog.setBody("You will exceed your daily limit.\nDo you want to proceed?");
+
+        dialog.setPositive().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRecord(record);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setNegative().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void addRecord(Record record){
+        dbHandler.addRecord(record);
+        Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void initToolbar(){

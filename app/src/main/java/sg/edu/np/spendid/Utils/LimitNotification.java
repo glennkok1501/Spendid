@@ -1,6 +1,7 @@
 package sg.edu.np.spendid.Utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -20,61 +21,29 @@ public class LimitNotification {
     private Context context;
     private Calendar currentTime = Calendar.getInstance();
     private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    private String limitAmt;
+    private int limitAmt;
     private int notifyAt;
     private double limitedAmt;
-    private boolean limit, notify, moreThan, result;
-
+    private boolean limit, notify, moreThan;
     private DBHandler dbHandler;
     private final String PREF_NAME = "sharedPrefs";
 
-    public LimitNotification(Context activityContext, DBHandler db, double amount) {
+    public LimitNotification(Context context, DBHandler db, double amount) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         dbHandler = db;
-        this.context = activityContext;
-        this.limit = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Daily Limit", false);
-        this.notify = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Notify", true);
-        this.limitAmt = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).getString("Limit Amount", "50");
-        this.notifyAt = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE).getInt("Notify At", 8);
-        limitedAmt = Double.valueOf(limitAmt) * (notifyAt + 1) / 10;
-        this.moreThan = getTotalBalance() + amount > limitedAmt;
+        this.context = context;
+        this.limit = prefs.getBoolean("Daily Limit", false);
+//        this.notify = prefs.getBoolean("Notify", true);
+        this.limitAmt = prefs.getInt("Limit Amount", 0);
+//        this.notifyAt = prefs.getInt("Notify At", 8);
+//        limitedAmt = (double) limitAmt * (notifyAt + 1) / 10;
+        this.moreThan = getTotalBalance() + amount > (double) limitAmt * (notifyAt + 1) / 10;
     }
 
-    public boolean isResult() {
-        return result;
+    public boolean checkExceed(){
+         return limit && moreThan;
     }
 
-    public boolean isNotifyOn() {
-        if (limit && notify) {
-            return true;
-        }
-        return false;
-    }
-
-    public void exceedMessage() {
-        result = true;
-        if (moreThan) {
-            MyAlertDialog dialog = new MyAlertDialog(this.context);
-            dialog.setTitle("Limit Exceeded");
-            dialog.setBody("You will exceed your daily limit.\nDo you want to proceed?");
-
-            dialog.setPositive().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    result = true;
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.setNegative().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    result = false;
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
-        }
-    }
 
     private double getTotalBalance() {
         double total = 0;
