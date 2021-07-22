@@ -37,12 +37,31 @@ public class UpdateEntryToWallet {
         Calendar cal = Calendar.getInstance();
         cal.setTime(lastUpdated);
         while (cal.getTime().before(currentDate)){
-            cal.add(Calendar.MONTH, 1);
-            if(!cal.getTime().after(currentDate)){
-                String tempDate = sdf.format(cal.getTime());
-                dbHandler.addRecord(new Record(r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), tempDate, "00:00:00", null, r.getWalletId()));
-                dbHandler.UpdateRecurring(new Recurring(r.getRecurringId(),r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), r.getRecurringstartDate(), null, tempDate, r.getWalletId()));
+            if (r.getFrequency().equals("Daily")){
+                cal.add(Calendar.DAY_OF_MONTH, 1);
+                if(!cal.getTime().after(currentDate)){
+                    String tempDate = sdf.format(cal.getTime());
+                    dbHandler.addRecord(new Record(r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), tempDate, "00:00:00", null, r.getWalletId()));
+                    dbHandler.UpdateRecurring(new Recurring(r.getRecurringId(),r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), r.getRecurringstartDate(), null, tempDate, r.getWalletId(), r.getFrequency()));
+                }
             }
+            else if(r.getFrequency().equals("Monthly")){
+                cal.add(Calendar.MONTH, 1);
+                if(!cal.getTime().after(currentDate)){
+                    String tempDate = sdf.format(cal.getTime());
+                    dbHandler.addRecord(new Record(r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), tempDate, "00:00:00", null, r.getWalletId()));
+                    dbHandler.UpdateRecurring(new Recurring(r.getRecurringId(),r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), r.getRecurringstartDate(), null, tempDate, r.getWalletId(), r.getFrequency()));
+                }
+            }
+            else{
+                cal.add(Calendar.YEAR, 1);
+                if(!cal.getTime().after(currentDate)){
+                    String tempDate = sdf.format(cal.getTime());
+                    dbHandler.addRecord(new Record(r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), tempDate, "00:00:00", null, r.getWalletId()));
+                    dbHandler.UpdateRecurring(new Recurring(r.getRecurringId(),r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), r.getRecurringstartDate(), null, tempDate, r.getWalletId(), r.getFrequency()));
+                }
+            }
+
         }
 
     }

@@ -49,10 +49,11 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency;
+    private String baseCurrency, frequency;
     TextView selectDate;
     private Wallet wallet;
     private ArrayList<Wallet> walletArrayList;
+    private ArrayList<String> frequencyArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,12 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         recurringCur.setText(baseCurrency);
         walletArrayList = dbHandler.getWallets();
         String[] walletList = getWalletList();
+        frequencyArrayList = new ArrayList<String>();
+        frequencyArrayList.add("Daily");
+        frequencyArrayList.add("Monthly");
+        frequencyArrayList.add("Yearly");
+
+
         initToolbar(); //set toolbar
         //promptConversion();
 
@@ -120,6 +127,29 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
             Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
         }
 
+        Spinner fSpinner = findViewById(R.id.recurring_frequency_spinner);
+        ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, frequencyArrayList);
+        fAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fSpinner.setAdapter(fAdapter);
+
+        if (frequencyArrayList.size() > 0){
+            frequency = frequencyArrayList.get(fSpinner.getSelectedItemPosition());
+            fSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    frequency = frequencyArrayList.get(fSpinner.getSelectedItemPosition());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    //pass
+                }
+            });
+        }else{
+            frequency = null;
+            Toast.makeText(getApplicationContext(), "No frequency available", Toast.LENGTH_SHORT).show();
+        }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +167,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
 
                 //create transaction if record is valid
                 if (validRecord()) {
-                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date, wallet.getWalletId()));
+                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date, wallet.getWalletId(), frequency));
                     dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, currentTime(), null, wallet.getWalletId()));
                     Log.v("TESTTEST", "" + wallet.getWalletId());
                     Toast.makeText(getApplicationContext(), "Recurring Entry added", Toast.LENGTH_SHORT).show();

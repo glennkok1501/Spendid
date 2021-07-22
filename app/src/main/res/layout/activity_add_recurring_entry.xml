@@ -70,6 +70,7 @@
                                 android:text="currency" />
                         </RelativeLayout>
 
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -171,6 +172,26 @@
 
                     <Spinner
                         android:id="@+id/recurring_wallet_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/recurring_frequency_cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="20dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="15dp"
+                    app:cardBackgroundColor="?colorOnBackground"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <Spinner
+                        android:id="@+id/recurring_frequency_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="20dp" />

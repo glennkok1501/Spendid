@@ -111,7 +111,7 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
 
 
                 if (validRecord()) {
-                    dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),title_txt, des_txt, amount, cat, date, null, dateupdate, recurring.getWalletId()));
+                    dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),title_txt, des_txt, amount, cat, date, null, dateupdate, recurring.getWalletId(),recurring.getFrequency()));
                     Toast.makeText(getApplicationContext(), "Recurring Entry Updated", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -185,7 +185,7 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
                 Calendar currentTime = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String dateupdate = dateFormat.format(currentTime.getTime());
-                dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),recurring.getRecurringtitle(), recurring.getRecurringdescription(), recurring.getAmount(), recurring.getCategory(), recurring.getRecurringstartDate(), dateupdate, dateupdate, recurring.getWalletId()));
+                dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),recurring.getRecurringtitle(), recurring.getRecurringdescription(), recurring.getAmount(), recurring.getCategory(), recurring.getRecurringstartDate(), dateupdate, dateupdate, recurring.getWalletId(), recurring.getFrequency()));
                 Toast.makeText(getApplicationContext(), "Recurring Entry Stopped", Toast.LENGTH_SHORT).show();
                 alert.dismiss();
                 startActivity(new Intent(EditRecurringEntry.this, RecurringEntryPage.class));
