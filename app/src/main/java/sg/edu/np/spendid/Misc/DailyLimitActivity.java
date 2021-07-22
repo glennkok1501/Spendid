@@ -23,12 +23,15 @@ import android.widget.TextView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-import sg.edu.np.spendid.R;
+import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
+import sg.edu.np.spendid.R;
 
 public class DailyLimitActivity extends AppCompatActivity {
     private SwitchMaterial dSwitch, dNotif;
-    private TextView dLimitText;
+    private TextView dLimitText, dNotifyAt;
     private EditText dAmtEdit;
     private Spinner dSpinner;
     private LinearLayout dailyLimit;
@@ -49,28 +52,37 @@ public class DailyLimitActivity extends AppCompatActivity {
         dAmtEdit = findViewById(R.id.limit_amt_editText);
         dSpinner = findViewById(R.id.limit_daily_spinner);
         dNotif = findViewById(R.id.limit_daily_notification_switch);
+        dNotifyAt = findViewById(R.id.limit_notify_at_textView);
         dailyLimit = findViewById(R.id.limit_daily_linearLayout);
 
         initToolbar(); //set toolbar
-        dLimit = getSharedPreferences(PREF_NAME, MODE_PRIVATE).getInt("dailyLimit", 8);
-        dSwitch.setChecked((getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Daily Limit", false)));
-        dailyLimit.setEnabled(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Daily Limit", false));
         editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
 
+        //setting up spinner attributes
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, range);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dSpinner.setAdapter(adapter);
         dSpinner.setSelection(dLimit);
 
-        View[] dViews = new View[]{dLimitText, dAmtEdit, dSpinner, dNotif};
+        //placing TextViews into a list for easier changing of settings
+        ArrayList<TextView> tVList = new ArrayList<>();
+        tVList.add(dLimitText);
+        tVList.add(dNotifyAt);
 
-        toggleLimit(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Daily Limit", false),
-                "Daily Limit", dViews);
+        //placing necessary views(all except main switch) into a list for easier enabling/disabling
+        View[] dViews = new View[] {dLimitText, dAmtEdit, dSpinner, dNotif, dNotifyAt};
+
+        //setting attributes to how they were when last saved
+        dSwitch.setChecked((getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Daily Limit", false)));
+        dAmtEdit.setText(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getString("Limit Amount", "50"));
+        dSpinner.setSelection(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getInt("Notify At", 8));
+        dNotif.setChecked(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Notify", true));
+        toggleLimit(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Daily Limit", false), tVList, dViews);
 
         dSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                toggleLimit(isChecked, "Daily Limit", dViews);
+                toggleLimit(isChecked, tVList, dViews);
             }
         });
 
@@ -83,7 +95,7 @@ public class DailyLimitActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                editor.putFloat("Limit Amount", Float.valueOf(dAmtEdit.getText().toString()));
+                editor.putString("Limit Amount", dAmtEdit.getText().toString());
                 editor.apply();
             }
         });
@@ -96,13 +108,15 @@ public class DailyLimitActivity extends AppCompatActivity {
                 } else {
                     editor.putBoolean("Notify", false);
                 }
+                editor.apply();
             }
         });
 
         dSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                editor.putString("Notify At", range[position]);
+                editor.putInt("Notify At", position);
+                editor.apply();
             }
 
             @Override
@@ -122,18 +136,18 @@ public class DailyLimitActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() { super.onDestroy(); }
 
-    private void toggleLimit(boolean checked, String dm, View[] views) {
-        TextView toChange = findViewById(views[0].getId());
-        if (checked){
-            toChange.setTextColor(Color.parseColor("black"));
-        }
-        else{
-            toChange.setTextColor(Color.parseColor("#B0B0B0"));
+    private void toggleLimit(boolean checked, ArrayList<TextView> tVList, View[] dViews) {
+        for (TextView tv : tVList) {
+            if (checked) {
+                tv.setTextColor(Color.parseColor("black"));
+            } else {
+                tv.setTextColor(Color.parseColor("#B0B0B0")); //disabled color
+            }
         }
         editor.putBoolean("Daily Limit", checked);
         editor.apply();
 
-        for (View v : views) {
+        for (View v : dViews) {
             v.setEnabled(checked);
         }
     }

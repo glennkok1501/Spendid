@@ -33,12 +33,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.Records.Adapters.CatSliderAdapter;
 import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
+import sg.edu.np.spendid.Utils.LimitNotification;
 import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
 import sg.edu.np.spendid.Utils.WalletNameList;
 
@@ -51,8 +53,12 @@ public class AddRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
+    private Calendar currentTime = Calendar.getInstance();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private Spinner selectWallet;
     private String baseCurrency;
+    private boolean result;
     private byte[] imageData;
 
     private final String PREF_NAME = "sharedPrefs";
@@ -156,24 +162,32 @@ public class AddRecordActivity extends AppCompatActivity {
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
                 //get current date and time
-                Calendar currentTime = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
                 String date = dateFormat.format(currentTime.getTime());
                 String time = timeFormat.format(currentTime.getTime());
 
                 //create transaction if record is valid
-                if (validRecord()){
-                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId()));
-                    Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
-                    finish();
+                if (validRecord()) {
+                    LimitNotification notification = new LimitNotification(AddRecordActivity.this, dbHandler, amount);
+                    if (notification.isNotifyOn()) {
+                        notification.exceedMessage();
+                        if (notification.isResult()) {
+                            dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId()));
+                            Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(AddRecordActivity.this, "Resist the urge!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId()));
+                        Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Please enter details", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
     @Override
@@ -293,15 +307,6 @@ public class AddRecordActivity extends AppCompatActivity {
                 image.setImageResource(R.drawable.ic_image_24);
             }
         });
-    }
-
-    private void getTodayBalance() {
-        HashMap<String, ArrayList<Record>> recordsToday = dbHandler.getGroupedTransaction(dateFormat.format(currentTime.getTime()));
-        for (ArrayList<Record> rList : recordsToday.values()) {
-            for (Record r : rList) {
-
-            }
-        }
     }
 
     private void initToolbar(){
