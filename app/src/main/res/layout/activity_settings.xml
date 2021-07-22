@@ -26,23 +26,41 @@
                 android:layout_height="match_parent"
                 android:text="Night Mode"
                 android:textSize="16sp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"/>
+                android:drawableStart="@drawable/ic_mode_night_24"
+                app:drawableTint="?subtitleTextColor"
+                android:drawablePadding="15dp"
+                android:padding="20dp"/>
 
             <TextView
-                android:id="@+id/settings_export_textView"
+                android:id="@+id/settings_myCode_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_qr_code_24"
+                app:drawableTint="?subtitleTextColor"
+                android:drawablePadding="15dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:drawableEnd="@drawable/ic_arrow_forward_24"
                 android:drawableTint="?colorOnPrimarySurface"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:textSize="16sp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:padding="20dp"
+                android:text="My Code"/>
+
+            <TextView
+                android:id="@+id/settings_export_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_export_24"
+                app:drawableTint="?subtitleTextColor"
+                android:drawablePadding="15dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_arrow_forward_24"
+                android:drawableTint="?colorOnPrimarySurface"
+                android:textSize="16sp"
+                android:padding="20dp"
                 android:text="Export Wallet"/>
 
 
@@ -50,49 +68,65 @@
                 android:id="@+id/settings_import_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_import_24"
+                app:drawableTint="?subtitleTextColor"
+                android:drawablePadding="15dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:drawableEnd="@drawable/ic_arrow_forward_24"
                 android:drawableTint="?colorOnPrimarySurface"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:textSize="16sp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:padding="20dp"
                 android:text="Import Wallet"/>
 
             <TextView
                 android:id="@+id/settings_dailyLimit_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_money_off_24"
+                app:drawableTint="?subtitleTextColor"
+                android:drawablePadding="15dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:drawableEnd="@drawable/ic_arrow_forward_24"
                 android:drawableTint="?colorOnPrimarySurface"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
+                android:padding="20dp"
                 android:textSize="16sp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:text="Daily Limit"/>
 
             <TextView
                 android:id="@+id/settings_clearAll_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_clear_all_24"
+                app:drawableTint="?subtitleTextColor"
+                android:drawablePadding="15dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:drawableEnd="@drawable/ic_arrow_forward_24"
                 android:drawableTint="?colorOnPrimarySurface"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:textSize="16sp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:padding="20dp"
                 android:text="Clear All"/>
+
+            <TextView
+                android:id="@+id/settings_about_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_about_24"
+                app:drawableTint="?subtitleTextColor"
+                android:drawablePadding="15dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_arrow_forward_24"
+                android:drawableTint="?colorOnPrimarySurface"
+                android:textSize="16sp"
+                android:padding="20dp"
+                android:text="About"/>
 
         </LinearLayout>
     </ScrollView>
