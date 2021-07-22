@@ -1,6 +1,7 @@
 package sg.edu.np.spendid.ShoppingList.Adapters.CartItems;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         holder.name.setText(cartItem.getName());
         holder.amt.setText(df2.format(cartItem.getAmount()));
         holder.check.setChecked(cartItem.isCheck());
+        setStrikeThrough(holder.name, cartItem.isCheck());
 
         //show dialog when item clicked
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +58,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 dbHandler.updateCartItem(new CartItem(cartItem.getItemId(), cartItem.getName(), cartItem.getAmount(), isChecked, cartItem.getCartId()));
                 cartItem.setCheck(isChecked);
+                setStrikeThrough(holder.name, isChecked);
             }
         });
     }
@@ -103,6 +106,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsViewHolder> 
         }
         else{
             empty.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setStrikeThrough(TextView text, boolean strike){
+        if (strike){
+            text.setPaintFlags(text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+        else{
+            text.setPaintFlags(text.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         }
     }
 
