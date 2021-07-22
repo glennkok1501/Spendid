@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import sg.edu.np.spendid.RecurringEntry.RecurringEntryPage;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -51,6 +52,7 @@ import sg.edu.np.spendid.ShoppingList.ShoppingListMainActivity;
 import sg.edu.np.spendid.RecordsHistory.TransactionHistoryActivity;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.Wallets.WalletCurrencyActivity;
+import sg.edu.np.spendid.RecurringEntry.RecurringEntryPage;
 
 public class MainActivity extends AppCompatActivity {
     private DBHandler dbHandler;
@@ -316,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
     //navigation drawer
     private void initDrawer(){
         LinearLayout manageWallet, transHist, currencyRates,
-                shoppingList, settings, about, search, add,
+                shoppingList, recurringEntry, settings, about, search, add,
                 additional, addWallet, addRecord, stats, friendsList;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
 
@@ -335,6 +337,9 @@ public class MainActivity extends AppCompatActivity {
 
         shoppingList = findViewById(R.id.navbar_shoppingList);
         setButton(shoppingList, ShoppingListMainActivity.class);
+
+        recurringEntry = findViewById(R.id.navbar_recurring);
+        setButton(recurringEntry, RecurringEntryPage.class);
 
         about = findViewById(R.id.navbar_about);
         setButton(about, AboutActivity.class);
