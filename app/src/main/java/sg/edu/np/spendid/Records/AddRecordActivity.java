@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -45,9 +47,14 @@ public class AddRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
+    private Calendar currentTime = Calendar.getInstance();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private String walletCurrency;
     private String baseCurrency;
     private byte[] imageData;
+
+    private final String PREF_NAME = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,9 +142,6 @@ public class AddRecordActivity extends AppCompatActivity {
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
                 //get current date and time
-                Calendar currentTime = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
                 String date = dateFormat.format(currentTime.getTime());
                 String time = timeFormat.format(currentTime.getTime());
 
@@ -272,6 +276,15 @@ public class AddRecordActivity extends AppCompatActivity {
                 image.setImageResource(R.drawable.ic_image_24);
             }
         });
+    }
+
+    private void getTodayBalance() {
+        HashMap<String, ArrayList<Record>> recordsToday = dbHandler.getGroupedTransaction(dateFormat.format(currentTime.getTime()));
+        for (ArrayList<Record> rList : recordsToday.values()) {
+            for (Record r : rList) {
+
+            }
+        }
     }
 
     private void initToolbar(){

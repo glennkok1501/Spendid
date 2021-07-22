@@ -83,7 +83,7 @@ public class DailyLimitActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                editor.putString("Limit Amount", dAmtEdit.getText().toString());
+                editor.putFloat("Limit Amount", Float.valueOf(dAmtEdit.getText().toString()));
                 editor.apply();
             }
         });
