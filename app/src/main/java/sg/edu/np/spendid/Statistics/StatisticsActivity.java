@@ -56,9 +56,6 @@ public class StatisticsActivity extends AppCompatActivity {
         //initiate data for graphs
         int range = 6; //indicates number of months back, 6 would be last 6 months
 
-        //get array of months
-        Date[] monthsRange = getLastMonths(range);
-
         //get array of data
         ArrayList<double[]> input = new ArrayList<>();
         SortData sortData = new SortData(dbHandler, range);
@@ -66,23 +63,34 @@ public class StatisticsActivity extends AppCompatActivity {
         input.add(sortData.getData("income"));
         input.add(sortData.getData("expense"));
 
+        //get array of months
+        Date[] monthsRange = sortData.getDateList();
+
+        //set total month balance value
         TextView monthBal = findViewById(R.id.stats_bal_textView);
         monthBal.setText(df2.format(input.get(0)[range-1]));
 
+        //set graphs viewpager with array list
         ViewPager2 charts = findViewById(R.id.stats_graph_viewpager);
         ChartsAdapter chartsAdapter = new ChartsAdapter(this, input, monthsRange);
         charts.setAdapter(chartsAdapter);
 
+        //initiate viewpager indicators
         LinearLayout indicators = findViewById(R.id.stats_graph_indicators);
         new ViewPagerIndicators(this, charts, indicators).init(input.size());
 
+        //get category transactions
         HashMap<String, ArrayList<Record>> catMonthData = dbHandler.getGroupedTransaction(new SimpleDateFormat("yyyy-MM").format(currentMonth.getTime())+"-%");
 
+        //sort category expenses data
         HashMap<String, Double> expenseCat = catData(catMonthData);
+
+        //check if there are expenses
         if (expenseCat.size() == 0){
             emptyExpense.setText("You have no expense");
         }
         else{
+            //set expenses recycler view
             emptyExpense.setVisibility(View.GONE);
             CatAdapter catExpenseAdapter = new CatAdapter(expenseCat);
             LinearLayoutManager expenseLayoutManager = new LinearLayoutManager(this);
@@ -91,43 +99,44 @@ public class StatisticsActivity extends AppCompatActivity {
             categoryExpenseRV.setAdapter(catExpenseAdapter);
         }
 
+        //launch to view all category activity
         TextView viewAllCats = findViewById(R.id.stats_viewCat_textView);
         viewAllCats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StatisticsActivity.this, StatisticsAllCatActivity.class);
+
+                //send data for expense category to activity
                 intent.putExtra("data", expenseCat);
                 startActivity(intent);
             }
         });
     }
 
-    private Date[] getLastMonths(int range){
-        Date[] monthsRange = new Date[range];
-        for (int i = 0; i < range; i++){
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.MONTH, -i);
-            monthsRange[(range-1)-i] = cal.getTime();
-        }
-        return monthsRange;
-    }
+    //convert categories with list of records to amount for each category
+    private HashMap<String, Double> catData(HashMap<String, ArrayList<Record>> data){
 
-        private HashMap<String, Double> catData(HashMap<String, ArrayList<Record>> data){
-            HashMap<String, Double> sortedData = new HashMap<>();
-            for (Category cat : cats){
+        //initiate new map
+        HashMap<String, Double> sortedData = new HashMap<>();
 
-                //find for records that are expense
-                if (cat.isExpense() && data.containsKey(cat.getTitle())){
-                    String catTitle = cat.getTitle();
-                    sortedData.put(catTitle, 0.0);
+        //iterate through all categories
+        for (Category cat : cats){
 
-                    //get total amount for category
-                        for (Record record : data.get(catTitle)){
-                            double add = sortedData.get(catTitle) + record.getAmount();
-                            sortedData.put(catTitle, add);
-                        }
+            //find for records that are expense
+            //check if current data has this category
+            if (cat.isExpense() && data.containsKey(cat.getTitle())){
+                String catTitle = cat.getTitle();
+
+                //set placeholder value for incrementing
+                sortedData.put(catTitle, 0.0);
+
+                //get total amount for category
+                    for (Record record : data.get(catTitle)){
+                        double add = sortedData.get(catTitle) + record.getAmount();
+                        sortedData.put(catTitle, add);
                     }
                 }
+            }
         return sortedData;
     }
 

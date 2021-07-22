@@ -37,14 +37,25 @@ public class CatAdapter extends RecyclerView.Adapter<CatViewHolder> {
         vh.percent.setText(df2.format(amount));
     }
 
-    public int getItemCount(){
+    public int getItemCount()
+    {
+        //limit to top 5
         return Math.min(cats.size(), 5);
     }
 
+    //sort categories from highest to lowest
     private ArrayList<String> sort(HashMap<String, Double> input){
+
+        //initiate new array list from existing keys
         ArrayList<String> sortedCats = new ArrayList<>(input.keySet());
+
+        //size of array list
         int n = sortedCats.size();
+
+        //placeholder to replace category
         String temp;
+
+        //bubble sort algorithm
         for(int i = 0; i < n; i++){
             for(int j = 1; j < (n-i); j++){
                 if(input.get(sortedCats.get(j-1)) < input.get(sortedCats.get(j))){
@@ -53,7 +64,6 @@ public class CatAdapter extends RecyclerView.Adapter<CatViewHolder> {
                     sortedCats.remove(j-1);
                     sortedCats.add(j, temp);
                 }
-
             }
         }
         return sortedCats;

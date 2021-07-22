@@ -29,23 +29,41 @@ public class Charts {
     }
 
     public void init(double[] data, Date[] months){
+
+        //get highest value in data array
         double highest = getMax(data);
+
+        //populate linear layout
         for (int i = 0; i < data.length; i++) {
+
+            //get percentage of data
+            int percent = convertPercent(data[i], highest);
+
+            //initiate new linear layout
             LinearLayout bar = getBarLayout();
-            if (data[i] > 0) {
-                bar.addView(setBarData(convertPercent(data[i], highest), bar));
+
+            if (percent > 0) {
+                //set linear layout properties and add into parent linear layout
+                bar.addView(setBarData(percent, bar));
             }
             else{
+                //create empty layout if data is less than 0
                 bar.addView(emptyBar(100, bar));
             }
+
+            //initiate add listener to layout
             final double amt = data[i];
             final Date date = months[i];
             bar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    //show dialog consisting of date and amount
                     new AmountDialog(context).show(amt, date);
                 }
             });
+
+            //populate created layouts
             chart.addView(bar);
             monthsChart.addView(getMonth(amt, date));
         }
@@ -53,6 +71,7 @@ public class Charts {
 
     private View getMonth(double amt, Date date){
 
+        //create textview and set date
         TextView monthText = new TextView(context);
         monthText.setText(sdf.format(date));
         LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
@@ -75,7 +94,10 @@ public class Charts {
     }
 
     private LinearLayout getBarLayout(){
+        //create linear layout
         LinearLayout linearLayout = new LinearLayout(context);
+
+        //set parameters for layout
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams parentParams = new LinearLayout.LayoutParams(
                 0,
@@ -89,7 +111,10 @@ public class Charts {
     }
 
     private View setBarData(int height, LinearLayout linearLayout){
+        //create View
         View view = new View(context);
+
+        //set parameters for view
         linearLayout.setBackgroundColor(context.getResources().getColor(R.color.fire_bush));
         LinearLayout.LayoutParams childParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -100,7 +125,10 @@ public class Charts {
     }
 
     private View emptyBar(int height, LinearLayout linearLayout){
+        //create View
         View view = new View(context);
+
+        //set parameters for view
         LinearLayout.LayoutParams childParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 height*3,
@@ -110,7 +138,11 @@ public class Charts {
     }
 
     private double getMax(double[] nums){
+
+        //declare highest number
         double max = nums[0];
+
+        //compare and replace highest value
         for (double num : nums){
             if (num > max){
                 max = num;
@@ -119,6 +151,7 @@ public class Charts {
         return max;
     }
 
+    //convert value to percentage for bar height value
     private int convertPercent(double num, double max){
         return (int) Math.round((num/max)*100);
     }
