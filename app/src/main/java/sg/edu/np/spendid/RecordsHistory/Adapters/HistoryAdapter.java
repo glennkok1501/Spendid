@@ -54,7 +54,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
             try {
                 newDates[i] = new SimpleDateFormat("yyyy-MM-dd").parse(dates.get(i));
             }
-            catch (ParseException e) {}
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         //sort using Arrays method
         Arrays.sort(newDates, Collections.reverseOrder());

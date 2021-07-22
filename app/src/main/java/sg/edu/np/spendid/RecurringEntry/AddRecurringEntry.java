@@ -54,6 +54,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
     private Wallet wallet;
     private ArrayList<Wallet> walletArrayList;
     private ArrayList<String> frequencyArrayList;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,19 +158,12 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
                 String des_txt = description.getText().toString(); //get description
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
-                String date = null;
-                try {
-                    date = checkDate();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
+                String date = checkDate(); //validate date
 
                 //create transaction if record is valid
                 if (validRecord()) {
                     dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date, wallet.getWalletId(), frequency));
                     dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, currentTime(), null, wallet.getWalletId()));
-                    Log.v("TESTTEST", "" + wallet.getWalletId());
                     Toast.makeText(getApplicationContext(), "Recurring Entry added", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -199,8 +193,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         mCalender.set(Calendar.YEAR, year);
         mCalender.set(Calendar.MONTH, month);
         mCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String selectedDate = DateFormat.getDateInstance().format(mCalender.getTime());
-        selectDate.setText(selectedDate);
+        selectDate.setText(dateFormat.format(mCalender.getTime()));
     }
 
     private String[] getWalletList() {
@@ -259,7 +252,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         return valid;
     }
 
-    private String checkDate() throws ParseException {
+    private String checkDate() {
         String date = selectDate.getText().toString();
 
         if (date.equals("Click here to choose a date")){
@@ -267,9 +260,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         }
         else{
             checkValues.put("date", true);
-            return formatDate(date);
-
-
+            return date;
         }
     }
 
@@ -282,14 +273,6 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         return m;
     }
 
-
-    private String formatDate(String d) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat initialFormat = new SimpleDateFormat("MMM d, yyyy");
-        Date date = initialFormat.parse(d);
-        //MMM d, yyyy
-        return dateFormat.format(date);
-    }
 
     public String currentTime(){
         Calendar currentTime = Calendar.getInstance();
