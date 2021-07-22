@@ -41,6 +41,7 @@ import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
 import sg.edu.np.spendid.Models.Wallet;
+import sg.edu.np.spendid.Utils.WalletNameList;
 
 //export or import records from csv files to selected wallets
 public class ExportActivity extends AppCompatActivity {
@@ -60,12 +61,12 @@ public class ExportActivity extends AppCompatActivity {
 
         dbHandler = new DBHandler(this, null, null, 1);
         walletArrayList = dbHandler.getWallets();
-        String[] walletList = getWalletList();
         sendToDialog = new SelectFriendDialog(this, dbHandler.getFriends());
 
         //initiate spinner to select wallet to export or import with walletList
         Spinner spinner = findViewById(R.id.export_wallet_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, walletList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+                new WalletNameList(walletArrayList).getList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -143,15 +144,6 @@ public class ExportActivity extends AppCompatActivity {
         clearFiles();
         //remove permissions when not in used
         this.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-    }
-
-    //create a string array of wallet names for spinner to use
-    private String[] getWalletList(){
-        String[] walletList = new String[walletArrayList.size()];
-        for (int i = 0; i < walletArrayList.size(); i++){
-            walletList[i] = walletArrayList.get(i).getName();
-        }
-        return walletList;
     }
 
     private void exportRecords (ArrayList<Record> records){

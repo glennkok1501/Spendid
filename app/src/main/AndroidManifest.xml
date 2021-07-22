@@ -15,6 +15,8 @@
         android:theme="@style/Theme.Spendid">
         <activity android:name=".Misc.DailyLimitActivity"></activity>
         <activity android:name=".Records.ViewImageActivity" />
+        <activity android:name=".Statistics.StatisticsAllCatActivity"></activity>
+        <activity android:name=".Records.ViewImageActivity" />
         <activity android:name=".Statistics.StatisticsActivity" />
         <activity android:name=".DataTransfer.ImportActivity" />
         <activity android:name=".Friends.ViewFriendActivity" />
@@ -52,7 +54,6 @@
         <activity android:name=".Records.EditRecordActivity" />
         <activity android:name=".RecordsHistory.TransactionHistoryActivity" />
         <activity android:name=".Wallets.ManageWalletActivity" />
-        <activity android:name=".Wallets.SelectWalletActivity" />
         <activity android:name=".Records.AddRecordActivity" />
         <activity android:name=".Misc.SplashScreenActivity">
             <intent-filter>

@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
-    android:layout_marginTop="15dp"
-    android:padding="10dp"
+    android:padding="15dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -33,12 +32,12 @@
         android:text="Category" />
 
     <TextView
-        android:id="@+id/stats_cat_percent"
+        android:id="@+id/stats_cat_amt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="%" />
+        android:text="0.00" />
 </androidx.constraintlayout.widget.ConstraintLayout>

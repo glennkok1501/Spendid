@@ -17,12 +17,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -31,26 +33,25 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.Records.Adapters.CatSliderAdapter;
 import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
-import sg.edu.np.spendid.Utils.RequestPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
+import sg.edu.np.spendid.Utils.WalletNameList;
 
 //Create transaction
 
 public class AddRecordActivity extends AppCompatActivity {
     private DBHandler dbHandler;
-    private TextView selectedCat, selectWallet, recordCur;
+    private TextView selectedCat, recordCur;
     private EditText title, description, amt;
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private Calendar currentTime = Calendar.getInstance();
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-    private String walletCurrency;
+    private Spinner selectWallet;
     private String baseCurrency;
     private byte[] imageData;
 
@@ -62,7 +63,7 @@ public class AddRecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_record);
         dbHandler = new DBHandler(this, null, null, 1);
         selectedCat = findViewById(R.id.newRecordCat_textView);
-        selectWallet = findViewById(R.id.newRecordWallet_textView);
+        selectWallet = findViewById(R.id.newRecordWallet_spinner);
         title = findViewById(R.id.newRecordTitle_editText);
         amt = findViewById(R.id.newRecordAmt_editText);
         description = findViewById(R.id.newRecordDes_editText);
@@ -72,18 +73,31 @@ public class AddRecordActivity extends AppCompatActivity {
         TextView selImage = findViewById(R.id.newRecordImage_textView);
         ImageView imageStatus = findViewById(R.id.newRecordImage_imageView);
         baseCurrency = getString(R.string.baseCurrency);
+        recordCur.setText(baseCurrency);
         imageData = null;
 
         initToolbar(); //set toolbar
 
         checkValues = initCheckValues(); //set values for record validation
 
-        //retrieve wallet name and wallet currency
-        Intent intent = getIntent();
-        selectWallet.setText(intent.getStringExtra("walletName"));
-        walletCurrency = intent.getStringExtra("walletCurrency");
-        recordCur.setText(baseCurrency);
-        promptConversion(); //if wallet currency not sgd prompt exchange
+        //initiate spinner to select wallet to export or import with walletList
+        ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+                new WalletNameList(walletArrayList).getList());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectWallet.setAdapter(adapter);
+
+        //reassign selected wallet when spinner index change
+        selectWallet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                promptConversion(baseCurrency, walletArrayList.get(position).getCurrency());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // pass
+            }
+        });
 
         //category slider
         RecyclerView catRV = findViewById(R.id.newRecordCat_RV);
@@ -127,7 +141,7 @@ public class AddRecordActivity extends AppCompatActivity {
         selImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new RequestPermission(AddRecordActivity.this).checkPermission()){
+                if (new RequestReadPermission(AddRecordActivity.this).checkPermission()){
                     getFile.launch("image/*"); //initiate file picker with CSV format
                 }
             }
@@ -142,12 +156,15 @@ public class AddRecordActivity extends AppCompatActivity {
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
                 //get current date and time
+                Calendar currentTime = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
                 String date = dateFormat.format(currentTime.getTime());
                 String time = timeFormat.format(currentTime.getTime());
 
                 //create transaction if record is valid
                 if (validRecord()){
-                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, intent.getIntExtra("walletId", 0)));
+                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId()));
                     Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -196,7 +213,7 @@ public class AddRecordActivity extends AppCompatActivity {
     }
 
     //prompt currency exchange dialog if wallet currency is not in SGD
-    private void promptConversion(){
+    private void promptConversion(String baseCurrency, String walletCurrency){
         if (!walletCurrency.equals(baseCurrency)){
             CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, walletCurrency.toLowerCase(), dbHandler);
             currencyConvertDialog.setAmt(amt);

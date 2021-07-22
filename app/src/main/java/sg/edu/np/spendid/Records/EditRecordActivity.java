@@ -32,7 +32,7 @@ import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.Models.Wallet;
-import sg.edu.np.spendid.Utils.RequestPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
 
 //edit and delete transaction
 public class EditRecordActivity extends AppCompatActivity {
@@ -125,7 +125,7 @@ public class EditRecordActivity extends AppCompatActivity {
         selImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new RequestPermission(EditRecordActivity.this).checkPermission()){
+                if (new RequestReadPermission(EditRecordActivity.this).checkPermission()){
                     getFile.launch("image/*"); //initiate filer picker with any file type
                 }
             }

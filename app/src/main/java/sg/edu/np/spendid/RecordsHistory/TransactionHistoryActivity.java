@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import sg.edu.np.spendid.Database.DBHandler;
+import sg.edu.np.spendid.Records.AddRecordActivity;
 import sg.edu.np.spendid.RecordsHistory.Adapters.HistoryAdapter;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Wallets.SelectWalletActivity;
 
 public class TransactionHistoryActivity extends AppCompatActivity {
     private DBHandler dbHandler;
@@ -40,7 +40,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TransactionHistoryActivity.this, SelectWalletActivity.class);
+                Intent intent = new Intent(TransactionHistoryActivity.this, AddRecordActivity.class);
                 startActivity(intent);
             }
         });

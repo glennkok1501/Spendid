@@ -13,7 +13,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -40,12 +39,13 @@ import sg.edu.np.spendid.Dashboard.Adapters.CurrentTrans.CurrentTransAdapter;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.ExchangeRates.ExchangeRateActivity;
 import sg.edu.np.spendid.Models.SeedData;
+import sg.edu.np.spendid.Records.AddRecordActivity;
 import sg.edu.np.spendid.Statistics.StatisticsActivity;
+import sg.edu.np.spendid.Utils.ViewPagerIndicators;
 import sg.edu.np.spendid.Wallets.ManageWalletActivity;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.RecordsHistory.SearchActivity;
-import sg.edu.np.spendid.Wallets.SelectWalletActivity;
 import sg.edu.np.spendid.Misc.SettingsActivity;
 import sg.edu.np.spendid.ShoppingList.ShoppingListMainActivity;
 import sg.edu.np.spendid.RecordsHistory.TransactionHistoryActivity;
@@ -60,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
     private Animation open, close, up, down;
     private boolean fabClicked, collapse_add;
     private DrawerLayout drawerLayout;
-    private ViewPager2 viewPager;
+    private ViewPager2 walletsViewPager;
     private RecyclerView currentTransRV;
+    private ArrayList<Wallet> walletList;
 
 
     @Override
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         TextView viewAll = findViewById(R.id.viewAll_textView);
         noWallet = findViewById(R.id.walletViewPageStatus_textView);
         noCurTrans = findViewById(R.id.curTransStatus_textView);
-        viewPager = findViewById(R.id.wallets_viewPager);
+        walletsViewPager = findViewById(R.id.wallets_viewPager);
         currentTransRV = findViewById(R.id.main_transHist_RV);
 
         //floating action button (fab) animations
@@ -120,7 +121,12 @@ public class MainActivity extends AppCompatActivity {
         addRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SelectWalletActivity.class));
+                if (walletList.size() > 0){
+                    startActivity(new Intent(MainActivity.this, AddRecordActivity.class));
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please create a wallet", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -171,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //retrieve wallet array list and sort based on favourite
-        ArrayList<Wallet> walletList = sortWallet(dbHandler.getWallets());
+        walletList = sortWallet(dbHandler.getWallets());
 
         //check if wallet data is empty and show message
         if (walletList.size() == 0){
@@ -184,30 +190,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Wallets view pager
         WalletSliderAdapter walletSliderAdapter = new WalletSliderAdapter(walletList, dbHandler);
-        viewPager.setAdapter(walletSliderAdapter);
+        walletsViewPager.setAdapter(walletSliderAdapter);
 
         //view pager indicators
         LinearLayout indicators = findViewById(R.id.walletsIndicators_linearLayout);
+        new ViewPagerIndicators(this, walletsViewPager, indicators).init(walletList.size());
 
-        //create textview array to store dots based on no. of wallets
-        TextView[] dots = new TextView[walletList.size()];
-        viewPagerIndicators(dots, indicators);
-        //change color depending on which page
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                for (int i = 0; i < dots.length; i++){
-                    if (i == position){
-                        dots[i].setTextColor(getResources().getColor(R.color.fire_bush));
-                    }
-                    else{
-                        dots[i].setTextColor(getResources().getColor(R.color.light_grey));
-                    }
-                }
-                super.onPageSelected(position);
-
-            }
-        });
 
         //get transaction for the day grouped by category
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
@@ -298,18 +286,6 @@ public class MainActivity extends AppCompatActivity {
         return walletList;
     }
 
-    //create view pager indicators
-    private void viewPagerIndicators(TextView[] d, LinearLayout l){
-        l.removeAllViews(); //reset textview array
-        //add new TextView with bullet points into linear layout depending on viewpager size
-        for (int i = 0; i < d.length; i++){
-            d[i] = new TextView(this);
-            d[i].setText(Html.fromHtml(getResources().getString(R.string.dot)));
-            d[i].setTextSize(18);
-            l.addView(d[i]);
-        }
-    }
-
     //get current date
     private String currentDate(){
         Calendar currentTime = Calendar.getInstance();
@@ -378,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
         addWallet = findViewById(R.id.navbar_addWallet);
         setButton(addWallet, WalletCurrencyActivity.class);
         addRecord = findViewById(R.id.navbar_addRecord);
-        setButton(addRecord, SelectWalletActivity.class);
+        setButton(addRecord, AddRecordActivity.class);
         collapseBar(add, additional);
 
     }

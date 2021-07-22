@@ -22,6 +22,7 @@ import sg.edu.np.spendid.DataTransfer.Utils.ImportCSV;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Wallet;
+import sg.edu.np.spendid.Utils.WalletNameList;
 
 public class ImportExternalActivity extends AppCompatActivity {
 
@@ -42,11 +43,11 @@ public class ImportExternalActivity extends AppCompatActivity {
         uri = getImportIntent(); //get Uri of file
         dbHandler = new DBHandler(this, null, null, 1);
         walletArrayList = dbHandler.getWallets();
-        String[] walletList = getWalletList();
 
         //initiate spinner to select wallet to export or import with walletList
         Spinner spinner = findViewById(R.id.import_wallet_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, walletList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+                new WalletNameList(walletArrayList).getList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -116,15 +117,6 @@ public class ImportExternalActivity extends AppCompatActivity {
             return null;
         }
         return uri;
-    }
-
-    //create a string array of wallet names for spinner to use
-    private String[] getWalletList(){
-        String[] walletList = new String[walletArrayList.size()];
-        for (int i = 0; i < walletArrayList.size(); i++){
-            walletList[i] = walletArrayList.get(i).getName();
-        }
-        return walletList;
     }
 
     private void initToolbar(){

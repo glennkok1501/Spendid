@@ -804,7 +804,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //Friends List
     public ArrayList<Friend> getFriends() {
-        String query = "SELECT * FROM " + TABLE_FRIEND + " ORDER BY "+COLUMN_FRIEND_NAME+" DESC";
+        String query = "SELECT * FROM " + TABLE_FRIEND + " ORDER BY "+COLUMN_FRIEND_NAME+" ASC";
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Friend> friendsList = new ArrayList<>();
         Cursor cursor = db.rawQuery(query, null);
