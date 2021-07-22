@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -13,8 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+
 import sg.edu.np.spendid.Dashboard.MainActivity;
 import sg.edu.np.spendid.Database.DBHandler;
+import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.Network.CurrencyAPI;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
