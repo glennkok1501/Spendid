@@ -27,6 +27,7 @@ import sg.edu.np.spendid.Models.CartItem;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.Models.Wallet;
+import sg.edu.np.spendid.Utils.WalletNameList;
 
 //Class to compile cart items and to create a transaction
 
@@ -36,7 +37,6 @@ public class AddCartToRecord {
     private Wallet wallet;
     private ArrayList<CartItem> cartItems;
     private DBHandler dbHandler;
-    private String[] walletList;
     private ArrayList<Wallet> walletArrayList;
     private EditText name, amt;
     private double amount;
@@ -55,7 +55,6 @@ public class AddCartToRecord {
 
         //Get all wallets
         walletArrayList = dbHandler.getWallets();
-        walletList = getWalletList();
     }
 
     public void add(){
@@ -72,7 +71,8 @@ public class AddCartToRecord {
         Spinner spinner = dialog.findViewById(R.id.cartToRecordWallet_spinner);
 
         //initiate spinner with string array of wallets for user to select
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, walletList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,
+                new WalletNameList(walletArrayList).getList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -81,6 +81,9 @@ public class AddCartToRecord {
 
             //get wallet object based on selected index
             wallet = walletArrayList.get(spinner.getSelectedItemPosition());
+
+            //gather information about the cart such as cost, items, and bought or not bought
+            initDetails();
 
             //check if wallet is not SGD then prompt for exchange
             checkCurrency();
@@ -103,9 +106,6 @@ public class AddCartToRecord {
             Toast.makeText(context, "No wallets available", Toast.LENGTH_SHORT).show();
         }
 
-        //gather information about the cart such as cost, items, and bought or not bought
-        initDetails();
-
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,15 +127,6 @@ public class AddCartToRecord {
             }
         });
         dialog.show();
-    }
-
-    //create a string array of wallet names for spinner to use
-    private String[] getWalletList(){
-        String[] walletList = new String[walletArrayList.size()];
-        for (int i = 0; i < walletArrayList.size(); i++){
-            walletList[i] = walletArrayList.get(i).getName();
-        }
-        return walletList;
     }
 
     //calculate information to create a transaction from cart items

@@ -52,7 +52,6 @@
         <activity android:name=".Records.EditRecordActivity" />
         <activity android:name=".RecordsHistory.TransactionHistoryActivity" />
         <activity android:name=".Wallets.ManageWalletActivity" />
-        <activity android:name=".Wallets.SelectWalletActivity" />
         <activity android:name=".Records.AddRecordActivity" />
         <activity android:name=".Misc.SplashScreenActivity">
             <intent-filter>
