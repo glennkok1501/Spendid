@@ -17,6 +17,11 @@
         <activity android:name=".Records.ViewImageActivity" />
         <activity android:name=".Statistics.StatisticsActivity" />
         <activity android:name=".DataTransfer.ImportActivity" />
+        <activity android:name=".RecurringEntry.EditRecurringEntry"></activity>
+        <activity android:name=".RecurringEntry.ManageRecurringDialog" />
+        <activity android:name=".RecurringEntry.AddRecurringEntry" />
+        <activity android:name=".RecurringEntry.RecurringEntryPage" />
+        <activity android:name=".DataTransfer.ImportActivity" />
         <activity android:name=".Friends.ViewFriendActivity" />
         <activity android:name=".Friends.ProfileActivity" />
         <activity android:name=".Friends.FriendScannerActivity" />

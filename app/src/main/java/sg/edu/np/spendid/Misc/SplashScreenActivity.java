@@ -12,10 +12,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+
 import sg.edu.np.spendid.Dashboard.MainActivity;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Network.CurrencyAPI;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.RecurringEntry.UpdateEntryToWallet;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -36,6 +39,12 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         //check for night mode
         toggleNightMode();
+
+        try {
+            new UpdateEntryToWallet(dbHandler).UpdateRecurring();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         //Fetch Data from API
         new CurrencyAPI(this, dbHandler).getData("sgd");

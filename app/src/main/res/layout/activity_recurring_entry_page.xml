@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?backgroundColor"
+    tools:context=".RecurringEntry.RecurringEntryPage">
+
+    <include layout="@layout/page_toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/show_recurring_RV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/showRecurring_empty_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="You have no ongoing Subscription"
+            android:textSize="18sp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/RecurringAddEntry_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="28dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_add_24"
+            app:backgroundTint="?colorAccent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:tint="?colorOnPrimary" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -42,6 +42,7 @@ import sg.edu.np.spendid.Models.SeedData;
 import sg.edu.np.spendid.Records.AddRecordActivity;
 import sg.edu.np.spendid.Statistics.StatisticsActivity;
 import sg.edu.np.spendid.Utils.ViewPagerIndicators;
+import sg.edu.np.spendid.RecurringEntry.RecurringEntryPage;
 import sg.edu.np.spendid.Wallets.ManageWalletActivity;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
@@ -316,8 +317,8 @@ public class MainActivity extends AppCompatActivity {
     //navigation drawer
     private void initDrawer(){
         LinearLayout manageWallet, transHist, currencyRates,
-                shoppingList, settings, about, search, add,
-                additional, addWallet, addRecord, stats, friendsList;
+                shoppingList, recurringEntry, settings, about, search, add,
+                additional, addWallet, addRecord, friendsList;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
 
         //set re-directions to activities
@@ -335,6 +336,9 @@ public class MainActivity extends AppCompatActivity {
 
         shoppingList = findViewById(R.id.navbar_shoppingList);
         setButton(shoppingList, ShoppingListMainActivity.class);
+
+        recurringEntry = findViewById(R.id.navbar_recurring);
+        setButton(recurringEntry, RecurringEntryPage.class);
 
         about = findViewById(R.id.navbar_about);
         setButton(about, AboutActivity.class);

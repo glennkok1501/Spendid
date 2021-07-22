@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+android:id="@+id/viewRecur_relativeLayout"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<androidx.cardview.widget.CardView
+    android:id="@+id/viewRecur_cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="?backgroundColor"
+    android:layout_margin="30dp"
+    android:layout_centerInParent="true"
+    app:cardElevation="50dp"
+    app:cardCornerRadius="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="60dp">
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/viewRecurTitle_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Recurring Entry Name"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/viewRecurAmt_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:textAlignment="center"
+                android:textSize="34sp"
+                android:text="0.00" />
+
+            <TextView
+                android:id="@+id/viewRecurCur_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Currency" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:orientation="horizontal"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:textStyle="bold"
+            android:text="Description:"/>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:scrollbars="vertical"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/viewRecurDes_textView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="description of recur entry"/>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/viewRecurDate_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Date Started:"
+            android:textSize="12sp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/viewRecurEdit_fab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:clickable="true"
+    android:layout_alignBottom="@id/viewRecur_cardView"
+    android:layout_alignRight="@id/viewRecur_cardView"
+    app:elevation="65dp"
+    android:focusable="true"
+    app:backgroundTint="?colorSecondary"
+    android:src="@drawable/ic_edit_24"
+    app:tint="?colorOnSecondary" />
+</RelativeLayout>
