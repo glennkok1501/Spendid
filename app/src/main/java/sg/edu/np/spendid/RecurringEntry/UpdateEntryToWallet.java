@@ -26,7 +26,9 @@ public class UpdateEntryToWallet {
     public void UpdateRecurring() throws ParseException {
         Calendar currentDate = Calendar.getInstance();
         for (Recurring recurring : recurringArrayList){
-            updateEntry(recurring);
+            if (recurring.getRecurringendDate() == null){
+                updateEntry(recurring);
+            }
         }
     }
 

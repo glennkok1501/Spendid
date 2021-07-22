@@ -11,9 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +33,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,13 +49,14 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
     private DBHandler dbHandler;
     private Recurring recurring;
     private Wallet wallet;
-    private TextView selectedCat, selectWallet, recordCur, date,selectDate;
+    private TextView selectedCat, recordCur, date,selectDate, walletName;
     private EditText title, description, amt;
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency;
+    private String baseCurrency, frequency;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
+    private ArrayList<String> frequencyArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,21 +71,22 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
         title_layout = findViewById(R.id.editRecurringTitle_layout);
         recordCur = findViewById(R.id.editRecurringCur_textView);
         selectDate = findViewById(R.id.editRecurringDate_textView);
-
+        walletName = findViewById(R.id.editRecurringWallet_textView);
         baseCurrency = "SGD";
         initToolbar(); //set toolbar
         checkValues = initCheckValues();
 
         Intent intent = getIntent();
         recurring = dbHandler.getRecurring(intent.getIntExtra("recurID",0));
-        Log.v("TESTTEST", "" + recurring.getWalletId());
-
+        wallet = dbHandler.getWallet(recurring.getWalletId());
+        walletName.setText(wallet.getName());
         recordCur.setText(baseCurrency);
         title.setText(recurring.getRecurringtitle());
         description.setText(recurring.getRecurringdescription());
         amt.setText(df2.format(recurring.getAmount()));
         selectedCat.setText(recurring.getCategory());
         selectDate.setText(recurring.getRecurringstartDate());
+
 
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -95,6 +101,8 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
             }
         });
 
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,11 +110,11 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
                 String des_txt = description.getText().toString(); //get description
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
-                String date = null;
+                String date;
                 try {
                     date = checkDate();
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    date = recurring.getRecurringstartDate();
                 }
 
 
@@ -131,18 +139,18 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
     }
     private void initToolbar(){
         //Tool bar
-        TextView activityTitle = findViewById(R.id.mainToolbarTitle_textView);
-        ImageView backArrow = findViewById(R.id.mainToolbarMenu_imageView);
-        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
-        ImageView moreBtn = findViewById(R.id.mainToolbarMore_imageView);
+        TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
+        ImageView btn1 = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView btn2 = findViewById(R.id.toolbarBtn_imageView2);
+        btn1.setImageResource(R.drawable.ic_back_arrow_32);
         activityTitle.setText("Edit Recurring Entry");
-        backArrow.setOnClickListener(new View.OnClickListener() {
+        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        initPopupMenu(moreBtn);
+        initPopupMenu(btn2);
     }
 
 
@@ -188,7 +196,6 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
                 dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),recurring.getRecurringtitle(), recurring.getRecurringdescription(), recurring.getAmount(), recurring.getCategory(), recurring.getRecurringstartDate(), dateupdate, dateupdate, recurring.getWalletId(), recurring.getFrequency()));
                 Toast.makeText(getApplicationContext(), "Recurring Entry Stopped", Toast.LENGTH_SHORT).show();
                 alert.dismiss();
-                startActivity(new Intent(EditRecurringEntry.this, RecurringEntryPage.class));
                 finish();
             }
         });

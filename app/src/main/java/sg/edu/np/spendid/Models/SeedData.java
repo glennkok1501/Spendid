@@ -65,4 +65,10 @@ public class SeedData {
         return dateFormat.format(currentTime.getTime());
     }
 
+    public String currentTime(){
+        Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        return dateFormat.format(currentTime.getTime());
+    }
+
 }

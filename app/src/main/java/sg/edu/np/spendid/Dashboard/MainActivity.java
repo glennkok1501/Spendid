@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
     private void initDrawer(){
         LinearLayout manageWallet, transHist, currencyRates,
                 shoppingList, recurringEntry, settings, about, search, add,
-                additional, addWallet, addRecord, friendsList;
+                additional, addWallet, addRecord, friendsList, stats;
         drawerLayout = findViewById(R.id.dashboard_drawer_layout);
 
         //set re-directions to activities
