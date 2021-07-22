@@ -77,13 +77,11 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
         initToolbar(); //set toolbar
         checkValues = initCheckValues();
 
+        Intent intent = getIntent();
+
+        recurring = dbHandler.getRecurring(intent.getIntExtra("recurID",0));
         wallet = dbHandler.getWallet(recurring.getWalletId());
         walletName.setText(wallet.getName());
-
-        Intent intent = getIntent();
-        recurring = dbHandler.getRecurring(intent.getIntExtra("recurID",0));
-        Log.v("TESTTEST", "" + recurring.getWalletId());
-
         recordCur.setText(baseCurrency);
         title.setText(recurring.getRecurringtitle());
         description.setText(recurring.getRecurringdescription());
