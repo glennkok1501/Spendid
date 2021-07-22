@@ -76,7 +76,7 @@
                 android:textSize="16sp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Daily Limit"/>
+                android:text="Set Spending Limits"/>
 
             <TextView
                 android:id="@+id/settings_clearAll_textView"

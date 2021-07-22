@@ -85,7 +85,7 @@ public class SearchActivity extends AppCompatActivity {
         emptyRVText.setVisibility(View.GONE);
         //limit DatePicker's max date
         dateChosen.setMaxDate(new Date().getTime());
-        //search.requestFocus(); //start keyboard
+        search.requestFocus(); //start keyboard
 
         //set default checked filter options
         //defaultParams can be modified in the future to allow user to set default search options
@@ -194,7 +194,7 @@ public class SearchActivity extends AppCompatActivity {
                 dateChosen.setVisibility(View.GONE);
                 saveDate.setVisibility(View.GONE);
                 searchString(search.getText().toString() +
-                        dateChosen.getYear() + "-" + month + "-" + dateChosen.getDayOfMonth(), searchParams);
+                        dateChosen.getYear() + "-" + month + "-" + date, searchParams);
             }
         });
 
@@ -314,8 +314,10 @@ public class SearchActivity extends AppCompatActivity {
                         Toast.makeText(SearchActivity.this, "Invalid Filter", Toast.LENGTH_SHORT).show();
                 }
             }
+            //searches records depending on the search bar
             if (details.toLowerCase().contains(s.toLowerCase()) || s.contains(recordDate)) {
                 if (dateCheck) {
+                    //only records on the selected day gets displayed if "Date" filter chosen
                     if (recordDate.contains(dateChosen.getYear() + "-" + month + "-" + date)) {
                         out.add(r);
                     }

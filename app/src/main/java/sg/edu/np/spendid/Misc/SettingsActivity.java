@@ -74,6 +74,15 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        TextView dailyLimitTextView = findViewById(R.id.settings_dailyLimit_textView);
+        dailyLimitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, DailyLimitActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //clear all records and wallets
         TextView clearAllTextView = findViewById(R.id.settings_clearAll_textView);
         clearAllTextView.setOnClickListener(new View.OnClickListener() {
