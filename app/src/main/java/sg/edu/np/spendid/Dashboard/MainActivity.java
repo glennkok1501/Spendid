@@ -13,7 +13,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -40,13 +39,13 @@ import sg.edu.np.spendid.Dashboard.Adapters.CurrentTrans.CurrentTransAdapter;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.ExchangeRates.ExchangeRateActivity;
 import sg.edu.np.spendid.Models.SeedData;
+import sg.edu.np.spendid.Records.AddRecordActivity;
 import sg.edu.np.spendid.Statistics.StatisticsActivity;
 import sg.edu.np.spendid.Utils.ViewPagerIndicators;
 import sg.edu.np.spendid.Wallets.ManageWalletActivity;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.RecordsHistory.SearchActivity;
-import sg.edu.np.spendid.Wallets.SelectWalletActivity;
 import sg.edu.np.spendid.Misc.SettingsActivity;
 import sg.edu.np.spendid.ShoppingList.ShoppingListMainActivity;
 import sg.edu.np.spendid.RecordsHistory.TransactionHistoryActivity;
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ViewPager2 walletsViewPager;
     private RecyclerView currentTransRV;
+    private ArrayList<Wallet> walletList;
 
 
     @Override
@@ -121,7 +121,12 @@ public class MainActivity extends AppCompatActivity {
         addRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SelectWalletActivity.class));
+                if (walletList.size() > 0){
+                    startActivity(new Intent(MainActivity.this, AddRecordActivity.class));
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please create a wallet", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -172,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //retrieve wallet array list and sort based on favourite
-        ArrayList<Wallet> walletList = sortWallet(dbHandler.getWallets());
+        walletList = sortWallet(dbHandler.getWallets());
 
         //check if wallet data is empty and show message
         if (walletList.size() == 0){
@@ -349,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
         addWallet = findViewById(R.id.navbar_addWallet);
         setButton(addWallet, WalletCurrencyActivity.class);
         addRecord = findViewById(R.id.navbar_addRecord);
-        setButton(addRecord, SelectWalletActivity.class);
+        setButton(addRecord, AddRecordActivity.class);
         collapseBar(add, additional);
 
     }

@@ -15,7 +15,7 @@ import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.Wallets.ManageWalletDialog;
 import sg.edu.np.spendid.R;
 
-public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHolder> {
+public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageViewHolder> {
     ArrayList<Wallet> data;
     private Context context;
     private DBHandler dbHandler;
@@ -27,12 +27,12 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletSelectViewHo
         this.dbHandler = dbHandler;
     }
 
-    public WalletSelectViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public WalletManageViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_wallet_layout, parent, false);
-        return new WalletSelectViewHolder(item);
+        return new WalletManageViewHolder(item);
     }
 
-    public void onBindViewHolder(WalletSelectViewHolder holder, int position){
+    public void onBindViewHolder(WalletManageViewHolder holder, int position){
         String baseCurrency = context.getString(R.string.baseCurrency);
         Wallet wallet = data.get(position);
         holder.name.setText(wallet.getName());

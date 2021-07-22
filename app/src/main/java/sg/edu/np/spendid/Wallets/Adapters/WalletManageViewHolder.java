@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.spendid.R;
 
-public class WalletSelectViewHolder extends RecyclerView.ViewHolder {
+public class WalletManageViewHolder extends RecyclerView.ViewHolder {
     TextView name, amount, date;
     CardView cardView;
-    public WalletSelectViewHolder(View itemView){
+    public WalletManageViewHolder(View itemView){
         super(itemView);
         name = itemView.findViewById(R.id.sel_walletName_textView);
         amount = itemView.findViewById(R.id.sel_walletAmt_textView);
