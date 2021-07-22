@@ -1,4 +1,4 @@
-package sg.edu.np.spendid.Utils;
+package sg.edu.np.spendid.Utils.Permissions;
 
 import android.Manifest;
 import android.app.Activity;
@@ -12,12 +12,12 @@ import androidx.core.content.ContextCompat;
 
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 
-public class RequestPermission {
+public class RequestReadPermission {
     private Activity activity;
     private Context context;
     private final int STORAGE_PERMISSION_CODE = 1;
 
-    public RequestPermission(Context context) {
+    public RequestReadPermission(Context context) {
         this.context = context;
         activity = (Activity) context;
     }

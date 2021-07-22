@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -22,7 +21,7 @@ import java.util.Calendar;
 
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Utils.RequestPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestWritePermission;
 
 public class ViewImageActivity extends AppCompatActivity {
 
@@ -56,7 +55,7 @@ public class ViewImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //check permission to download
-                if (new RequestPermission(ViewImageActivity.this).checkPermission()){
+                if (new RequestWritePermission(ViewImageActivity.this).checkPermission()){
                     try {
                         download();
                     }

@@ -24,7 +24,8 @@ import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Utils.RequestPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestWritePermission;
 
 public class SettingsActivity extends AppCompatActivity {
     private final String PREF_NAME = "sharedPrefs";
@@ -51,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
         exportTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new RequestPermission(SettingsActivity.this).checkPermission()){
+                if (new RequestWritePermission(SettingsActivity.this).checkPermission()){
                     startActivity(new Intent(SettingsActivity.this, ExportActivity.class));
                 }
                 else{
@@ -65,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
         importTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new RequestPermission(SettingsActivity.this).checkPermission()){
+                if (new RequestReadPermission(SettingsActivity.this).checkPermission()){
                     startActivity(new Intent(SettingsActivity.this, ImportActivity.class));
                 }
                 else{
