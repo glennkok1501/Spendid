@@ -22,6 +22,8 @@ import sg.edu.np.spendid.DataTransfer.ExportActivity;
 import sg.edu.np.spendid.DataTransfer.ImportActivity;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
+import sg.edu.np.spendid.Models.Recurring;
+import sg.edu.np.spendid.Models.ShoppingCart;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
@@ -180,6 +182,18 @@ public class SettingsActivity extends AppCompatActivity {
                 dbHandler.deleteWalletRecords(walletId);
                 dbHandler.deleteWallet(walletId);
             }
+
+            //remove all recurring entries
+            for (Recurring recurring : dbHandler.getAllRecurring()){
+                dbHandler.deleteRecurring(recurring.getRecurringId());
+            }
+
+            for (ShoppingCart shoppingCart : dbHandler.getShoppingCarts()){
+                int shoppingCartId = shoppingCart.getCartId();
+                dbHandler.deleteCartItems(shoppingCartId);
+                dbHandler.deleteShoppingCart(shoppingCartId);
+            }
+
             Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){

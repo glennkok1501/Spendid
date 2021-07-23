@@ -1,7 +1,5 @@
 package sg.edu.np.spendid.RecurringEntry.Adapters;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,23 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.RecurringEntry.EditRecurringEntry;
-import sg.edu.np.spendid.RecurringEntry.ManageRecurringDialog;
+import sg.edu.np.spendid.RecurringEntry.EditRecurringEntryActivity;
+import sg.edu.np.spendid.Utils.Helpers.CategoryHelper;
 
 
 public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelectViewHolder>{
     ArrayList<Recurring> data;
-    private Context context;
-    private DBHandler dbHandler;
     private DecimalFormat df2 = new DecimalFormat("#0.00");
+    private final CategoryHelper categoryHelper = new CategoryHelper();
 
-    public RecurringSelectAdapter(ArrayList<Recurring> input, Context context, DBHandler dbHandler){
+    public RecurringSelectAdapter(ArrayList<Recurring> input){
         data=input;
-        this.context = context;
-        this.dbHandler = dbHandler;
     }
 
     public RecurringSelectViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -39,13 +33,30 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
     public void onBindViewHolder(RecurringSelectViewHolder holder, int position){
         Recurring r = data.get(position);
         holder.name.setText(r.getRecurringtitle());
-        holder.amount.setText(df2.format(r.getAmount()));
-        holder.date.setText("Date Started: "+ r.getRecurringstartDate());
-        holder.frequency.setText("Frequency: " + r.getFrequency());
+
+        if (r.getRecurringdescription() == null){
+            holder.des.setText("");
+        }
+        else{
+            holder.des.setText(r.getRecurringdescription());
+        }
+
+        holder.amount.setText(formatAmountFrequency(r.getAmount(), r.getFrequency()));
+
+        if (r.getRecurringendDate() == null){
+            holder.status.setText("Active");
+        }
+        else{
+            holder.status.setText("Stopped on "+r.getRecurringendDate());
+
+        }
+
+        holder.cat.setImageResource(categoryHelper.setIcon(r.getCategory()));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), EditRecurringEntry.class);
+                Intent intent = new Intent(v.getContext(), EditRecurringEntryActivity.class);
                 intent.putExtra("recurID", r.getRecurringId());
                 v.getContext().startActivity(intent);
             }
@@ -53,4 +64,21 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
 
     }
     public int getItemCount(){return data.size();}
+
+    private String formatAmountFrequency(double amount, String freq){
+        String amountString = df2.format(amount);
+        String formatted = "$"+amountString;
+        switch (freq) {
+            case "Daily":
+                formatted += " per Day";
+                break;
+            case "Monthly":
+                formatted += " per Month";
+                break;
+            default:
+                formatted += " per Year";
+                break;
+        }
+        return  formatted;
+    }
 }

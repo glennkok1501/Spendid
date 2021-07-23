@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?backgroundColor"
-    tools:context=".RecurringEntry.AddRecurringEntry">
+    tools:context=".RecurringEntry.AddRecurringEntryActivity">
 
     <include layout="@layout/page_toolbar"/>
 

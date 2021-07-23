@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?backgroundColor"
-    tools:context=".RecurringEntry.RecurringEntryPage">
+    tools:context=".RecurringEntry.RecurringEntryActivity">
 
     <include layout="@layout/page_toolbar"/>
 
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="You have no ongoing Subscription"
+            android:text="You have no ongoing Subscriptions"
             android:textSize="18sp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
