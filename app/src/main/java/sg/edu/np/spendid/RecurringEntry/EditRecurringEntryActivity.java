@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Records.Adapters.CatSliderAdapter;
 import sg.edu.np.spendid.Database.DBHandler;
@@ -78,6 +79,8 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         description.setText(recurring.getRecurringdescription());
         amt.setText(df2.format(recurring.getAmount()));
         selectedCat.setText(recurring.getCategory());
+
+        promptConversion(baseCurrency, wallet.getCurrency());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,6 +258,15 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         m.put("title", false);
         m.put("category", false);
         return m;
+    }
+
+    //prompt currency exchange dialog if wallet currency is not in SGD
+    private void promptConversion(String baseCurrency, String walletCurrency){
+        if (!walletCurrency.equals(baseCurrency)){
+            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, walletCurrency.toLowerCase(), dbHandler);
+            currencyConvertDialog.setAmt(amt);
+            currencyConvertDialog.show();
+        }
     }
 
 }

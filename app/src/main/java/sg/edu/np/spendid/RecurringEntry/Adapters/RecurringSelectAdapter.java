@@ -44,7 +44,7 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
         holder.amount.setText(formatAmountFrequency(r.getAmount(), r.getFrequency()));
 
         if (r.getRecurringendDate() == null){
-            holder.status.setText("Active");
+            holder.status.setText("Last paid on "+r.getLastUpdated());
         }
         else{
             holder.status.setText("Stopped on "+r.getRecurringendDate());

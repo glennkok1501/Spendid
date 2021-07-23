@@ -12,14 +12,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.RecordsHistory.SearchActivity;
+import sg.edu.np.spendid.RecordsHistory.TransactionHistoryActivity;
 import sg.edu.np.spendid.RecurringEntry.Adapters.RecurringSelectAdapter;
 
 public class RecurringEntryActivity extends AppCompatActivity {
@@ -81,13 +85,29 @@ public class RecurringEntryActivity extends AppCompatActivity {
 
     private void initToolbar(){
         //Tool bar
-        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
-        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
-        activityTitle.setText("Select a Recurring Entry");
+        TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
+        ImageView backArrow = findViewById(R.id.toolbarBtn_imageView1);
+        ImageView sync = findViewById(R.id.toolbarBtn_imageView2);
+        backArrow.setImageResource(R.drawable.ic_back_arrow_32);
+        sync.setImageResource(R.drawable.ic_sync_32);
+        activityTitle.setText("Recurring Entry");
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //update recurring entries
+                try {
+                    new UpdateEntryToWallet(dbHandler).UpdateRecurring();
+                    Toast.makeText(getApplicationContext(), "Entries updated", Toast.LENGTH_SHORT).show();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "An error occurred", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
