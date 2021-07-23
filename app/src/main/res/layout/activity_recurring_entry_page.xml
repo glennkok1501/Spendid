@@ -9,7 +9,7 @@
     android:background="?backgroundColor"
     tools:context=".RecurringEntry.RecurringEntryActivity">
 
-    <include layout="@layout/page_toolbar"/>
+    <include layout="@layout/toolbar_2btn"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

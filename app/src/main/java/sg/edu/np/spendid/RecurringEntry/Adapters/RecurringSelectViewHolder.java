@@ -18,7 +18,7 @@ public class RecurringSelectViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.sel_RecurringName_textView);
         des = itemView.findViewById(R.id.sel_recurringDes_textView);
         amount = itemView.findViewById(R.id.sel_recurringAmt_textView);
-        status = itemView.findViewById(R.id.sel_recurringStatus_textView);
+        status = itemView.findViewById(R.id.sel_recurringLast_textView);
         cat = itemView.findViewById(R.id.sel_recurringCat_imageView);
     }
 }

@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import sg.edu.np.spendid.Database.DBHandler;
+import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.Models.Wallet;
@@ -43,7 +44,6 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
     private HashMap<String, Boolean> checkValues;
     private String baseCurrency;
     TextView selectDate;
-    private Wallet wallet;
     private ArrayList<Wallet> walletArrayList;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -94,11 +94,11 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        wallet = walletArrayList.get(spinner.getSelectedItemPosition());
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                wallet = walletArrayList.get(spinner.getSelectedItemPosition());
+                promptConversion(baseCurrency, walletArrayList.get(position).getCurrency());
+
             }
 
             @Override
@@ -126,8 +126,10 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
 
                 //create transaction if record is valid
                 if (validRecord()) {
-                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date, wallet.getWalletId(), fSpinner.getSelectedItem().toString()));
-                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, currentTime(), null, wallet.getWalletId()));
+                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date,
+                            walletArrayList.get(spinner.getSelectedItemPosition()).getWalletId(), fSpinner.getSelectedItem().toString()));
+                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, currentTime(), null,
+                            walletArrayList.get(spinner.getSelectedItemPosition()).getWalletId()));
                     Toast.makeText(getApplicationContext(), "Recurring Entry added", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -234,6 +236,15 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         return dateFormat.format(currentTime.getTime());
+    }
+
+    //prompt currency exchange dialog if wallet currency is not in SGD
+    private void promptConversion(String baseCurrency, String walletCurrency){
+        if (!walletCurrency.equals(baseCurrency)){
+            CurrencyConvertDialog currencyConvertDialog = new CurrencyConvertDialog(this, walletCurrency.toLowerCase(), dbHandler);
+            currencyConvertDialog.setAmt(amt);
+            currencyConvertDialog.show();
+        }
     }
 
 

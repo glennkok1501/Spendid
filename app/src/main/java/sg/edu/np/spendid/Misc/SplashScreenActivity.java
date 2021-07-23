@@ -44,18 +44,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         //check for night mode
         toggleNightMode();
 
-        try {
-            new UpdateEntryToWallet(dbHandler).UpdateRecurring();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        //Fetch Data from API
-        new CurrencyAPI(this, dbHandler).getData("sgd");
-
-        //initialise public and private keys
-        initKeyPair();
-
         //animation
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
@@ -69,6 +57,19 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_SCREEN);
+
+        //Fetch Data from API
+        new CurrencyAPI(this, dbHandler).getData("sgd");
+
+        //initialise public and private keys
+        initKeyPair();
+
+        //update recurring entries
+        try {
+            new UpdateEntryToWallet(dbHandler).UpdateRecurring();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
