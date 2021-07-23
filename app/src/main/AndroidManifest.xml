@@ -18,6 +18,9 @@
         <activity android:name=".RecurringEntry.RecurringEntryActivity" />
         <activity android:name=".Statistics.StatisticsAllCatActivity" />
         <activity android:name=".DataTransfer.ImportActivity" />
+        <activity android:name=".Misc.DailyLimitActivity"></activity>
+        <activity android:name=".Records.ViewImageActivity" />
+        <activity android:name=".Statistics.StatisticsAllCatActivity"></activity>
         <activity android:name=".Records.ViewImageActivity" />
         <activity android:name=".Statistics.StatisticsActivity" />
         <activity android:name=".Friends.ViewFriendActivity" />

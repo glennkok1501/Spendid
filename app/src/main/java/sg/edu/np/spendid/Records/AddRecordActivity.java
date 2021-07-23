@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,12 +33,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.Records.Adapters.CatSliderAdapter;
 import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Models.Record;
+import sg.edu.np.spendid.Utils.LimitNotification;
 import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
 import sg.edu.np.spendid.Utils.WalletNameList;
 
@@ -50,9 +53,14 @@ public class AddRecordActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
+    private Calendar currentTime = Calendar.getInstance();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private Spinner selectWallet;
     private String baseCurrency;
     private byte[] imageData;
+
+    private final String PREF_NAME = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,24 +161,29 @@ public class AddRecordActivity extends AppCompatActivity {
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
                 //get current date and time
-                Calendar currentTime = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
                 String date = dateFormat.format(currentTime.getTime());
                 String time = timeFormat.format(currentTime.getTime());
 
                 //create transaction if record is valid
-                if (validRecord()){
-                    dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId()));
-                    Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
-                    finish();
+                if (validRecord()) {
+                    Record record = new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId());
+                    LimitNotification limit = new LimitNotification(getApplicationContext(), dbHandler, amount);
+                    if (limit.checkExceedWarning()) {
+                        if (limit.checkExceedLimit()) {
+                            notifyLimit(record);
+                        } else {
+                            Toast.makeText(AddRecordActivity.this, "You are close to hitting your limit! Spend with care!", Toast.LENGTH_SHORT);
+                        }
+                    }
+                    else{
+                        addRecord(record);
+                    }
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Please enter details", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
     @Override
@@ -290,6 +303,34 @@ public class AddRecordActivity extends AppCompatActivity {
                 image.setImageResource(R.drawable.ic_image_24);
             }
         });
+    }
+
+    private void notifyLimit(Record record){
+        MyAlertDialog dialog = new MyAlertDialog(AddRecordActivity.this);
+        dialog.setTitle("Limit Exceeded");
+        dialog.setBody("You will exceed your daily limit.\nDo you want to proceed?");
+
+        dialog.setPositive().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRecord(record);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setNegative().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void addRecord(Record record){
+        dbHandler.addRecord(record);
+        Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void initToolbar(){

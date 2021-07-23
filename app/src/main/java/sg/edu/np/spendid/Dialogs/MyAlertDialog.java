@@ -40,7 +40,7 @@ public class MyAlertDialog {
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dialog.setCancelable(false);
-        ;
+
         this.positiveBtn = dialog.findViewById(R.id.pos_neg_dialog_yes);
         this.negativeBtn = dialog.findViewById(R.id.pos_neg_dialog_no);
         positiveBtn.setText("Yes");
