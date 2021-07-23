@@ -102,6 +102,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
                 }
             }
         });
+
         //Recyclerview to display categories
         RecyclerView catRV = findViewById(R.id.editRecurringCat_RV);
         CatSliderAdapter myCatAdapter = new CatSliderAdapter(dbHandler.getCategories(), selectedCat);
@@ -110,7 +111,6 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         myLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         catRV.setItemAnimator(new DefaultItemAnimator());
         catRV.setAdapter(myCatAdapter);
-
     }
 
     //ToolBar
@@ -157,6 +157,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         });
     }
 
+    //Stop the recurring entry
     private void stopDate(){
         MyAlertDialog alert = new MyAlertDialog(this);
         alert.setTitle("Stop Recurring Entry");
@@ -221,6 +222,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         }
         return 0;
     }
+
     //check title
     private String checkTitle() {
         String title_txt = title.getText().toString();
@@ -236,6 +238,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
             return title_txt;
         }
     }
+
     //check check date
     private String checkCat() {
         String cat = selectedCat.getText().toString();
@@ -258,6 +261,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         }
         return valid;
     }
+
     //overall check to check if everything is valid
     private HashMap<String, Boolean> initCheckValues(){
         HashMap<String, Boolean> m = new HashMap<String, Boolean>();

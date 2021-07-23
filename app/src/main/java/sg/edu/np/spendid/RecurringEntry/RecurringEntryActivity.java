@@ -42,7 +42,7 @@ public class RecurringEntryActivity extends AppCompatActivity {
         emptyRecurring = findViewById(R.id.showRecurring_empty_textView);
 
         initToolbar(); //set toolbar
-
+        //bring user from recurring entry activity to add recurring entry activity
         AddRecurringFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +113,7 @@ public class RecurringEntryActivity extends AppCompatActivity {
             }
         });
     }
+
     //check if arraylist recurring is empty
     private void checkEmpty(ArrayList<Recurring> recurringArrayList){
         if (recurringArrayList.size() > 0){
