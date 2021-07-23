@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewpager_recurringRelativeLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/sel_RecurringName_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recurring Name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/sel_recurringDes_textView"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="description"
+        android:textColor="?subtitleTextColor"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@id/sel_RecurringName_textView"
+        app:layout_constraintTop_toBottomOf="@id/sel_RecurringName_textView"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/sel_recurringAmt_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="?subtitleTextColor"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/sel_recurringDes_textView"
+        app:layout_constraintTop_toBottomOf="@id/sel_recurringDes_textView"
+        android:text="Frequency" />
+
+    <TextView
+        android:id="@+id/sel_recurringLast_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Updated"
+        android:textColor="?subtitleTextColor"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@id/sel_recurringAmt_textView"
+        app:layout_constraintTop_toBottomOf="@id/sel_recurringAmt_textView"/>
+
+
+    <ImageView
+        android:id="@+id/sel_recurringCat_imageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toTopOf="@id/sel_RecurringName_textView"
+        app:layout_constraintBottom_toBottomOf="@id/sel_recurringLast_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_category_24"
+        app:tint="?colorSecondary" />
+
+    <View
+        android:id="@+id/sel_recurring_div"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sel_recurringLast_textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="?android:attr/listDivider" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

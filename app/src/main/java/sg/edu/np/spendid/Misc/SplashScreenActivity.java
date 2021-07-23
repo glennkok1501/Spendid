@@ -6,17 +6,24 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+
 import sg.edu.np.spendid.Dashboard.MainActivity;
 import sg.edu.np.spendid.Database.DBHandler;
+import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.Network.CurrencyAPI;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
+import sg.edu.np.spendid.RecurringEntry.UpdateEntryToWallet;
+
 
 public class SplashScreenActivity extends AppCompatActivity {
     private int SPLASH_SCREEN = 2000;
@@ -37,12 +44,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         //check for night mode
         toggleNightMode();
 
-        //Fetch Data from API
-        new CurrencyAPI(this, dbHandler).getData("sgd");
-
-        //initialise public and private keys
-        initKeyPair();
-
         //animation
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
@@ -56,6 +57,19 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_SCREEN);
+
+        //Fetch Data from API
+        new CurrencyAPI(this, dbHandler).getData("sgd");
+
+        //initialise public and private keys
+        initKeyPair();
+
+        //update recurring entries
+        try {
+            new UpdateEntryToWallet(dbHandler).UpdateRecurring();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -85,15 +85,13 @@ public class AddCartToRecord {
             //gather information about the cart such as cost, items, and bought or not bought
             initDetails();
 
-            //check if wallet is not SGD then prompt for exchange
-            checkCurrency();
-
             //reassign selected wallet when spinner index change
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    checkCurrency();
                     wallet = walletArrayList.get(spinner.getSelectedItemPosition());
+                    checkCurrency();
+
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parentView) {

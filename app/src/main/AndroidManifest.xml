@@ -13,12 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid">
+        <activity android:name=".RecurringEntry.EditRecurringEntryActivity"/>
+        <activity android:name=".RecurringEntry.AddRecurringEntryActivity" />
+        <activity android:name=".RecurringEntry.RecurringEntryActivity" />
+        <activity android:name=".Statistics.StatisticsAllCatActivity" />
+        <activity android:name=".DataTransfer.ImportActivity" />
         <activity android:name=".Misc.DailyLimitActivity"></activity>
         <activity android:name=".Records.ViewImageActivity" />
         <activity android:name=".Statistics.StatisticsAllCatActivity"></activity>
         <activity android:name=".Records.ViewImageActivity" />
         <activity android:name=".Statistics.StatisticsActivity" />
-        <activity android:name=".DataTransfer.ImportActivity" />
         <activity android:name=".Friends.ViewFriendActivity" />
         <activity android:name=".Friends.ProfileActivity" />
         <activity android:name=".Friends.FriendScannerActivity" />
