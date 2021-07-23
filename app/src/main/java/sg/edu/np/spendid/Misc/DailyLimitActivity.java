@@ -34,8 +34,6 @@ public class DailyLimitActivity extends AppCompatActivity {
     private TextView dLimitText, dNotifyAt;
     private EditText dAmtEdit;
     private Spinner dSpinner;
-    private LinearLayout dailyLimit;
-    private int dLimit;
     private String[] range = new String[] {"10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%"};
 
     private final String PREF_NAME = "sharedPrefs";
@@ -53,7 +51,6 @@ public class DailyLimitActivity extends AppCompatActivity {
         dSpinner = findViewById(R.id.limit_daily_spinner);
         dNotif = findViewById(R.id.limit_daily_notification_switch);
         dNotifyAt = findViewById(R.id.limit_notify_at_textView);
-        dailyLimit = findViewById(R.id.limit_daily_linearLayout);
 
         initToolbar(); //set toolbar
         editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
@@ -62,7 +59,6 @@ public class DailyLimitActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, range);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dSpinner.setAdapter(adapter);
-        dSpinner.setSelection(dLimit);
 
         //placing TextViews into a list for easier changing of settings
         ArrayList<TextView> tVList = new ArrayList<>();
@@ -77,7 +73,7 @@ public class DailyLimitActivity extends AppCompatActivity {
         dSwitch.setChecked(prefs.getBoolean("Daily Limit", false));
         dAmtEdit.setText(String.valueOf(prefs.getInt("Limit Amount", 50)));
         dSpinner.setSelection(prefs.getInt("Notify At", 8));
-//        dNotif.setChecked(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Notify", true));
+        dNotif.setChecked(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Notify", true));
         toggleLimit(prefs.getBoolean("Daily Limit", false), tVList, dViews);
 
         dSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -101,17 +97,17 @@ public class DailyLimitActivity extends AppCompatActivity {
             }
         });
 
-//        dNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    editor.putBoolean("Notify", true);
-//                } else {
-//                    editor.putBoolean("Notify", false);
-//                }
-//                editor.apply();
-//            }
-//        });
+        dNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    editor.putBoolean("Notify", true);
+                } else {
+                    editor.putBoolean("Notify", false);
+                }
+                editor.apply();
+            }
+        });
 
         dSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
