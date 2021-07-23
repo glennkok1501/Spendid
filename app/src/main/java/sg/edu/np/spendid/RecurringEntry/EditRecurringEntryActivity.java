@@ -68,20 +68,23 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         baseCurrency = "SGD";
         initToolbar(); //set toolbar
         checkValues = initCheckValues();
-
+        //getting intent from recyclerview, when user clicks on an item in the RV
         Intent intent = getIntent();
-
+        //getting the recurring object by the id
         recurring = dbHandler.getRecurring(intent.getIntExtra("recurID",0));
+        //getting wallet object with the recurring object walletID
         wallet = dbHandler.getWallet(recurring.getWalletId());
+        //setting text to display all values
         walletName.setText(wallet.getName());
         recordCur.setText(baseCurrency);
         title.setText(recurring.getRecurringtitle());
         description.setText(recurring.getRecurringdescription());
         amt.setText(df2.format(recurring.getAmount()));
         selectedCat.setText(recurring.getCategory());
-
+        //prompt for currency popup if recurring is in different currency
         promptConversion(baseCurrency, wallet.getCurrency());
 
+        //Save the entry
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,8 +93,8 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
 
-                if (validRecord()) {
-                    dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),title_txt, des_txt, amount, cat, recurring.getRecurringstartDate(), null, recurring.getLastUpdated(), recurring.getWalletId(),recurring.getFrequency()));
+                if (validRecurring()) {
+                    dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),title_txt, des_txt, amount, cat, recurring.getRecurringstartDate(), null, recurring.getLastUpdated(), recurring.getWalletId(),recurring.getFrequency()));//update the recurring object with new values
                     Toast.makeText(getApplicationContext(), "Recurring Entry Updated", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -99,7 +102,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
                 }
             }
         });
-
+        //Recyclerview to display categories
         RecyclerView catRV = findViewById(R.id.editRecurringCat_RV);
         CatSliderAdapter myCatAdapter = new CatSliderAdapter(dbHandler.getCategories(), selectedCat);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
@@ -109,8 +112,9 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         catRV.setAdapter(myCatAdapter);
 
     }
+
+    //ToolBar
     private void initToolbar(){
-        //Tool bar
         TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
         ImageView btn1 = findViewById(R.id.toolbarBtn_imageView1);
         ImageView btn2 = findViewById(R.id.toolbarBtn_imageView2);
@@ -125,7 +129,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         initPopupMenu(btn2);
     }
 
-
+    //Popup Menu
     private void initPopupMenu(ImageView moreBtn){
         moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,22 +137,22 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
                 PopupMenu popupMenu = new PopupMenu(EditRecurringEntryActivity.this, moreBtn);
                 popupMenu.getMenu().add("Stop");
                 popupMenu.getMenu().add("Delete");
-
+                //setting items inside to onclick, perform an activity
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch(item.getTitle().toString()){
                             case "Delete":
-                                deleteDialog();
+                                deleteDialog(); //prompt for delete dialog
                                 break;
                             case "Stop":
-                                stopDate();
+                                stopDate(); //prompt for stop dialog
                                 break;
                         }
                         return false;
                     }
                 });
-                popupMenu.show();
+                popupMenu.show(); //show popup menu
             }
         });
     }
@@ -165,7 +169,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
                 Calendar currentTime = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String dateupdate = dateFormat.format(currentTime.getTime());
-                dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),recurring.getRecurringtitle(), recurring.getRecurringdescription(), recurring.getAmount(), recurring.getCategory(), recurring.getRecurringstartDate(), dateupdate, dateupdate, recurring.getWalletId(), recurring.getFrequency()));
+                dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),recurring.getRecurringtitle(), recurring.getRecurringdescription(), recurring.getAmount(), recurring.getCategory(), recurring.getRecurringstartDate(), dateupdate, dateupdate, recurring.getWalletId(), recurring.getFrequency()));//update the stopdate
                 Toast.makeText(getApplicationContext(), "Recurring Entry Stopped", Toast.LENGTH_SHORT).show();
                 alert.dismiss();
                 finish();
@@ -182,6 +186,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
 
     }
 
+    //prompt for delete dialog
     private void deleteDialog(){
         MyAlertDialog alert = new MyAlertDialog(this);
         alert.setTitle("Delete Recurring Entry");
@@ -206,6 +211,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         alert.show();
     }
 
+    //check amount
     private double checkAmt() {
         String amt_txt = amt.getText().toString();
         //set checkValues to true if valid
@@ -215,7 +221,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         }
         return 0;
     }
-
+    //check title
     private String checkTitle() {
         String title_txt = title.getText().toString();
         //set checkValues to true title is not more than 15 char and not 0
@@ -230,7 +236,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
             return title_txt;
         }
     }
-
+    //check check date
     private String checkCat() {
         String cat = selectedCat.getText().toString();
         //set checkValues to true when category is selected
@@ -242,7 +248,8 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validRecord(){
+    //check if valid recurring
+    private boolean validRecurring(){
         boolean valid = true;
         for (String key : checkValues.keySet()) {
             if (!checkValues.get(key)){
@@ -251,7 +258,7 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         }
         return valid;
     }
-
+    //overall check to check if everything is valid
     private HashMap<String, Boolean> initCheckValues(){
         HashMap<String, Boolean> m = new HashMap<String, Boolean>();
         m.put("amount", false);
