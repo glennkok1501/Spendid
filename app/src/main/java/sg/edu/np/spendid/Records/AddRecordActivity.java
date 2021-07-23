@@ -168,8 +168,12 @@ public class AddRecordActivity extends AppCompatActivity {
                 if (validRecord()) {
                     Record record = new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId());
                     LimitNotification limit = new LimitNotification(getApplicationContext(), dbHandler, amount);
-                    if (limit.checkExceed()){
-                        notifyLimit(record);
+                    if (limit.checkExceedWarning()) {
+                        if (limit.checkExceedLimit()) {
+                            notifyLimit(record);
+                        } else {
+                            Toast.makeText(AddRecordActivity.this, "You are close to hitting your limit! Spend with care!", Toast.LENGTH_SHORT);
+                        }
                     }
                     else{
                         addRecord(record);
