@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,38 +20,31 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
-import java.text.DateFormat;
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import sg.edu.np.spendid.Database.DBHandler;
-import sg.edu.np.spendid.Dialogs.CurrencyConvertDialog;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.RecurringEntry.Adapters.RecurCatSliderAdapter;
+import sg.edu.np.spendid.Records.Adapters.CatSliderAdapter;
+import sg.edu.np.spendid.Utils.WalletNameList;
 
-public class AddRecurringEntry extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class AddRecurringEntryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private DBHandler dbHandler;
     private TextView selectedCat, recurringCur;
     private EditText title, description, amt;
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency, frequency;
+    private String baseCurrency;
     TextView selectDate;
     private Wallet wallet;
     private ArrayList<Wallet> walletArrayList;
-    private ArrayList<String> frequencyArrayList;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
@@ -72,22 +63,14 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         selectDate = findViewById(R.id.newRecurringDate_textView);
         recurringCur.setText(baseCurrency);
         walletArrayList = dbHandler.getWallets();
-        String[] walletList = getWalletList();
-        frequencyArrayList = new ArrayList<String>();
-        frequencyArrayList.add("Daily");
-        frequencyArrayList.add("Monthly");
-        frequencyArrayList.add("Yearly");
-
 
         initToolbar(); //set toolbar
-        //promptConversion();
 
         checkValues = initCheckValues();
 
-
         //category slider
         RecyclerView catRV = findViewById(R.id.newRecurringCat_RV);
-        RecurCatSliderAdapter myCatAdapter = new RecurCatSliderAdapter(dbHandler.getCategories(), selectedCat);
+        CatSliderAdapter myCatAdapter = new CatSliderAdapter(dbHandler.getCategories(), selectedCat);
         LinearLayoutManager myLayoutManager = new LinearLayoutManager(this);
         catRV.setLayoutManager(myLayoutManager);
         myLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -106,50 +89,31 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
 
 
         Spinner spinner = findViewById(R.id.recurring_wallet_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, walletList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+                new WalletNameList(walletArrayList).getList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        if (walletArrayList.size() > 0) {
-            wallet = walletArrayList.get(spinner.getSelectedItemPosition());
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    wallet = walletArrayList.get(spinner.getSelectedItemPosition());
-                }
+        wallet = walletArrayList.get(spinner.getSelectedItemPosition());
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                wallet = walletArrayList.get(spinner.getSelectedItemPosition());
+            }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    // pass
-                }
-            });
-        } else {
-            wallet = null;
-            Toast.makeText(getApplicationContext(), "No wallets available", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // pass
+            }
+        });
+
 
         Spinner fSpinner = findViewById(R.id.recurring_frequency_spinner);
-        ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, frequencyArrayList);
+        ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+                getResources().getStringArray(R.array.frequency));
         fAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fSpinner.setAdapter(fAdapter);
 
-        if (frequencyArrayList.size() > 0){
-            frequency = frequencyArrayList.get(fSpinner.getSelectedItemPosition());
-            fSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    frequency = frequencyArrayList.get(fSpinner.getSelectedItemPosition());
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    //pass
-                }
-            });
-        }else{
-            frequency = null;
-            Toast.makeText(getApplicationContext(), "No frequency available", Toast.LENGTH_SHORT).show();
-        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +126,7 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
 
                 //create transaction if record is valid
                 if (validRecord()) {
-                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date, wallet.getWalletId(), frequency));
+                    dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date, wallet.getWalletId(), fSpinner.getSelectedItem().toString()));
                     dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, currentTime(), null, wallet.getWalletId()));
                     Toast.makeText(getApplicationContext(), "Recurring Entry added", Toast.LENGTH_SHORT).show();
                     finish();
@@ -194,14 +158,6 @@ public class AddRecurringEntry extends AppCompatActivity implements DatePickerDi
         mCalender.set(Calendar.MONTH, month);
         mCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         selectDate.setText(dateFormat.format(mCalender.getTime()));
-    }
-
-    private String[] getWalletList() {
-        String[] walletList = new String[walletArrayList.size()];
-        for (int i = 0; i < walletArrayList.size(); i++) {
-            walletList[i] = walletArrayList.get(i).getName();
-        }
-        return walletList;
     }
 
     private double checkAmt() {

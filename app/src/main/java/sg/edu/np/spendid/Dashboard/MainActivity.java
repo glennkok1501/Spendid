@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-import sg.edu.np.spendid.RecurringEntry.RecurringEntryPage;
+import sg.edu.np.spendid.RecurringEntry.RecurringEntryActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -52,7 +52,6 @@ import sg.edu.np.spendid.ShoppingList.ShoppingListMainActivity;
 import sg.edu.np.spendid.RecordsHistory.TransactionHistoryActivity;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.Wallets.WalletCurrencyActivity;
-import sg.edu.np.spendid.RecurringEntry.RecurringEntryPage;
 
 public class MainActivity extends AppCompatActivity {
     private DBHandler dbHandler;
@@ -339,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
         setButton(shoppingList, ShoppingListMainActivity.class);
 
         recurringEntry = findViewById(R.id.navbar_recurring);
-        setButton(recurringEntry, RecurringEntryPage.class);
+        setButtonForRecord(recurringEntry, RecurringEntryActivity.class);
 
         about = findViewById(R.id.navbar_about);
         setButton(about, AboutActivity.class);
@@ -359,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
         addWallet = findViewById(R.id.navbar_addWallet);
         setButton(addWallet, WalletCurrencyActivity.class);
         addRecord = findViewById(R.id.navbar_addRecord);
-        setButton(addRecord, AddRecordActivity.class);
+        setButtonForRecord(addRecord, AddRecordActivity.class);
         collapseBar(add, additional);
 
     }
@@ -369,9 +368,21 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, _class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, _class));
+            }
+        });
+    }
+
+    private void setButtonForRecord(LinearLayout linearLayout, Class _class){
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (walletList.size() == 0){
+                    Toast.makeText(getApplicationContext(), "Please create a wallet", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    startActivity(new Intent(MainActivity.this, _class));
+                }
             }
         });
     }

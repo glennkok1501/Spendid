@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid">
-        <activity android:name=".RecurringEntry.EditRecurringEntry"/>
-        <activity android:name=".RecurringEntry.AddRecurringEntry" />
-        <activity android:name=".RecurringEntry.RecurringEntryPage" />
+        <activity android:name=".RecurringEntry.EditRecurringEntryActivity"/>
+        <activity android:name=".RecurringEntry.AddRecurringEntryActivity" />
+        <activity android:name=".RecurringEntry.RecurringEntryActivity" />
         <activity android:name=".Statistics.StatisticsAllCatActivity" />
         <activity android:name=".DataTransfer.ImportActivity" />
         <activity android:name=".Records.ViewImageActivity" />

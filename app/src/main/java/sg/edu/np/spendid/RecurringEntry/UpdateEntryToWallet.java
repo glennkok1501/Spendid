@@ -31,44 +31,59 @@ public class UpdateEntryToWallet {
         }
     }
 
-    private void updateEntry(Recurring r) throws ParseException {
+    public void updateEntry(Recurring r) throws ParseException {
         Date lastUpdated = sdf.parse(r.getLastUpdated());
         Date currentDate = removeTime(Calendar.getInstance().getTime());
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(lastUpdated);
         while (cal.getTime().before(currentDate)){
-            if (r.getFrequency().equals("Daily")){
-                cal.add(Calendar.DAY_OF_MONTH, 1);
-                if(!cal.getTime().after(currentDate)){
-                    String tempDate = sdf.format(cal.getTime());
-                    dbHandler.addRecord(new Record(r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), tempDate, "00:00:00", null, r.getWalletId()));
-                    dbHandler.UpdateRecurring(new Recurring(r.getRecurringId(),r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), r.getRecurringstartDate(), null, tempDate, r.getWalletId(), r.getFrequency()));
-                }
+            String frequency = r.getFrequency();
+            switch (frequency){
+                case "Daily":
+                    increment(cal, currentDate, Calendar.DAY_OF_MONTH, r);
+                    break;
+                case "Monthly":
+                    increment(cal, currentDate, Calendar.MONTH, r);
+                    break;
+                default:
+                    increment(cal, currentDate, Calendar.YEAR, r);
+                    break;
             }
-            else if(r.getFrequency().equals("Monthly")){
-                cal.add(Calendar.MONTH, 1);
-                if(!cal.getTime().after(currentDate)){
-                    String tempDate = sdf.format(cal.getTime());
-                    dbHandler.addRecord(new Record(r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), tempDate, "00:00:00", null, r.getWalletId()));
-                    dbHandler.UpdateRecurring(new Recurring(r.getRecurringId(),r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), r.getRecurringstartDate(), null, tempDate, r.getWalletId(), r.getFrequency()));
-                }
-            }
-            else{
-                cal.add(Calendar.YEAR, 1);
-                if(!cal.getTime().after(currentDate)){
-                    String tempDate = sdf.format(cal.getTime());
-                    dbHandler.addRecord(new Record(r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), tempDate, "00:00:00", null, r.getWalletId()));
-                    dbHandler.UpdateRecurring(new Recurring(r.getRecurringId(),r.getRecurringtitle(), r.getRecurringdescription(), r.getAmount(), r.getCategory(), r.getRecurringstartDate(), null, tempDate, r.getWalletId(), r.getFrequency()));
-                }
-            }
-
         }
-
     }
 
     private Date removeTime(Date date) throws ParseException {
-        String stringdate = sdf.format(date);
-        return sdf.parse(stringdate);
+        String stringDate = sdf.format(date);
+        return sdf.parse(stringDate);
     }
+
+    private void increment(Calendar cal, Date currentDate, int field, Recurring r){
+        cal.add(field, 1);
+        if(!cal.getTime().after(currentDate)){
+            String tempDate = sdf.format(cal.getTime());
+
+            dbHandler.addRecord(new Record(
+                    r.getRecurringtitle(),
+                    r.getRecurringdescription(),
+                    r.getAmount(), r.getCategory(),
+                    tempDate,
+                    "00:00:00",
+                    null,
+                    r.getWalletId()));
+
+            dbHandler.UpdateRecurring(new Recurring(
+                    r.getRecurringId(),
+                    r.getRecurringtitle(),
+                    r.getRecurringdescription(),
+                    r.getAmount(),
+                    r.getCategory(),
+                    r.getRecurringstartDate(),
+                    null,
+                    tempDate,
+                    r.getWalletId(),
+                    r.getFrequency()));
+        }
+    }
+
 }

@@ -16,9 +16,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+
 import java.util.ArrayList;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,25 +36,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import sg.edu.np.spendid.Database.DBHandler;
-import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Recurring;
-import sg.edu.np.spendid.Models.Wallet;
-import sg.edu.np.spendid.R;
-import sg.edu.np.spendid.Records.Adapters.CatSliderAdapter;
 
-public class EditRecurringEntry extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class EditRecurringEntryActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private Recurring recurring;
     private Wallet wallet;
-    private TextView selectedCat, recordCur, date,selectDate, walletName;
+    private TextView selectedCat, recordCur, walletName;
     private EditText title, description, amt;
     private FloatingActionButton fab;
     private TextInputLayout title_layout;
     private HashMap<String, Boolean> checkValues;
-    private String baseCurrency, frequency;
+    private String baseCurrency;
     private final DecimalFormat df2 = new DecimalFormat("#0.00");
-    private ArrayList<String> frequencyArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +62,6 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
         fab = findViewById(R.id.editRecurring_fab);
         title_layout = findViewById(R.id.editRecurringTitle_layout);
         recordCur = findViewById(R.id.editRecurringCur_textView);
-        selectDate = findViewById(R.id.editRecurringDate_textView);
         walletName = findViewById(R.id.editRecurringWallet_textView);
 
         baseCurrency = "SGD";
@@ -87,20 +78,6 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
         description.setText(recurring.getRecurringdescription());
         amt.setText(df2.format(recurring.getAmount()));
         selectedCat.setText(recurring.getCategory());
-        selectDate.setText(recurring.getRecurringstartDate());
-
-        Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dateupdate = dateFormat.format(currentTime.getTime());
-
-        selectDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sg.edu.np.spendid.RecurringEntry.DatePicker mDatePickerDialogFragment;
-                mDatePickerDialogFragment = new sg.edu.np.spendid.RecurringEntry.DatePicker();
-                mDatePickerDialogFragment.show(getSupportFragmentManager(), "Pick Date");
-            }
-        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,17 +86,9 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
                 String des_txt = description.getText().toString(); //get description
                 String cat = checkCat(); //validate category
                 double amount = checkAmt(); //validate amount
-                String date;
-                try {
-                    date = checkDate();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date = recurring.getRecurringstartDate();
-                }
-
 
                 if (validRecord()) {
-                    dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),title_txt, des_txt, amount, cat, date, null, dateupdate, recurring.getWalletId(),recurring.getFrequency()));
+                    dbHandler.UpdateRecurring(new Recurring(recurring.getRecurringId(),title_txt, des_txt, amount, cat, recurring.getRecurringstartDate(), null, recurring.getLastUpdated(), recurring.getWalletId(),recurring.getFrequency()));
                     Toast.makeText(getApplicationContext(), "Recurring Entry Updated", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -158,7 +127,7 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
         moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(EditRecurringEntry.this, moreBtn);
+                PopupMenu popupMenu = new PopupMenu(EditRecurringEntryActivity.this, moreBtn);
                 popupMenu.getMenu().add("Stop");
                 popupMenu.getMenu().add("Delete");
 
@@ -234,16 +203,6 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
         alert.show();
     }
 
-
-    @Override
-    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar mCalender = Calendar.getInstance();
-        mCalender.set(Calendar.YEAR, year);
-        mCalender.set(Calendar.MONTH, month);
-        mCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String selectedDate = DateFormat.getDateInstance().format(mCalender.getTime());
-        selectDate.setText(selectedDate);
-    }
     private double checkAmt() {
         String amt_txt = amt.getText().toString();
         //set checkValues to true if valid
@@ -290,27 +249,12 @@ public class EditRecurringEntry extends AppCompatActivity implements DatePickerD
         return valid;
     }
 
-    private String checkDate() throws ParseException {
-        String date = selectDate.getText().toString();
-        checkValues.put("date", true);
-        Log.v("TESTTESTTEST", "" + formatDate(date));
-        return formatDate(date);
-    }
-
     private HashMap<String, Boolean> initCheckValues(){
         HashMap<String, Boolean> m = new HashMap<String, Boolean>();
         m.put("amount", false);
         m.put("title", false);
         m.put("category", false);
-        m.put("date", false);
         return m;
-    }
-
-    private String formatDate(String d) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat initialFormat = new SimpleDateFormat("MMM d, yyyy");
-        Date date = initialFormat.parse(d);
-        return dateFormat.format(date);
     }
 
 }
