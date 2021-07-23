@@ -22,7 +22,7 @@ public class UpdateEntryToWallet {
         this.dbHandler = dbHandler;
         recurringArrayList = dbHandler.getAllRecurring();
     }
-
+    //check if there is or no recurringenddate. If have, add entry
     public void UpdateRecurring() throws ParseException {
         for (Recurring recurring : recurringArrayList){
             if (recurring.getRecurringendDate() == null){
@@ -30,7 +30,7 @@ public class UpdateEntryToWallet {
             }
         }
     }
-
+    //to update the last updated date og the app, so it can keep track and charge accordingly
     public void updateEntry(Recurring r) throws ParseException {
         Date lastUpdated = sdf.parse(r.getLastUpdated());
         Date currentDate = removeTime(Calendar.getInstance().getTime());
@@ -52,12 +52,12 @@ public class UpdateEntryToWallet {
             }
         }
     }
-
+    //remove time and keep date only
     private Date removeTime(Date date) throws ParseException {
         String stringDate = sdf.format(date);
         return sdf.parse(stringDate);
     }
-
+    //self increment according to frequency and add the record accordingly. Also updates the last updated so the app can keep track when it added in the transaction
     private void increment(Calendar cal, Date currentDate, int field, Recurring r){
         cal.add(field, 1);
         if(!cal.getTime().after(currentDate)){
