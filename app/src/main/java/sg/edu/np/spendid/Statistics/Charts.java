@@ -32,7 +32,6 @@ public class Charts {
 
         //get highest value in data array
         double highest = getMax(data);
-
         //populate linear layout
         for (int i = 0; i < data.length; i++) {
 
@@ -147,6 +146,10 @@ public class Charts {
             if (num > max){
                 max = num;
             }
+        }
+
+        if (max <= 0) {
+            return 0;
         }
         return max;
     }
