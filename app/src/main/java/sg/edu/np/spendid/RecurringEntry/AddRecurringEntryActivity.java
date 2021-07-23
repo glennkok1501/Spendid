@@ -77,6 +77,7 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         catRV.setItemAnimator(new DefaultItemAnimator());
         catRV.setAdapter(myCatAdapter);
 
+        //setting the date field when clicked to prompt datepicker
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +88,7 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         });
 
 
-
+        //Spinner to display all currently available wallet & Allow user to pick
         Spinner spinner = findViewById(R.id.recurring_wallet_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
                 new WalletNameList(walletArrayList).getList());
@@ -107,14 +108,14 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
             }
         });
 
-
+        //Spinner to display frequency & Allow user to picker the frequency of the recurring entry
         Spinner fSpinner = findViewById(R.id.recurring_frequency_spinner);
         ArrayAdapter<String> fAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
                 getResources().getStringArray(R.array.frequency));
         fAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fSpinner.setAdapter(fAdapter);
 
-
+        //button to save the recurring entry
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,12 +125,12 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
                 double amount = checkAmt(); //validate amount
                 String date = checkDate(); //validate date
 
-                //create transaction if record is valid
-                if (validRecord()) {
+                //create recurring if recurring is valid
+                if (validRecurring()) {
                     dbHandler.addRecurring(new Recurring(title_txt, des_txt, amount, cat, date, null, date,
-                            walletArrayList.get(spinner.getSelectedItemPosition()).getWalletId(), fSpinner.getSelectedItem().toString()));
+                            walletArrayList.get(spinner.getSelectedItemPosition()).getWalletId(), fSpinner.getSelectedItem().toString())); //Create recurring entry
                     dbHandler.addRecord(new Record(title_txt, des_txt, amount, cat, date, currentTime(), null,
-                            walletArrayList.get(spinner.getSelectedItemPosition()).getWalletId()));
+                            walletArrayList.get(spinner.getSelectedItemPosition()).getWalletId())); //Add recurring entry to wallet in the form of a transaction
                     Toast.makeText(getApplicationContext(), "Recurring Entry added", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -140,8 +141,8 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
 
     }
 
+    //Tool bar
     private void initToolbar() {
-        //Tool bar
         TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
         ImageView backArrow = findViewById(R.id.activityImg_toolBar);
         activityTitle.setText("Recurring Details");
@@ -154,6 +155,7 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
     }
 
     @Override
+    //Getting user date input from datepicker
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar mCalender = Calendar.getInstance();
         mCalender.set(Calendar.YEAR, year);
@@ -162,6 +164,7 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         selectDate.setText(dateFormat.format(mCalender.getTime()));
     }
 
+    //check if amount is valid
     private double checkAmt() {
         String amt_txt = amt.getText().toString();
         //set checkValues to true if valid
@@ -200,7 +203,8 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         }
     }
 
-    private boolean validRecord(){
+    //check if Recurring is valid
+    private boolean validRecurring(){
         boolean valid = true;
         for (String key : checkValues.keySet()) {
             if (!checkValues.get(key)){
@@ -210,6 +214,7 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         return valid;
     }
 
+    //check if Date is valid
     private String checkDate() {
         String date = selectDate.getText().toString();
 
@@ -222,6 +227,7 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         }
     }
 
+    //overall check to check if everything is valid
     private HashMap<String, Boolean> initCheckValues(){
         HashMap<String, Boolean> m = new HashMap<String, Boolean>();
         m.put("amount", false);
@@ -231,7 +237,7 @@ public class AddRecurringEntryActivity extends AppCompatActivity implements Date
         return m;
     }
 
-
+    //check if time is valid
     public String currentTime(){
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
