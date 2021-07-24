@@ -42,10 +42,11 @@ public class RecurringEntryActivity extends AppCompatActivity {
         emptyRecurring = findViewById(R.id.showRecurring_empty_textView);
 
         initToolbar(); //set toolbar
-
+        //bring user from recurring entry activity to add recurring entry activity
         AddRecurringFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //on FAB click, move from this class to another class
                 Intent intent = new Intent(RecurringEntryActivity.this, AddRecurringEntryActivity.class);
                 startActivity(intent);
             }
@@ -73,6 +74,7 @@ public class RecurringEntryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //Recycler view to display all recurring entries
         RecyclerView showRecurringRV = findViewById(R.id.show_recurring_RV);
         ArrayList<Recurring> recurringArrayList = dbHandler.getAllRecurring();
         checkEmpty(recurringArrayList);
@@ -83,8 +85,8 @@ public class RecurringEntryActivity extends AppCompatActivity {
         showRecurringRV.setAdapter(recurringSelectAdapter);
     }
 
+    //Tool bar
     private void initToolbar(){
-        //Tool bar
         TextView activityTitle = findViewById(R.id.toolbarTitle_textView);
         ImageView backArrow = findViewById(R.id.toolbarBtn_imageView1);
         ImageView sync = findViewById(R.id.toolbarBtn_imageView2);
@@ -112,6 +114,7 @@ public class RecurringEntryActivity extends AppCompatActivity {
         });
     }
 
+    //check if arraylist recurring is empty
     private void checkEmpty(ArrayList<Recurring> recurringArrayList){
         if (recurringArrayList.size() > 0){
             emptyRecurring.setVisibility(View.GONE);

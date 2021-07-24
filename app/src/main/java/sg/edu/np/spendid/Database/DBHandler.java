@@ -651,6 +651,26 @@ public class DBHandler extends SQLiteOpenHelper {
         return group;
     }
 
+    //get total balance for a specific date
+    public double getDailyExpense(String date) {
+        String query = "SELECT r." + COLUMN_RECORD_AMOUNT + ", r." + COLUMN_RECORD_DATECREATED + ", c." + COLUMN_CATEGORY_EXPENSE + " " +
+                "FROM " + TABLE_RECORD + " " +
+                "r INNER JOIN " + TABLE_CATEGORY + " c " +
+                "ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY+" "+
+                "WHERE r."+COLUMN_RECORD_DATECREATED+" LIKE \'"+date+"\'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        double expense = 0;
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            if (cursor.getInt(2) == 1) {
+                expense += cursor.getDouble(0);
+            }
+        }
+        cursor.close();
+        db.close();
+        return expense;
+    }
+
     //Shopping List Methods
 
     //returns an array of shopping carts
