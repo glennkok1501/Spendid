@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="You have no ongoing Subscriptions"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/RecurringAddEntry_fab"

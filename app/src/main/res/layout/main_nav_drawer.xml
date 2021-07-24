@@ -216,35 +216,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/navbar_planner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_calendar_today_24"
-                    android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:layout_gravity="center_horizontal"
-                    app:tint="@color/white" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="9"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="20dp"
-                    android:textColor="@color/white"
-                    android:text="My Planner" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/navbar_stats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

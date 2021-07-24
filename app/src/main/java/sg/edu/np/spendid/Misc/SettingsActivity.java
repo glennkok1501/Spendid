@@ -22,6 +22,7 @@ import sg.edu.np.spendid.DataTransfer.ExportActivity;
 import sg.edu.np.spendid.DataTransfer.ImportActivity;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
+import sg.edu.np.spendid.Friends.ProfileActivity;
 import sg.edu.np.spendid.Models.Recurring;
 import sg.edu.np.spendid.Models.ShoppingCart;
 import sg.edu.np.spendid.Models.Wallet;
@@ -46,6 +47,15 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 toggleNightMode(isChecked);
+            }
+        });
+
+        //My code
+        TextView myCode = findViewById(R.id.settings_myCode_textView);
+        myCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, ProfileActivity.class));
             }
         });
 
@@ -92,6 +102,15 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 clearAllDialog();
+            }
+        });
+
+        //About
+        TextView about = findViewById(R.id.settings_about_textView);
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, AboutActivity.class));
             }
         });
 
