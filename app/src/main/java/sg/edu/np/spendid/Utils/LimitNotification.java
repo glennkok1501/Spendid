@@ -50,12 +50,12 @@ public class LimitNotification {
     }
 
     public void checkExceedWarning(boolean isExpense) {
-        if (notify && moreThanWarning && isExpense){
+        if (limit && notify && moreThanWarning && isExpense){
             showNotification();
         }
     }
 
-    public boolean checkExceedLimit() { return limit && moreThanLimit; }
+    public boolean checkExceedLimit(boolean isExpense) { return limit && moreThanLimit && isExpense; }
 
 
     private double getTotalBalance() {

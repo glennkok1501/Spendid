@@ -60,8 +60,6 @@ public class AddRecordActivity extends AppCompatActivity {
     private String baseCurrency;
     private byte[] imageData;
 
-    private final String PREF_NAME = "sharedPrefs";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,7 +170,7 @@ public class AddRecordActivity extends AppCompatActivity {
                     LimitNotification limit = new LimitNotification(getApplicationContext(), dbHandler, amount);
 
                     //check if reached limit set and record is expense
-                    if (limit.checkExceedLimit() && isExpense){
+                    if (limit.checkExceedLimit(isExpense)) {
 
                         //show dialog to warn limit will exceed
                         notifyLimit(record);

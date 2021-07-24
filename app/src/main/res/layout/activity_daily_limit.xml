@@ -16,14 +16,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp" >
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/limit_daily_switch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:textSize="16sp"
                 android:text="Daily Limit" />
 
@@ -31,10 +31,8 @@
                 android:id="@+id/limit_daily_linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="30dp" >
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,8 +57,8 @@
                         android:layout_weight="2"
                         android:hint="50"
                         android:inputType="number"
-                        android:maxLength="4"
                         android:maxWidth="20dp"
+                        android:maxLength="4"
                         android:textAlignment="center" />
 
 
@@ -77,18 +75,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/limit_notify_at_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
                         android:layout_gravity="center"
                         android:layout_weight="2"
+                        android:background="?android:attr/selectableItemBackground"
                         android:clickable="false"
-                        android:textSize="16sp"
-                        android:text="When my spending exceeds my limit by" />
+                        android:text="When my spending exceeds my limit by"
+                        android:textSize="16sp" />
 
                     <Spinner
                         android:id="@+id/limit_daily_spinner"
@@ -98,6 +96,201 @@
                         android:spinnerMode="dialog" />
 
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="false"
+                    android:text="Savings Calculator"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="8"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="false"
+                        android:text="Amount to save ($)"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/save_amt_editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="200"
+                        android:inputType="numberDecimal"
+                        android:maxWidth="20dp"
+                        android:textAlignment="center" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="8"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="false"
+                        android:text="Target Date"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/save_amt__date_editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="dd"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:maxWidth="10dp"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="false"
+                        android:text="/"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/save_amt__month_editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="MM"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:maxWidth="20dp"
+                        android:textAlignment="center" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="false"
+                        android:text="/"
+                        android:textSize="16sp" />
+
+                        <EditText
+                        android:id="@+id/save_amt__year_editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="yyyy"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:maxWidth="20dp"
+                        android:textAlignment="center" />
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/save_results_cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardBackgroundColor="?colorOnBackground"
+                    app:cardElevation="5dp"
+                    app:cardCornerRadius="15dp"
+                    android:layout_margin="15dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="false" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_weight="2"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="false"
+                                android:textSize="16sp"
+                                android:text="Amount to save per day ($) :" />
+                            <TextView
+                                android:id="@+id/save_amt_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="false"
+                                android:textSize="16sp"
+                                android:text="50" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_weight="2"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="false"
+                                android:textSize="16sp"
+                                android:text="Recommended Limit ($) :  " />
+                            <TextView
+                                android:id="@+id/limit_recommended_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="false"
+                                android:textSize="16sp"
+                                android:text="50 - savings/day" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/calcLimit_Btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Calculate" />
+
 
             </LinearLayout>
 
