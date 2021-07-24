@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:hint="50"
-                        android:inputType="numberDecimal"
+                        android:inputType="number"
                         android:maxLength="4"
                         android:maxWidth="20dp"
                         android:textAlignment="center" />
