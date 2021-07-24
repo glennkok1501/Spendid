@@ -167,15 +167,22 @@ public class AddRecordActivity extends AppCompatActivity {
                 //create transaction if record is valid
                 if (validRecord()) {
                     Record record = new Record(title_txt, des_txt, amount, cat, date, time, imageData, walletArrayList.get(selectWallet.getSelectedItemPosition()).getWalletId());
+                    boolean isExpense = dbHandler.catIsExpense(record.getCategory());
+                    //initialise limit notification
                     LimitNotification limit = new LimitNotification(getApplicationContext(), dbHandler, amount);
-                    if (limit.checkExceedWarning()) {
-                        if (limit.checkExceedLimit()) {
-                            notifyLimit(record);
-                        } else {
-                            Toast.makeText(AddRecordActivity.this, "You are close to hitting your limit! Spend with care!", Toast.LENGTH_SHORT);
-                        }
+
+                    //check if reached limit set and record is expense
+                    if (limit.checkExceedLimit() && isExpense){
+
+                        //show dialog to warn limit will exceed
+                        notifyLimit(record);
                     }
-                    else{
+                    else {
+
+                        //check if limit is reaching from percentage set
+                        limit.checkExceedWarning(isExpense);
+
+                        //continue to add record
                         addRecord(record);
                     }
                 }
