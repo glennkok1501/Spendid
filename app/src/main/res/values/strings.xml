@@ -55,8 +55,10 @@
         <item>Uae Dirham;aed</item>
         <item>United States Dollar;usd</item>
     </string-array>
-    <string name="currency_api_attribute">By fawazahmed0 from github.com/fawazahmed0/currency-api</string>
-    <string name="flags_icon_attribute">Icon made by Freepik from www.flaticon.com</string>
 
     <string name="no_permission">No permission to access media</string>
+
+    <string name="profileQRcode">This QR code allows people to add you into their friends list so that they can securely send you files</string>
+
+    <string name="friendQRcode">This QR code allows people to add your friend into their friends list so that they can securely send them files</string>
 </resources>

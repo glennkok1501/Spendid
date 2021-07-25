@@ -409,8 +409,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PopupMenu popupMenu = new PopupMenu(MainActivity.this, moreBtn);
-                popupMenu.getMenu().add("My Code");
                 popupMenu.getMenu().add("About");
+                popupMenu.getMenu().add("My Code");
                 popupMenu.getMenu().add("Settings");
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
