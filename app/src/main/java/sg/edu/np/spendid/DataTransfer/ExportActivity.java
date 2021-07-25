@@ -1,6 +1,7 @@
 package sg.edu.np.spendid.DataTransfer;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -39,6 +40,7 @@ import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.Utils.Permissions.RequestWritePermission;
 import sg.edu.np.spendid.Utils.Security.Cryptography;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.Utils.WalletNameList;
@@ -112,7 +114,9 @@ public class ExportActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (wallet != null){
                     //export all records associated with specified wallet Id
-                    exportRecords(dbHandler.getWalletRecords(wallet.getWalletId()));
+                    if (new RequestWritePermission(ExportActivity.this).checkPermission()){
+                        exportRecords(dbHandler.getWalletRecords(wallet.getWalletId()));
+                    }
                 }
             }
         });
@@ -144,6 +148,17 @@ public class ExportActivity extends AppCompatActivity {
         clearFiles();
         //remove permissions when not in used
         this.revokeUriPermission(path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void exportRecords (ArrayList<Record> records){

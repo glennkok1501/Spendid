@@ -13,15 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spendid">
-        <activity android:name=".Misc.AttributionActivity"></activity>
+        <activity android:name=".Misc.AttributionActivity"/>
         <activity android:name=".RecurringEntry.EditRecurringEntryActivity" />
         <activity android:name=".RecurringEntry.AddRecurringEntryActivity" />
         <activity android:name=".RecurringEntry.RecurringEntryActivity" />
         <activity android:name=".Statistics.StatisticsAllCatActivity" />
         <activity android:name=".DataTransfer.ImportActivity" />
         <activity android:name=".Misc.DailyLimitActivity" />
-        <activity android:name=".Records.ViewImageActivity" />
-        <activity android:name=".Statistics.StatisticsAllCatActivity" />
         <activity android:name=".Records.ViewImageActivity" />
         <activity android:name=".Statistics.StatisticsActivity" />
         <activity android:name=".Friends.ViewFriendActivity" />
@@ -35,9 +33,7 @@
         <activity android:name=".DataTransfer.ImportExternalActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:scheme="file" />
                 <data android:scheme="content" />
                 <data android:mimeType="text/comma-separated-values" />
@@ -63,7 +59,6 @@
         <activity android:name=".Misc.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
