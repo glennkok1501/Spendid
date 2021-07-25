@@ -24,6 +24,9 @@
         <li>Viewing all transactions/Finding specific transactions through filtering feature</li>
         <li>Currency Exchange for over 30 countries</li>
         <li>Shopping list to allow for better handling for grouped transactions</li>
+        <li>Recurring Transactions</li>
+        <li>Statistics</li>
+        <li>Daily Limit</li>
         <li>Exporting of existing wallets and their transactions</li>
         <li>Importing of wallets onto users own application</li>
       </ul>
@@ -40,7 +43,7 @@ Do you ever feel like you are spending too much money? Well,  50% of adults in S
 With the <a href="#features">features</a> included in Spendid, we are aiming to help people better manage their finances, by allowing them to track their daily expenses with ease.
 
 ### Developers
-Done by: <a href="#glenn">Glenn Kok</a>, <a href="#hongli">Chea Hong Li</a>, <a href="#cow">Clarence Ow</a>
+Done by: <a href="#glenn">Glenn Kok</a>, <a href="https://github.com/BryanChea">Chea Hong Li</a>, <a href="#cow">Clarence Ow</a>
 
 ## Features
 <table id="features">
@@ -115,7 +118,7 @@ Done by: <a href="#glenn">Glenn Kok</a>, <a href="#hongli">Chea Hong Li</a>, <a 
 <table id="contribution">
   <tr id="headings">
     <th>Name</th>
-    <th>Page Done</th>
+    <th>Pages Done</th>
     <th>Helped With</th>
   </tr>
   
@@ -129,7 +132,7 @@ Done by: <a href="#glenn">Glenn Kok</a>, <a href="#hongli">Chea Hong Li</a>, <a 
     </td>
     <td>
       <ul>
-        <li>
+        <li></li>
       </ul>
     </td>
   </tr>
@@ -138,13 +141,15 @@ Done by: <a href="#glenn">Glenn Kok</a>, <a href="#hongli">Chea Hong Li</a>, <a 
     <td>Hong Li</td>
     <td>
       <ul>
-        <li>Dashboard</li>
+        <li>Transaction History</li>
+        <li>Search Transactions</li>
+        <li>Daily Limit</li>
         <li></li>
       </ul>
     </td>
     <td>
       <ul>
-        <li>
+        <li></li>
       </ul>
     </td>
   </tr>
@@ -153,13 +158,13 @@ Done by: <a href="#glenn">Glenn Kok</a>, <a href="#hongli">Chea Hong Li</a>, <a 
     <td>Clarence Ow</td>
     <td>
       <ul>
-        <li>Dashboard</li>
+        <li>Splash Screen</li>
         <li></li>
       </ul>
     </td>
     <td>
       <ul>
-        <li>
+        <li></li>
       </ul>
     </td>
   </tr>
