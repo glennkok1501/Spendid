@@ -64,12 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
         exportTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new RequestWritePermission(SettingsActivity.this).checkPermission()){
-                    startActivity(new Intent(SettingsActivity.this, ExportActivity.class));
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), R.string.no_permission, Toast.LENGTH_SHORT).show();
-                }
+                startActivity(new Intent(SettingsActivity.this, ExportActivity.class));
             }
         });
 
@@ -78,12 +73,7 @@ public class SettingsActivity extends AppCompatActivity {
         importTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new RequestReadPermission(SettingsActivity.this).checkPermission()){
-                    startActivity(new Intent(SettingsActivity.this, ImportActivity.class));
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), R.string.no_permission, Toast.LENGTH_SHORT).show();
-                }
+                startActivity(new Intent(SettingsActivity.this, ImportActivity.class));
             }
         });
 
@@ -140,17 +130,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void toggleNightMode(boolean isChecked){

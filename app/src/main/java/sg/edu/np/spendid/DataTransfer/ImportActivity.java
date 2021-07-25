@@ -3,8 +3,10 @@ package sg.edu.np.spendid.DataTransfer;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -23,9 +25,12 @@ import java.util.ArrayList;
 import sg.edu.np.spendid.DataTransfer.Utils.ImportCSV;
 import sg.edu.np.spendid.DataTransfer.Utils.SelectFriendDialog;
 import sg.edu.np.spendid.Database.DBHandler;
+import sg.edu.np.spendid.Misc.SettingsActivity;
 import sg.edu.np.spendid.Models.Record;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.R;
+import sg.edu.np.spendid.Utils.Permissions.RequestReadPermission;
+import sg.edu.np.spendid.Utils.Permissions.RequestWritePermission;
 import sg.edu.np.spendid.Utils.WalletNameList;
 
 public class ImportActivity extends AppCompatActivity {
@@ -109,7 +114,9 @@ public class ImportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (wallet != null){
-                    getFile.launch("text/comma-separated-values"); //initiate file picker with CSV format
+                    if (new RequestReadPermission(ImportActivity.this).checkPermission()){
+                        getFile.launch("text/comma-separated-values"); //initiate file picker with CSV format
+                    }
                 }
             }
         });
@@ -138,6 +145,17 @@ public class ImportActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initToolbar(){
