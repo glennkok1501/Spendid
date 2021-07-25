@@ -28,7 +28,7 @@
         <li>Importing of wallets onto users own application</li>
       </ul>
     </li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contribution">Contribution</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
@@ -40,14 +40,16 @@ Do you ever feel like you are spending too much money? Well,  50% of adults in S
 With the <a href="#features">features</a> included in Spendid, we are aiming to help people better manage their finances, by allowing them to track their daily expenses with ease.
 
 ### Developers
-Done by: Glenn Kok, Chea Hong Li, Clarence Ow
+Done by: <a href="#glenn">Glenn Kok</a>, <a href="#hongli">Chea Hong Li</a>, <a href="#cow">Clarence Ow</a>
 
 ## Features
-<table>
+<table id="features">
   <tr id="headings">
     <th>Page</th>
     <th width="60%">Description</th>
     <th>Sample Image</th>
+  </tr>
+  
   <tr id="main" align="center">
     <td>Main Page</td>
     <td>
@@ -77,5 +79,96 @@ Done by: Glenn Kok, Chea Hong Li, Clarence Ow
     <td></td>
     <td><img src="images/SearchTransactionsPage.png" alt="SearchTransactionsPage" width="224dp" /></td>
   </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
 </table>
+
+## Contribution
+<table id="contribution">
+  <tr id="headings">
+    <th>Name</th>
+    <th>Page Done</th>
+    <th>Helped With</th>
+  </tr>
+  
+  <tr id="glenn">
+    <td>Glenn</td>
+    <td>
+      <ul>
+        <li>Dashboard</li>
+        <li></li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>
+      </ul>
+    </td>
+  </tr>
+  
+  <tr id="hongli">
+    <td>Hong Li</td>
+    <td>
+      <ul>
+        <li>Dashboard</li>
+        <li></li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>
+      </ul>
+    </td>
+  </tr>
+  
+  <tr id="cow">
+    <td>Clarence Ow</td>
+    <td>
+      <ul>
+        <li>Dashboard</li>
+        <li></li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+## Contact Us
+Contact us at ...!
+
+## Acknowledgements
+
+       
     
