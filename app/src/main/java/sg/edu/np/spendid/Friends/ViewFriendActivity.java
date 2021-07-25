@@ -27,9 +27,7 @@ public class ViewFriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_friend);
         ImageView qrcode = findViewById(R.id.profileView_qrcode_imageView);
         TextView shareCode = findViewById(R.id.profileView_key_textView);
-        TextView friendName = findViewById(R.id.profileView_name_textView);
         TextView dateAdded = findViewById(R.id.profileView_date_textView);
-        initToolbar();
         dbHandler = new DBHandler(this, null, null, 1);
 
         Intent intent = getIntent();
@@ -37,11 +35,13 @@ public class ViewFriendActivity extends AppCompatActivity {
         //get friend object
         friend = dbHandler.getFriend(intent.getIntExtra("friendId", 0));
 
+        //init toolbar
+        initToolbar();
+
         //generate friend qr code
         new GenerateQRCode(this, qrcode).run(friend.getName()+";"+friend.getPublicKey());
 
         //set values
-        friendName.setText(friend.getName());
         dateAdded.setText(friend.getDateAdded());
 
         shareCode.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +96,7 @@ public class ViewFriendActivity extends AppCompatActivity {
         ImageView trash = findViewById(R.id.toolbarBtn_imageView2);
         backArrow.setImageResource(R.drawable.ic_back_arrow_32);
         trash.setImageResource(R.drawable.ic_delete_32);
-        activityTitle.setText("Friend");
+        activityTitle.setText(friend.getName());
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,19 +4,15 @@
         Spendid is an expense tracking application that allows users to create records of the transactions that they have made,
         and store them in virtual wallets, to allow for ease of tracking of their expenses.
     </string>
-    <string name="developers">
-        If you enjoy using Spendid, consider following us, the developers, on social media.
-    </string>
     <string name="api_diclaimer">
         Spendid uses a currency exchange rate API created by Fawaz Ahmed, and is NOT affiliated, endorsed or supported by Fawaz Ahmed.
     </string>
     <string name="icon_credits">
-        Country flags by Freepik, from www.flaticon.com. Spendid is NOT affiliated, endorsed or supported by www.flaticon.com.
+        Country flag icons by Freepik,
     </string>
-    <string name="github_api_link">
-        GitHub Repository: https://github.com/fawazahmed0/currency-api
-    </string>
-    <string name="icon_link">
-        https://www.flaticon.com/packs/countrys-flags?k=1625654062939
-    </string>
+    <string name="github_api_link">https://github.com/fawazahmed0/currency-api</string>
+    <string name="icon_link">https://www.flaticon.com/packs/countrys-flags?k=1625654062939</string>
+
+    <string name="currency_api_attribute">By fawazahmed0 from github.com/fawazahmed0/currency-api</string>
+    <string name="flags_icon_attribute">Icons made by Freepik from www.flaticon.com</string>
 </resources>

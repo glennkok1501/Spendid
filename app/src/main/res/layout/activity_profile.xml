@@ -33,6 +33,19 @@ tools:context=".Friends.ProfileActivity">
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/profile_msg_textView"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:textColor="?subtitleTextColor"
+                android:text="@string/profileQRcode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_qrcode_imageView"/>
+
+            <TextView
                 android:id="@+id/profile_key_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,7 +57,7 @@ tools:context=".Friends.ProfileActivity">
                 app:drawableTint="?colorSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profile_qrcode_imageView" />
+                app:layout_constraintTop_toBottomOf="@id/profile_msg_textView" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/profile_username_layout"
