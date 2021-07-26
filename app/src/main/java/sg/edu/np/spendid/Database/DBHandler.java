@@ -1012,6 +1012,17 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return deleted;
     }
+
+    public void deleteWalletRecurring(int wId) {
+        String query = "SELECT * FROM " + TABLE_RECURRING;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            db.delete(TABLE_RECURRING, COLUMN_WALLET_ID + "= ?", new String[]{String.valueOf(wId)});
+        }
+        cursor.close();
+        db.close();
+    }
 }
 
 
