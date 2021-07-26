@@ -28,7 +28,6 @@
                 android:text="Daily Limit" />
 
             <LinearLayout
-                android:id="@+id/limit_daily_linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -72,6 +71,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:id="@+id/limit_notify_me_linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -84,14 +84,14 @@
                         android:layout_weight="2"
                         android:background="?android:attr/selectableItemBackground"
                         android:clickable="false"
-                        android:text="When my spending exceeds my limit by"
+                        android:text="When my spending exceeds"
                         android:textSize="16sp" />
 
                     <Spinner
                         android:id="@+id/limit_daily_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="20dp"
+                        android:padding="10dp"
                         android:spinnerMode="dialog" />
 
                 </LinearLayout>
@@ -101,8 +101,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="?android:attr/listDivider" />
 
             <LinearLayout
