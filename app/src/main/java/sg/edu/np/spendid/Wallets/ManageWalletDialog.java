@@ -30,7 +30,6 @@ public class ManageWalletDialog {
     private boolean selectFav;
     private String totalAmt;
     private final String PREF_NAME = "sharedPrefs";
-    private DecimalFormat df2 = new DecimalFormat("#0.00");
 
     public ManageWalletDialog(Context context, Wallet wallet, boolean selectFav, String totalAmt) {
         this.context = context;

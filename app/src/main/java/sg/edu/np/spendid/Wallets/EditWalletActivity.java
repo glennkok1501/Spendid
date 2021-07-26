@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,7 +62,14 @@ public class EditWalletActivity extends AppCompatActivity {
                     walletNameLayout.setError("Improper Wallet Name");
                     Toast.makeText(getApplicationContext(), "Invalid Wallet Name", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
 
+        Button transferBtn = findViewById(R.id.editTransferWallet_btn);
+        transferBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TransferWalletDialog(EditWalletActivity.this, dbHandler, wallet.getWalletId()).show();
             }
         });
     }
