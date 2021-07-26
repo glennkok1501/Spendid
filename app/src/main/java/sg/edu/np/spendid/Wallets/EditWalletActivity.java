@@ -94,6 +94,7 @@ public class EditWalletActivity extends AppCompatActivity {
     private void deleteWallet(){
         if (dbHandler.deleteWallet(wallet.getWalletId())){
             dbHandler.deleteWalletRecords(wallet.getWalletId());
+            dbHandler.deleteWalletRecurring(wallet.getWalletId());
             Toast.makeText(getApplicationContext(), "Wallet Deleted", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -118,6 +119,7 @@ public class EditWalletActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deleteWallet();
+
                 alert.dismiss();
             }
         });
