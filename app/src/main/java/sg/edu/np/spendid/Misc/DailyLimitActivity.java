@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.GnssNavigationMessage;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -43,6 +44,7 @@ public class DailyLimitActivity extends AppCompatActivity {
     private Button calcAmt;
     private Spinner dSpinner;
     private CardView results;
+    private LinearLayout notifyAt;
     private String[] range = new String[] {"10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%"};
 
     private final String PREF_NAME = "sharedPrefs";
@@ -64,6 +66,7 @@ public class DailyLimitActivity extends AppCompatActivity {
         saveY = findViewById(R.id.save_amt__year_editText);
         calcAmt = findViewById(R.id.calcLimit_Btn);
         results = findViewById(R.id.save_results_cardView);
+        notifyAt = findViewById(R.id.limit_notify_me_linearLayout);
 
         initToolbar(); //set toolbar
         editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
@@ -84,11 +87,28 @@ public class DailyLimitActivity extends AppCompatActivity {
         dSpinner.setSelection(prefs.getInt("Notify At", 8));
         dNotif.setChecked(getSharedPreferences(PREF_NAME, MODE_PRIVATE).getBoolean("Notify", true));
         toggleLimit(prefs.getBoolean("Daily Limit", false), dViews);
+        if (dNotif.isChecked()) {
+            notifyAt.setVisibility(View.VISIBLE);
+        } else {
+            notifyAt.setVisibility(View.GONE);
+        }
 
         dSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 toggleLimit(isChecked, dViews);
+            }
+        });
+
+        dNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    notifyAt.setVisibility(View.VISIBLE);
+                }
+                else {
+                    notifyAt.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -110,19 +130,18 @@ public class DailyLimitActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         //save limit amount
-        if (dSwitch.isChecked()){
-            String amountString = dAmtEdit.getText().toString();
-            if (amountString.length() == 0){
-                amountString = "0";
-            }
-            editor.putInt("Limit Amount", Integer.parseInt(amountString));
-
-            //save notify me status
-            editor.putBoolean("Notify", dNotif.isChecked());
-
-            //save percentage position of spinner
-            editor.putInt("Notify At", dSpinner.getSelectedItemPosition());
+        String amountString = dAmtEdit.getText().toString();
+        if (amountString.length() == 0){
+            amountString = "0";
         }
+        editor.putInt("Limit Amount", Integer.parseInt(amountString));
+
+        //save notify me status
+        editor.putBoolean("Notify", dNotif.isChecked());
+
+        //save percentage position of spinner
+        editor.putInt("Notify At", dSpinner.getSelectedItemPosition());
+
         editor.apply();
     }
 
