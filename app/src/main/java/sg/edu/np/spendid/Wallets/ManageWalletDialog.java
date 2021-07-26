@@ -17,7 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 
-import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.Models.Wallet;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Wallets.EditWalletActivity;
@@ -29,15 +28,15 @@ public class ManageWalletDialog {
     private Context context;
     private Wallet wallet;
     private boolean selectFav;
-    private DBHandler dbHandler;
+    private String totalAmt;
     private final String PREF_NAME = "sharedPrefs";
     private DecimalFormat df2 = new DecimalFormat("#0.00");
 
-    public ManageWalletDialog(Context context, Wallet wallet, boolean selectFav, DBHandler dbHandler) {
+    public ManageWalletDialog(Context context, Wallet wallet, boolean selectFav, String totalAmt) {
         this.context = context;
         this.wallet = wallet;
         this.selectFav = selectFav;
-        this.dbHandler = dbHandler;
+        this.totalAmt = totalAmt;
     }
 
     public void show() {
@@ -60,7 +59,7 @@ public class ManageWalletDialog {
 
         name.setText(wallet.getName());
         wCur.setText(wallet.getCurrency());
-        amt.setText(df2.format(dbHandler.getWalletTotal(wallet.getWalletId())));
+        amt.setText(totalAmt);
         cur.setText(context.getString(R.string.baseCurrency));
         date.setText("Date Created: " + wallet.getDateCreated());
         String des_text = wallet.getDescription();
