@@ -32,11 +32,8 @@ public class ManageWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_wallet);
         dbHandler = new DBHandler(this, null, null, 1);
-        bal = findViewById(R.id.totalWalletBal_textView);
-        TextView header = findViewById(R.id.totalWalletTitle_textView);
         emptyWallets = findViewById(R.id.manageWallet_empty_textView);
         recyclerView = findViewById(R.id.manageWallet_RV);
-        header.setText("Total Balance");
 
         initToolbar(); //set toolbar
 
@@ -53,7 +50,6 @@ public class ManageWalletActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        bal.setText(df2.format(dbHandler.getTotalBalance()));
         ArrayList<Wallet> walletArrayList = dbHandler.getWallets();
         checkEmpty(walletArrayList);
         WalletManageAdapter myAdapter = new WalletManageAdapter(walletArrayList, this, dbHandler);

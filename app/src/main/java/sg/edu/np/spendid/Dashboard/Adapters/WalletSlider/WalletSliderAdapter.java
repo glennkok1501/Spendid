@@ -36,13 +36,14 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderViewHo
     public void onBindViewHolder(WalletSliderViewHolder holder, int position){
         Wallet wallet = data.get(position);
         holder.name.setText(wallet.getName());
-        holder.amount.setText(df2.format(dbHandler.getWalletTotal(wallet.getWalletId())));
+        String totalAmt = df2.format(dbHandler.getWalletTotal(wallet.getWalletId()));
+        holder.amount.setText(totalAmt);
         holder.currency.setText("SGD");
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), wallet, false, dbHandler);
+                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), wallet, false, totalAmt);
                 dialog.show();
             }
         });

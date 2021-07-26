@@ -848,7 +848,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return currencyArrayList;
     }
 
-    //Friends List
+    //Friends List methods
+
     public ArrayList<Friend> getFriends() {
         String query = "SELECT * FROM " + TABLE_FRIEND + " ORDER BY " + COLUMN_FRIEND_NAME + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -910,6 +911,8 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_FRIEND, null, values);
         db.close();
     }
+
+    //Recurring methods
 
     public void addRecurring(Recurring r) {
         ContentValues values = new ContentValues();
@@ -1009,48 +1012,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return deleted;
     }
-
 }
-//    for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-//        int id = cursor.getInt(0);
-//        String title = cursor.getString(1);
-//        String des = cursor.getString(2);
-//        double amt = cursor.getDouble(3);
-//        String cat = cursor.getString(4);
-//        String dateCreated = cursor.getString(5);
-//        String dateStopped = cursor.getString(6);
-//        String lastUpdated = cursor.getString(7);
-//        int walletId = cursor.getInt(8);
-//        Recurring recurring = new Recurring(id, title, des, amt, cat, dateCreated, dateStopped, walletId, lastUpdated);
-//        recurringList.add(recurring);
-//    }
-
-
-//    public Recurring getRecurring(int rId) {
-//        String query = "SELECT * FROM " + TABLE_RECURRING + " WHERE " + COLUMN_RECURRING_ID + " = " + rId;
-//    }
-
-    //    public double getIndivRecurringTotal(int rId) {
-//        String query = "SELECT r." + COLUMN_RECORD_AMOUNT + ", c." + COLUMN_CATEGORY_EXPENSE + " " +
-//                "FROM " + TABLE_RECORD + " " +
-//                "r INNER JOIN " + TABLE_CATEGORY + " " +
-//                "c ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY + " " +
-//                "WHERE r." + COLUMN_WALLET_ID + " = " + id;
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//        double income = 0;
-//        double expense = 0;
-//        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-//            if (cursor.getInt(1) == 1) {
-//                expense += cursor.getDouble(0);
-//            } else {
-//                income += cursor.getDouble(0);
-//            }
-//        }
-//        cursor.close();
-//        db.close();
-//        return income - expense;
-//    }
-
 
 

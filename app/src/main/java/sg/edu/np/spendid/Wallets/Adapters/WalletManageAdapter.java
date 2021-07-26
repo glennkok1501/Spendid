@@ -36,12 +36,13 @@ public class WalletManageAdapter extends RecyclerView.Adapter<WalletManageViewHo
         String baseCurrency = context.getString(R.string.baseCurrency);
         Wallet wallet = data.get(position);
         holder.name.setText(wallet.getName());
-        holder.amount.setText(df2.format(dbHandler.getWalletTotal(wallet.getWalletId()))+" "+baseCurrency);
+        String totalAmt = df2.format(dbHandler.getWalletTotal(wallet.getWalletId()));
+        holder.amount.setText(totalAmt+" "+baseCurrency);
         holder.date.setText("Date Created: "+data.get(position).getDateCreated());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), wallet, true, dbHandler);
+                ManageWalletDialog dialog = new ManageWalletDialog(v.getContext(), wallet, true, totalAmt);
                 dialog.show();
             }
         });
