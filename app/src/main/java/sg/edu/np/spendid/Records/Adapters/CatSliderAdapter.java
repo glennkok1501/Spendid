@@ -47,7 +47,7 @@ public class CatSliderAdapter extends RecyclerView.Adapter<CatSliderViewHolder> 
         });
 
         //change color
-        if (selectedPos == position){
+        if (selectedPos == position || data.get(position).getTitle().equals(cat.getText().toString())){
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.denim));
         }
         else{
