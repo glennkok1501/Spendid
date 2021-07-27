@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,6 +33,8 @@ public class ViewImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_image);
 
+        initToolbar();
+
         //get record id
         Intent intent = getIntent();
 
@@ -39,17 +42,9 @@ public class ViewImageActivity extends AppCompatActivity {
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
         imageBytes = dbHandler.getRecordImage(intent.getIntExtra("recordId", 0));
 
-        ImageView close = findViewById(R.id.imageDisplayClose_imageView);
         ImageView image = findViewById(R.id.imageDisplay_imageView);
         FloatingActionButton download = findViewById(R.id.imageDisplayDl_fab);
         setImage(image);
-
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         download.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,5 +88,19 @@ public class ViewImageActivity extends AppCompatActivity {
         out.write(imageBytes);
         out.close();
         Toast.makeText(ViewImageActivity.this, "Saved to "+fileLocation, Toast.LENGTH_SHORT).show();
+    }
+
+    private void initToolbar(){
+        //Tool bar
+        TextView activityTitle = findViewById(R.id.activityTitle_toolBar);
+        ImageView backArrow = findViewById(R.id.activityImg_toolBar);
+        backArrow.setImageResource(R.drawable.ic_clear_32);
+        activityTitle.setText("View Transaction");
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

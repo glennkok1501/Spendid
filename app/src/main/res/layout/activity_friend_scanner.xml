@@ -5,6 +5,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
+android:background="?backgroundColor"
 android:orientation="vertical"
 tools:context=".Friends.FriendScannerActivity">
 
@@ -95,6 +96,7 @@ tools:context=".Friends.FriendScannerActivity">
                     android:layout_marginBottom="100dp"
                     app:cardCornerRadius="15dp"
                     app:cardElevation="15dp"
+                    app:cardBackgroundColor="?colorOnBackground"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/friend_key_switch"
                     app:layout_constraintStart_toStartOf="parent"
