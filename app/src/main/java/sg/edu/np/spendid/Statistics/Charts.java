@@ -16,6 +16,10 @@ import java.util.Date;
 
 import sg.edu.np.spendid.R;
 
+/*
+create charts with Linear Layout
+ */
+
 public class Charts {
     private Context context;
     private LinearLayout chart;
@@ -148,6 +152,7 @@ public class Charts {
             }
         }
 
+        //highest value is 0 if negative
         if (max <= 0) {
             return 0;
         }

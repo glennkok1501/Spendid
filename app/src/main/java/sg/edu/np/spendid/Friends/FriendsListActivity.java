@@ -54,8 +54,26 @@ public class FriendsListActivity extends AppCompatActivity {
         friendsListRV.setLayoutManager(linearLayoutManager);
         friendsListRV.setItemAnimator(new DefaultItemAnimator());
         friendsListRV.setAdapter(friendsListAdapter);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void initToolbar(){

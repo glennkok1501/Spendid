@@ -36,6 +36,8 @@ public class WalletSliderAdapter extends RecyclerView.Adapter<WalletSliderViewHo
     public void onBindViewHolder(WalletSliderViewHolder holder, int position){
         Wallet wallet = data.get(position);
         holder.name.setText(wallet.getName());
+
+        //get total amount for wallet
         String totalAmt = df2.format(dbHandler.getWalletTotal(wallet.getWalletId()));
         holder.amount.setText(totalAmt);
         holder.currency.setText("SGD");

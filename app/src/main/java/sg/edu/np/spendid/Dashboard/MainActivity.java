@@ -1,5 +1,3 @@
-//Created by Glenn
-
 package sg.edu.np.spendid.Dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +37,6 @@ import sg.edu.np.spendid.Misc.AboutActivity;
 import sg.edu.np.spendid.Dashboard.Adapters.CurrentTrans.CurrentTransAdapter;
 import sg.edu.np.spendid.Database.DBHandler;
 import sg.edu.np.spendid.ExchangeRates.ExchangeRateActivity;
-import sg.edu.np.spendid.Models.SeedData;
 import sg.edu.np.spendid.Records.AddRecordActivity;
 import sg.edu.np.spendid.Statistics.StatisticsActivity;
 import sg.edu.np.spendid.Utils.ViewPagerIndicators;
@@ -98,13 +95,7 @@ public class MainActivity extends AppCompatActivity {
         initToolbar(); //set toolbar
         initDrawer(); //Drawer and Navbar;
 
-        //initialize Seed Data
-//        if (dbHandler.getWallets().size() == 0){
-//            SeedData seedData = new SeedData(this);
-//            seedData.initDatabase();
-//        }
-
-
+        //navigate to manage wallets
         manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //navigate to transaction history
         viewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,9 +111,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //navigate to add transaction
         addRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //check for wallets before starting activity
                 if (walletList.size() > 0){
                     startActivity(new Intent(MainActivity.this, AddRecordActivity.class));
                 }
@@ -131,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //navigate to add wallet
         addWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
         //view pager indicators
         LinearLayout indicators = findViewById(R.id.walletsIndicators_linearLayout);
         new ViewPagerIndicators(this, walletsViewPager, indicators).init(walletList.size());
-
 
         //get transaction for the day grouped by category
         HashMap<String, ArrayList<Record>> curTransMap = dbHandler.getGroupedTransaction(currentDate());
@@ -270,6 +265,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    check if for preferred first wallet in shared pref
+    insert that wallet to the front if found
+     */
     private ArrayList<Wallet> sortWallet(ArrayList<Wallet> walletList){
         String PREF_NAME = "sharedPrefs";
         //retrieve preferred first wallet from shared prefs
@@ -373,6 +372,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //check if wallet is available before starting activity
     private void setButtonForRecord(LinearLayout linearLayout, Class _class){
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

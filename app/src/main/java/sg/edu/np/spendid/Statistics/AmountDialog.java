@@ -24,6 +24,11 @@ import sg.edu.np.spendid.Models.ShoppingCart;
 import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.ShoppingList.Adapters.ShoppingLists.ShoppingListAdapter;
 
+/*
+dialog to show amount and date
+used for category amounts and charts
+ */
+
 public class AmountDialog {
     private Context context;
     private Dialog dialog;

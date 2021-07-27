@@ -23,7 +23,7 @@ public class UpdateEntryToWallet {
         recurringArrayList = dbHandler.getAllRecurring();
     }
 
-    //check if there is or no recurringenddate. If have, add entry
+    //check if there is or no recurringEndDate. If have, add entry
     public void UpdateRecurring() throws ParseException {
         for (Recurring recurring : recurringArrayList){
             if (recurring.getRecurringendDate() == null){

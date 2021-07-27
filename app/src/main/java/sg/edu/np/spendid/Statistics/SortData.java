@@ -29,16 +29,30 @@ public class SortData {
     private void initData(){
         SimpleDateFormat monthFormat = new SimpleDateFormat("yyyy-MM");
 
-        //
+        /*
+        get balance of past (range) months
+        and insert into array
+         */
         for (int i = 0; i < range; i++){
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.MONTH, -i);
+
+            //set month in reverse
             dateList[(range-1)-i] = cal.getTime();
+
+            //separate year and month
             String[] formattedDate = monthFormat.format(cal.getTime()).split("-");
+
+            //get balance from database
             data.add(0, dbHandler.getBalance(formattedDate[0], formattedDate[1]));
         }
     }
 
+    /*
+    return array of amount
+    based on income, expense, balance
+    in reverse order, respective to months
+     */
     public double[] getData(String key){
         double[] dataSet = new double[range];
         for (int i = 0; i < range; i++){

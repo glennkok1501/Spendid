@@ -12,6 +12,11 @@ import androidx.core.content.ContextCompat;
 
 import sg.edu.np.spendid.Dialogs.MyAlertDialog;
 
+/*
+request for write permission for file and media access
+to be called at run time
+ */
+
 public class RequestWritePermission {
     private Activity activity;
     private Context context;

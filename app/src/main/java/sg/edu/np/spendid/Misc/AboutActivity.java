@@ -1,8 +1,6 @@
 package sg.edu.np.spendid.Misc;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
@@ -26,6 +24,7 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
         initToolBar(); //set toolbars
 
+        //disclaimer
         CardView disclaimer = findViewById(R.id.about_disclaimer_cardView);
         disclaimer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +33,7 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
+        //credits
         CardView credits = findViewById(R.id.about_credits_cardView);
         credits.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +42,7 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
+        //open-source libs
         CardView openSourceLib = findViewById(R.id.about_openSourceLib_cardView);
         openSourceLib.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +77,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //prompt alert to open webpage to url
     private void redirectURL(String website, String url){
         MyAlertDialog dialog = new MyAlertDialog(AboutActivity.this);
         dialog.setTitle("Visit Website");

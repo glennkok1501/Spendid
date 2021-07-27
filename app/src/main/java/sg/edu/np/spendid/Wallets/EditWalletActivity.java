@@ -65,6 +65,7 @@ public class EditWalletActivity extends AppCompatActivity {
             }
         });
 
+        //transfer wallet records to another wallet
         Button transferBtn = findViewById(R.id.editTransferWallet_btn);
         transferBtn.setOnClickListener(new View.OnClickListener() {
             @Override
