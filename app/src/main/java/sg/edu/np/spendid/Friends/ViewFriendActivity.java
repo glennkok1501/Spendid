@@ -42,7 +42,7 @@ public class ViewFriendActivity extends AppCompatActivity {
         new GenerateQRCode(this, qrcode).run(friend.getName()+";"+friend.getPublicKey());
 
         //set values
-        dateAdded.setText(friend.getDateAdded());
+        dateAdded.setText("Date Added: "+friend.getDateAdded());
 
         shareCode.setOnClickListener(new View.OnClickListener() {
             @Override

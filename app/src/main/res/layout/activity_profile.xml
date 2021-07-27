@@ -6,10 +6,10 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
+android:background="?backgroundColor"
 tools:context=".Friends.ProfileActivity">
 
     <include layout="@layout/toolbar_2btn"/>
-
 
     <ScrollView
         android:layout_width="match_parent"

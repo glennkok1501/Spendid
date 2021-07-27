@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.edu.np.spendid.R;
 
 public class FriendsListViewHolder extends RecyclerView.ViewHolder {
-    TextView name, date;
+    TextView name;
 
     public FriendsListViewHolder(View itemView){
         super(itemView);
         name = itemView.findViewById(R.id.friendsLayout_name_textView);
-        date = itemView.findViewById(R.id.friendsLayout_date_textView);
     }
 }
