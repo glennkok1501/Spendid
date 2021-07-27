@@ -132,6 +132,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //switch app to night mode and store in shared pref
     private void toggleNightMode(boolean isChecked){
         SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
         if (isChecked){

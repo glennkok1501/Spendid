@@ -113,6 +113,31 @@ public class EditRecurringEntryActivity extends AppCompatActivity {
         catRV.setAdapter(myCatAdapter);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     //ToolBar
     private void initToolbar(){
         TextView activityTitle = findViewById(R.id.toolbarTitle_textView);

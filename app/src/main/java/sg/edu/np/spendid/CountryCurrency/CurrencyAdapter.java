@@ -24,8 +24,12 @@ public class CurrencyAdapter extends RecyclerView.Adapter<SelectCurrencyViewHold
         return new SelectCurrencyViewHolder(item);
     }
     public void onBindViewHolder(SelectCurrencyViewHolder holder, int position){
+
+        //separate currency name and currency code
         String[] split = data[position].split(";");
         holder.txt.setText(split[0]);
+
+        //set country flag icon by currency code
         holder.img.setImageResource(countryFlagsHelper.setIcon(split[1]));
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,7 +2,10 @@ package sg.edu.np.spendid.Friends.Utils;
 
 import android.content.Context;
 import android.content.Intent;
-
+ /*
+ Send text via external platforms
+ using share intent
+  */
 public class ShareText {
     private Context context;
 

@@ -65,6 +65,8 @@ public class RecurringSelectAdapter extends RecyclerView.Adapter<RecurringSelect
     }
     public int getItemCount(){return data.size();}
 
+
+    //format amount and frequency
     private String formatAmountFrequency(double amount, String freq){
         String amountString = df2.format(amount);
         String formatted = "$"+amountString;

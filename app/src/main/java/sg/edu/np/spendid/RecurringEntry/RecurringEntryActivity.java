@@ -53,23 +53,12 @@ public class RecurringEntryActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onStart() {
         super.onStart();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() { super.onPause(); }
 
     @Override
     protected void onResume() {
@@ -83,6 +72,21 @@ public class RecurringEntryActivity extends AppCompatActivity {
         showRecurringRV.setLayoutManager(myLayoutManager);
         showRecurringRV.setItemAnimator(new DefaultItemAnimator());
         showRecurringRV.setAdapter(recurringSelectAdapter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     //Tool bar

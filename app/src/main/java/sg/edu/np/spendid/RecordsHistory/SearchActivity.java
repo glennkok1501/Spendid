@@ -69,6 +69,7 @@ public class SearchActivity extends AppCompatActivity {
         options = findViewById(R.id.options_linearLayout);
         searchRV = findViewById(R.id.search_recyclerView);
 
+        //initiate advance filtering options
         optionRadios.add(nameR);
         optionRadios.add(descR);
         optionRadios.add(catR);

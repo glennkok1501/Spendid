@@ -310,6 +310,7 @@ public class AddRecordActivity extends AppCompatActivity {
         });
     }
 
+    //prompt alert when limit is exceeded
     private void notifyLimit(Record record){
         MyAlertDialog dialog = new MyAlertDialog(AddRecordActivity.this);
         dialog.setTitle("Limit Exceeded");

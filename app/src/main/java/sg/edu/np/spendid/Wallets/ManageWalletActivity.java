@@ -22,9 +22,8 @@ import sg.edu.np.spendid.R;
 import sg.edu.np.spendid.Wallets.Adapters.WalletManageAdapter;
 
 public class ManageWalletActivity extends AppCompatActivity {
-    private final DecimalFormat df2 = new DecimalFormat("#0.00");
     private DBHandler dbHandler;
-    private TextView bal, emptyWallets;
+    private TextView emptyWallets;
     private RecyclerView recyclerView;
 
     @Override

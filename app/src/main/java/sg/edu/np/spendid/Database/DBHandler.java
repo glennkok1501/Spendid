@@ -233,7 +233,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return w;
     }
 
-    //returns the balance of a wallet retrieved from the respective records from the wallet - Glenn.
+    //returns the balance of a wallet retrieved from the respective records from the wallet
     public double getWalletTotal(int id) {
         String query = "SELECT r." + COLUMN_RECORD_AMOUNT + ", c." + COLUMN_CATEGORY_EXPENSE + " " +
                 "FROM " + TABLE_RECORD + " " +
@@ -242,9 +242,13 @@ public class DBHandler extends SQLiteOpenHelper {
                 "WHERE r." + COLUMN_WALLET_ID + " = " + id;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
+
+        //initialize income and expense to calculate balance
         double income = 0;
         double expense = 0;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+
+            //check if record is expense by category
             if (cursor.getInt(1) == 1) {
                 expense += cursor.getDouble(0);
             } else {
@@ -419,7 +423,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //return an array of all records sorted in descending order
+    //return a hashmap of all records by date
     public HashMap<String, ArrayList<Record>> getRecordHistory() {
         HashMap<String, ArrayList<Record>> history = new HashMap<>();
         String query = "SELECT * FROM " + TABLE_RECORD + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "
@@ -452,31 +456,6 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<Record> getAllRecords() {
         ArrayList<Record> recordList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_RECORD + " ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "
-                + COLUMN_RECORD_TIMECREATED + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String title = cursor.getString(1);
-            String des = cursor.getString(2);
-            double amt = cursor.getDouble(3);
-            String cat = cursor.getString(4);
-            String dateCreated = cursor.getString(5);
-            String timeCreated = cursor.getString(6);
-            byte[] image = cursor.getBlob(7);
-            int walletId = cursor.getInt(8);
-            Record record = new Record(id, title, des, amt, cat, dateCreated, timeCreated, image, walletId);
-            recordList.add(record);
-        }
-        cursor.close();
-        db.close();
-        return recordList;
-    }
-
-    //returns an array of all records
-    public ArrayList<Record> getMonthRecords(String yyyy, String MM) {
-        ArrayList<Record> recordList = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_RECORD + " WHERE "+ COLUMN_RECORD_DATECREATED + " LIKE "+ "\'"+yyyy+"-"+MM+"-"+"%\'"+" ORDER BY " + COLUMN_RECORD_DATECREATED + " DESC, "
                 + COLUMN_RECORD_TIMECREATED + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -555,6 +534,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return deleted;
     }
 
+    //retrieve image from a specific record
     public byte[] getRecordImage(int recordId){
         String query = "SELECT "+COLUMN_RECORD_IMAGE+" FROM " + TABLE_RECORD + " WHERE " + COLUMN_RECORD_ID + " = " + recordId;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -573,28 +553,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //Statistics Methods
 
-    //returns the total balance of all overall records and wallets combined
-    public double getTotalBalance() {
-        String query = "SELECT r." + COLUMN_RECORD_AMOUNT + ", c." + COLUMN_CATEGORY_EXPENSE + " " +
-                "FROM " + TABLE_RECORD + " " +
-                "r INNER JOIN " + TABLE_CATEGORY + " c " +
-                "ON c." + COLUMN_CATEGORY_TITLE + " = r." + COLUMN_RECORD_CATEGORY;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        double income = 0;
-        double expense = 0;
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            if (cursor.getInt(1) == 1) {
-                expense += cursor.getDouble(0);
-            } else {
-                income += cursor.getDouble(0);
-            }
-        }
-        cursor.close();
-        db.close();
-        return income - expense;
-    }
-
     //returns the income, expense and balance of all the wallets combined
     public HashMap<String, Double> getBalance(String yyyy, String MM) {
         HashMap<String, Double> bal = new HashMap<String, Double>();
@@ -605,9 +563,13 @@ public class DBHandler extends SQLiteOpenHelper {
                 "WHERE r." + COLUMN_RECORD_DATECREATED + " LIKE \'" + yyyy + "-" + MM + "-%\'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
+
+        //initialize income and expense
         double income = 0;
         double expense = 0;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+
+            //check if record is expense by category
             if (cursor.getInt(1) == 1) {
                 expense += cursor.getDouble(0);
             } else {
@@ -651,7 +613,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return group;
     }
 
-    //get total balance for a specific date
+    //get total expense for a specific date
     public double getDailyExpense(String date) {
         String query = "SELECT r." + COLUMN_RECORD_AMOUNT + ", r." + COLUMN_RECORD_DATECREATED + ", c." + COLUMN_CATEGORY_EXPENSE + " " +
                 "FROM " + TABLE_RECORD + " " +
@@ -662,6 +624,8 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         double expense = 0;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+
+            //check if record is expense by category
             if (cursor.getInt(2) == 1) {
                 expense += cursor.getDouble(0);
             }
@@ -775,6 +739,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //delete all items in a shopping cart
     public void deleteCartItems(int cartId) {
         String query = "SELECT * FROM " + TABLE_CARTITEM;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -801,6 +766,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //retrieve a specific currency by currency code
     public Currency getCurrency(String c) {
         String query = "SELECT * FROM " + TABLE_CURRENCY + " WHERE " + COLUMN_CURRENCY_FOREIGNCURRENCY + " = " + "\'" + c + "\'";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -850,6 +816,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //Friends List methods
 
+    //returns an array of friends object
     public ArrayList<Friend> getFriends() {
         String query = "SELECT * FROM " + TABLE_FRIEND + " ORDER BY " + COLUMN_FRIEND_NAME + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -868,6 +835,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return friendsList;
     }
 
+    //get a specific friend by Id
     public Friend getFriend(int friendId) {
         String query = "SELECT * FROM " + TABLE_FRIEND + " WHERE " + COLUMN_FRIEND_ID + " = \'" + friendId + "\'";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -930,6 +898,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //returns an array of Recurring objects
     public ArrayList<Recurring> getAllRecurring() {
         ArrayList<Recurring> recurringList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_RECURRING;
@@ -954,6 +923,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return recurringList;
     }
 
+    //returns a Recurring object by Id
     public Recurring getRecurring(int rId) {
         String query = "SELECT * FROM " + TABLE_RECURRING + " WHERE " + COLUMN_RECURRING_ID + " = " + rId;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1013,6 +983,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return deleted;
     }
 
+    //delete all Recurring object by wallet Id
     public void deleteWalletRecurring(int wId) {
         String query = "SELECT * FROM " + TABLE_RECURRING;
         SQLiteDatabase db = this.getWritableDatabase();

@@ -252,6 +252,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+
+    //prompt alert for generating a new key pair
     private void newKeyPair(){
         MyAlertDialog dialog = new MyAlertDialog(this);
         dialog.setTitle("Generate New Key");
@@ -276,6 +278,7 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    //prompt alert for importing an existing key pair
     private void importDialog(){
         MyAlertDialog dialog = new MyAlertDialog(this);
         dialog.setTitle("Import Keys");

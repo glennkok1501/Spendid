@@ -37,6 +37,10 @@ public class LimitNotification {
     private Context context;
     private int notifyAt;
 
+    /*
+    retrieve values from shared prefs
+    and calculate limit
+     */
     public LimitNotification(Context context, DBHandler db, double amount) {
         this.context = context;
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -45,24 +49,28 @@ public class LimitNotification {
         notify = prefs.getBoolean("Notify", false);
         notifyAt = prefs.getInt("Notify At", 8);
         int limitAmt = prefs.getInt("Limit Amount", 0);
-        moreThanWarning = (getTotalBalance() + amount >= (double) limitAmt * (notifyAt + 1) / 10);
-        moreThanLimit = getTotalBalance() + amount > (double) limitAmt;
+        double totalExpense = getTotalExpense();
+        moreThanWarning = (totalExpense + amount >= (double) limitAmt * (notifyAt + 1) / 10);
+        moreThanLimit = totalExpense + amount > (double) limitAmt;
     }
 
+    //send notification if enabled and limit met
     public void checkExceedWarning(boolean isExpense) {
         if (limit && notify && moreThanWarning && isExpense){
             showNotification();
         }
     }
 
+    //return boolean if limit exceeded
     public boolean checkExceedLimit(boolean isExpense) { return limit && moreThanLimit && isExpense; }
 
-
-    private double getTotalBalance() {
+    //get total expense for the day
+    private double getTotalExpense() {
         String date = df.format(Calendar.getInstance().getTime());
         return dbHandler.getDailyExpense(date);
     }
 
+    //send notification
     public void showNotification(){
         String channelId = "Spendid_Channel";
 

@@ -1,6 +1,5 @@
 package sg.edu.np.spendid.ShoppingList.Adapters.CartItems;
 
-import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
