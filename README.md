@@ -61,7 +61,7 @@ Done by: <a href="https://github.com/glennkok1501">Glenn Kok</a>, <a href="https
 
 ## Screenshots
 
-![image](https://drive.google.com/uc?export=view&id=1noysEahUfiuL2ubAofLCv9IHIv2I2paQ =200x100%)|![image](https://drive.google.com/uc?export=view&id=1bU1gFDTtcUxOPWWnGNp0ROt-U59v8VJU =200x)|![image](https://drive.google.com/uc?export=view&id=1ACkbCS6K-iq8OMgnwjjwcBfuXYjPMxAq =200x)
+![image](https://drive.google.com/uc?export=view&id=1noysEahUfiuL2ubAofLCv9IHIv2I2paQ)|![image](https://drive.google.com/uc?export=view&id=1bU1gFDTtcUxOPWWnGNp0ROt-U59v8VJU)|![image](https://drive.google.com/uc?export=view&id=1ACkbCS6K-iq8OMgnwjjwcBfuXYjPMxAq)
 :-------------------------:|:-------------------------:|:-------------------------:
 The main page of Spendid provides an overview of the financial situation of the users. They can get a quick glance of their balance for the month, a summary of their eWallets and the transactions they have made on that day.
 
