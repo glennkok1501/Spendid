@@ -90,7 +90,7 @@ Done by: <a href="https://github.com/glennkok1501">Glenn Kok</a>, <a href="https
       <img src="screenshots/manageWallet.png" width="200" height="auto">
     </td>
     <td>
-      <img src="screenshots/about.png" width="200" height="auto">
+      <img src="screenshots/editWallet.png" width="200" height="auto">
     </td>
   </tr>
 </table>
