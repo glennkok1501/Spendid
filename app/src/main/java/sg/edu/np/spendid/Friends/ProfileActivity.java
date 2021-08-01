@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private GenerateQRCode genQRCode;
     private ActivityResultLauncher<String> getFile;
+    private String currentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
         genQRCode.run(getQRCodeText());
 
         //get name from shared prefs
-        getName();
+        currentName = getName();
 
         keyText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         //edit name and save to shared prefs
+        saveName.setEnabled(false);
         saveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +92,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                     //regenerate qr code with new name
                     genQRCode.run(getQRCodeText());
+                    currentName = name;
+                    saveName.setEnabled(false);
                     Toast.makeText(getApplicationContext(), "Saved name", Toast.LENGTH_SHORT).show();
 
                     //remove error on layout
@@ -97,6 +103,24 @@ public class ProfileActivity extends AppCompatActivity {
                     layout.setError("Invalid Name");
                 }
 
+            }
+        });
+
+        //check to disable to enable save button
+        username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //pass
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                saveName.setEnabled(!username.getText().toString().equals(currentName));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //pass
             }
         });
 
@@ -169,14 +193,16 @@ public class ProfileActivity extends AppCompatActivity {
         return String.format("Hi, %s here, this is my code:\n%s", prefs.getString(USERNAME, DEFAULT_NAME), prefs.getString(PUBLIC_KEY, null));
     }
 
-    private void getName(){
+    private String getName(){
         String name = prefs.getString(USERNAME, null);
         if (name == null){
             username.setText(DEFAULT_NAME);
+            name = DEFAULT_NAME;
         }
         else{
             username.setText(name);
         }
+        return name;
     }
 
     private boolean validName(String name){

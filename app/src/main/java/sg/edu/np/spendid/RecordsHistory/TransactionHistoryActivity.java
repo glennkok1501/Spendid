@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,14 +35,20 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null,null, 1);
         FloatingActionButton fab = findViewById(R.id.transaction_history_fab);
         emptyTrans = findViewById(R.id.transaction_history_textView);
+        boolean emptyWallet = dbHandler.getWallets().size() == 0;
 
         initToolbar(); //set toolbar
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TransactionHistoryActivity.this, AddRecordActivity.class);
-                startActivity(intent);
+                if (emptyWallet){
+                    Toast.makeText(getApplicationContext(), "Please create a wallet", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Intent intent = new Intent(TransactionHistoryActivity.this, AddRecordActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
