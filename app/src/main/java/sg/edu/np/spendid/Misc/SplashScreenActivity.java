@@ -26,37 +26,41 @@ import sg.edu.np.spendid.RecurringEntry.UpdateEntryToWallet;
 
 
 public class SplashScreenActivity extends AppCompatActivity {
-    private int SPLASH_SCREEN = 2000;
-    private Animation topAnim, bottomAnim;
-    private ImageView image;
-    private TextView txt;
-    private DBHandler dbHandler;
+    private final int SPLASH_SCREEN = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
-        image = findViewById(R.id.AppIconLogo);
-        txt = findViewById(R.id.AppIconName);
-        dbHandler = new DBHandler(this, null, null, 1);
-
-        //check for night mode
-        toggleNightMode();
+        ImageView image = findViewById(R.id.AppIconLogo);
+        TextView txt = findViewById(R.id.AppIconName);
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
 
         //animation
-        topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
-        bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
+        Animation topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
+        Animation bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
         image.setAnimation(topAnim);
         txt.setAnimation(bottomAnim);
 
-        new Handler().postDelayed(new Runnable(){
-            @Override
+        Thread background = new Thread(){
             public void run(){
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                finish();
+                try {
+                    sleep(SPLASH_SCREEN);
+                    Intent intent =new Intent(getBaseContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }, SPLASH_SCREEN);
+        };
+        background.start();
+
+        //check for night mode
+        toggleNightMode();
 
         //Fetch Data from API
         new CurrencyAPI(this, dbHandler).getData("sgd");
@@ -70,7 +74,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
